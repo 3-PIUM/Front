@@ -6,17 +6,17 @@ const HeaderWrap = styled.div`
   padding: 0 1rem;
   display: flex;
   align-items: center;
+  height: 2.75rem;
 `;
 
 const PageName = styled.div`
   color: ${colors.black};
   font-size: 1.125rem;
-  font-weight: 700;
-  background-color: aliceblue;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   align-items: center;
+  font-weight: 700;
 `;
 
 interface Headerprops {
