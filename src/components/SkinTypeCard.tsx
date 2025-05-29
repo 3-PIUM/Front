@@ -8,10 +8,10 @@ interface SkinTypeCardProps {
 }
 
 const Card = styled.div<{ isTop: boolean }>`
-  display: flex; /* ✅ flex로 설정 */
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  border: ${({ isTop }) => (isTop ? "2px solid #ff4081" : "1px solid #ccc")};
+  border: ${({ isTop }) => (isTop ? "1.5px solid #ff4081" : "1px solid #ccc")};
   background-color: #fff;
   padding: 1rem;
   border-radius: 12px;
