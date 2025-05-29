@@ -10,7 +10,6 @@ import AIReviewCard from "../components/AIReviewCard";
 import ReviewCard from "../components/ReviewCard";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-// import BottomNavBar from "../components/BottomNavBar";
 
 // 스타일 컴포넌트
 const HeaderBar = styled.div`
