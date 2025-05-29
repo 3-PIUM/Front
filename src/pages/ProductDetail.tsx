@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TextHeader from "../components/TextHeader";
 import ProductCard from "../components/ProductCard";
@@ -8,6 +8,8 @@ import SkinTypeRankList from "../components/SkinTypeRankList";
 import ReviewSatisfactionCard from "../components/ReviewSatisfactionCard";
 import AIReviewCard from "../components/AIReviewCard";
 import ReviewCard from "../components/ReviewCard";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // 스타일 컴포넌트
 const HeaderBar = styled.div`
@@ -83,6 +85,9 @@ export default function ProductDetail() {
   const [selectedTab, setSelectedTab] = useState<"detail" | "ingredient">(
     "detail"
   );
+  const navigate = useNavigate();
+  const location = useLocation();
+  const newReview = location.state?.newReview;
 
   const mockData = {
     brand: "넘버즈인",
@@ -106,7 +111,8 @@ export default function ProductDetail() {
     "자극 없이 순해서 민감한 피부도 쓸 수 있어요",
   ];
 
-  const realReviews = [
+  // 1. useState로 realReviews 선언
+  const [realReviews, setRealReviews] = useState([
     {
       username: "김**",
       date: "2025.05.14",
@@ -131,7 +137,14 @@ export default function ProductDetail() {
       likes: 2,
       isMyReview: false,
     },
-  ];
+  ]);
+
+  // 2. useEffect로 새 리뷰 추가
+  useEffect(() => {
+    if (newReview) {
+      setRealReviews((prev) => [...prev, newReview]);
+    }
+  }, [newReview]);
 
   return (
     <div>
@@ -188,7 +201,7 @@ export default function ProductDetail() {
               <AIReviewCard key={index} content={text} />
             ))}
 
-            <ReviewButton>
+            <ReviewButton onClick={() => navigate("/review-write")}>
               <Label>리뷰 작성</Label>
             </ReviewButton>
 
