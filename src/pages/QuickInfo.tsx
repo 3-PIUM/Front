@@ -3,13 +3,15 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
 
 const Wrap = styled.div`
   padding: 0 1rem;
 `;
 
-const Header = styled.div`
+const SkipWrapper = styled.div`
   align-items: end;
+  width: 100%;
   height: 2rem;
   font-size: 0.875rem;
   color: ${colors.darkGrey};
@@ -74,11 +76,12 @@ export default function QuickInfo() {
   return (
     <>
       <Wrap>
-        <Header>
+        <Header />
+        <SkipWrapper>
           <Link to="/home">
             <SkipText>건너뛰기</SkipText>
           </Link>
-        </Header>
+        </SkipWrapper>
         <MainText>
           <Text>
             <HighLight>{nickname}</HighLight>님에

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Button from "../components/Button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -90,6 +91,7 @@ export default function Login() {
   return (
     <>
       <Wrap>
+        <Header />
         <LogoWrap></LogoWrap>
         <LanguageTab>
           <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />

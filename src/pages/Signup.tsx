@@ -7,6 +7,7 @@ import { IoMale, IoFemale } from "react-icons/io5";
 import colors from "../styles/colors";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
 
 const Wrap = styled.div`
   display: flex;
@@ -80,6 +81,7 @@ export default function Signup() {
 
   return (
     <Wrap>
+      <Header />
       <TextHeader pageName="회원가입" />
       <FormWrapper>
         <TextField fieldName="닉네임" type="text" />
