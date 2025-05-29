@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { VscHeartFilled } from "react-icons/vsc";
+import { FaHeart } from "react-icons/fa6";
 import { useState } from "react";
 
 const ItemWrap = styled.div`
@@ -81,7 +81,7 @@ export default function ItemCard({
       <ImageWrap>
         <ItemImage src={imageSource} />
         <Heart>
-          <VscHeartFilled
+          <FaHeart
             fontSize={"1.4rem"}
             color={isWished ? colors.mainPink : colors.mediumGrey}
             onClick={handleWish}
