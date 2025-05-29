@@ -9,6 +9,8 @@ import MyPage from "./pages/MyPage";
 import Category from "./pages/Category";
 
 const routes = [
+  //DefaultLayout
+  { path: "/", element: <Login /> },
   //MenuLayout
   {
     path: "/",
@@ -26,8 +28,6 @@ const routes = [
       },
     ],
   },
-  //DefaultLayout
-  { path: "/login", element: <Login /> },
 ];
 
 export default routes;
