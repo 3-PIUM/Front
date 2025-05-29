@@ -1,4 +1,5 @@
 import ItemCard from "../components/ItemCard";
+import PersonalColorButton from "../components/PersonalColorButton";
 import TextField from "../components/TextField";
 import TextHeader from "../components/TextHeader";
 
@@ -19,6 +20,10 @@ export default function Login() {
         discountRate={19}
         price={339000}
       />
+      <PersonalColorButton
+        buttonName="봄 웜"
+        colors={["#FFC0A9", "#FFD8A9", "#FFE6CC"]}
+      ></PersonalColorButton>
     </div>
   );
 }
