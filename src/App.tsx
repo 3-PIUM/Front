@@ -1,3 +1,4 @@
+
 import { useRoutes } from "react-router-dom";
 import routes from "../src/Routes";
 
@@ -6,5 +7,6 @@ const App = () => {
 
   return <>{content}</>;
 };
+
 
 export default App;
