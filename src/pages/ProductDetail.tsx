@@ -58,7 +58,7 @@ const SkinTypeWrapper = styled.div`
 `;
 
 const ReviewWrapper = styled.div`
-  padding: 0 1rem 0.5rem 1rem;
+  padding: 0 1rem 5rem 1rem;
 `;
 
 const ReviewButton = styled.div`
@@ -211,6 +211,7 @@ export default function ProductDetail() {
           </ReviewWrapper>
         </>
       )}
+      {/* <BottomNavBar /> */}
     </div>
   );
 }
