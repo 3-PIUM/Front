@@ -8,13 +8,13 @@ import WishList from "./pages/WishList";
 import MyPage from "./pages/MyPage";
 import Category from "./pages/Category";
 import Signup from "./pages/Signup";
-import Welcome from "./pages/Welcome";
+import QuickInfo from "./pages/QuickInfo";
 
 const routes = [
   //DefaultLayout
   { path: "/", element: <Login /> },
   { path: "/signup", element: <Signup /> },
-  { path: "/welcome", element: <Welcome /> },
+  { path: "/quickinfo", element: <QuickInfo /> },
   //MenuLayout
   {
     path: "/",

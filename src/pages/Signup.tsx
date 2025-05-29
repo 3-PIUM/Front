@@ -122,7 +122,7 @@ export default function Signup() {
           </GenderButton>
         </GenderField>
       </FormWrapper>
-      <Link to="/welcome">
+      <Link to="/quickinfo">
         <ButtonWrapper>
           <Button label="회원가입하기" />
         </ButtonWrapper>
