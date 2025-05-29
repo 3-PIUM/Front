@@ -2,6 +2,7 @@ import WelcomeImage from "../assets/images/welcomeImage.png";
 import styled from "styled-components";
 import colors from "../styles/colors";
 import Button from "../components/Button";
+import { Link } from "react-router-dom";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -61,7 +62,10 @@ const Image = styled.img`
 `;
 
 const ButtonWrapper = styled.div`
-  margin-top: auto;
+  position: fixed;
+  width: 100%;
+  padding: 2rem 1rem;
+  bottom: 0;
 `;
 
 export default function QuickInfo() {
@@ -71,7 +75,9 @@ export default function QuickInfo() {
     <>
       <Wrap>
         <Header>
-          <SkipText>건너뛰기</SkipText>
+          <Link to="/home">
+            <SkipText>건너뛰기</SkipText>
+          </Link>
         </Header>
         <MainText>
           <Text>
@@ -86,10 +92,10 @@ export default function QuickInfo() {
         <ImageWrap>
           <Image src={WelcomeImage} alt="환영하는 캐릭터 이미지" />
         </ImageWrap>
-        <ButtonWrapper>
-          <Button label="정보 등록하러 가기" />
-        </ButtonWrapper>
       </Wrap>
+      <ButtonWrapper>
+        <Button label="정보 등록하러 가기" />
+      </ButtonWrapper>
     </>
   );
 }

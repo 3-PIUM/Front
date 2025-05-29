@@ -75,7 +75,10 @@ const SignUpWrap = styled.div`
 `;
 
 const ButtonWrap = styled.div`
-  margin-top: auto;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 2rem 1rem;
 `;
 
 export default function Login() {
@@ -85,34 +88,35 @@ export default function Login() {
   const goSelectLanguage = () => {};
 
   return (
-    <Wrap>
-      <LogoWrap></LogoWrap>
-      <LanguageTab>
-        <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />
-        <LanguageText onClick={goSelectLanguage}>언어 설정</LanguageText>
-      </LanguageTab>
-      <InputWrap>
-        <InputEmail
-          $emailFocused={emailFocused}
-          onFocus={() => setEmailFocused(true)}
-          onBlur={() => setEmailFocused(false)}
-          placeholder="이메일"
-        />
-        <InputPassword
-          type="password"
-          $passwordFocused={passwordFocused}
-          onFocus={() => setPasswordFocused(true)}
-          onBlur={() => setPasswordFocused(false)}
-          placeholder="비밀번호"
-        />
-      </InputWrap>
-      <Link to="/signup">
-        <SignUpWrap>회원가입</SignUpWrap>
-      </Link>
-
+    <>
+      <Wrap>
+        <LogoWrap></LogoWrap>
+        <LanguageTab>
+          <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />
+          <LanguageText onClick={goSelectLanguage}>언어 설정</LanguageText>
+        </LanguageTab>
+        <InputWrap>
+          <InputEmail
+            $emailFocused={emailFocused}
+            onFocus={() => setEmailFocused(true)}
+            onBlur={() => setEmailFocused(false)}
+            placeholder="이메일"
+          />
+          <InputPassword
+            type="password"
+            $passwordFocused={passwordFocused}
+            onFocus={() => setPasswordFocused(true)}
+            onBlur={() => setPasswordFocused(false)}
+            placeholder="비밀번호"
+          />
+        </InputWrap>
+        <Link to="/signup">
+          <SignUpWrap>회원가입</SignUpWrap>
+        </Link>
+      </Wrap>
       <ButtonWrap>
         <Button label="로그인하기" />
       </ButtonWrap>
-    </Wrap>
+    </>
   );
 }
