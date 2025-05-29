@@ -1,5 +1,6 @@
 import ItemCard from "../components/ItemCard";
 import PersonalColorButton from "../components/PersonalColorButton";
+import SelectButton from "../components/SelectButton";
 import TextField from "../components/TextField";
 import TextHeader from "../components/TextHeader";
 
@@ -24,6 +25,8 @@ export default function Login() {
         buttonName="봄 웜"
         colors={["#FFC0A9", "#FFD8A9", "#FFE6CC"]}
       ></PersonalColorButton>
+      <SelectButton buttonName="복합성" size="large"></SelectButton>
+      <SelectButton buttonName="여드름" size="small"></SelectButton>
     </div>
   );
 }
