@@ -3,10 +3,14 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 
 const HeaderWrap = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 2rem;
   padding: 0 1rem;
   display: flex;
   align-items: center;
   height: 2.75rem;
+  background-color: ${colors.white};
 `;
 
 const PageName = styled.div`

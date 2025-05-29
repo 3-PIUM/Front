@@ -1,32 +1,118 @@
-import ItemCard from "../components/ItemCard";
-import PersonalColorButton from "../components/PersonalColorButton";
-import SelectButton from "../components/SelectButton";
-import TextField from "../components/TextField";
-import TextHeader from "../components/TextHeader";
+import { GrLanguage } from "react-icons/gr";
+import colors from "../styles/colors";
+import styled from "styled-components";
+import Button from "../components/Button";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+const Wrap = styled.div`
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+`;
+
+const LogoWrap = styled.div`
+  height: 11rem;
+`;
+
+const LanguageTab = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LanguageText = styled.div`
+  display: flex;
+  font-size: 0.875rem;
+  color: ${colors.darkGrey};
+`;
+
+const InputWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+`;
+
+const InputEmail = styled.input<{ $emailFocused: boolean }>`
+  height: 3rem;
+  border: 1px solid
+    ${({ $emailFocused }) =>
+      $emailFocused ? colors.mainPink : colors.lightGrey};
+  outline: none;
+  border-radius: 1.25rem;
+  padding: 0 1rem;
+  font-size: 1rem;
+
+  ::placeholder {
+    color: ${colors.darkGrey};
+  }
+`;
+
+const InputPassword = styled.input<{ $passwordFocused: boolean }>`
+  height: 3rem;
+  border: 1px solid
+    ${({ $passwordFocused }) =>
+      $passwordFocused ? colors.mainPink : colors.lightGrey};
+  outline: none;
+  border-radius: 1.25rem;
+  padding: 0 1rem;
+  font-size: 1rem;
+
+  ::placeholder {
+    color: ${colors.darkGrey};
+  }
+`;
+
+const SignUpWrap = styled.div`
+  font-size: 0.875rem;
+  color: ${colors.mediumGrey};
+  font-weight: 700;
+  text-align: center;
+  margin-top: 1rem;
+`;
+
+const ButtonWrap = styled.div`
+  margin-top: auto;
+`;
 
 export default function Login() {
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
+
+  const goSelectLanguage = () => {};
+
   return (
-    <div>
-      {/* <div>홈 페이지입니다</div> */}
-      {/* <Button label="로그인하기" /> */}
-      <TextHeader pageName="회원가입" />
-      <TextField fieldName="비밀번호" />
-      <ItemCard
-        imageSource={
-          "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022465410ko.jpg?l=ko"
-        }
-        itemName={
-          "[5/26하루특가] [올영단독] 메디큐브 부스터프로 쿠로미 에디션(+쿠로미헤드케이스+세안밴드+디바이스클리너+스티커2종)"
-        }
-        discountRate={19}
-        price={339000}
-      />
-      <PersonalColorButton
-        buttonName="봄 웜"
-        colors={["#FFC0A9", "#FFD8A9", "#FFE6CC"]}
-      ></PersonalColorButton>
-      <SelectButton buttonName="복합성" size="large"></SelectButton>
-      <SelectButton buttonName="여드름" size="small"></SelectButton>
-    </div>
+    <Wrap>
+      <LogoWrap></LogoWrap>
+      <LanguageTab>
+        <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />
+        <LanguageText onClick={goSelectLanguage}>언어 설정</LanguageText>
+      </LanguageTab>
+      <InputWrap>
+        <InputEmail
+          $emailFocused={emailFocused}
+          onFocus={() => setEmailFocused(true)}
+          onBlur={() => setEmailFocused(false)}
+          placeholder="이메일"
+        />
+        <InputPassword
+          type="password"
+          $passwordFocused={passwordFocused}
+          onFocus={() => setPasswordFocused(true)}
+          onBlur={() => setPasswordFocused(false)}
+          placeholder="비밀번호"
+        />
+      </InputWrap>
+      <Link to="/signup">
+        <SignUpWrap>회원가입</SignUpWrap>
+      </Link>
+
+      <ButtonWrap>
+        <Button label="로그인하기" />
+      </ButtonWrap>
+    </Wrap>
   );
 }

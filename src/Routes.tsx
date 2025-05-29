@@ -7,10 +7,14 @@ import Home from "./pages/Home";
 import WishList from "./pages/WishList";
 import MyPage from "./pages/MyPage";
 import Category from "./pages/Category";
+import Signup from "./pages/Signup";
+import Welcome from "./pages/Welcome";
 
 const routes = [
   //DefaultLayout
   { path: "/", element: <Login /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/welcome", element: <Welcome /> },
   //MenuLayout
   {
     path: "/",
