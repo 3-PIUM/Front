@@ -6,5 +6,4 @@ const App = () => {
 
   return <>{content}</>;
 };
-
 export default App;
