@@ -16,6 +16,7 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     }
 
+
     ul,
     ol {
     list-style: none;
@@ -28,11 +29,12 @@ const GlobalStyle = createGlobalStyle`
 
     #root {
     max-width: 430px;
-    height: 100%;
+    min-height: 100%;
     margin: 0 auto;
     background-color: ${colors.white};
     color: ${colors.black};
     padding-top: 44px;
+    padding-bottom: 34px;
     }
 
 `;

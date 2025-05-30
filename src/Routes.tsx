@@ -12,12 +12,16 @@ import ReviewWritePage from "./pages/ReviewWritePage";
 import ScanPage from "./pages/ScanPage";
 import CartPage from "./pages/CartPage";
 import QRCodePage from "./pages/QRCodePage";
+import Signup from "./pages/Signup";
+import QuickInfo from "./pages/QuickInfo";
 
 const routes = [
   // DefaultLayout
   { path: "/", element: <Login /> },
-
-  // MenuLayout
+  { path: "/signup", element: <Signup /> },
+  { path: "/quickinfo", element: <QuickInfo /> },
+  
+  //MenuLayout
   {
     path: "/",
     element: <MenuLayout />,
