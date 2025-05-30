@@ -6,20 +6,14 @@ import { useNavigate } from "react-router-dom";
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 2rem 1rem;
-  height: 100vh;
+  padding: 0 1rem;
   background-color: #fff;
 `;
 
-const QRTitle = styled.h2`
-  font-size: 18px;
-  font-weight: bold;
-  margin: 1rem 0;
-`;
-
 const QRBox = styled.div`
-  margin: 3rem 0 2rem;
+  margin: 8rem 0 2rem;
+  display: flex;
+  justify-content: center;
 `;
 
 const InfoText = styled.p`

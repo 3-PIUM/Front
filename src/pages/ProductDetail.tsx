@@ -8,9 +8,9 @@ import SkinTypeRankList from "../components/SkinTypeRankList";
 import ReviewSatisfactionCard from "../components/ReviewSatisfactionCard";
 import AIReviewCard from "../components/AIReviewCard";
 import ReviewCard from "../components/ReviewCard";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-// import BottomNavBar from "../components/BottomNavBar";
+import { useNavigate, useLocation } from "react-router-dom";
+import Button from "../components/Button";
+import { useCartStore } from "../store/useCartStore";
 
 // 스타일 컴포넌트
 const HeaderBar = styled.div`
@@ -59,7 +59,7 @@ const SkinTypeWrapper = styled.div`
 `;
 
 const ReviewWrapper = styled.div`
-  padding: 0 1rem 5rem 1rem;
+  padding: 0 1rem 5rem;
 `;
 
 const ReviewButton = styled.div`
@@ -89,6 +89,18 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   const location = useLocation();
   const newReview = location.state?.newReview;
+  const product = location.state?.product;
+  const { addItem } = useCartStore();
+
+  const productToDisplay = {
+    id: String(Date.now()), // 또는 실제 product.id
+    name: product?.name || "상품명 없음",
+    brand: product?.brand || "브랜드 없음",
+    imageUrl: product?.imageUrl || "",
+    originalPrice: product?.originalPrice || 0,
+    discountRate: product?.discountRate || 0,
+    // option: "기본 옵션", // 옵션 항목이 있으면 여기에 반영
+  };
 
   const mockData = {
     brand: "넘버즈인",
@@ -99,6 +111,18 @@ export default function ProductDetail() {
     imageUrl:
       "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021429012ko.jpg?qt=80",
   };
+
+  <ProductCard
+    brand={product?.brand || "브랜드 없음"}
+    title={product?.name || "상품명 없음"}
+    originalPrice={product?.originalPrice || 0}
+    currentPrice={
+      product?.originalPrice && product?.discountRate
+        ? Math.round(product.originalPrice * (1 - product.discountRate / 100))
+        : 0
+    }
+    imageUrl={product?.imageUrl || ""}
+  />;
 
   const bannerImageUrls = [
     "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/html/crop/A000000214290/202505231611/crop0/www.themedicube.co.kr/web/upload/appfiles/ZaReJam3QiELznoZeGGkMG/f8a9f171c092ffb5025943539c750574.jpg?created=202505231611",
@@ -163,6 +187,13 @@ export default function ProductDetail() {
         currentPrice={mockData.currentPrice}
         imageUrl={mockData.imageUrl}
       />
+      <Button
+        label="장바구니 담기"
+        onClick={() => {
+          addItem(productToDisplay);
+          navigate("/cart");
+        }}
+      />
 
       <TabMenu>
         <TabButton
@@ -212,7 +243,6 @@ export default function ProductDetail() {
           </ReviewWrapper>
         </>
       )}
-      {/* <BottomNavBar /> */}
     </div>
   );
 }

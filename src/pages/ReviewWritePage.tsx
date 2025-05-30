@@ -20,8 +20,8 @@ const ContentWrapper = styled.div`
 
 const StickyFooter = styled.div`
   position: sticky;
-  bottom: 0;
-  background-color: #fff;
+  bottom: 5rem;
+  /* background-color: #fff; */
   padding-top: 1rem;
   padding-bottom: 1rem;
 `;
