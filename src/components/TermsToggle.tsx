@@ -4,7 +4,6 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-top: 0.5rem;
 `;
 
 const Header = styled.div`
@@ -17,7 +16,7 @@ const Header = styled.div`
 const Label = styled.h4`
   font-size: 1rem;
   font-weight: bold;
-  margin-top: 0.5rem;
+  /* margin-top: 0.3rem; */
 `;
 
 const Content = styled.ul`

@@ -113,6 +113,13 @@ export default function MenuLayout() {
 
   // 메뉴가 선택 됐는지 확인
   const isActive = (path: string) => location.pathname === path;
+  const isScanPage = location.pathname === "/scan";
+
+  const handleCapture = () => {
+    // 여기서 dispatch or 전역상태 or localStorage 등으로 실제 ScanPage에 신호 보낼 수 있음
+    const captureEvent = new CustomEvent("captureProduct");
+    window.dispatchEvent(captureEvent);
+  };
 
   const goCategory = () => {};
   return (
@@ -141,13 +148,21 @@ export default function MenuLayout() {
             ))}
           </MenuRight>
         </Menu>
-        <StyledLink to="/scan">
-          <ScanMenu>
+        {isScanPage ? (
+          <ScanMenu onClick={handleCapture}>
             <ScanIcon>
-              <LuScanLine fontSize={"2.5rem"} color={colors.white} />
+              <span style={{ color: "white", fontWeight: "bold" }}>촬영</span>
             </ScanIcon>
           </ScanMenu>
-        </StyledLink>
+        ) : (
+          <StyledLink to="/scan">
+            <ScanMenu>
+              <ScanIcon>
+                <LuScanLine fontSize={"2.5rem"} color={colors.white} />
+              </ScanIcon>
+            </ScanMenu>
+          </StyledLink>
+        )}
       </MenuWrap>
     </>
   );
