@@ -8,8 +8,9 @@ import SkinTypeRankList from "../components/SkinTypeRankList";
 import ReviewSatisfactionCard from "../components/ReviewSatisfactionCard";
 import AIReviewCard from "../components/AIReviewCard";
 import ReviewCard from "../components/ReviewCard";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import Button from "../components/Button";
+import { useCartStore } from "../store/useCartStore";
 
 // 스타일 컴포넌트
 const HeaderBar = styled.div`
@@ -58,7 +59,7 @@ const SkinTypeWrapper = styled.div`
 `;
 
 const ReviewWrapper = styled.div`
-  padding: 0 1rem 5rem 1rem;
+  padding: 0 1rem 5rem;
 `;
 
 const ReviewButton = styled.div`
@@ -87,17 +88,22 @@ export default function ProductDetail() {
   );
   const navigate = useNavigate();
   const location = useLocation();
+  const { addItem } = useCartStore();
   const newReview = location.state?.newReview;
+  const product = location.state?.product;
 
   const mockData = {
+    id: "mock-id",
     brand: "넘버즈인",
-    title:
-      "[밀도탄력/피디알엔] 차앤박 더마앤서 액티브 부스트 PDRN앰플 30ml 기획 (+15ml 증정)",
+    name: "[밀도탄력/피디알엔] 차앤박 더마앤서 액티브 부스트 PDRN앰플 30ml 기획 (+15ml 증정)",
     originalPrice: 418500,
-    currentPrice: 339000,
+    discountRate: 19,
     imageUrl:
       "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021429012ko.jpg?qt=80",
+    option: "기본옵션",
   };
+
+  const productToDisplay = product || mockData;
 
   const bannerImageUrls = [
     "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/html/crop/A000000214290/202505231611/crop0/www.themedicube.co.kr/web/upload/appfiles/ZaReJam3QiELznoZeGGkMG/f8a9f171c092ffb5025943539c750574.jpg?created=202505231611",
@@ -111,7 +117,6 @@ export default function ProductDetail() {
     "자극 없이 순해서 민감한 피부도 쓸 수 있어요",
   ];
 
-  // 1. useState로 realReviews 선언
   const [realReviews, setRealReviews] = useState([
     {
       username: "김**",
@@ -139,7 +144,6 @@ export default function ProductDetail() {
     },
   ]);
 
-  // 2. useEffect로 새 리뷰 추가
   useEffect(() => {
     if (newReview) {
       setRealReviews((prev) => [...prev, newReview]);
@@ -155,12 +159,28 @@ export default function ProductDetail() {
           <CartIcon />
         </IconGroup>
       </HeaderBar>
+
       <ProductCard
-        brand={mockData.brand}
-        title={mockData.title}
-        originalPrice={mockData.originalPrice}
-        currentPrice={mockData.currentPrice}
-        imageUrl={mockData.imageUrl}
+        brand={productToDisplay.brand}
+        title={productToDisplay.name}
+        originalPrice={productToDisplay.originalPrice}
+        currentPrice={
+          productToDisplay.originalPrice && productToDisplay.discountRate
+            ? Math.round(
+                productToDisplay.originalPrice *
+                  (1 - productToDisplay.discountRate / 100)
+              )
+            : 0
+        }
+        imageUrl={productToDisplay.imageUrl}
+      />
+
+      <Button
+        label="장바구니 담기"
+        onClick={() => {
+          addItem(productToDisplay);
+          navigate("/cart");
+        }}
       />
 
       <TabMenu>
@@ -211,7 +231,6 @@ export default function ProductDetail() {
           </ReviewWrapper>
         </>
       )}
-      {/* <BottomNavBar /> */}
     </div>
   );
 }

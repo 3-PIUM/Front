@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useCartStore } from "../store/useCartStore";
 import TextHeader from "../components/TextHeader";
-import BottomNavBar from "../components/BottomNavBar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -114,6 +113,17 @@ const Brand = styled.p`
   border-radius: 6px;
 `;
 
+const OptionButton = styled.button`
+  flex: 1;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+`;
+
 const QuantityControl = styled.div`
   flex: 1;
   height: 40px;
@@ -158,7 +168,7 @@ const Price = styled.span`
 
 const StickyBottom = styled.div`
   position: fixed;
-  bottom: 64px;
+  bottom: 6rem;
   left: 0;
   width: 100%;
   background-color: #fff;
@@ -178,8 +188,10 @@ const SubmitButton = styled.button`
 `;
 
 const CartPage = () => {
-  const { items, removeItem } = useCartStore();
+  const { items, removeItem, increaseQuantity, decreaseQuantity } =
+    useCartStore();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
   const navigate = useNavigate();
 
   const toggleSelect = (id: string) => {
@@ -237,10 +249,11 @@ const CartPage = () => {
 
           <LowerInfo>
             <LeftRow>
+              <OptionButton>옵션 변경</OptionButton>
               <QuantityControl>
-                <Button>-</Button>
-                <Count>1</Count>
-                <Button>+</Button>
+                <Button onClick={() => decreaseQuantity(item.id)}>-</Button>
+                <Count>{item.quantity}</Count>
+                <Button onClick={() => increaseQuantity(item.id)}>+</Button>
               </QuantityControl>
             </LeftRow>
 
@@ -255,11 +268,18 @@ const CartPage = () => {
       ))}
 
       <StickyBottom>
-        <SubmitButton onClick={() => navigate("/qr")}>
+        <SubmitButton
+          onClick={() => {
+            if (selectedIds.length === 0) {
+              alert("선택된 상품이 없습니다.");
+              return;
+            }
+            navigate("/qr");
+          }}
+        >
           결제 QR 코드 생성하기
         </SubmitButton>
       </StickyBottom>
-      <BottomNavBar />
     </PageWrapper>
   );
 };

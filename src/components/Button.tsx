@@ -14,13 +14,19 @@ const StyledButton = styled.button<StyledButtonProps>`
   width: ${({ width }) => width || "100%"};
   padding: 1rem;
   border-radius: 1.25rem;
+  cursor: pointer;
 `;
 
 interface ButtonProps {
   label: string;
   width?: string;
+  onClick?: () => void;
 }
 
-export default function Button({ label, width }: ButtonProps) {
-  return <StyledButton width={width}>{label}</StyledButton>;
+export default function Button({ label, width, onClick }: ButtonProps) {
+  return (
+    <StyledButton width={width} onClick={onClick}>
+      {label}
+    </StyledButton>
+  );
 }

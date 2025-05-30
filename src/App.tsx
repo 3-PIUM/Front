@@ -1,9 +1,12 @@
-import { useRoutes } from "react-router-dom";
-import routes from "../src/Routes";
+// App.tsx
+import { useLocation, useRoutes } from "react-router-dom";
+import routes from "./Routes";
 
 const App = () => {
-  const content = useRoutes(routes, location);
+  const location = useLocation();
+  const content = useRoutes(routes);
 
-  return <>{content}</>;
+  return <div key={location.key}>{content}</div>;
 };
+
 export default App;
