@@ -18,6 +18,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   width: ${({ width }) => width || "100%"};
   padding: 1rem;
   border-radius: 1.25rem;
+  cursor: pointer;
 `;
 
 interface ButtonProps {

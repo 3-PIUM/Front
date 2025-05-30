@@ -1,7 +1,5 @@
 import styled from "styled-components";
-// import BottomNavBar from "../components/BottomNavBar";
 import { useEffect } from "react";
-import { useCartStore } from "../store/useCartStore";
 import { useNavigate } from "react-router-dom";
 
 const PageWrapper = styled.div`
@@ -66,8 +64,18 @@ const FrameGuide = styled.div`
 `;
 
 const ScanPage = () => {
-  const { addItem } = useCartStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleCaptureEvent = () => {
+      handleDetectedProduct("barcode"); // 실제 촬영 로직 대체
+    };
+
+    window.addEventListener("captureProduct", handleCaptureEvent);
+    return () => {
+      window.removeEventListener("captureProduct", handleCaptureEvent);
+    };
+  }, []);
 
   useEffect(() => {
     const startCamera = async () => {
@@ -94,12 +102,12 @@ const ScanPage = () => {
       name: "쿨앤 더 주시 래스팅 틴트",
       brand: "올리브영단독",
       imageUrl:
-        "https://image.oliveyoung.co.kr/uploads/images/gdasEditor/2025/05/06/2433061b71734e70b7701509b6ea84a11746527933972.png?RS=640x0&SF=webp",
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021429012ko.jpg?qt=80",
       originalPrice: 12900,
       discountRate: 23,
     };
-    addItem(product);
-    navigate("/cart");
+
+    navigate("/product-detail", { state: { product } });
   };
 
   return (
@@ -111,7 +119,6 @@ const ScanPage = () => {
         <Video id="camera" autoPlay playsInline muted />
         <FrameGuide />
       </PageWrapper>
-      {/* <BottomNavBar onScanClick={() => handleDetectedProduct("barcode")} /> */}
     </>
   );
 };
