@@ -37,7 +37,7 @@ const Dot = styled.div<{ color: string }>`
 
 interface PersonalColorProps {
   buttonName: string;
-  colors: string[];
+  colors?: string[];
 }
 
 export default function PersonalColorButton({
@@ -57,7 +57,7 @@ export default function PersonalColorButton({
     <ButtonWrap onClick={handleActive} $isActivated={isActivated}>
       <ButtonName $isActivated={isActivated}>{buttonName}</ButtonName>
       <ColorPalette>
-        {colors.map((color, idx) => (
+        {colors?.map((color, idx) => (
           <Dot key={idx} color={color} />
         ))}
       </ColorPalette>

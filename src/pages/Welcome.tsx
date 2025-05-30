@@ -1,0 +1,67 @@
+import WelcomeImage from "../assets/images/welcomeImage.png";
+import styled from "styled-components";
+import colors from "../styles/colors";
+import Button from "../components/Button";
+import { Link, useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+
+const Wrap = styled.div`
+  padding: 0 1rem;
+`;
+
+const MainText = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 1.25rem;
+  font-weight: 700;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8rem;
+`;
+
+const HighLight = styled.div`
+  color: ${colors.mainPink};
+`;
+
+const ImageWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4.75rem;
+`;
+
+const Image = styled.img`
+  width: 17.5rem;
+`;
+
+const ButtonWrapper = styled.div`
+  position: fixed;
+  width: 100%;
+  padding: 2rem 1rem;
+  bottom: 0;
+`;
+
+export default function Welcome() {
+  const navigate = useNavigate();
+
+  const goHome = () => {
+    navigate("/home");
+  };
+
+  return (
+    <>
+      <Wrap>
+        <Header />
+        <MainText>
+          <HighLight>회원가입이 완료되었습니다</HighLight>
+        </MainText>
+        <ImageWrap>
+          <Image src={WelcomeImage} alt="환영하는 캐릭터 이미지" />
+        </ImageWrap>
+      </Wrap>
+      <ButtonWrapper>
+        <Button label="확인" onClick={goHome} />
+      </ButtonWrapper>
+    </>
+  );
+}

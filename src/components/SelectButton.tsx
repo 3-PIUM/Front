@@ -14,7 +14,8 @@ const ButtonWrap = styled.button<{
   color: ${({ $isActivated }) =>
     $isActivated ? colors.mainPink : colors.lightGrey};
   font-weight: ${({ $isActivated }) => ($isActivated ? 700 : 400)};
-  border-radius: ${({ $size }) => ($size === "large" ? "1.25rem" : "0.625rem")};
+  border-radius: ${({ $size }) => ($size === "large" ? "1.25rem" : "1rem")};
+  font-size: 1rem;
 `;
 
 interface SelectButtonProps {

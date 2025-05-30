@@ -13,14 +13,21 @@ import ScanPage from "./pages/ScanPage";
 import CartPage from "./pages/CartPage";
 import QRCodePage from "./pages/QRCodePage";
 import Signup from "./pages/Signup";
-import QuickInfo from "./pages/QuickInfo";
+import AboutYouPage from "./pages/AboutYouPage";
+import Survey from "./pages/SurveyPage";
+import Welcome from "./pages/Welcome";
 
 const routes = [
   // DefaultLayout
   { path: "/", element: <Login /> },
   { path: "/signup", element: <Signup /> },
-  { path: "/quickinfo", element: <QuickInfo /> },
-  
+  { path: "/about", element: <AboutYouPage /> },
+  { path: "/survey", element: <Survey /> },
+  {
+    path: "/welcome",
+    element: <Welcome />,
+  },
+
   //MenuLayout
   {
     path: "/",
