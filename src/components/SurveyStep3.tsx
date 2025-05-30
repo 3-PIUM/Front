@@ -1,0 +1,124 @@
+import styled from "styled-components";
+import SelectButton from "./SelectButton";
+import { Link } from "react-router-dom";
+import colors from "../styles/colors";
+import StepIndicator from "./StepIndicator";
+import PersonalColorButton from "./PersonalColorButton";
+import Button from "./Button";
+import { label } from "framer-motion/client";
+
+const Wrapper = styled.div`
+  margin-top: 1rem;
+  width: 100%;
+  padding-right: 1rem;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 1rem;
+`;
+
+const AnswerWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // 한 줄에 2개
+  gap: 0.75rem;
+  margin-top: 2rem;
+`;
+
+// const ButtonWrapper = styled.div`
+//   position: fixed;
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-between;
+//   width: 100vw;
+//   /* padding: 2rem 1rem; */
+//   left: 0;
+//   bottom: 0;
+// `;
+
+const Options = [
+  {
+    id: 1,
+    name: "잡티",
+  },
+  {
+    id: 2,
+    name: "미백",
+  },
+  {
+    id: 3,
+    name: "주름",
+  },
+  {
+    id: 4,
+    name: "모공",
+  },
+  {
+    id: 5,
+    name: "탄력",
+  },
+  {
+    id: 6,
+    name: "홍조",
+  },
+  {
+    id: 7,
+    name: "각질",
+  },
+  {
+    id: 8,
+    name: "트러블",
+  },
+  {
+    id: 9,
+    name: "블렉헤드",
+  },
+  {
+    id: 10,
+    name: "피지과다",
+  },
+  {
+    id: 11,
+    name: "민감성",
+  },
+  {
+    id: 12,
+    name: "아토피",
+  },
+  {
+    id: 13,
+    name: "다크서클",
+  },
+];
+
+interface SurveyProps {
+  onClick?: () => void;
+}
+
+export default function SurveyStep1({ onClick }: SurveyProps) {
+  return (
+    <>
+      <Wrapper>
+        <TitleWrapper>피부 고민이 있으신가요?</TitleWrapper>
+        <AnswerWrapper>
+          {Options.map((item) => (
+            <SelectButton buttonName={item.name} size="small" />
+          ))}
+        </AnswerWrapper>
+      </Wrapper>
+      {/* <ButtonWrapper>
+        <Button
+          label="이전 질문"
+          width="48vw"
+          backgroundColor={colors.white}
+          color={colors.darkGrey}
+          border="1px solid #7F7F7F"
+          onClick={onClick}
+        />
+        <Button label="등록하기" width="48vw" onClick={onClick} />
+      </ButtonWrapper> */}
+    </>
+  );
+}

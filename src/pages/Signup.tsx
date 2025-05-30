@@ -124,7 +124,7 @@ export default function Signup() {
           </GenderButton>
         </GenderField>
       </FormWrapper>
-      <Link to="/quickinfo">
+      <Link to="/about">
         <ButtonWrapper>
           <Button label="회원가입하기" />
         </ButtonWrapper>

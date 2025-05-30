@@ -1,8 +1,8 @@
-import WelcomeImage from "../assets/images/welcomeImage.png";
+import WelcomeImage from "../assets/images/surveyImage.png";
 import styled from "styled-components";
 import colors from "../styles/colors";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 const Wrap = styled.div`
@@ -72,13 +72,18 @@ const ButtonWrapper = styled.div`
 
 export default function QuickInfo() {
   const nickname = "겸손한 치타";
+  const navigate = useNavigate();
+
+  const goSurvey = () => {
+    navigate("/survey");
+  };
 
   return (
     <>
       <Wrap>
         <Header />
         <SkipWrapper>
-          <Link to="/home">
+          <Link to="/welcome">
             <SkipText>건너뛰기</SkipText>
           </Link>
         </SkipWrapper>
@@ -97,7 +102,7 @@ export default function QuickInfo() {
         </ImageWrap>
       </Wrap>
       <ButtonWrapper>
-        <Button label="정보 등록하러 가기" />
+        <Button label="정보 등록하러 가기" onClick={goSurvey} />
       </ButtonWrapper>
     </>
   );
