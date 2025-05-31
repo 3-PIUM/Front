@@ -6,6 +6,7 @@ import StepIndicator from "./StepIndicator";
 import PersonalColorButton from "./PersonalColorButton";
 import Button from "./Button";
 import { label } from "framer-motion/client";
+import { useState } from "react";
 
 const Wrapper = styled.div`
   margin-top: 1rem;
@@ -26,17 +27,6 @@ const AnswerWrapper = styled.div`
   gap: 0.75rem;
   margin-top: 2rem;
 `;
-
-// const ButtonWrapper = styled.div`
-//   position: fixed;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   width: 100vw;
-//   /* padding: 2rem 1rem; */
-//   left: 0;
-//   bottom: 0;
-// `;
 
 const Options = [
   {
@@ -93,32 +83,32 @@ const Options = [
   },
 ];
 
-interface SurveyProps {
-  onClick?: () => void;
-}
+export default function SurveyStep1() {
+  const [selected, setSelected] = useState<String[]>([]);
 
-export default function SurveyStep1({ onClick }: SurveyProps) {
+  const toggleSelection = (name: string) => {
+    if (selected?.includes(name)) {
+      setSelected(selected.filter((item) => item !== name));
+    } else {
+      setSelected([...selected, name]);
+    }
+  };
+
   return (
     <>
       <Wrapper>
         <TitleWrapper>피부 고민이 있으신가요?</TitleWrapper>
         <AnswerWrapper>
           {Options.map((item) => (
-            <SelectButton buttonName={item.name} size="small" />
+            <SelectButton
+              buttonName={item.name}
+              size="small"
+              isActivated={selected.includes(item.name)}
+              onClick={() => toggleSelection(item.name)}
+            />
           ))}
         </AnswerWrapper>
       </Wrapper>
-      {/* <ButtonWrapper>
-        <Button
-          label="이전 질문"
-          width="48vw"
-          backgroundColor={colors.white}
-          color={colors.darkGrey}
-          border="1px solid #7F7F7F"
-          onClick={onClick}
-        />
-        <Button label="등록하기" width="48vw" onClick={onClick} />
-      </ButtonWrapper> */}
     </>
   );
 }
