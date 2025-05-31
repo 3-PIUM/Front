@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { useState } from "react";
 
-const ButtonWrap = styled.button<{ $isActivated: boolean }>`
+const ButtonWrap = styled.button<{ $isActivated: boolean; $isWide: boolean }>`
   display: flex;
   flex-direction: column;
   background-color: ${colors.white};
@@ -10,8 +9,9 @@ const ButtonWrap = styled.button<{ $isActivated: boolean }>`
     ${({ $isActivated }) => ($isActivated ? colors.mainPink : colors.lightGrey)};
   border-radius: 1.25rem;
   gap: 0.625rem;
-  width: 10rem;
-  padding: 1.5rem 0;
+  width: ${({ $isWide }) => ($isWide ? "100%" : "10rem")};
+  padding: ${({ $isWide }) => ($isWide ? "1.5rem 1rem" : "1.5rem 0")};
+  grid-column: ${({ $isWide }) => ($isWide ? "span 2" : "auto")};
 `;
 
 const ButtonName = styled.div<{ $isActivated: boolean }>`
@@ -38,29 +38,28 @@ const Dot = styled.div<{ color: string }>`
 interface PersonalColorProps {
   buttonName: string;
   colors?: string[];
+  isWide?: boolean;
+  isActivated: boolean;
+  onClick: () => void;
 }
 
 export default function PersonalColorButton({
   buttonName,
   colors,
+  isWide = false,
+  isActivated,
+  onClick,
 }: PersonalColorProps) {
-  const [isActivated, setIsActived] = useState(false);
-
-  const handleActive = () => {
-    if (isActivated === false) {
-      setIsActived(true);
-    } else {
-      setIsActived(false);
-    }
-  };
   return (
-    <ButtonWrap onClick={handleActive} $isActivated={isActivated}>
+    <ButtonWrap onClick={onClick} $isActivated={isActivated} $isWide={isWide}>
       <ButtonName $isActivated={isActivated}>{buttonName}</ButtonName>
-      <ColorPalette>
-        {colors?.map((color, idx) => (
-          <Dot key={idx} color={color} />
-        ))}
-      </ColorPalette>
+      {colors && colors.length > 0 && (
+        <ColorPalette>
+          {colors?.map((color, idx) => (
+            <Dot key={idx} color={color} />
+          ))}
+        </ColorPalette>
+      )}
     </ButtonWrap>
   );
 }

@@ -2,8 +2,7 @@ import styled from "styled-components";
 import SelectButton from "./SelectButton";
 import { Link } from "react-router-dom";
 import colors from "../styles/colors";
-import StepIndicator from "./StepIndicator";
-import Button from "./Button";
+import { useState } from "react";
 
 const Wrapper = styled.div`
   margin-top: 1rem;
@@ -32,14 +31,6 @@ const SkinTestWrapper = styled.div`
   text-decoration: underline;
   justify-content: center;
 `;
-
-// const ButtonWrapper = styled.div`
-//   display: flex;
-//   padding-right: 1rem;
-//   width: 100vw;
-//   margin-top: 3rem;
-//   background-color: aliceblue;
-// `;
 
 const Options = [
   {
@@ -72,18 +63,22 @@ const Options = [
   },
 ];
 
-interface SurveyProps {
-  onClick?: () => void;
-}
+export default function SurveyStep1() {
+  const [selected, setSelected] = useState<string>();
 
-export default function SurveyStep1({ onClick }: SurveyProps) {
   return (
     <>
       <Wrapper>
         <TitleWrapper>피부 타입에 대해 알려주세요!</TitleWrapper>
         <AnswerWrapper>
           {Options.map((item) => (
-            <SelectButton size="large" buttonName={item.option} />
+            <SelectButton
+              key={item.id}
+              size="large"
+              buttonName={item.option}
+              isActivated={selected === item.option}
+              onClick={() => setSelected(item.option)}
+            />
           ))}
         </AnswerWrapper>
         <SkinTestWrapper>
@@ -93,9 +88,6 @@ export default function SurveyStep1({ onClick }: SurveyProps) {
           </Link>
         </SkinTestWrapper>
       </Wrapper>
-      {/* <ButtonWrapper>
-        <Button label="다음" onClick={onClick} />
-      </ButtonWrapper> */}
     </>
   );
 }

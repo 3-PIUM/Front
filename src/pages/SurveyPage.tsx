@@ -70,6 +70,9 @@ const ButtonWrapper = styled.div`
 
 export default function WelcomePage() {
   const [step, setStep] = useState(1);
+  const [skinType, setSkinType] = useState<String | null>("");
+  const [personalColor, setPersonalColor] = useState<String | null>("");
+  const [concern, setConcern] = useState<String[] | null>([]);
   const navigate = useNavigate();
 
   const goFinish = () => {
@@ -117,6 +120,7 @@ export default function WelcomePage() {
               <Button label="다음" width="48vw" onClick={() => setStep(3)} />
             </>
           )}
+
           {step === 3 && (
             <>
               <Button

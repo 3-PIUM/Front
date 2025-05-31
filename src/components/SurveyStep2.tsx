@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import colors from "../styles/colors";
-import StepIndicator from "./StepIndicator";
 import PersonalColorButton from "./PersonalColorButton";
-import Button from "./Button";
+import { useState } from "react";
 
 const Wrapper = styled.div`
   margin-top: 1rem;
@@ -33,15 +32,6 @@ const SkinTestWrapper = styled.div`
   justify-content: center;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100vw;
-  padding-right: 1rem;
-  gap: 0.5rem;
-`;
-
 const Options = [
   {
     id: 1,
@@ -69,38 +59,30 @@ const Options = [
   },
 ];
 
-interface SurveyProps {
-  goBefore?: () => void;
-  goNext?: () => void;
-}
-
 export default function SurveyStep2() {
+  const [selected, setSelected] = useState<String>();
+
   return (
     <>
       <Wrapper>
         <TitleWrapper>퍼스널 컬러에 대해 알려주세요!</TitleWrapper>
         <AnswerWrapper>
           {Options.map((item) => (
-            <PersonalColorButton buttonName={item.name} colors={item.colors} />
+            <PersonalColorButton
+              buttonName={item.name}
+              isActivated={selected === item.name}
+              colors={item.colors}
+              isWide={item.id === 5}
+              onClick={() => setSelected(item.name)}
+            />
           ))}
         </AnswerWrapper>
         <Link to="">
           <SkinTestWrapper>
-            잘 모르겠다면? 피부 타입 진단으로 시작해보세요
+            잘 모르겠다면? 퍼스널 컬러 진단을 받아보세요
           </SkinTestWrapper>
         </Link>
       </Wrapper>
-      {/* <ButtonWrapper>
-        <Button
-          label="이전 질문"
-          width="48vw"
-          backgroundColor={colors.white}
-          color={colors.darkGrey}
-          border="1px solid #7F7F7F"
-          onClick={goBefore}
-        />
-        <Button label="다음" width="48vw" onClick={goNext} />
-      </ButtonWrapper> */}
     </>
   );
 }
