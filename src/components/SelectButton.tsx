@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { useState } from "react";
 
 const ButtonWrap = styled.button<{
   $size?: "large" | "small";
@@ -21,25 +20,18 @@ const ButtonWrap = styled.button<{
 interface SelectButtonProps {
   buttonName: string;
   size?: "large" | "small";
+  isActivated: boolean;
+  onClick?: () => void;
 }
 
-export default function SelectButton({ buttonName, size }: SelectButtonProps) {
-  const [isActivated, setIsActivated] = useState(false);
-
-  const handleActivated = () => {
-    if (isActivated === false) {
-      setIsActivated(true);
-    } else {
-      setIsActivated(false);
-    }
-  };
-
+export default function SelectButton({
+  buttonName,
+  size,
+  isActivated,
+  onClick,
+}: SelectButtonProps) {
   return (
-    <ButtonWrap
-      $size={size}
-      $isActivated={isActivated}
-      onClick={handleActivated}
-    >
+    <ButtonWrap $size={size} $isActivated={isActivated} onClick={onClick}>
       {buttonName}
     </ButtonWrap>
   );

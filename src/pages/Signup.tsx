@@ -85,7 +85,7 @@ export default function Signup() {
       <TextHeader pageName="회원가입" />
       <FormWrapper>
         <TextField fieldName="닉네임" type="text" />
-        <DateField>
+        {/* <DateField>
           <FieldName>생년월일</FieldName>
           <DateWrap>
             <InputField width="7.75rem" type="text" />
@@ -95,7 +95,8 @@ export default function Signup() {
             <InputField width="3.875rem" type="text" />
             <div>일</div>
           </DateWrap>
-        </DateField>
+        </DateField> */}
+        <TextField fieldName="생년월일 (8자리)" type="text" />
         <TextField fieldName="이메일" type="text" />
         <TextField fieldName="이메일 인증" type="text" />
         <TextField fieldName="비밀번호" type="password" />

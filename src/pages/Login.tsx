@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import LanguageModal from "../components/LanguageModal";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -75,6 +76,18 @@ const SignUpWrap = styled.div`
   margin-top: 1rem;
 `;
 
+const ErrorText = styled.div`
+  font-size: 0.825rem;
+  color: ${colors.mainPink};
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+`;
+
+const BoldText = styled.div`
+  font-weight: 700;
+`;
+
 const ButtonWrap = styled.div`
   position: fixed;
   bottom: 0;
@@ -85,8 +98,23 @@ const ButtonWrap = styled.div`
 export default function Login() {
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [language, setLanguage] = useState<String>("한국어");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showError, setShowError] = useState<boolean>(false);
 
-  const goSelectLanguage = () => {};
+  const openLanguageModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      setShowError(true);
+      return;
+    }
+    setShowError(false);
+  };
 
   return (
     <>
@@ -95,7 +123,7 @@ export default function Login() {
         <LogoWrap></LogoWrap>
         <LanguageTab>
           <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />
-          <LanguageText onClick={goSelectLanguage}>언어 설정</LanguageText>
+          <LanguageText onClick={openLanguageModal}>{language}</LanguageText>
         </LanguageTab>
         <InputWrap>
           <InputEmail
@@ -103,6 +131,8 @@ export default function Login() {
             onFocus={() => setEmailFocused(true)}
             onBlur={() => setEmailFocused(false)}
             placeholder="이메일"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <InputPassword
             type="password"
@@ -110,15 +140,33 @@ export default function Login() {
             onFocus={() => setPasswordFocused(true)}
             onBlur={() => setPasswordFocused(false)}
             placeholder="비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </InputWrap>
         <Link to="/signup">
           <SignUpWrap>회원가입</SignUpWrap>
         </Link>
+        {showError && (
+          <ErrorText>
+            <BoldText>이메일 또는 비밀번호</BoldText>를 입력해주세요
+          </ErrorText>
+        )}
       </Wrap>
       <ButtonWrap>
-        <Button label="로그인하기" />
+        <Button label="로그인하기" onClick={handleLogin} />
       </ButtonWrap>
+
+      {openModal && (
+        <LanguageModal
+          closeModal={() => setOpenModal(false)}
+          selectedLanguage={language}
+          onSelectedLanguage={(lang) => {
+            setLanguage(lang);
+            setOpenModal(false);
+          }}
+        />
+      )}
     </>
   );
 }
