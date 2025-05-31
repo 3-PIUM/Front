@@ -4,18 +4,20 @@ import TextHeader from "../components/TextHeader";
 import ImageUploadList from "../components/ImageUploadList";
 import { useNavigate, useLocation } from "react-router-dom";
 import TermsToggle from "../components/TermsToggle";
+import Header from "../components/Header";
 
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding: 1rem;
 `;
 
 const ContentWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 1rem;
+  margin-top: 4rem;
 `;
 
 const StickyFooter = styled.div`
@@ -131,8 +133,9 @@ const ReviewWritePage = () => {
 
   return (
     <PageWrapper>
+      <Header />
       <TextHeader pageName="리뷰작성" />
-      <Divider />
+
       <ContentWrapper>
         <StarRow>
           {[1, 2, 3, 4, 5].map((n) => (

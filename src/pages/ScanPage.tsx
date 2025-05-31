@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { BrowserMultiFormatReader } from "@zxing/browser";
 import { useNavigate } from "react-router-dom";
 
 const PageWrapper = styled.div`
@@ -32,72 +33,25 @@ const InstructionText = styled.div`
 
 const FrameGuide = styled.div`
   position: absolute;
-  width: 200px;
-  height: 200px;
-  top: calc(50% - 100px);
-  left: calc(50% - 100px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  width: 320px;
+  height: 120px;
+  top: calc(50% - 60px);
+  left: calc(50% - 160px);
+  border: 2px dashed rgba(255, 255, 255, 0.7);
+  z-index: 11;
   box-sizing: border-box;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    width: 32px;
-    height: 32px;
-    border: 3px solid white;
-  }
-
-  &::before {
-    top: 0;
-    left: 0;
-    border-right: none;
-    border-bottom: none;
-  }
-
-  &::after {
-    bottom: 0;
-    right: 0;
-    border-left: none;
-    border-top: none;
-  }
+  pointer-events: none;
 `;
 
 const ScanPage = () => {
   const navigate = useNavigate();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const reader = useRef(new BrowserMultiFormatReader());
+  const scanCooldownRef = useRef(false); // 쿨다운 중인지 여부
 
-  useEffect(() => {
-    const handleCaptureEvent = () => {
-      handleDetectedProduct("barcode"); // 실제 촬영 로직 대체
-    };
-
-    window.addEventListener("captureProduct", handleCaptureEvent);
-    return () => {
-      window.removeEventListener("captureProduct", handleCaptureEvent);
-    };
-  }, []);
-
-  useEffect(() => {
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        const video = document.getElementById("camera") as HTMLVideoElement;
-        if (video) {
-          video.srcObject = stream;
-          video.play();
-        }
-      } catch (error) {
-        alert("카메라 접근 권한이 필요합니다.");
-        console.error(error);
-      }
-    };
-    startCamera();
-  }, []);
-
-  const handleDetectedProduct = (barcode: string) => {
-    const product = {
+  const dummyDatabase: Record<string, any> = {
+    "8809695670114": {
       id: "p001",
       name: "쿨앤 더 주시 래스팅 틴트",
       brand: "올리브영단독",
@@ -105,21 +59,107 @@ const ScanPage = () => {
         "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021429012ko.jpg?qt=80",
       originalPrice: 12900,
       discountRate: 23,
-    };
-
-    navigate("/product-detail", { state: { product } });
+    },
+    "880000000001": {
+      id: "p002",
+      name: "쿨앤 더 주시 래스팅 틴트",
+      brand: "아누아",
+      imageUrl:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021429012ko.jpg?qt=80",
+      originalPrice: 12900,
+      discountRate: 23,
+    },
   };
 
+  const handleDetectedProduct = (barcode: string) => {
+    if (scanCooldownRef.current) return;
+
+    const product = dummyDatabase[barcode];
+    if (product) {
+      scanCooldownRef.current = true;
+      localStorage.setItem("scannedProduct", JSON.stringify(product));
+      navigate("/product-detail");
+
+      // 쿨다운 해제 (1.5초 후)
+      setTimeout(() => {
+        scanCooldownRef.current = false;
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    let scanning = true;
+
+    const scanLoop = async () => {
+      if (!videoRef.current || !canvasRef.current) return;
+
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      const w = video.videoWidth;
+      const h = video.videoHeight;
+      const guideW = 320;
+      const guideH = 320;
+      const sx = (w - guideW) / 2;
+      const sy = (h - guideH) / 2;
+
+      canvas.width = guideW;
+      canvas.height = guideH;
+      ctx.drawImage(video, sx, sy, guideW, guideH, 0, 0, guideW, guideH);
+
+      try {
+        const result = await reader.current.decodeFromCanvas(canvas);
+        if (result) {
+          handleDetectedProduct(result.getText());
+        }
+      } catch {
+        // Not found → 무시
+      }
+
+      if (scanning) {
+        requestAnimationFrame(scanLoop);
+      }
+    };
+
+    navigator.mediaDevices
+      .getUserMedia({
+        video: {
+          facingMode: "environment",
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+        },
+      })
+      .then((stream) => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+          requestAnimationFrame(scanLoop);
+        }
+      })
+      .catch((err) => {
+        alert("카메라 권한이 필요합니다.");
+        console.error(err);
+      });
+
+    return () => {
+      scanning = false;
+      if (videoRef.current?.srcObject) {
+        (videoRef.current.srcObject as MediaStream)
+          .getTracks()
+          .forEach((track) => track.stop());
+      }
+    };
+  }, []);
+
   return (
-    <>
-      <PageWrapper onClick={() => handleDetectedProduct("barcode")}>
-        {" "}
-        {/* 테스트용 클릭 */}
-        <InstructionText>화면 위에 바코드를 위치시켜 주세요</InstructionText>
-        <Video id="camera" autoPlay playsInline muted />
-        <FrameGuide />
-      </PageWrapper>
-    </>
+    <PageWrapper>
+      <InstructionText>프레임 안에 바코드를 맞춰주세요</InstructionText>
+      <Video ref={videoRef} autoPlay muted playsInline />
+      <canvas ref={canvasRef} style={{ display: "none" }} />
+      <FrameGuide />
+    </PageWrapper>
   );
 };
 

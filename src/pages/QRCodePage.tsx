@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import QRCode from "react-qr-code";
 import TextHeader from "../components/TextHeader";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -25,7 +26,30 @@ const InfoText = styled.p`
 
 const QRCodePage = () => {
   const navigate = useNavigate();
-  const qrValue = "https://example.com/pay"; // 실제 결제 링크 혹은 주문 ID 사용 가능
+  const location = useLocation();
+
+  const selectedCartItems = location.state?.selectedItems;
+
+  useEffect(() => {
+    if (!selectedCartItems) {
+      alert("잘못된 접근입니다.");
+      navigate("/cart");
+      return;
+    }
+
+    const purchaseData = {
+      date: new Date().toISOString().slice(0, 10),
+      items: selectedCartItems,
+    };
+
+    const previous = JSON.parse(
+      localStorage.getItem("purchaseHistory") || "[]"
+    );
+    const updated = [...previous, purchaseData];
+    localStorage.setItem("purchaseHistory", JSON.stringify(updated));
+  }, [selectedCartItems, navigate]);
+
+  const qrValue = "https://example.com/pay";
 
   return (
     <PageWrapper>
