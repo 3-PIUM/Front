@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useCartStore } from "../store/useCartStore";
 import TextHeader from "../components/TextHeader";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const PageWrapper = styled.div`
@@ -17,6 +17,7 @@ const HeaderControlBar = styled.div`
   padding: 0 1rem 0.5rem;
   font-size: 14px;
   color: #666;
+  padding-top: 4rem;
 `;
 
 const SelectAll = styled.span`
@@ -62,7 +63,7 @@ const InfoArea = styled.div`
 const UpperInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.7rem;
 `;
 
 const LowerInfo = styled.div`
@@ -94,7 +95,7 @@ const TitleBlock = styled.div`
 const Title = styled.h4`
   font-size: 13px;
   font-weight: bold;
-  margin-top: 0.5rem;
+  margin-top: 0.2rem;
   flex: 1;
   word-break: keep-all;
 `;
@@ -105,12 +106,12 @@ const DeleteButton = styled.button`
   font-size: 18px;
   color: #ccc;
   cursor: pointer;
+  margin-bottom: 1.4rem;
 `;
 
 const Brand = styled.p`
   font-size: 12px;
   color: #e6005a;
-  border-radius: 6px;
 `;
 
 const OptionButton = styled.button`
@@ -187,6 +188,20 @@ const SubmitButton = styled.button`
   border-radius: 8px;
 `;
 
+const TotalPriceWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  padding: 1rem;
+  font-size: 18px;
+  font-weight: bold;
+  color: #e6005a;
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const CartPage = () => {
   const { items, removeItem, increaseQuantity, decreaseQuantity } =
     useCartStore();
@@ -211,6 +226,19 @@ const CartPage = () => {
     selectedIds.forEach((id) => removeItem(id));
     setSelectedIds([]);
   };
+
+  useEffect(() => {
+    setSelectedIds(items.map((item) => item.id));
+  }, [items]);
+
+  const totalPrice = items
+    .filter((item) => selectedIds.includes(item.id))
+    .reduce(
+      (sum, item) =>
+        sum +
+        item.originalPrice * item.quantity * (1 - item.discountRate / 100),
+      0
+    );
 
   return (
     <PageWrapper>
@@ -267,6 +295,8 @@ const CartPage = () => {
         </ProductCard>
       ))}
 
+      <TotalPriceWrapper>총 {totalPrice.toLocaleString()}원</TotalPriceWrapper>
+
       <StickyBottom>
         <SubmitButton
           onClick={() => {
@@ -274,7 +304,13 @@ const CartPage = () => {
               alert("선택된 상품이 없습니다.");
               return;
             }
-            navigate("/qr");
+            navigate("/qr", {
+              state: {
+                selectedItems: selectedIds.map((id) =>
+                  items.find((item) => item.id === id)
+                ),
+              },
+            });
           }}
         >
           결제 QR 코드 생성하기

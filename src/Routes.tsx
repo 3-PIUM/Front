@@ -16,6 +16,8 @@ import Signup from "./pages/Signup";
 import AboutYouPage from "./pages/AboutYouPage";
 import Survey from "./pages/SurveyPage";
 import Welcome from "./pages/Welcome";
+import PurchaseList from "./pages/PurchaseListPage";
+import PurchaseDetail from "./pages/PurchaseDetailPage";
 
 const routes = [
   // DefaultLayout
@@ -23,12 +25,9 @@ const routes = [
   { path: "/signup", element: <Signup /> },
   { path: "/about", element: <AboutYouPage /> },
   { path: "/survey", element: <Survey /> },
-  {
-    path: "/welcome",
-    element: <Welcome />,
-  },
+  { path: "/welcome", element: <Welcome /> },
 
-  //MenuLayout
+  // MenuLayout
   {
     path: "/",
     element: <MenuLayout />,
@@ -42,6 +41,8 @@ const routes = [
       { path: "scan", element: <ScanPage /> },
       { path: "cart", element: <CartPage /> },
       { path: "qr", element: <QRCodePage /> },
+      { path: "purchase-list", element: <PurchaseList /> },
+      { path: "purchase-detail", element: <PurchaseDetail /> },
     ],
   },
 ];
