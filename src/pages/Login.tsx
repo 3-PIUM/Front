@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import LanguageModal from "../components/LanguageModal";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -85,8 +86,12 @@ const ButtonWrap = styled.div`
 export default function Login() {
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [language, setLanguage] = useState<String>("한국어");
 
-  const goSelectLanguage = () => {};
+  const openLanguageModal = () => {
+    setOpenModal(true);
+  };
 
   return (
     <>
@@ -95,7 +100,7 @@ export default function Login() {
         <LogoWrap></LogoWrap>
         <LanguageTab>
           <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />
-          <LanguageText onClick={goSelectLanguage}>언어 설정</LanguageText>
+          <LanguageText onClick={openLanguageModal}>{language}</LanguageText>
         </LanguageTab>
         <InputWrap>
           <InputEmail
@@ -119,6 +124,17 @@ export default function Login() {
       <ButtonWrap>
         <Button label="로그인하기" />
       </ButtonWrap>
+
+      {openModal && (
+        <LanguageModal
+          closeModal={() => setOpenModal(false)}
+          selectedLanguage={language}
+          onSelectedLanguage={(lang) => {
+            setLanguage(lang);
+            setOpenModal(false);
+          }}
+        />
+      )}
     </>
   );
 }
