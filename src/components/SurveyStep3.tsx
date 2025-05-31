@@ -1,11 +1,5 @@
 import styled from "styled-components";
 import SelectButton from "./SelectButton";
-import { Link } from "react-router-dom";
-import colors from "../styles/colors";
-import StepIndicator from "./StepIndicator";
-import PersonalColorButton from "./PersonalColorButton";
-import Button from "./Button";
-import { label } from "framer-motion/client";
 import { useState } from "react";
 
 const Wrapper = styled.div`
