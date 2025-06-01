@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import { VscChevronLeft } from "react-icons/vsc";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import colors from "../styles/colors";
 
 const HeaderWrap = styled.div`
-  position: relative;
+  position: fixed;
   width: 100%;
   height: 44px;
   display: flex;
