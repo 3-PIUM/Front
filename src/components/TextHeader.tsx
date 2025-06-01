@@ -1,6 +1,7 @@
 import { VscChevronLeft } from "react-icons/vsc";
 import styled from "styled-components";
 import colors from "../styles/colors";
+import { useNavigate } from "react-router-dom";
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -28,10 +29,12 @@ interface Headerprops {
 }
 
 export default function TextHeader({ pageName }: Headerprops) {
+  const navigate = useNavigate();
+
   return (
     <>
       <HeaderWrap>
-        <VscChevronLeft fontSize={"1.8rem"} />
+        <VscChevronLeft fontSize={"1.8rem"} onClick={() => navigate(-1)} />
         <PageName>{pageName}</PageName>
       </HeaderWrap>
     </>

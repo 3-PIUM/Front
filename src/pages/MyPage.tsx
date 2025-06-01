@@ -3,6 +3,7 @@ import ProfileSource from "../assets/images/ProfileImage.jpg";
 import { FiEdit2 } from "react-icons/fi";
 import colors from "../styles/colors";
 import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const TopWrapper = styled.div`
   display: flex;
@@ -91,6 +92,7 @@ const Line = styled.hr`
 
 export default function MyPage() {
   const nickname = "겸손한 치타";
+  const navigate = useNavigate();
 
   return (
     <>
@@ -130,7 +132,7 @@ export default function MyPage() {
         <SettingBox>
           <Title>언어</Title>
           <SettingItem>
-            <div>언어 설정</div>
+            <div onClick={() => navigate("/settings/language")}>언어 설정</div>
           </SettingItem>
         </SettingBox>
         <Line />
