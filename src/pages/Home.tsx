@@ -74,7 +74,7 @@ const RecommandListWrap = styled.div`
   padding: 0 1rem;
   margin-top: 2.5rem;
   gap: 2rem;
-  padding-bottom: 90px;
+  padding-bottom: 80px;
 `;
 
 const RecommandBox = styled.div``;
