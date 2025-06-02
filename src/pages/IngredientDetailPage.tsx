@@ -21,7 +21,7 @@ const dummyData = [
   },
   {
     score: "7~8",
-    count: 2,
+    count: 4,
     ingredients: [
       { name: "향료", description: "민감성 피부에 자극이 될 수 있음." },
       {
@@ -32,7 +32,7 @@ const dummyData = [
   },
   {
     score: "5~6",
-    count: 2,
+    count: 3,
     ingredients: [
       {
         name: "페녹시에탄올",
@@ -46,7 +46,7 @@ const dummyData = [
   },
   {
     score: "3~4",
-    count: 2,
+    count: 1,
     ingredients: [
       {
         name: "부틸렌글라이콜",
@@ -93,7 +93,7 @@ const Section = styled.div`
 
 const ScoreHeader = styled.div<{ active: boolean }>`
   padding: 1rem;
-  background-color: ${({ active }) => (active ? "#fff0f5" : "#f8f8f8")};
+  background-color: ${({ active }) => (active ? "#fff0f5" : "#fff")};
   border: 1px solid ${({ active }) => (active ? colors.mainPink : "#ddd")};
   border-radius: 12px;
   cursor: pointer;
@@ -126,6 +126,11 @@ const ChartCenterWrapper = styled.div`
   margin-right: 1rem;
 `;
 
+const Highlight = styled.strong`
+  color: ${colors.mainPink};
+  font-weight: bold;
+`;
+
 export default function IngredientDetailPage() {
   const [openScore, setOpenScore] = useState<string | null>("4~3");
   const maxScoreSection = dummyData.reduce((prev, curr) =>
@@ -138,7 +143,7 @@ export default function IngredientDetailPage() {
       <Container>
         <Title>성분 스코어</Title>
         <Description>
-          이 제품은 <strong>{maxScoreSection.score}점</strong>대 성분이
+          이 제품은 <Highlight>{maxScoreSection.score}점</Highlight>대 성분이
           상대적으로 많은 편입니다.
           <br />
           그래프의 점수 클릭 시 성분 확인이 가능합니다.
@@ -149,7 +154,7 @@ export default function IngredientDetailPage() {
           <ScoreRadarChart
             data={[
               { score: "1~2점", count: 9 },
-              { score: "3~4점", count: 0 },
+              { score: "3~4점", count: 3 },
               { score: "5~6점", count: 9 },
               { score: "7~8점", count: 4 },
               { score: "9점", count: 1 },
@@ -157,29 +162,31 @@ export default function IngredientDetailPage() {
           />
         </ChartCenterWrapper>
 
-        {dummyData.map((section) => (
-          <Section key={section.score}>
-            <ScoreHeader
-              active={openScore === section.score}
-              onClick={() =>
-                setOpenScore((prev) =>
-                  prev === section.score ? null : section.score
-                )
-              }
-            >
-              <span>{section.score}점</span>
-              <span>{section.count}개</span>
-            </ScoreHeader>
+        {[...dummyData]
+          .sort((a, b) => b.count - a.count)
+          .map((section) => (
+            <Section key={section.score}>
+              <ScoreHeader
+                active={openScore === section.score}
+                onClick={() =>
+                  setOpenScore((prev) =>
+                    prev === section.score ? null : section.score
+                  )
+                }
+              >
+                <span>{section.score}점</span>
+                <span>{section.count}개</span>
+              </ScoreHeader>
 
-            {openScore === section.score &&
-              section.ingredients.map((ing, idx) => (
-                <IngredientBox key={idx}>
-                  <IngredientName>{ing.name}</IngredientName>
-                  <IngredientDesc>{ing.description}</IngredientDesc>
-                </IngredientBox>
-              ))}
-          </Section>
-        ))}
+              {openScore === section.score &&
+                section.ingredients.map((ing, idx) => (
+                  <IngredientBox key={idx}>
+                    <IngredientName>{ing.name}</IngredientName>
+                    <IngredientDesc>{ing.description}</IngredientDesc>
+                  </IngredientBox>
+                ))}
+            </Section>
+          ))}
       </Container>
     </>
   );

@@ -7,6 +7,7 @@ import { FaRegUser, FaUser } from "react-icons/fa6";
 import colors from "../styles/colors";
 import { LuScanLine } from "react-icons/lu";
 import { Link, useLocation } from "react-router-dom";
+import ChatBotButton from "../components/ChatBotButton";
 
 const MenuWrap = styled.div`
   position: fixed;
@@ -118,6 +119,7 @@ export default function MenuLayout() {
   return (
     <>
       <Outlet />
+      <ChatBotButton />
       <MenuWrap>
         <Menu>
           <MenuLeft>

@@ -131,7 +131,7 @@ export default function MyPage() {
         <SettingBox>
           <Title>구매</Title>
           <SettingItem>
-            <div>구매 내역</div>
+            <div onClick={() => navigate("/purchase-list")}>구매 내역</div>
           </SettingItem>
         </SettingBox>
         <SettingBox>
@@ -144,7 +144,7 @@ export default function MyPage() {
         <SettingBox>
           <SettingItem>
             <div>로그아웃</div>
-            <div>탈퇴</div>
+            <div onClick={() => navigate("/Withdraw")}>탈퇴</div>
           </SettingItem>
         </SettingBox>
       </Settings>

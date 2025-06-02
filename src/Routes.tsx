@@ -19,8 +19,9 @@ import Welcome from "./pages/Welcome";
 import PurchaseList from "./pages/PurchaseListPage";
 import PurchaseDetail from "./pages/PurchaseDetailPage";
 import Withdraw from "./pages/WithdrawPage";
-import SettingLanguange from "./pages/MypageLanguange";
+import SettingLanguange from "./pages/SettingLanguange";
 import IngredientDetail from "./pages/IngredientDetailPage";
+import ChatbotPage from "./pages/Chatbotpage";
 import MypagePersonalColor from "./pages/MypagePersonalColor";
 import MypageSkinType from "./pages/MypageSkinType";
 import MypageSkinConcern from "./pages/MypageSkinConcern";
@@ -36,6 +37,7 @@ const routes = [
   { path: "/Withdraw", element: <Withdraw /> },
   { path: "/mypage/language", element: <SettingLanguange /> },
   { path: "/ingredient-detail", element: <IngredientDetail /> },
+  { path: "/chatbot", element: <ChatbotPage /> },
   {
     path: "/mypage/personalcolor",
     element: <MypagePersonalColor />,
