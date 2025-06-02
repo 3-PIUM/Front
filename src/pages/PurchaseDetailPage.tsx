@@ -3,43 +3,100 @@ import { useLocation } from "react-router-dom";
 import TextHeader from "../components/TextHeader";
 
 const PageWrapper = styled.div`
-  padding: 1rem;
-  background-color: #fff;
+  padding: 4rem 1rem;
+`;
+
+const DateText = styled.h4`
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 16px;
+  color: #222;
+`;
+
+const ProductWrapper = styled.div`
+  position: relative;
 `;
 
 const ProductBox = styled.div`
   display: flex;
-  margin: 1rem 0;
-  gap: 1rem;
 `;
 
 const Image = styled.img`
   width: 80px;
   height: 80px;
   border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
 `;
 
-const Info = styled.div`
+const InfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
+  margin-left: 1rem;
 `;
 
-const Price = styled.p`
+const Name = styled.p`
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+  line-height: 1.4;
+`;
+
+const Quantity = styled.span`
+  font-size: 13px;
+  color: #999;
+  margin-top: 4px;
+`;
+
+const PriceBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  white-space: nowrap;
+  align-self: flex-end;
+  margin-top: 0.5rem;
+  gap: 0.25rem;
+`;
+
+const Price = styled.span`
   font-weight: bold;
+  font-size: 15px;
+  color: #222;
+`;
+
+const Discount = styled.span`
+  font-weight: bold;
+  font-size: 15px;
   color: #e6005a;
 `;
 
-const Total = styled.div`
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
-  text-align: right;
-  font-weight: bold;
+const TotalWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1.5px solid #eee;
+  padding: 1rem 0;
+  margin-top: 1rem;
+`;
+
+const TotalLabel = styled.span`
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+`;
+
+const TotalPrice = styled.span`
   font-size: 18px;
+  font-weight: bold;
   color: #e6005a;
 `;
 
 export default function PurchaseDetailPage() {
   const { state } = useLocation();
   const { purchase } = state;
+
+  const formattedDate = purchase.date.replace(/-/g, ".");
 
   const total = purchase.items.reduce(
     (acc: number, item: any) =>
@@ -48,22 +105,32 @@ export default function PurchaseDetailPage() {
   );
 
   return (
-    <PageWrapper>
-      <TextHeader pageName="구매 내역" />
-      <h4>{purchase.date}</h4>
-      {purchase.items.map((item: any, idx: number) => (
-        <ProductBox key={idx}>
-          <Image src={item.imageUrl} />
-          <Info>
-            <div>{item.name}</div>
-            <div>{item.option || ""}</div>
-            <Price>
-              {item.discountRate}% {item.originalPrice.toLocaleString()}원
-            </Price>
-          </Info>
-        </ProductBox>
-      ))}
-      <Total>총 금액 {Math.round(total).toLocaleString()}원</Total>
-    </PageWrapper>
+    <>
+      <TextHeader pageName="구매 상세" />
+      <PageWrapper>
+        <DateText>{formattedDate}</DateText>
+
+        {purchase.items.map((item: any, idx: number) => (
+          <ProductWrapper key={idx}>
+            <ProductBox>
+              <Image src={item.imageUrl} />
+              <InfoWrapper>
+                <Name>{item.name}</Name>
+                <Quantity>{item.quantity || 1}개</Quantity>
+              </InfoWrapper>
+              <PriceBox>
+                <Discount>{item.discountRate}%</Discount>
+                <Price>{item.originalPrice.toLocaleString()}원</Price>
+              </PriceBox>
+            </ProductBox>
+          </ProductWrapper>
+        ))}
+
+        <TotalWrapper>
+          <TotalLabel>총 금액</TotalLabel>
+          <TotalPrice>{Math.round(total).toLocaleString()}원</TotalPrice>
+        </TotalWrapper>
+      </PageWrapper>
+    </>
   );
 }

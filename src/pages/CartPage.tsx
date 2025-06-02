@@ -43,6 +43,7 @@ const TopRow = styled.div`
 
 const Checkbox = styled.input`
   margin-top: 4px;
+  accent-color: #f23477;
 `;
 
 const Image = styled.img`
