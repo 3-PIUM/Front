@@ -22,6 +22,9 @@ import Withdraw from "./pages/WithdrawPage";
 import SettingLanguange from "./pages/SettingLanguange";
 import IngredientDetail from "./pages/IngredientDetailPage";
 import ChatbotPage from "./pages/Chatbotpage";
+import MypagePersonalColor from "./pages/MypagePersonalColor";
+import MypageSkinType from "./pages/MypageSkinType";
+import MypageSkinConcern from "./pages/MypageSkinConcern";
 
 const routes = [
   // DefaultLayout
@@ -34,6 +37,18 @@ const routes = [
   { path: "/settings/language", element: <SettingLanguange /> },
   { path: "/ingredient-detail", element: <IngredientDetail /> },
   { path: "/chatbot", element: <ChatbotPage /> },
+  {
+    path: "/mypage/personalcolor",
+    element: <MypagePersonalColor />,
+  },
+  {
+    path: "/mypage/skintype",
+    element: <MypageSkinType />,
+  },
+  {
+    path: "/mypage/skinconcern",
+    element: <MypageSkinConcern />,
+  },
 
   // MenuLayout
   {

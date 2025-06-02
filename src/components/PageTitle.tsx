@@ -9,6 +9,7 @@ const HeaderWrap = styled.div`
   display: flex;
   height: 2.75rem;
   background-color: ${colors.white};
+  z-index: 100;
 `;
 
 const PageName = styled.div`
