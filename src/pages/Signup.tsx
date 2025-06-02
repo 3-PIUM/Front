@@ -2,7 +2,6 @@ import Button from "../components/Button";
 import TextField from "../components/TextField";
 import TextHeader from "../components/TextHeader";
 import styled from "styled-components";
-import InputField from "../components/InputField";
 import { IoMale, IoFemale } from "react-icons/io5";
 import colors from "../styles/colors";
 import { useState } from "react";

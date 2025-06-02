@@ -12,6 +12,7 @@ const ItemWrap = styled.div`
 
 const ImageWrap = styled.div`
   position: relative;
+  flex-shrink: 1;
 `;
 
 const ItemImage = styled.img`
@@ -76,6 +77,8 @@ export default function ItemCard({
     }
   };
 
+  const formattedPrice = price.toLocaleString();
+
   return (
     <ItemWrap>
       <ImageWrap>
@@ -91,7 +94,7 @@ export default function ItemCard({
       <ItemName>{itemName}</ItemName>
       <PriceWrap>
         <ItemDiscount>{discountRate}%</ItemDiscount>
-        <ItemPrice>{price}원</ItemPrice>
+        <ItemPrice>{formattedPrice}원</ItemPrice>
       </PriceWrap>
     </ItemWrap>
   );
