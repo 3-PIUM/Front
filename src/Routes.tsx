@@ -24,6 +24,7 @@ import IngredientDetail from "./pages/IngredientDetailPage";
 import MypagePersonalColor from "./pages/MypagePersonalColor";
 import MypageSkinType from "./pages/MypageSkinType";
 import MypageSkinConcern from "./pages/MypageSkinConcern";
+import MbtiTest from "./pages/MbtiTest";
 
 const routes = [
   // DefaultLayout
@@ -46,6 +47,10 @@ const routes = [
   {
     path: "/mypage/skinconcern",
     element: <MypageSkinConcern />,
+  },
+  {
+    path: "/mbti",
+    element: <MbtiTest />,
   },
 
   // MenuLayout
