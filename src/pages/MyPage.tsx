@@ -55,7 +55,7 @@ const Space = styled.div`
   display: flex;
   width: 100%;
   height: 1rem;
-  background-color: ${colors.lightGrey};
+  background-color: #f5f5f5;
 `;
 
 const Settings = styled.div`
