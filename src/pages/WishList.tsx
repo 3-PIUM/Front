@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 const ItemWrapper = styled.div`
   display: flex;
   padding: 0 1rem;
-  margin-top: 3rem;
+  margin-top: 3.5rem;
   flex-wrap: wrap;
   gap: 0.5rem;
   padding-bottom: 80px;
