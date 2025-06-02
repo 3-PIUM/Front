@@ -25,6 +25,7 @@ import ChatbotPage from "./pages/Chatbotpage";
 import MypagePersonalColor from "./pages/MypagePersonalColor";
 import MypageSkinType from "./pages/MypageSkinType";
 import MypageSkinConcern from "./pages/MypageSkinConcern";
+import MbtiTest from "./pages/MbtiTest";
 
 const routes = [
   // DefaultLayout
@@ -34,7 +35,7 @@ const routes = [
   { path: "/survey", element: <Survey /> },
   { path: "/welcome", element: <Welcome /> },
   { path: "/Withdraw", element: <Withdraw /> },
-  { path: "/settings/language", element: <SettingLanguange /> },
+  { path: "/mypage/language", element: <SettingLanguange /> },
   { path: "/ingredient-detail", element: <IngredientDetail /> },
   { path: "/chatbot", element: <ChatbotPage /> },
   {
@@ -48,6 +49,10 @@ const routes = [
   {
     path: "/mypage/skinconcern",
     element: <MypageSkinConcern />,
+  },
+  {
+    path: "/mbti",
+    element: <MbtiTest />,
   },
 
   // MenuLayout

@@ -121,13 +121,11 @@ export default function MyPage() {
         <SettingBox>
           <Title>나의 피부 정보</Title>
           <SettingItem>
-            <div onClick={() => navigate("/settings/skintype")}>피부 타입</div>
-            <div onClick={() => navigate("/settings/personalcolor")}>
+            <div onClick={() => navigate("/mypage/skintype")}>피부 타입</div>
+            <div onClick={() => navigate("/mypage/personalcolor")}>
               퍼스널컬러
             </div>
-            <div onClick={() => navigate("/settings/skinconcern")}>
-              피부 고민
-            </div>
+            <div onClick={() => navigate("/mypage/skinconcern")}>피부 고민</div>
           </SettingItem>
         </SettingBox>
         <SettingBox>
@@ -139,7 +137,7 @@ export default function MyPage() {
         <SettingBox>
           <Title>언어</Title>
           <SettingItem>
-            <div onClick={() => navigate("/settings/language")}>언어 설정</div>
+            <div onClick={() => navigate("/mypage/language")}>언어 설정</div>
           </SettingItem>
         </SettingBox>
         <Line />
