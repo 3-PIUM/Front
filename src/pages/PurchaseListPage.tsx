@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 const TopList = styled.div`
   display: flex;
   justify-content: space-around;
-  gap: 13rem;
+  gap: 11rem;
 `;
 
 const PurchaseItem = styled.div`

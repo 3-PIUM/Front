@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { VscChevronLeft } from "react-icons/vsc";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import colors from "../styles/colors";
 
 const HeaderWrap = styled.div`
@@ -12,7 +13,7 @@ const HeaderWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   background-color: ${colors.white};
-  padding: 0 12px;
+  padding: 0 1rem;
   box-sizing: border-box;
 `;
 
@@ -31,7 +32,8 @@ const Title = styled.h1`
 
 const RightIcons = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 1rem;
+  margin-right: -0.9rem;
 `;
 
 const IconWrapper = styled.div`
@@ -42,23 +44,52 @@ interface FullHeaderProps {
   pageName: string;
 }
 
+const SearchOverlay = styled.div`
+  position: fixed;
+  top: 44px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+`;
+
+const SearchModal = styled.div`
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem;
+  z-index: 1000;
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+`;
+
 export default function FullHeader({ pageName }: FullHeaderProps) {
   const navigate = useNavigate();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
-    <HeaderWrap>
-      <LeftIcon onClick={() => navigate(-1)}>
-        <VscChevronLeft size={24} />
-      </LeftIcon>
-      <Title>{pageName}</Title>
-      <RightIcons>
-        <IconWrapper>
-          <FiSearch size={20} />
-        </IconWrapper>
-        <IconWrapper onClick={() => navigate("/cart")}>
-          <FiShoppingCart size={20} />
-        </IconWrapper>
-      </RightIcons>
-    </HeaderWrap>
+    <>
+      <HeaderWrap>
+        <LeftIcon onClick={() => navigate(-1)}>
+          <VscChevronLeft size={24} />
+        </LeftIcon>
+        <Title>{pageName}</Title>
+        <RightIcons>
+          <IconWrapper onClick={() => setIsSearchOpen(true)}>
+            <FiSearch size={20} />
+          </IconWrapper>
+          <IconWrapper onClick={() => navigate("/cart")}>
+            <FiShoppingCart size={20} />
+          </IconWrapper>
+        </RightIcons>
+      </HeaderWrap>
+    </>
   );
 }
