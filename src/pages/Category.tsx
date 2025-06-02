@@ -55,7 +55,6 @@ const SubCategoryItemList = styled.div`
   flex-direction: column;
   width: 100%;
   padding: 0 1rem;
-  gap: 1rem;
   padding-bottom: 100px;
 `;
 
@@ -82,6 +81,15 @@ const SubCategoryItem = styled.li`
   height: 3rem;
   line-height: 3rem;
   font-size: 0.875rem;
+`;
+
+const Divider = styled.hr`
+  display: flex;
+  border: none;
+  background-color: ${colors.lightGrey};
+  height: 0.5px;
+  margin: 0.5rem 0;
+  width: 100%;
 `;
 
 export default function Category() {
@@ -142,7 +150,7 @@ export default function Category() {
           </ul>
         </CategoryItemList>
         <SubCategoryItemList>
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <div
               key={category.id}
               ref={(el) => {
@@ -160,6 +168,7 @@ export default function Category() {
               {category.items.map((item) => (
                 <SubCategoryItem key={item}>{item}</SubCategoryItem>
               ))}
+              {index !== categories.length - 1 && <Divider />}
             </div>
           ))}
         </SubCategoryItemList>

@@ -56,6 +56,7 @@ export default function WishList() {
       <ItemWrapper>
         {Items.map((item) => (
           <ItemCard
+            key={item.id}
             itemName={item.name}
             imageSource={item.url}
             discountRate={item.discount}
