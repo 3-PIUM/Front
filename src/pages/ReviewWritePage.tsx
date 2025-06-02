@@ -23,9 +23,7 @@ const ContentWrapper = styled.div`
 const StickyFooter = styled.div`
   position: sticky;
   bottom: 5rem;
-  /* background-color: #fff; */
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem 1rem;
 `;
 
 const Divider = styled.div`
@@ -77,10 +75,10 @@ const SubmitButton = styled.button`
   background-color: #ff4081;
   color: #fff;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
   padding: 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 1.25rem;
   margin-top: 2rem;
 `;
 

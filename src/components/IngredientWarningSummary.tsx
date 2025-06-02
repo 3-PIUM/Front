@@ -18,7 +18,7 @@ const Highlight = styled.span`
 
 const IngredientList = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 2.6rem;
   overflow-x: auto;
   padding-bottom: 0.5rem;
 
@@ -39,8 +39,8 @@ const IngredientItem = styled.div`
 `;
 
 const IngredientCircle = styled.img`
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
   background-color: #ddd;
@@ -62,23 +62,28 @@ export default function IngredientWarningSummary() {
     warningIngredients: [
       {
         name: "알레르기 유발",
-        image: "https://via.placeholder.com/80?text=A",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHQgcsUecY-ieBX_lFA12lwTXQSy8erIWddF48JeloIANeMRFPVrRYxQW7ZATLPsEcWw&usqp=CAU",
       },
       {
         name: "성분 이름",
-        image: "https://via.placeholder.com/80?text=B",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHQgcsUecY-ieBX_lFA12lwTXQSy8erIWddF48JeloIANeMRFPVrRYxQW7ZATLPsEcWw&usqp=CAU",
       },
       {
         name: "성분 이름",
-        image: "https://via.placeholder.com/80?text=C",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHQgcsUecY-ieBX_lFA12lwTXQSy8erIWddF48JeloIANeMRFPVrRYxQW7ZATLPsEcWw&usqp=CAU",
       },
       {
         name: "성분 이름",
-        image: "https://via.placeholder.com/80?text=C",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHQgcsUecY-ieBX_lFA12lwTXQSy8erIWddF48JeloIANeMRFPVrRYxQW7ZATLPsEcWw&usqp=CAU",
       },
       {
         name: "성분 이름",
-        image: "https://via.placeholder.com/80?text=C",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHQgcsUecY-ieBX_lFA12lwTXQSy8erIWddF48JeloIANeMRFPVrRYxQW7ZATLPsEcWw&usqp=CAU",
       },
     ],
   };

@@ -21,6 +21,7 @@ import PurchaseDetail from "./pages/PurchaseDetailPage";
 import Withdraw from "./pages/WithdrawPage";
 import SettingLanguange from "./pages/SettingLanguange";
 import IngredientDetail from "./pages/IngredientDetailPage";
+import ChatbotPage from "./pages/Chatbotpage";
 
 const routes = [
   // DefaultLayout
@@ -32,6 +33,7 @@ const routes = [
   { path: "/Withdraw", element: <Withdraw /> },
   { path: "/settings/language", element: <SettingLanguange /> },
   { path: "/ingredient-detail", element: <IngredientDetail /> },
+  { path: "/chatbot", element: <ChatbotPage /> },
 
   // MenuLayout
   {
