@@ -19,6 +19,7 @@ const ProductWrapper = styled.div`
 
 const ProductBox = styled.div`
   display: flex;
+  margin-top: 1rem;
 `;
 
 const Image = styled.img`

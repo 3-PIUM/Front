@@ -20,6 +20,7 @@ import PurchaseList from "./pages/PurchaseListPage";
 import PurchaseDetail from "./pages/PurchaseDetailPage";
 import Withdraw from "./pages/WithdrawPage";
 import SettingLanguange from "./pages/SettingLanguange";
+import IngredientDetail from "./pages/IngredientDetailPage";
 
 const routes = [
   // DefaultLayout
@@ -30,6 +31,7 @@ const routes = [
   { path: "/welcome", element: <Welcome /> },
   { path: "/Withdraw", element: <Withdraw /> },
   { path: "/settings/language", element: <SettingLanguange /> },
+  { path: "/ingredient-detail", element: <IngredientDetail /> },
 
   // MenuLayout
   {
