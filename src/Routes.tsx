@@ -34,7 +34,7 @@ const routes = [
   { path: "/survey", element: <Survey /> },
   { path: "/welcome", element: <Welcome /> },
   { path: "/Withdraw", element: <Withdraw /> },
-  { path: "/settings/language", element: <SettingLanguange /> },
+  { path: "/mypage/language", element: <SettingLanguange /> },
   { path: "/ingredient-detail", element: <IngredientDetail /> },
   {
     path: "/mypage/personalcolor",
