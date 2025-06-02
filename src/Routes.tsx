@@ -18,6 +18,7 @@ import Survey from "./pages/SurveyPage";
 import Welcome from "./pages/Welcome";
 import PurchaseList from "./pages/PurchaseListPage";
 import PurchaseDetail from "./pages/PurchaseDetailPage";
+import Withdraw from "./pages/WithdrawPage";
 import SettingLanguange from "./pages/SettingLanguange";
 
 const routes = [
@@ -27,6 +28,7 @@ const routes = [
   { path: "/about", element: <AboutYouPage /> },
   { path: "/survey", element: <Survey /> },
   { path: "/welcome", element: <Welcome /> },
+  { path: "/Withdraw", element: <Withdraw /> },
   { path: "/settings/language", element: <SettingLanguange /> },
 
   // MenuLayout

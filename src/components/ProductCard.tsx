@@ -56,7 +56,22 @@ interface ProductCardProps {
   originalPrice: number;
   currentPrice: number;
   imageUrl: string;
+  stock: number;
 }
+
+const InfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 0.5rem;
+`;
+
+const Stock = styled.div`
+  font-size: 15px;
+  font-weight: bold;
+  color: #f23477;
+  margin-top: 0.5rem;
+`;
 
 const ProductCard = ({
   brand,
@@ -64,6 +79,7 @@ const ProductCard = ({
   originalPrice,
   currentPrice,
   imageUrl,
+  stock,
 }: ProductCardProps) => {
   const discountRate = Math.round(
     ((originalPrice - currentPrice) / originalPrice) * 100
@@ -77,10 +93,13 @@ const ProductCard = ({
       <InfoWrapper>
         <Brand>{brand}</Brand>
         <Title>{title}</Title>
-        <PriceWrapper>
-          <Discount>{discountRate}%</Discount>
-          <Price>{currentPrice.toLocaleString()}원</Price>
-        </PriceWrapper>
+        <InfoRow>
+          <Stock>재고 수량: {stock}개</Stock>
+          <PriceWrapper>
+            <Discount>{discountRate}%</Discount>
+            <Price>{currentPrice.toLocaleString()}원</Price>
+          </PriceWrapper>
+        </InfoRow>
       </InfoWrapper>
     </CardWrapper>
   );
