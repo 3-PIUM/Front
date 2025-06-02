@@ -1,3 +1,68 @@
+import styled from "styled-components";
+import Header from "../components/Header";
+import PageTitle from "../components/PageTitle";
+import ItemCard from "../components/ItemCard";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ItemWrapper = styled.div`
+  display: flex;
+  padding: 0 1rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 80px;
+`;
+
 export default function WishList() {
-  return <></>;
+  const Items = [
+    {
+      id: 71,
+      name: "[[6월 올영픽/유트루PICK/1+1최초기획] 스킨푸드 캐롯 카로틴 카밍 워터 패드 60매 더블기획 (본품+본품)",
+      url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022493204ko.jpg?l=ko",
+      discount: 38,
+      price: 25830,
+    },
+    {
+      id: 72,
+      name: "[단독기획/대용량] 파티온 노스카나인 트러블 세럼 50ml 리필 기획(+리필40ml+크림10ml)",
+      url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0021/A00000021960903ko.jpg?l=ko",
+      discount: 40,
+      price: 32210,
+    },
+    {
+      id: 73,
+      name: "[6월 올영픽/더블한정기획 출시] 어노브 딥 데미지 헤어 트리트먼트 EX 320ml 더블/듀오 기획 5종 택1",
+      url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017142387ko.jpg?l=ko",
+      discount: 31,
+      price: 28900,
+    },
+    {
+      id: 41,
+      name: "[6월올영픽/1등쿠션] VDL 커버 스테인 퍼펙팅 쿠션 기획(+미니 프라이머 증정)",
+      url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018590325ko.png?l=ko",
+      discount: 26,
+      price: 25100,
+    },
+  ];
+
+  return (
+    <Wrapper>
+      <Header />
+      <PageTitle pageName="찜" />
+      <ItemWrapper>
+        {Items.map((item) => (
+          <ItemCard
+            itemName={item.name}
+            imageSource={item.url}
+            discountRate={item.discount}
+            price={item.price}
+          />
+        ))}
+      </ItemWrapper>
+    </Wrapper>
+  );
 }
