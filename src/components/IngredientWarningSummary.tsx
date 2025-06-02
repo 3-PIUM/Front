@@ -84,6 +84,7 @@ export default function IngredientWarningSummary() {
         name: "성분 이름",
         image:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHQgcsUecY-ieBX_lFA12lwTXQSy8erIWddF48JeloIANeMRFPVrRYxQW7ZATLPsEcWw&usqp=CAU",
+
       },
     ],
   };

@@ -6,6 +6,8 @@ import { useState, useRef, useEffect } from "react";
 import ItemCard from "../components/ItemCard";
 import Header from "../components/Header";
 import StoreModal from "../components/StoreModal";
+import bannerImg from "../assets/images/mbtiBanner.png";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -73,7 +75,6 @@ const RecommandListWrap = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 1rem;
-  margin-top: 2.5rem;
   gap: 2rem;
   padding-bottom: 80px;
 `;
@@ -130,6 +131,17 @@ const PersonalRecommandList = styled.div<{ $isScroll: boolean }>`
   `}
 `;
 
+const BannerWrap = styled.div`
+  display: flex;
+  padding: 1rem;
+`;
+
+const BannerImage = styled.img`
+  display: flex;
+  width: 100%;
+  border-radius: 0.75rem;
+`;
+
 const RecommandListWrapper = styled.div`
   display: flex;
   margin-top: 0.5rem;
@@ -141,6 +153,7 @@ export default function Home() {
   const nickname = "겸손한 치타";
   const skinType = "지성";
   const [showStoreModal, setShowStoreModal] = useState(false);
+  const navigate = useNavigate();
 
   const tabs = [
     { id: 1, label: "전체", items: [] },
@@ -380,6 +393,13 @@ export default function Home() {
           <CharacterImg src={OilySkin} alt="지성 피부" />
         </CharacterBox>
       </PersonalInfo>
+      <BannerWrap>
+        <BannerImage
+          src={bannerImg}
+          alt="mbti 배너"
+          onClick={() => navigate("/mbti")}
+        />
+      </BannerWrap>
       <RecommandListWrap>
         <RecommandBox>
           <RecommandTitle>겸손한 치타님을 위한 추천 제품</RecommandTitle>

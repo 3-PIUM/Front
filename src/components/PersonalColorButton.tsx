@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
 
-const ButtonWrap = styled.button<{ $isActivated: boolean; $isWide: boolean }>`
+const ButtonWrap = styled.button<{ $isActivated: boolean }>`
   display: flex;
   flex-direction: column;
   background-color: ${colors.white};
@@ -9,9 +9,9 @@ const ButtonWrap = styled.button<{ $isActivated: boolean; $isWide: boolean }>`
     ${({ $isActivated }) => ($isActivated ? colors.mainPink : colors.lightGrey)};
   border-radius: 1.25rem;
   gap: 0.625rem;
-  width: ${({ $isWide }) => ($isWide ? "100%" : "10rem")};
-  padding: ${({ $isWide }) => ($isWide ? "1.5rem 1rem" : "1.5rem 0")};
-  grid-column: ${({ $isWide }) => ($isWide ? "span 2" : "auto")};
+  width: 100%;
+  padding: 1.5rem 0;
+  grid-column: auto;
 `;
 
 const ButtonName = styled.div<{ $isActivated: boolean }>`
@@ -51,7 +51,7 @@ export default function PersonalColorButton({
   onClick,
 }: PersonalColorProps) {
   return (
-    <ButtonWrap onClick={onClick} $isActivated={isActivated} $isWide={isWide}>
+    <ButtonWrap onClick={onClick} $isActivated={isActivated}>
       <ButtonName $isActivated={isActivated}>{buttonName}</ButtonName>
       {colors && colors.length > 0 && (
         <ColorPalette>
