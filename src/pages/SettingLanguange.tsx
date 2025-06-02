@@ -5,15 +5,36 @@ import colors from "../styles/colors";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  height: 100vh;
+`;
+
+const Space = styled.div`
+  display: flex;
+  width: 100%;
+  height: 0.5rem;
+  background-color: #f5f5f5;
+  margin-top: 3rem;
+`;
+
 const LanguageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 4rem 1rem 0 1rem;
+  padding: 0 1rem;
+  background-color: ${colors.white};
+  width: 100%;
+  height: max-content;
 `;
 
 const LanguageBox = styled.div<{ $selected: boolean }>`
   display: flex;
   font-size: 1rem;
+  height: 3.5rem;
+  line-height: 3.5rem;
+  align-items: center;
   color: ${({ $selected }) => ($selected ? colors.mainPink : colors.black)};
   font-weight: ${({ $selected }) => ($selected ? 700 : 400)};
   line-height: 2rem;
@@ -23,7 +44,6 @@ const Line = styled.hr`
   border: none;
   background-color: ${colors.lightGrey};
   height: 0.5px;
-  margin: 0.5rem 0;
 `;
 
 export default function SettingLanguange() {
@@ -31,9 +51,10 @@ export default function SettingLanguange() {
   const navigate = useNavigate();
 
   return (
-    <>
+    <Wrap>
       <Header />
       <TextHeader pageName="언어 설정" />
+      <Space />
       <LanguageWrapper>
         <LanguageBox
           $selected={language === "한국어"}
@@ -65,6 +86,6 @@ export default function SettingLanguange() {
           日本語
         </LanguageBox>
       </LanguageWrapper>
-    </>
+    </Wrap>
   );
 }
