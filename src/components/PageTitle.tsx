@@ -13,7 +13,7 @@ const HeaderWrap = styled.div`
 
 const PageName = styled.div`
   color: ${colors.black};
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 700;
   line-height: 2.75rem;
 `;
