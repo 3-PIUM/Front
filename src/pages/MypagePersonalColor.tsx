@@ -1,19 +1,16 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import Header from "../components/Header";
+import TextHeader from "../components/TextHeader";
 import colors from "../styles/colors";
-import PersonalColorButton from "./PersonalColorButton";
+import PersonalColorButton from "../components/PersonalColorButton";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 const Wrapper = styled.div`
-  margin-top: 1rem;
-  width: 100%;
-`;
-
-const TitleWrapper = styled.div`
   display: flex;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-top: 1rem;
+  flex-direction: column;
+  padding: 3rem 1rem 0 1rem;
+  width: 100%;
 `;
 
 const AnswerWrapper = styled.div`
@@ -55,13 +52,14 @@ const Options = [
   },
 ];
 
-export default function SurveyStep2() {
+export default function SettingPersonalColor() {
   const [selected, setSelected] = useState<String>();
 
   return (
     <>
+      <Header />
+      <TextHeader pageName="퍼스널컬러" />
       <Wrapper>
-        <TitleWrapper>퍼스널 컬러에 대해 알려주세요!</TitleWrapper>
         <AnswerWrapper>
           {Options.map((item) => (
             <PersonalColorButton

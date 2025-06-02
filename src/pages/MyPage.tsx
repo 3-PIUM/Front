@@ -4,14 +4,14 @@ import { FiEdit2 } from "react-icons/fi";
 import colors from "../styles/colors";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
+import PageTitle from "../components/PageTitle";
 
 const TopWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 1rem;
-  margin-top: 3.5rem;
+  padding: 4rem 1rem 0 1rem;
 `;
 
 const ImageSection = styled.div`
@@ -82,6 +82,7 @@ const SettingItem = styled.div`
   flex-direction: column;
   gap: 1.5rem;
   font-size: 1rem;
+  margin-top: 0.5rem;
 `;
 
 const Line = styled.hr`
@@ -97,6 +98,7 @@ export default function MyPage() {
   return (
     <>
       <Header />
+      <PageTitle pageName="마이페이지" />
       <TopWrapper>
         <ImageSection>
           <ImageBox>
@@ -119,9 +121,13 @@ export default function MyPage() {
         <SettingBox>
           <Title>나의 피부 정보</Title>
           <SettingItem>
-            <div>피부 타입</div>
-            <div>퍼스널컬러</div>
-            <div>피부 고민</div>
+            <div onClick={() => navigate("/settings/skintype")}>피부 타입</div>
+            <div onClick={() => navigate("/settings/personalcolor")}>
+              퍼스널컬러
+            </div>
+            <div onClick={() => navigate("/settings/skinconcern")}>
+              피부 고민
+            </div>
           </SettingItem>
         </SettingBox>
         <SettingBox>

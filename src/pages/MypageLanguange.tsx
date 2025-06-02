@@ -2,14 +2,15 @@ import styled from "styled-components";
 import TextHeader from "../components/TextHeader";
 import Header from "../components/Header";
 import colors from "../styles/colors";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
-  height: 100vh;
+  height: 90vh;
+  overflow: hidden;
 `;
 
 const Space = styled.div`
@@ -26,7 +27,6 @@ const LanguageWrapper = styled.div`
   padding: 0 1rem;
   background-color: ${colors.white};
   width: 100%;
-  height: max-content;
 `;
 
 const LanguageBox = styled.div<{ $selected: boolean }>`
@@ -49,6 +49,17 @@ const Line = styled.hr`
 export default function SettingLanguange() {
   const [language, setLanguage] = useState("한국어");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const root = document.getElementById("root");
+    const originalBg = root?.style.backgroundColor;
+
+    if (root) root.style.backgroundColor = "#f5f5f5"; // 원하는 색상으로 설정
+
+    return () => {
+      if (root) root.style.backgroundColor = originalBg || ""; // 원상복구
+    };
+  }, []);
 
   return (
     <Wrap>
