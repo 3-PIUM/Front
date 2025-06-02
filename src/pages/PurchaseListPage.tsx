@@ -6,9 +6,14 @@ const mockPurchases = JSON.parse(
   localStorage.getItem("purchaseHistory") || "[]"
 );
 
-const PageWrapper = styled.div`
-  padding: 1rem;
-  background: white;
+const Wrapper = styled.div`
+  padding: 4rem 1rem;
+`;
+
+const TopList = styled.div`
+  display: flex;
+  justify-content: space-around;
+  gap: 13rem;
 `;
 
 const PurchaseItem = styled.div`
@@ -26,8 +31,8 @@ const ImageList = styled.div`
 `;
 
 const ProductImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 8px;
 `;
 
@@ -42,25 +47,30 @@ export default function PurchaseListPage() {
   const navigate = useNavigate();
 
   return (
-    <PageWrapper>
+    <>
       <TextHeader pageName="구매 내역" />
-      {mockPurchases.map((purchase: any, idx: number) => (
-        <PurchaseItem key={idx}>
-          <DateText>{purchase.date}</DateText>
-          <ImageList>
-            {purchase.items.map((item: any, i: number) => (
-              <ProductImage key={i} src={item.imageUrl} />
-            ))}
-          </ImageList>
-          <DetailButton
-            onClick={() =>
-              navigate("/purchase-detail", { state: { purchase } })
-            }
-          >
-            주문상세 &gt;
-          </DetailButton>
-        </PurchaseItem>
-      ))}
-    </PageWrapper>
+      <Wrapper>
+        {mockPurchases.map((purchase: any, idx: number) => (
+          <PurchaseItem key={idx}>
+            <TopList>
+              <DateText>{purchase.date.replace(/-/g, ".")}</DateText>
+              <DetailButton
+                onClick={() =>
+                  navigate("/purchase-detail", { state: { purchase } })
+                }
+              >
+                주문상세 &gt;
+              </DetailButton>
+            </TopList>
+
+            <ImageList>
+              {purchase.items.map((item: any, i: number) => (
+                <ProductImage key={i} src={item.imageUrl} />
+              ))}
+            </ImageList>
+          </PurchaseItem>
+        ))}
+      </Wrapper>
+    </>
   );
 }

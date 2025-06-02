@@ -34,8 +34,8 @@ const InstructionText = styled.div`
 const FrameGuide = styled.div`
   position: absolute;
   width: 320px;
-  height: 120px;
-  top: calc(50% - 60px);
+  height: 250px;
+  top: calc(50% - 20%);
   left: calc(50% - 160px);
   border: 2px dashed rgba(255, 255, 255, 0.7);
   z-index: 11;

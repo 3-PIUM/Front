@@ -89,6 +89,7 @@ export default function ProductDetail() {
         "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021429012ko.jpg?qt=80",
       originalPrice: 12900,
       discountRate: 20,
+      stock: 4,
     };
 
   useEffect(() => {
@@ -137,6 +138,7 @@ export default function ProductDetail() {
             : 0
         }
         imageUrl={product.imageUrl}
+        stock={product.stock}
       />
 
       <div style={{ padding: "0 1rem" }}>
