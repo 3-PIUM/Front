@@ -119,7 +119,8 @@ export default function MyPage() {
         <SettingBox>
           <Title>나의 피부 정보</Title>
           <SettingItem>
-            <div>피부 타입 / 퍼스널컬러</div>
+            <div>피부 타입</div>
+            <div>퍼스널컬러</div>
             <div>피부 고민</div>
           </SettingItem>
         </SettingBox>
