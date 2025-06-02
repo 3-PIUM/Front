@@ -5,7 +5,7 @@ const ButtonWrap = styled.button<{
   $size?: "large" | "small";
   $isActivated: boolean;
 }>`
-  width: ${({ $size }) => ($size === "large" ? "10rem" : "6.375rem")};
+  width: ${({ $size }) => ($size === "large" ? "100%" : "100%")};
   background-color: ${colors.white};
   border: 1px solid
     ${({ $isActivated }) => ($isActivated ? colors.mainPink : colors.lightGrey)};
