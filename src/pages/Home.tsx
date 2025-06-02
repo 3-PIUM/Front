@@ -5,6 +5,7 @@ import OilySkin from "../assets/images/SkinType/oily.png";
 import { useState, useRef, useEffect } from "react";
 import ItemCard from "../components/ItemCard";
 import Header from "../components/Header";
+import StoreModal from "../components/StoreModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -139,6 +140,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("전체");
   const nickname = "겸손한 치타";
   const skinType = "지성";
+  const [showStoreModal, setShowStoreModal] = useState(false);
 
   const tabs = [
     { id: 1, label: "전체", items: [] },
@@ -303,6 +305,33 @@ export default function Home() {
     },
   ];
 
+  const dummyStores = [
+    {
+      name: "올리브영 강남점",
+      distance: "500m",
+      imageUrl:
+        "https://image.oliveyoung.co.kr/cfimages/oystore/DD1D_1.jpg?rs=800x0",
+      status: "영업 중",
+      hours: "10:00 ~ 22:00",
+    },
+    {
+      name: "올리브영 신촌점",
+      distance: "1.2km",
+      imageUrl:
+        "https://image.oliveyoung.co.kr/cfimages/oystore/DD1D_1.jpg?rs=800x0",
+      status: "영업 준비 중",
+      hours: "11:00 ~ 21:00",
+    },
+    {
+      name: "올리브영 홍대점",
+      distance: "4.2km",
+      imageUrl:
+        "https://image.oliveyoung.co.kr/cfimages/oystore/DD1D_1.jpg?rs=800x0",
+      status: "영업 준비 중",
+      hours: "11:00 ~ 21:00",
+    },
+  ];
+
   const selectedTab = tabs.find((tab) => tab.label === activeTab);
 
   const allItems = tabs
@@ -333,7 +362,7 @@ export default function Home() {
   return (
     <Wrapper>
       <Header />
-      <LogoHeader />
+      <LogoHeader onStoreClick={() => setShowStoreModal(true)} />
       <PersonalInfo>
         <TextInfo>
           <UserSkin>
@@ -396,6 +425,13 @@ export default function Home() {
           </RecommandListWrapper>
         </RecommandBox>
       </RecommandListWrap>
+      {showStoreModal && (
+        <StoreModal
+          onClose={() => setShowStoreModal(false)}
+          onSelect={(store) => console.log("선택한 매장:", store)}
+          stores={dummyStores}
+        />
+      )}
     </Wrapper>
   );
 }

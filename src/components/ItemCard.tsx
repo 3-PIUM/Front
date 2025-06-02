@@ -2,6 +2,7 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 import { FaHeart } from "react-icons/fa6";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ItemWrap = styled.div`
   display: flex;
@@ -68,6 +69,7 @@ export default function ItemCard({
   price,
 }: ItemProps) {
   const [isWished, setIsWished] = useState(false);
+  const navigate = useNavigate();
 
   const handleWish = () => {
     if (isWished === false) {
@@ -77,10 +79,22 @@ export default function ItemCard({
     }
   };
 
+  const handleClick = () => {
+    const product = {
+      id: itemName,
+      name: itemName,
+      brand: "샘플 브랜드",
+      imageUrl: imageSource,
+      originalPrice: price,
+      discountRate: discountRate,
+    };
+    navigate("/product-detail", { state: { product } });
+  };
+
   const formattedPrice = price.toLocaleString();
 
   return (
-    <ItemWrap>
+    <ItemWrap onClick={handleClick}>
       <ImageWrap>
         <ItemImage src={imageSource} />
         <Heart>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import colors from "../styles/colors";
+import { HiLocationMarker } from "react-icons/hi";
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -25,16 +26,23 @@ const RightIcons = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  cursor: pointer;
+  font-size: 1.2rem;
 `;
 
-export default function LogoHeader() {
+interface LogoHeaderProps {
+  onStoreClick?: () => void; // 모달 제어 함수
+}
+
+export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
   const navigate = useNavigate();
 
   return (
     <HeaderWrap>
       <LogoWrap>로고 이미지</LogoWrap>
       <RightIcons>
+        <IconWrapper onClick={onStoreClick}>
+          <HiLocationMarker size={20} />
+        </IconWrapper>
         <IconWrapper>
           <FiSearch size={20} />
         </IconWrapper>

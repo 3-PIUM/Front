@@ -10,6 +10,7 @@ import ReviewCard from "../components/ReviewCard";
 import Button from "../components/Button";
 import { useCartStore } from "../store/useCartStore";
 import FullHeader from "../components/TextIconHeader ";
+import IngredientWarningSummary from "../components/IngredientWarningSummary";
 
 const HeaderBar = styled.div`
   display: flex;
@@ -175,6 +176,10 @@ export default function ProductDetail() {
 
       {selectedTab === "ingredient" && (
         <>
+          <SkinTypeWrapper onClick={() => navigate("/ingredient-detail")}>
+            <IngredientWarningSummary />
+          </SkinTypeWrapper>
+
           <SkinTypeWrapper>
             <SectionTitle>추천 피부 타입</SectionTitle>
             <SkinTypeRankList />
