@@ -3,7 +3,7 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 import { useNavigate } from "react-router-dom";
 
-const HeaderWrap = styled.div`
+const HeaderWrap = styled.div<{ bgColor?: string }>`
   position: fixed;
   width: 100%;
   height: 2rem;
@@ -11,7 +11,7 @@ const HeaderWrap = styled.div`
   display: flex;
   align-items: center;
   height: 2.75rem;
-  background-color: ${colors.white};
+  background-color: ${({ bgColor }) => bgColor || colors.white};
 `;
 
 const PageName = styled.div`
@@ -26,14 +26,15 @@ const PageName = styled.div`
 
 interface Headerprops {
   pageName: string;
+  bgColor?: string;
 }
 
-export default function TextHeader({ pageName }: Headerprops) {
+export default function TextHeader({ pageName, bgColor }: Headerprops) {
   const navigate = useNavigate();
 
   return (
     <>
-      <HeaderWrap>
+      <HeaderWrap bgColor={bgColor}>
         <VscChevronLeft fontSize={"1.8rem"} onClick={() => navigate(-1)} />
         <PageName>{pageName}</PageName>
       </HeaderWrap>

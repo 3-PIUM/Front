@@ -19,13 +19,14 @@ import Welcome from "./pages/Welcome";
 import PurchaseList from "./pages/PurchaseListPage";
 import PurchaseDetail from "./pages/PurchaseDetailPage";
 import Withdraw from "./pages/WithdrawPage";
-import SettingLanguange from "./pages/SettingLanguange";
+import SettingLanguange from "./pages/MypageLanguange";
 import IngredientDetail from "./pages/IngredientDetailPage";
 import ChatbotPage from "./pages/Chatbotpage";
 import MypagePersonalColor from "./pages/MypagePersonalColor";
 import MypageSkinType from "./pages/MypageSkinType";
 import MypageSkinConcern from "./pages/MypageSkinConcern";
 import MbtiTest from "./pages/MbtiTest";
+import MbtiQuestion from "./pages/MbtiQuestion";
 
 const routes = [
   // DefaultLayout
@@ -53,6 +54,10 @@ const routes = [
   {
     path: "/mbti",
     element: <MbtiTest />,
+  },
+  {
+    path: "/mbti/question",
+    element: <MbtiQuestion />,
   },
 
   // MenuLayout
