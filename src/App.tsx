@@ -1,12 +1,18 @@
-// App.tsx
 import { useLocation, useRoutes } from "react-router-dom";
 import routes from "./Routes";
+import { LanguageProvider } from "./context/LanguageContext"; // ✅ 추가
 
 const App = () => {
   const location = useLocation();
   const content = useRoutes(routes);
 
-  return <div key={location.key}>{content}</div>;
+  return (
+    <LanguageProvider>
+      {" "}
+      {/* ✅ 여기에 감싸기 */}
+      <div key={location.key}>{content}</div>
+    </LanguageProvider>
+  );
 };
 
 export default App;

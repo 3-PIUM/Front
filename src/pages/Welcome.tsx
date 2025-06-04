@@ -4,6 +4,7 @@ import colors from "../styles/colors";
 import Button from "../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import { useLocale } from "../context/LanguageContext";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -48,19 +49,21 @@ export default function Welcome() {
     navigate("/home");
   };
 
+  const { t } = useLocale();
+
   return (
     <>
       <Wrap>
         <Header />
         <MainText>
-          <HighLight>회원가입이 완료되었습니다</HighLight>
+          <HighLight>{t.welcome.text}</HighLight>
         </MainText>
         <ImageWrap>
           <Image src={WelcomeImage} alt="환영하는 캐릭터 이미지" />
         </ImageWrap>
       </Wrap>
       <ButtonWrapper>
-        <Button label="확인" onClick={goHome} />
+        <Button label={t.welcome.btn} onClick={goHome} />
       </ButtonWrapper>
     </>
   );

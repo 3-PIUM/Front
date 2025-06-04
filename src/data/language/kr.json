@@ -1,0 +1,64 @@
+{
+  "login": {
+    "emailPlaceholder": "이메일",
+    "passwordPlaceholder": "비밀번호",
+    "loginButton": "로그인하기",
+    "signupLink": "회원가입",
+    "error": "이메일 또는 비밀번호를 입력해주세요"
+  },
+  "signup": {
+    "pageName": "회원가입",
+    "nicknameTitle": "닉네임",
+    "nicknameDuplicate": "중복 확인",
+    "birthTitle": "생년월일 (8자리)",
+    "email": "이메일",
+    "emailRequest": "인증 요청",
+    "emailCheck": "이메일 인증",
+    "password": "비밀번호",
+    "passwordCheck": "비밀번호 확인",
+    "gender": "성별",
+    "male": "남자",
+    "female": "여자",
+    "signupBtn": "회원가입하기"
+  },
+  "aboutYou": {
+    "skipBtn": "건너뛰기",
+    "mainTitle": {
+      "line1": {
+        "prefix": "",
+        "highlight": "{nickname}",
+        "suffix": "님에 대해"
+      },
+      "line2": {
+        "prefix": "",
+        "highlight": "",
+        "suffix": "알려주세요!"
+      }
+    },
+    "subTitle": [
+      "몇 가지 정보만 등록하면 맞춤 추천이 시작돼요.",
+      "내 피부에 꼭 맞는 뷰티템을 알려드릴게요."
+    ],
+    "btn": "정보 등록하러 가기"
+  },
+  "welcome": {
+    "text": "회원가입이 완료되었습니다",
+    "btn": "확인"
+  },
+  "survey": {
+    "survey1": {
+      "skipBtn": "건너뛰기",
+      "title": "피부 타입에 대해 알려주세요!",
+      "btn": {
+        "type1": "건성",
+        "type2": "중성",
+        "type3": "지성",
+        "type4": "복합성",
+        "type5": "민감성",
+        "type6": "악건성",
+        "type7": "트러블성"
+      },
+      "goTestTitle": "잘 모르겠다면? 피부 타입 진단을 받아보세요"
+    }
+  }
+}
