@@ -3,6 +3,7 @@ import { useCartStore } from "../store/useCartStore";
 import TextHeader from "../components/TextHeader";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import OptionModal from "../components/OptionModal";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -26,7 +27,6 @@ const SelectAll = styled.span`
 
 const DeleteAll = styled.span`
   cursor: pointer;
-  /* color: #aaa; */
 `;
 
 const ProductCard = styled.div`
@@ -207,7 +207,8 @@ const CartPage = () => {
   const { items, removeItem, increaseQuantity, decreaseQuantity } =
     useCartStore();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-
+  const [showOptionFor, setShowOptionFor] = useState<string | null>(null);
+  const [optionList, setOptionList] = useState<string[]>([]);
   const navigate = useNavigate();
 
   const toggleSelect = (id: string) => {
@@ -240,6 +241,24 @@ const CartPage = () => {
         item.originalPrice * item.quantity * (1 - item.discountRate / 100),
       0
     );
+
+  const dummyOptions = items.reduce((acc, item) => {
+    acc[item.id] = ["옵션 A", "옵션 B", "옵션 C"];
+    return acc;
+  }, {} as { [key: string]: string[] });
+
+  useEffect(() => {
+    const initialOptions: { [key: string]: string[] } = {};
+    items.forEach((item) => {
+      initialOptions[item.id] = ["옵션 1", "옵션 2", "옵션 3"];
+    });
+    setOptionList(initialOptions);
+  }, [items]);
+
+  const handleOptionChange = (productId: string, newOption: string) => {
+    useCartStore.getState().updateOption(productId, newOption);
+    setShowOptionFor(null);
+  };
 
   return (
     <PageWrapper>
@@ -278,14 +297,20 @@ const CartPage = () => {
 
           <LowerInfo>
             <LeftRow>
-              <OptionButton>옵션 변경</OptionButton>
+              <OptionButton
+                onClick={() => {
+                  setShowOptionFor(item.id);
+                  setOptionList(dummyOptions[item.id] || ["기본 옵션"]);
+                }}
+              >
+                옵션 변경
+              </OptionButton>
               <QuantityControl>
                 <Button onClick={() => decreaseQuantity(item.id)}>-</Button>
                 <Count>{item.quantity}</Count>
                 <Button onClick={() => increaseQuantity(item.id)}>+</Button>
               </QuantityControl>
             </LeftRow>
-
             <RightColumn>
               <PriceBox>
                 <Discount>{item.discountRate}%</Discount>
@@ -317,6 +342,14 @@ const CartPage = () => {
           결제 QR 코드 생성하기
         </SubmitButton>
       </StickyBottom>
+
+      {showOptionFor && (
+        <OptionModal
+          options={optionList}
+          onSelect={(newOption) => handleOptionChange(showOptionFor, newOption)}
+          onClose={() => setShowOptionFor(null)}
+        />
+      )}
     </PageWrapper>
   );
 };
