@@ -7,6 +7,8 @@ import colors from "../styles/colors";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import InputField from "../components/InputField";
+import { useLocale } from "../context/LanguageContext";
 
 const Wrap = styled.div`
   display: flex;
@@ -21,21 +23,29 @@ const FormWrapper = styled.div`
   gap: 1rem;
 `;
 
-const DateField = styled.div`
+const ButtonInputWrap = styled.div`
   display: flex;
-  flex-direction: column;
   gap: 0.5rem;
+`;
+
+const DuplicateNicknamebtn = styled.button`
+  display: flex;
+  flex-shrink: 0;
+  width: max-content;
+  padding: 1rem;
+  font-size: 0.875rem;
+  border-radius: 1.25rem;
+  border: none;
+  background-color: ${colors.subPink};
+  justify-content: center;
+  align-items: center;
+  color: ${colors.mainPink};
+  font-weight: bold;
 `;
 
 const FieldName = styled.div`
   display: flex;
   font-size: 1rem;
-`;
-
-const DateWrap = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 `;
 
 const GenderField = styled.div`
@@ -77,37 +87,39 @@ const ButtonWrapper = styled.div`
 
 export default function Signup() {
   const [gender, setGender] = useState<"male" | "female" | null>(null);
+  const { t } = useLocale();
 
   return (
     <Wrap>
       <Header />
-      <TextHeader pageName="회원가입" />
+      <TextHeader pageName={t.signup.pageName} />
       <FormWrapper>
-        <TextField fieldName="닉네임" type="text" />
-        {/* <DateField>
-          <FieldName>생년월일</FieldName>
-          <DateWrap>
-            <InputField width="7.75rem" type="text" />
-            <div>년</div>
-            <InputField width="3.875rem" type="text" />
-            <div>월</div>
-            <InputField width="3.875rem" type="text" />
-            <div>일</div>
-          </DateWrap>
-        </DateField> */}
-        <TextField fieldName="생년월일 (8자리)" type="text" />
-        <TextField fieldName="이메일" type="text" />
-        <TextField fieldName="이메일 인증" type="text" />
-        <TextField fieldName="비밀번호" type="password" />
-        <TextField fieldName="비밀번호 확인" type="password" />
+        <FieldName>{t.signup.nicknameTitle}</FieldName>
+        <ButtonInputWrap>
+          <InputField type="text" />
+          <DuplicateNicknamebtn>
+            {t.signup.nicknameDuplicate}{" "}
+          </DuplicateNicknamebtn>
+        </ButtonInputWrap>
+        <TextField fieldName={t.signup.birthTitle} type="text" />
+        <FieldName>{t.signup.email} </FieldName>
+        <ButtonInputWrap>
+          <InputField type="text" />
+          <DuplicateNicknamebtn>{t.signup.emailRequest}</DuplicateNicknamebtn>
+        </ButtonInputWrap>
+        <TextField fieldName={t.signup.emailCheck} type="text" />
+        <TextField fieldName={t.signup.password} type="password" />
+        <TextField fieldName={t.signup.passwordCheck} type="password" />
         <GenderField>
-          <FieldName>성별</FieldName>
+          <FieldName>{t.signup.gender}</FieldName>
           <GenderButton>
             <GenderOption
               $selected={gender === "male"}
               onClick={() => setGender("male")}
             >
-              <GenderText $selected={gender === "male"}>남자</GenderText>
+              <GenderText $selected={gender === "male"}>
+                {t.signup.male}
+              </GenderText>
               <IoMale
                 color={gender === "male" ? colors.mainPink : colors.lightGrey}
               />
@@ -116,7 +128,9 @@ export default function Signup() {
               $selected={gender === "female"}
               onClick={() => setGender("female")}
             >
-              <GenderText $selected={gender === "female"}>여자</GenderText>
+              <GenderText $selected={gender === "female"}>
+                {t.signup.female}
+              </GenderText>
               <IoFemale
                 color={gender === "female" ? colors.mainPink : colors.lightGrey}
               />
@@ -126,7 +140,7 @@ export default function Signup() {
       </FormWrapper>
       <Link to="/about">
         <ButtonWrapper>
-          <Button label="회원가입하기" />
+          <Button label={t.signup.signupBtn} />
         </ButtonWrapper>
       </Link>
     </Wrap>

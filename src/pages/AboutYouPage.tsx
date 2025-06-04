@@ -4,6 +4,7 @@ import colors from "../styles/colors";
 import Button from "../components/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import { useLocale } from "../context/LanguageContext";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -74,6 +75,23 @@ export default function QuickInfo() {
   const nickname = "겸손한 치타";
   const navigate = useNavigate();
 
+  const { t, language } = useLocale();
+
+  const renderTitleLine = (
+    line: { prefix: string; highlight: string; suffix: string },
+    key: string
+  ) => {
+    return (
+      <Text key={key}>
+        {line.prefix}
+        {line.highlight && language === "en" ? " " : null}
+        {line.highlight ? <HighLight>{nickname}</HighLight> : null}
+        {line.suffix && language === "en" ? " " : null}
+        {line.suffix}
+      </Text>
+    );
+  };
+
   const goSurvey = () => {
     navigate("/survey");
   };
@@ -84,25 +102,25 @@ export default function QuickInfo() {
         <Header />
         <SkipWrapper>
           <Link to="/welcome">
-            <SkipText>건너뛰기</SkipText>
+            <SkipText>{t.aboutYou.skipBtn}</SkipText>
           </Link>
         </SkipWrapper>
         <MainText>
-          <Text>
-            <HighLight>{nickname}</HighLight>님에
-          </Text>
-          <Text>대해 알려주세요!</Text>
+          {renderTitleLine(t.aboutYou.mainTitle.line1, "line1")}
+          {t.aboutYou.mainTitle.line2 &&
+            renderTitleLine(t.aboutYou.mainTitle.line2, "line2")}
         </MainText>
         <SubText>
-          <Text>몇 가지 정보만 등록하면 맞춤 추천이 시작돼요.</Text>
-          <Text>내 피부에 꼭 맞는 뷰티템을 알려드릴게요.</Text>
+          {t.aboutYou.subTitle.map((text: string) => (
+            <Text>{text}</Text>
+          ))}
         </SubText>
         <ImageWrap>
           <Image src={WelcomeImage} alt="환영하는 캐릭터 이미지" />
         </ImageWrap>
       </Wrap>
       <ButtonWrapper>
-        <Button label="정보 등록하러 가기" onClick={goSurvey} />
+        <Button label={t.aboutYou.btn} onClick={goSurvey} />
       </ButtonWrapper>
     </>
   );

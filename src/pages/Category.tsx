@@ -5,6 +5,7 @@ import colors from "../styles/colors";
 import categories from "../data/categories.json";
 import { useRef, useState, useEffect } from "react";
 import { VscChevronRight } from "react-icons/vsc";
+import { useNavigate, useParams } from "react-router-dom";
 
 console.log(categories);
 
@@ -98,7 +99,9 @@ export default function Category() {
 
   const refMap = useRef<Record<string, HTMLDivElement | null>>({});
 
-  // ✅ 스크롤 위치 기준으로 화면 중앙과 가장 가까운 블록 찾기
+  const navigate = useNavigate();
+
+  // 스크롤 위치 기준으로 화면 중앙과 가장 가까운 블록 찾기
   useEffect(() => {
     const onScroll = () => {
       const middle = window.innerHeight * 0.3;
@@ -128,6 +131,17 @@ export default function Category() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [clicked]);
 
+  // const { categoryName, subcategoryName } = useParams();
+
+  const handleSubCategoryClick = (
+    categoryName: string,
+    subcategoryName: string
+  ) => {
+    const encodedCategory = encodeURIComponent(categoryName);
+    const encodedSubCategory = encodeURIComponent(subcategoryName);
+    navigate(`/category/${encodedCategory}/${encodedSubCategory}`);
+  };
+
   return (
     <Wrap>
       <Header />
@@ -136,10 +150,10 @@ export default function Category() {
       <CategoryWrapper>
         <CategoryItemList>
           <ul>
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <>
                 <CategoryItem
-                  key={category.id}
+                  key={index}
                   $selected={clicked === category.name}
                   onClick={() => setClicked(category.name)}
                 >
@@ -152,7 +166,7 @@ export default function Category() {
         <SubCategoryItemList>
           {categories.map((category, index) => (
             <div
-              key={category.id}
+              key={index}
               ref={(el) => {
                 if (el) {
                   refMap.current[category.name] = el;
@@ -166,7 +180,14 @@ export default function Category() {
                 </Icon>
               </Label>
               {category.items.map((item) => (
-                <SubCategoryItem key={item}>{item}</SubCategoryItem>
+                <SubCategoryItem
+                  key={item}
+                  onClick={() => {
+                    handleSubCategoryClick(category.name, item);
+                  }}
+                >
+                  {item}
+                </SubCategoryItem>
               ))}
               {index !== categories.length - 1 && <Divider />}
             </div>

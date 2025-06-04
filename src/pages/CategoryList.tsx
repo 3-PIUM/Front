@@ -1,0 +1,113 @@
+import styled from "styled-components";
+import Header from "../components/Header";
+import TextIconHeader from "../components/TextIconHeader ";
+import { useNavigate, useParams } from "react-router-dom";
+import categories from "../data/categories.json";
+import colors from "../styles/colors";
+import { useState } from "react";
+import { VscChevronDown } from "react-icons/vsc";
+import SortedModal from "../components/SortedModal";
+
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+`;
+
+const SubCategoryList = styled.div`
+  overflow-x: auto;
+  width: 100%;
+
+  // 스크롤바 안 보이게
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+`;
+
+const SubCategoryUl = styled.ul`
+  display: flex;
+  width: max-content;
+  margin-top: 0.5rem;
+  flex-wrap: nowrap;
+`;
+
+const SubCategoryLi = styled.li<{ $selected: boolean }>`
+  width: max-content;
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 0.5rem;
+  border-bottom: ${({ $selected }) => ($selected ? "2px solid black" : "none")};
+  font-weight: ${({ $selected }) => ($selected ? 700 : 400)};
+`;
+
+const SortOptions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: end;
+  margin-top: 1rem;
+`;
+
+const SortValue = styled.div`
+  font-size: 0.875rem;
+  color: ${colors.darkGrey};
+`;
+
+export default function CategoryList() {
+  const { categoryName, subcategoryName } = useParams();
+
+  const decodedCategory = decodeURIComponent(categoryName || "");
+  const decodedSubcategory = decodeURIComponent(subcategoryName || "");
+
+  const selectedCategory = categories.find(
+    (cat) => cat.name === decodedCategory
+  );
+
+  const navigate = useNavigate();
+
+  const [selectedSort, setSelectedSort] = useState("추천순");
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleShowSorts = () => {};
+
+  return (
+    <Wrap>
+      <Header />
+      <TextIconHeader pageName={decodedCategory} />
+      <SubCategoryList>
+        <SubCategoryUl>
+          {selectedCategory?.items.map((item) => (
+            <SubCategoryLi
+              $selected={item === decodedSubcategory}
+              onClick={() =>
+                navigate(
+                  `/category/${encodeURIComponent(
+                    decodedCategory
+                  )}/${encodeURIComponent(item)}`
+                )
+              }
+            >
+              {item}
+            </SubCategoryLi>
+          ))}
+        </SubCategoryUl>
+      </SubCategoryList>
+      <SortOptions onClick={handleShowSorts}>
+        <SortValue onClick={() => setOpenModal(true)}>{selectedSort}</SortValue>
+        <VscChevronDown fontSize={"1.2rem"} />
+      </SortOptions>
+      {openModal && (
+        <SortedModal
+          closeModal={() => setOpenModal(false)}
+          selectedSort={selectedSort}
+          onSelectedSort={(sort) => {
+            setSelectedSort(sort);
+            setOpenModal(false);
+          }}
+        />
+      )}
+    </Wrap>
+  );
+}

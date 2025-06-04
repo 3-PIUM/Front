@@ -26,6 +26,8 @@ import MypagePersonalColor from "./pages/MypagePersonalColor";
 import MypageSkinType from "./pages/MypageSkinType";
 import MypageSkinConcern from "./pages/MypageSkinConcern";
 import MbtiTest from "./pages/MbtiTest";
+import MbtiQuestion from "./pages/MbtiQuestion";
+import CategoryList from "./pages/CategoryList";
 
 const routes = [
   // DefaultLayout
@@ -54,6 +56,14 @@ const routes = [
   {
     path: "/mbti",
     element: <MbtiTest />,
+  },
+  {
+    path: "/mbti/question",
+    element: <MbtiQuestion />,
+  },
+  {
+    path: "/category/:categoryName/:subcategoryName",
+    element: <CategoryList />,
   },
 
   // MenuLayout
