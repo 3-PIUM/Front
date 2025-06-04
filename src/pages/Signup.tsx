@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import InputField from "../components/InputField";
 import { useLocale } from "../context/LanguageContext";
+import axios from "axios";
 
 const Wrap = styled.div`
   display: flex;
@@ -88,6 +89,28 @@ const ButtonWrapper = styled.div`
 export default function Signup() {
   const [gender, setGender] = useState<"male" | "female" | null>(null);
   const { t } = useLocale();
+  const [nickname, setNickname] = useState<string>("");
+  const [nicknameVaildMessage, setNicknameVaildMessage] = useState<
+    string | null
+  >(null);
+  const [nicknameVaild, setNicknameVaild] = useState<boolean | null>(null);
+  const [email, setEmail] = useState<string>("");
+
+  const handleDuplicate = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/member/check", {
+        params: {
+          nickname: nickname,
+        },
+      });
+      setNicknameVaild(true);
+      setNicknameVaildMessage("사용 가능한 닉네임입니다");
+    } catch {
+      setNicknameVaild(false);
+
+      setNicknameVaildMessage("사용 불가능한 닉네임입니다");
+    }
+  };
 
   return (
     <Wrap>
@@ -95,16 +118,35 @@ export default function Signup() {
       <TextHeader pageName={t.signup.pageName} />
       <FormWrapper>
         <FieldName>{t.signup.nicknameTitle}</FieldName>
-        <ButtonInputWrap>
-          <InputField type="text" />
-          <DuplicateNicknamebtn>
-            {t.signup.nicknameDuplicate}{" "}
-          </DuplicateNicknamebtn>
-        </ButtonInputWrap>
+        <div>
+          <ButtonInputWrap>
+            <InputField
+              type="text"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
+            <DuplicateNicknamebtn onClick={handleDuplicate}>
+              {t.signup.nicknameDuplicate}
+            </DuplicateNicknamebtn>
+          </ButtonInputWrap>
+          {nicknameVaildMessage && (
+            <div
+              style={{
+                color: nicknameVaild ? colors.darkGrey : colors.mainPink,
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                marginTop: "0.5rem",
+              }}
+            >
+              {nicknameVaildMessage}
+            </div>
+          )}
+        </div>
+
         <TextField fieldName={t.signup.birthTitle} type="text" />
         <FieldName>{t.signup.email} </FieldName>
         <ButtonInputWrap>
-          <InputField type="text" />
+          <InputField type="text" onChange={(e) => setEmail(e.target.value)} />
           <DuplicateNicknamebtn>{t.signup.emailRequest}</DuplicateNicknamebtn>
         </ButtonInputWrap>
         <TextField fieldName={t.signup.emailCheck} type="text" />
