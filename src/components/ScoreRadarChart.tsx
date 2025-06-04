@@ -1,79 +1,80 @@
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import React from "react";
+import {
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  ResponsiveContainer,
+  Radar,
+} from "recharts";
 import styled from "styled-components";
-import colors from "../styles/colors";
+import colors from "../styles/colors"; // colors.mainPink 등 정의되어 있어야 함
 
 interface IngredientData {
   score: string;
   count: number;
 }
 
-interface ScorePieChartProps {
+interface ScoreRadarChartProps {
   data: IngredientData[];
 }
 
 const ChartWrapper = styled.div`
   width: 100%;
   height: 300px;
+  margin-top: 1rem; // 전체 여백 제어
 `;
 
-const scoreColors = [
-  colors.mainPink, // 1~2점
-  "#f472b6", // 3~4점
-  "#facc15", // 5~6점
-  "#38bdf8", // 7~8점
-  "#a78bfa", // 9점
-];
+const Title = styled.h3`
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 0 1.5rem 0; // 하단 여백만 1rem 주기
+`;
 
-export default function ScorePieChart({ data }: ScorePieChartProps) {
-  const sortedData = [...data].sort((a, b) => a.score.localeCompare(b.score));
-
-  // 커스텀 라벨 렌더러
-  const renderCustomizedLabel = (props: any) => {
-    const RADIAN = Math.PI / 180;
-    const { cx, cy, midAngle, outerRadius, index, score } = props;
-    const radius = outerRadius + 12;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-      <text
-        x={x}
-        y={y}
-        fill={scoreColors[index % scoreColors.length]}
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-        fontWeight="bold"
-        fontSize="14px"
-      >
-        {score}
-      </text>
-    );
+export default function ScoreRadarChart({ data }: ScoreRadarChartProps) {
+  const scoreToNum = (score: string): number => {
+    if (score.includes("~")) {
+      const [start, end] = score.split("~").map(Number);
+      return (start + end) / 2;
+    }
+    return Number(score.replace(/[^0-9]/g, ""));
   };
+
+  const sortedData = [...data].sort(
+    (a, b) => scoreToNum(a.score) - scoreToNum(b.score)
+  );
 
   return (
     <ChartWrapper>
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie
-            data={sortedData}
+      <Title>소비자 리뷰 기반 평가</Title>
+      <ResponsiveContainer width="100%" height="100%">
+        <RadarChart
+          cx="50%"
+          cy="50%"
+          outerRadius="80%"
+          data={sortedData}
+          margin={{ top: 0, right: 20, bottom: 0, left: 20 }} // 여백 최소화
+        >
+          <defs>
+            <linearGradient
+              id="bluePinkGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
+              <stop offset="0%" stopColor={colors.mainPink} />
+              <stop offset="100%" stopColor="#38bdf8" />
+            </linearGradient>
+          </defs>
+          <PolarGrid />
+          <PolarAngleAxis dataKey="score" tick={{ fontSize: 12 }} />
+          <Radar
             dataKey="count"
-            nameKey="score"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-            label={renderCustomizedLabel}
-            labelLine={false}
-            startAngle={90}
-            endAngle={-270}
-          >
-            {sortedData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={scoreColors[index % scoreColors.length]}
-              />
-            ))}
-          </Pie>
-        </PieChart>
+            stroke="url(#bluePinkGradient)"
+            fill="url(#bluePinkGradient)"
+            fillOpacity={0.4}
+          />
+        </RadarChart>
       </ResponsiveContainer>
     </ChartWrapper>
   );

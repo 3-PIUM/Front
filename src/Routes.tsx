@@ -19,7 +19,7 @@ import Welcome from "./pages/Welcome";
 import PurchaseList from "./pages/PurchaseListPage";
 import PurchaseDetail from "./pages/PurchaseDetailPage";
 import Withdraw from "./pages/WithdrawPage";
-import SettingLanguange from "./pages/SettingLanguange";
+import SettingLanguange from "./pages/MypageLanguange";
 import IngredientDetail from "./pages/IngredientDetailPage";
 import ChatbotPage from "./pages/Chatbotpage";
 import MypagePersonalColor from "./pages/MypagePersonalColor";

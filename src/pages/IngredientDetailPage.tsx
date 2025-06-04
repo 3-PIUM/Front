@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
 import { useState } from "react";
-import ScoreRadarChart from "../components/ScoreRadarChart";
+import ScoreRadarChart from "../components/ScorePieChart";
 import TextHeader from "../components/TextHeader";
+import ScorePieChart from "../components/ScorePieChart";
 
 const dummyData = [
   {
@@ -151,7 +152,7 @@ export default function IngredientDetailPage() {
         </Description>
 
         <ChartCenterWrapper>
-          <ScoreRadarChart
+          <ScorePieChart
             data={[
               { score: "1~2점", count: 9 },
               { score: "3~4점", count: 3 },
