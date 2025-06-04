@@ -11,6 +11,7 @@ import Button from "../components/Button";
 import { useCartStore } from "../store/useCartStore";
 import FullHeader from "../components/TextIconHeader ";
 import IngredientWarningSummary from "../components/IngredientWarningSummary";
+import ScoreRadarChart from "../components/ScoreRadarChart";
 
 const HeaderBar = styled.div`
   display: flex;
@@ -112,6 +113,12 @@ export default function ProductDetail() {
     "자극 없이 순해서 민감한 피부도 쓸 수 있어요",
   ];
 
+  const radarChartData = [
+    { score: "피부타입", count: 38 },
+    { score: "피부고민", count: 76 },
+    { score: "자극도", count: 80 },
+  ];
+
   const [realReviews, setRealReviews] = useState<any[]>([]);
   useEffect(() => {
     if (newReview) {
@@ -177,6 +184,7 @@ export default function ProductDetail() {
       {selectedTab === "ingredient" && (
         <>
           <SkinTypeWrapper onClick={() => navigate("/ingredient-detail")}>
+            <ScoreRadarChart data={radarChartData} />
             <IngredientWarningSummary />
           </SkinTypeWrapper>
 

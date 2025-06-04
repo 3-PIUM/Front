@@ -52,6 +52,7 @@ const routes = [
     path: "/mypage/skinconcern",
     element: <MypageSkinConcern />,
   },
+
   {
     path: "/mbti",
     element: <MbtiTest />,
