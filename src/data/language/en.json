@@ -1,0 +1,9 @@
+{
+  "login": {
+    "emailPlaceholder": "email",
+    "passwordPlaceholder": "password",
+    "loginButton": "Login",
+    "signupLink": "Sing up",
+    "error": "Please enter your email or password"
+  }
+}
