@@ -22,9 +22,16 @@ const TextFieldWrap = styled.input<StyledInputProps>`
 interface InputProps {
   width?: string;
   type: "password" | "text";
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function InputField({ width, type }: InputProps) {
+export default function InputField({
+  width,
+  type,
+  value,
+  onChange,
+}: InputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -34,6 +41,8 @@ export default function InputField({ width, type }: InputProps) {
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       type={type === "password" ? "password" : "text"}
+      value={value}
+      onChange={onChange}
     ></TextFieldWrap>
   );
 }
