@@ -17,6 +17,7 @@ interface CartStore {
   removeItem: (id: string) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
+  updateOption: (id: string, newOption: string) => void;
 }
 
 export const useCartStore = create<CartStore>((set) => ({
@@ -49,6 +50,12 @@ export const useCartStore = create<CartStore>((set) => ({
         item.id === id
           ? { ...item, quantity: Math.max(item.quantity - 1, 1) }
           : item
+      ),
+    })),
+  updateOption: (id, newOption) =>
+    set((state) => ({
+      items: state.items.map((item) =>
+        item.id === id ? { ...item, option: newOption } : item
       ),
     })),
 }));
