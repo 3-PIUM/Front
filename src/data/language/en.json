@@ -3,7 +3,62 @@
     "emailPlaceholder": "email",
     "passwordPlaceholder": "password",
     "loginButton": "Login",
-    "signupLink": "Sing up",
+    "signupLink": "Sign up",
     "error": "Please enter your email or password"
+  },
+  "signup": {
+    "pageName": "Sign up",
+    "nicknameTitle": "Nickname",
+    "nicknameDuplicate": "Check",
+    "birthTitle": "Date of Birth (8 digits)",
+    "email": "Email",
+    "emailRequest": "Send Code",
+    "emailCheck": "Verify Email",
+    "password": "Password",
+    "passwordCheck": "Confirm Password",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "signupBtn": "Sign Up"
+  },
+  "aboutYou": {
+    "skipBtn": "Skip",
+    "mainTitle": {
+      "line1": {
+        "prefix": "Tell us about ",
+        "highlight": "",
+        "suffix": ""
+      },
+      "line2": {
+        "prefix": "",
+        "highlight": "{nickname}",
+        "suffix": "!"
+      }
+    },
+    "subTitle": [
+      "Just a few details and your personalized recommendations will begin.",
+      "We’ll help you find beauty items that fit your skin."
+    ],
+    "btn": "Start entering info"
+  },
+  "welcome": {
+    "text": "Sign-up completed",
+    "btn": "Confirm"
+  },
+  "survey": {
+    "survey1": {
+      "skipBtn": "Skip",
+      "title": "Tell us about your skin type!",
+      "btn": {
+        "type1": "Dry",
+        "type2": "Normal",
+        "type3": "Oily",
+        "type4": "Combination",
+        "type5": "Sensitive",
+        "type6": "Very Dry",
+        "type7": "Acne-prone"
+      },
+      "goTestTitle": "Not sure? Take the skin type test"
+    }
   }
 }

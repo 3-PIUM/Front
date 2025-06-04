@@ -5,5 +5,61 @@
     "loginButton": "ログイン",
     "signupLink": "会員登録",
     "error": "メールアドレスまたはパスワードを入力してください"
+  },
+  "signup": {
+    "pageName": "会員登録",
+    "nicknameTitle": "ニックネーム",
+    "nicknameDuplicate": "重複確認",
+    "birthTitle": "生年月日（8桁）",
+    "email": "メールアドレス",
+    "emailRequest": "認証リクエスト",
+    "emailCheck": "メール認証",
+    "password": "パスワード",
+    "passwordCheck": "パスワード確認",
+    "gender": "性別",
+    "male": "男性",
+    "female": "女性",
+    "signupBtn": "会員登録する"
+  },
+  "aboutYou": {
+    "skipBtn": "スキップ",
+    "mainTitle": {
+      "line1": {
+        "prefix": "",
+        "highlight": "{nickname}",
+        "suffix": "さんについて"
+      },
+      "line2": {
+        "prefix": "",
+        "highlight": "",
+        "suffix": "教えてください！"
+      }
+    },
+    "subTitle": [
+      "少しの情報を登録するだけで、",
+      "あなたにぴったりのおすすめが始まります。",
+      "あなたにぴったりの化粧品を、ご紹介します"
+    ],
+    "btn": "情報を登録する"
+  },
+  "welcome": {
+    "text": "会員登録が完了しました",
+    "btn": "確認"
+  },
+  "survey": {
+    "survey1": {
+      "skipBtn": "スキップ",
+      "title": "肌タイプについて教えてください！",
+      "btn": {
+        "type1": "乾燥肌",
+        "type2": "普通肌",
+        "type3": "脂性肌",
+        "type4": "混合肌",
+        "type5": "敏感肌",
+        "type6": "超乾燥肌",
+        "type7": "トラブル肌"
+      },
+      "goTestTitle": "よく分からない方は？ 肌タイプ診断を受けてみましょう"
+    }
   }
 }

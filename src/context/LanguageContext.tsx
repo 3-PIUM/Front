@@ -44,7 +44,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// ✅ useLocale 훅은 여기 같이 둡니다
 export function useLocale() {
   const context = useContext(LanguageContext);
   if (!context)

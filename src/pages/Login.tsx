@@ -83,9 +83,6 @@ const ErrorText = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 2rem;
-`;
-
-const BoldText = styled.div`
   font-weight: 700;
 `;
 
@@ -153,11 +150,7 @@ export default function Login() {
         <Link to="/signup">
           <SignUpWrap>{t.login.signupLink}</SignUpWrap>
         </Link>
-        {showError && (
-          <ErrorText>
-            <BoldText>이메일 또는 비밀번호</BoldText>를 입력해주세요
-          </ErrorText>
-        )}
+        {showError && <ErrorText>{t.login.error}</ErrorText>}
       </Wrap>
       <ButtonWrap>
         <Button label={t.login.loginButton} onClick={handleLogin} />

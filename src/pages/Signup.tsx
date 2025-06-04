@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import InputField from "../components/InputField";
+import { useLocale } from "../context/LanguageContext";
 
 const Wrap = styled.div`
   display: flex;
@@ -22,7 +23,7 @@ const FormWrapper = styled.div`
   gap: 1rem;
 `;
 
-const DuplicateNickname = styled.div`
+const ButtonInputWrap = styled.div`
   display: flex;
   gap: 0.5rem;
 `;
@@ -86,34 +87,39 @@ const ButtonWrapper = styled.div`
 
 export default function Signup() {
   const [gender, setGender] = useState<"male" | "female" | null>(null);
+  const { t } = useLocale();
 
   return (
     <Wrap>
       <Header />
-      <TextHeader pageName="회원가입" />
+      <TextHeader pageName={t.signup.pageName} />
       <FormWrapper>
-        <FieldName>닉네임</FieldName>
-        <DuplicateNickname>
+        <FieldName>{t.signup.nicknameTitle}</FieldName>
+        <ButtonInputWrap>
           <InputField type="text" />
-          <DuplicateNicknamebtn>중복 확인</DuplicateNicknamebtn>
-        </DuplicateNickname>
-        <TextField fieldName="생년월일 (8자리)" type="text" />
-        <FieldName>이메일</FieldName>
-        <DuplicateNickname>
+          <DuplicateNicknamebtn>
+            {t.signup.nicknameDuplicate}{" "}
+          </DuplicateNicknamebtn>
+        </ButtonInputWrap>
+        <TextField fieldName={t.signup.birthTitle} type="text" />
+        <FieldName>{t.signup.email} </FieldName>
+        <ButtonInputWrap>
           <InputField type="text" />
-          <DuplicateNicknamebtn>인증 요청</DuplicateNicknamebtn>
-        </DuplicateNickname>
-        <TextField fieldName="이메일 인증" type="text" />
-        <TextField fieldName="비밀번호" type="password" />
-        <TextField fieldName="비밀번호 확인" type="password" />
+          <DuplicateNicknamebtn>{t.signup.emailRequest}</DuplicateNicknamebtn>
+        </ButtonInputWrap>
+        <TextField fieldName={t.signup.emailCheck} type="text" />
+        <TextField fieldName={t.signup.password} type="password" />
+        <TextField fieldName={t.signup.passwordCheck} type="password" />
         <GenderField>
-          <FieldName>성별</FieldName>
+          <FieldName>{t.signup.gender}</FieldName>
           <GenderButton>
             <GenderOption
               $selected={gender === "male"}
               onClick={() => setGender("male")}
             >
-              <GenderText $selected={gender === "male"}>남자</GenderText>
+              <GenderText $selected={gender === "male"}>
+                {t.signup.male}
+              </GenderText>
               <IoMale
                 color={gender === "male" ? colors.mainPink : colors.lightGrey}
               />
@@ -122,7 +128,9 @@ export default function Signup() {
               $selected={gender === "female"}
               onClick={() => setGender("female")}
             >
-              <GenderText $selected={gender === "female"}>여자</GenderText>
+              <GenderText $selected={gender === "female"}>
+                {t.signup.female}
+              </GenderText>
               <IoFemale
                 color={gender === "female" ? colors.mainPink : colors.lightGrey}
               />
@@ -132,7 +140,7 @@ export default function Signup() {
       </FormWrapper>
       <Link to="/about">
         <ButtonWrapper>
-          <Button label="회원가입하기" />
+          <Button label={t.signup.signupBtn} />
         </ButtonWrapper>
       </Link>
     </Wrap>
