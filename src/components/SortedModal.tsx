@@ -39,13 +39,6 @@ const ModalBox = styled.div`
   }
 `;
 
-const TextBox = styled.div`
-  display: flex;
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-`;
-
 const SortedBox = styled.div`
   display: flex;
   flex-direction: column;
