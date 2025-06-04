@@ -12,6 +12,7 @@ import { useCartStore } from "../store/useCartStore";
 import FullHeader from "../components/TextIconHeader ";
 import IngredientWarningSummary from "../components/IngredientWarningSummary";
 import ScoreRadarChart from "../components/ScoreRadarChart";
+import IngredientScoreSummary from "../components/IngredientScoreSummary";
 
 const HeaderBar = styled.div`
   display: flex;
@@ -184,6 +185,7 @@ export default function ProductDetail() {
       {selectedTab === "ingredient" && (
         <>
           <SkinTypeWrapper onClick={() => navigate("/ingredient-detail")}>
+            <IngredientScoreSummary safe={3} caution={1} harmful={1} />
             <ScoreRadarChart data={radarChartData} />
             <IngredientWarningSummary />
           </SkinTypeWrapper>
