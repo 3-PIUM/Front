@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import LanguageModal from "../components/LanguageModal";
 import { useLocale } from "../context/LanguageContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -101,17 +103,30 @@ export default function Login() {
   const [password, setPassword] = useState<string>("");
   const [showError, setShowError] = useState<boolean>(false);
   const { language, setLanguage, t } = useLocale();
+  const navigate = useNavigate();
 
   const openLanguageModal = () => {
     setOpenModal(true);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       setShowError(true);
       return;
     }
     setShowError(false);
+    console.log("로그인 시도:", email, password);
+
+    try {
+      const response = await axios.post("http://localhost:8080/login", {
+        email,
+        password,
+      });
+      console.log("로그인 성공", response.data);
+      navigate("/home");
+    } catch (error) {
+      console.log("로그인 실패", error);
+    }
   };
 
   useEffect(() => {
