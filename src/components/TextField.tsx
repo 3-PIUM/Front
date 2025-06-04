@@ -17,14 +17,27 @@ interface TextFieldProps {
   fieldName: string;
   width?: string;
   type: "password" | "text";
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function TextField({ fieldName, width, type }: TextFieldProps) {
+export default function TextField({
+  fieldName,
+  width,
+  type,
+  value,
+  onChange,
+}: TextFieldProps) {
   return (
     <>
       <Wrap>
         <FieldName>{fieldName}</FieldName>
-        <InputField width={width} type={type} />
+        <InputField
+          width={width}
+          type={type}
+          value={value}
+          onChange={onChange}
+        />
       </Wrap>
     </>
   );
