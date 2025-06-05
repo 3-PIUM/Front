@@ -63,5 +63,86 @@
       },
       "goTestTitle": "Not sure? Take the skin type test"
     }
+  },
+  "category": [
+    {
+      "id": 1,
+      "name": "Skincare",
+      "items": [
+        "Skin/Toner",
+        "Essence/Serum/Ampoule",
+        "Cream",
+        "Lotion",
+        "Mist/Oil",
+        "Skincare Set",
+        "Skincare Device"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Mask Pack",
+      "items": ["Sheet Mask", "Pad", "Facial Pack", "Nose Pack", "Patch"]
+    },
+    {
+      "id": 3,
+      "name": "Makeup",
+      "items": ["Lip Makeup", "Base Makeup", "Eye Makeup"]
+    },
+    {
+      "id": 4,
+      "name": "Cleansing",
+      "items": [
+        "Cleansing Foam/Gel",
+        "Oil/Balm",
+        "Water/Milk",
+        "Peeling & Scrub",
+        "Tissue/Pad",
+        "Lip & Eye Remover",
+        "Cleansing Device"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Sun Care",
+      "items": [
+        "Sunscreen",
+        "Sun Stick",
+        "Sun Cushion",
+        "Sun Spray/Patch",
+        "Tanning/After Sun"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Men's Care",
+      "items": [
+        "Skincare",
+        "Makeup",
+        "Shaving/Waxing",
+        "Body Care",
+        "Hair Care",
+        "Fragrance",
+        "Fashion/Hobbies",
+        "Health Products/Foods"
+      ]
+    }
+  ],
+  "wishlist": {
+    "pageTitle": "Wishlist"
+  },
+
+  "mypage": {
+    "personalTitle": "Personal Information",
+    "editPersonal": "Edit Personal Information",
+    "skinProfile": "My Skin Profile",
+    "skinType": "Skin Type",
+    "personalColor": "Personal Color",
+    "skinConcerns": "Skin Concerns",
+    "purchase": "Purchase",
+    "purchaseHistory": "Purchase History",
+    "language": "Language",
+    "languageSetting": "Language Settings",
+    "logout": "Log Out",
+    "deleteAccount": "Delete Account"
   }
 }
