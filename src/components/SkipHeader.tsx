@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLocale } from "../context/LanguageContext";
 import axios from "axios";
 
