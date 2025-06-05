@@ -9,6 +9,7 @@ import LanguageModal from "../components/LanguageModal";
 import { useLocale } from "../context/LanguageContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { removeItem } from "framer-motion";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -120,7 +121,6 @@ export default function Login() {
       return;
     }
     setShowError(false);
-    console.log("로그인 시도:", email, password);
 
     try {
       const response = await axios.post("http://localhost:8080/login", {
@@ -128,6 +128,7 @@ export default function Login() {
         password,
       });
       console.log("로그인 성공", response.data.accessToken);
+      sessionStorage.removeItem("language");
       sessionStorage.setItem("accessToken", response.data.accessToken);
       navigate("/home");
     } catch (error) {

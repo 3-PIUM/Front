@@ -127,11 +127,29 @@
       ]
     }
   ],
+  "home": {
+    "personalInfo": {
+      "subtitle": {
+        "prefix": "Register your skin type now.",
+        "suffix": "Get personalized product recommendations!"
+      },
+      "registerSkinType": "Register your skin type"
+    },
+    "category": {
+      "all": "전체",
+      "skincare": "스킨케어",
+      "cleansing": "클렌징",
+      "makeup": "메이크업",
+      "suncare": "선케어",
+      "sheetmask": "마스크팩"
+    }
+  },
   "wishlist": {
     "pageTitle": "Wishlist"
   },
 
   "mypage": {
+    "pageTitle": "My Page",
     "personalTitle": "Personal Information",
     "editPersonal": "Edit Personal Information",
     "skinProfile": "My Skin Profile",

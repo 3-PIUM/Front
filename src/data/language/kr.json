@@ -127,10 +127,28 @@
       ]
     }
   ],
+  "home": {
+    "personalInfo": {
+      "subtitle": {
+        "prefix": "지금 피부 타입을 등록하고",
+        "suffix": "맞춤 추천을 받아보세요!"
+      },
+      "registerSkinType": "피부 타입 등록하기"
+    },
+    "category": {
+      "all": "전체",
+      "skincare": "스킨케어",
+      "cleansing": "클렌징",
+      "makeup": "메이크업",
+      "suncare": "선케어",
+      "sheetmask": "마스크팩"
+    }
+  },
   "wishlist": {
     "pageTitle": "찜"
   },
   "mypage": {
+    "pageTitle": "마이페이지",
     "personalTitle": "개인정보",
     "editPersonal": "개인정보 수정",
     "skinProfile": "나의 피부 정보",

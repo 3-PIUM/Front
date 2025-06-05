@@ -43,6 +43,7 @@ export default function SkipHeader() {
       console.log("성공");
       console.log(response);
       sessionStorage.removeItem("signupData");
+      sessionStorage.removeItem("language");
       navigate("/");
     } catch {
       console.log("실패");
