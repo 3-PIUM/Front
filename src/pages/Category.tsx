@@ -7,8 +7,6 @@ import { useRef, useState, useEffect } from "react";
 import { VscChevronRight } from "react-icons/vsc";
 import { useNavigate, useParams } from "react-router-dom";
 
-console.log(categories);
-
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;

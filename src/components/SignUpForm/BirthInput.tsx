@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import colors from "../../styles/colors";
+import { useEffect } from "react";
 
 const FieldName = styled.div`
   display: flex;
@@ -25,6 +26,22 @@ interface BirthProps {
   setBirthText: (value: string) => void;
 }
 
+function isValidDateString(dateStr: string): boolean {
+  if (dateStr.length !== 8) return false;
+
+  const year = parseInt(dateStr.slice(0, 4));
+  const month = parseInt(dateStr.slice(4, 6));
+  const day = parseInt(dateStr.slice(6, 8));
+
+  const date = new Date(year, month - 1, day);
+
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
+}
+
 export default function Birth({
   birth,
   setBirth,
@@ -32,6 +49,21 @@ export default function Birth({
   setBirthText,
 }: BirthProps) {
   const { t } = useLocale();
+
+  useEffect(() => {
+    if (birth.length === 0) {
+      setBirthText("");
+      return;
+    }
+    if (birth.length != 8) {
+      setBirthText("생년월일 8자를 입력해주세요");
+      return;
+    } else if (!isValidDateString(birth)) {
+      setBirthText("올바른 날짜를 입력해주세요");
+    } else {
+      setBirthText("");
+    }
+  }, [birth]);
 
   return (
     <>
@@ -58,14 +90,8 @@ export default function Birth({
             tabSize: "1",
           }}
         />
-        {birth.length > 1 && birth.length < 8 && birthText && (
-          <ErrorText
-            style={{
-              color: colors.mainPink,
-            }}
-          >
-            {birthText}
-          </ErrorText>
+        {birthText && (
+          <ErrorText style={{ color: colors.mainPink }}>{birthText}</ErrorText>
         )}
       </BirthWrap>
     </>

@@ -1,11 +1,8 @@
 import Button from "../components/Button";
-import TextField from "../components/TextField";
 import TextHeader from "../components/TextHeader";
 import styled from "styled-components";
-import colors from "../styles/colors";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
-import InputField from "../components/InputField";
 import { useLocale } from "../context/LanguageContext";
 import axios from "axios";
 import Nickname from "../components/SignUpForm/NicknameInput";
@@ -14,6 +11,7 @@ import EmailInput from "../components/SignUpForm/EmailInput";
 import PasswordInput from "../components/SignUpForm/PasswordInput";
 import CountryInput from "../components/SignUpForm/CountryInput";
 import GenderInput from "../components/SignUpForm/GenderInput";
+import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
   display: flex;
@@ -63,12 +61,23 @@ export default function Signup() {
   const [gender, setGender] = useState<"MALE" | "FEMALE" | null>(null);
   const [genderText, setGenderText] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (birth.length != 8) {
-      setBirthText("생년월일 8자를 입력해주세요");
-      return;
-    }
-  }, [birth]);
+  const navigate = useNavigate();
+
+  function isValidDateString(dateStr: string): boolean {
+    if (dateStr.length !== 8) return false;
+
+    const year = parseInt(dateStr.slice(0, 4));
+    const month = parseInt(dateStr.slice(4, 6));
+    const day = parseInt(dateStr.slice(6, 8));
+
+    const date = new Date(year, month - 1, day);
+
+    return (
+      date.getFullYear() === year &&
+      date.getMonth() === month - 1 &&
+      date.getDate() === day
+    );
+  }
 
   const formattedBirth =
     birth.length === 8
@@ -76,7 +85,7 @@ export default function Signup() {
       : "";
 
   const isNicknameValid = nicknameVaild === true;
-  const isBirthValid = birth.length === 8;
+  const isBirthValid = birth.length === 8 && isValidDateString(birth);
   const isEmailVerified = checkVerifyCode === true;
   const isPasswordMatch = password === secondPassword;
   const isCountrySelected = Boolean(country);
@@ -149,22 +158,18 @@ export default function Signup() {
 
   const handleSignup = async () => {
     if (isFormValid) {
-      try {
-        const response = await axios.post("http://localhost:8080/member/join", {
-          nickname,
-          birth: formattedBirth,
-          email,
-          password,
-          gender,
-          area: country,
-          lang: language,
-          skinType: null,
-          personalType: null,
-        });
-        console.log("회원가입 성공:", response);
-      } catch (error) {
-        console.log("회원가입 실패:", error);
-      }
+      const signupData = {
+        nickname,
+        birth: formattedBirth,
+        email,
+        password,
+        gender,
+        area: country,
+        lang: language,
+      };
+
+      sessionStorage.setItem("signupData", JSON.stringify(signupData));
+      navigate("/about");
     } else {
       if (!isNicknameValid) setNicknameVaildMessage("닉네임을 확인해주세요");
       else if (!isBirthValid) setBirthText("생년월일은 8자리를 입력해주세요");

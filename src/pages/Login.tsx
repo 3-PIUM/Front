@@ -105,6 +105,11 @@ export default function Login() {
   const { language, setLanguage, languageCode, t } = useLocale();
   const navigate = useNavigate();
 
+  // const storedDataString = sessionStorage.getItem("signupData");
+  // if (!storedDataString) return;
+  // const storedData = JSON.parse(storedDataString);
+  // console.log(storedData);
+
   const openLanguageModal = () => {
     setOpenModal(true);
   };
@@ -122,7 +127,8 @@ export default function Login() {
         email,
         password,
       });
-      console.log("로그인 성공", response.data);
+      console.log("로그인 성공", response.data.accessToken);
+      sessionStorage.setItem("accessToken", response.data.accessToken);
       navigate("/home");
     } catch (error) {
       console.log("로그인 실패", error);

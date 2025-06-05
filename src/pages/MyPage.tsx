@@ -5,6 +5,8 @@ import colors from "../styles/colors";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../components/PageTitle";
+import axiosInstance from "../api/axiosInstance";
+import axios from "axios";
 
 const TopWrapper = styled.div`
   display: flex;
@@ -95,6 +97,16 @@ export default function MyPage() {
   const nickname = "겸손한 치타";
   const navigate = useNavigate();
 
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post("/logout");
+      console.log("로그아웃 성공");
+      navigate("/");
+    } catch (error) {
+      console.log("로그아웃 실패:", error);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -143,7 +155,7 @@ export default function MyPage() {
         <Line />
         <SettingBox>
           <SettingItem>
-            <div>로그아웃</div>
+            <div onClick={handleLogout}>로그아웃</div>
             <div onClick={() => navigate("/Withdraw")}>탈퇴</div>
           </SettingItem>
         </SettingBox>
