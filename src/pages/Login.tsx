@@ -102,7 +102,7 @@ export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showError, setShowError] = useState<boolean>(false);
-  const { language, setLanguage, t } = useLocale();
+  const { language, setLanguage, languageCode, t } = useLocale();
   const navigate = useNavigate();
 
   const openLanguageModal = () => {
@@ -131,7 +131,7 @@ export default function Login() {
 
   useEffect(() => {
     localStorage.setItem("language", JSON.stringify(language));
-    console.log(language);
+    console.log(languageCode);
   }, [language]);
 
   return (
