@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 import { useNavigate } from "react-router-dom";
-import { useLocale } from "../context/LanguageContext";
+import { useLocale } from "../../context/LanguageContext";
 import axios from "axios";
 
 const SkipWrapper = styled.div`

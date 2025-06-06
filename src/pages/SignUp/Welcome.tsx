@@ -1,10 +1,10 @@
-import WelcomeImage from "../assets/images/welcomeImage.png";
+import WelcomeImage from "../../assets/images/welcomeImage.png";
 import styled from "styled-components";
-import colors from "../styles/colors";
-import Button from "../components/Button";
-import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import { useLocale } from "../context/LanguageContext";
+import colors from "../../styles/colors";
+import Button from "../../components/Button";
+import { useNavigate } from "react-router-dom";
+import Header from "../../components/Header";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`
   padding: 0 1rem;

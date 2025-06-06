@@ -1,16 +1,16 @@
-import Button from "../components/Button";
-import TextHeader from "../components/TextHeader";
+import Button from "../../components/Button";
+import TextHeader from "../../components/TextHeader";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import Header from "../components/Header";
-import { useLocale } from "../context/LanguageContext";
+import Header from "../../components/Header";
+import { useLocale } from "../../context/LanguageContext";
 import axios from "axios";
-import Nickname from "../components/SignUpForm/NicknameInput";
-import Birth from "../components/SignUpForm/BirthInput";
-import EmailInput from "../components/SignUpForm/EmailInput";
-import PasswordInput from "../components/SignUpForm/PasswordInput";
-import CountryInput from "../components/SignUpForm/CountryInput";
-import GenderInput from "../components/SignUpForm/GenderInput";
+import Nickname from "../../components/SignUpForm/NicknameInput";
+import Birth from "../../components/SignUpForm/BirthInput";
+import EmailInput from "../../components/SignUpForm/EmailInput";
+import PasswordInput from "../../components/SignUpForm/PasswordInput";
+import CountryInput from "../../components/SignUpForm/CountryInput";
+import GenderInput from "../../components/SignUpForm/GenderInput";
 import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`

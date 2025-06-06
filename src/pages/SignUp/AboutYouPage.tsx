@@ -1,8 +1,8 @@
-import WelcomeImage from "../assets/images/surveyImage.png";
+import WelcomeImage from "../../assets/images/surveyImage.png";
 import styled from "styled-components";
 import colors from "../../styles/colors";
 import Button from "../../components/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import { useLocale } from "../../context/LanguageContext";
 import SkipHeader from "../../components/Survey/SkipHeader";

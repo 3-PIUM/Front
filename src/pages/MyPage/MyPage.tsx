@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import ProfileSource from "../assets/images/ProfileImage.jpg";
-import dafaultProfileImage from "../assets/images/dafaultProfileImage.png";
+import ProfileSource from "../../assets/images/ProfileImage.jpg";
+import dafaultProfileImage from "../../assets/images/dafaultProfileImage.png";
 import { FiEdit2 } from "react-icons/fi";
-import colors from "../styles/colors";
-import Header from "../components/Header";
+import colors from "../../styles/colors";
+import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
-import PageTitle from "../components/PageTitle";
-import axiosInstance from "../api/axiosInstance";
+import PageTitle from "../../components/PageTitle";
+import axiosInstance from "../../api/axiosInstance";
 import { useEffect, useState } from "react";
-import { useLocale } from "../context/LanguageContext";
+import { useLocale } from "../../context/LanguageContext";
 
 const TopWrapper = styled.div`
   display: flex;

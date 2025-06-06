@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import Header from "../components/Header";
-import PageTitle from "../components/PageTitle";
-import colors from "../styles/colors";
-import categories from "../data/categories.json";
+import Header from "../../components/Header";
+import PageTitle from "../../components/PageTitle";
+import colors from "../../styles/colors";
+import categories from "../../data/categories.json";
 import { useRef, useState, useEffect } from "react";
 import { VscChevronRight } from "react-icons/vsc";
 import { useNavigate, useParams } from "react-router-dom";
