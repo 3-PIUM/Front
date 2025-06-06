@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
 import { createPortal } from "react-dom";
+import { useLocale } from "../context/LanguageContext";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -58,18 +59,18 @@ interface ModalProps {
   closeModal: () => void;
 }
 
-const sorted = ["추천순", "낮은 가격순", "할인율순"];
-
 function ModalContent({
   selectedSort,
   onSelectedSort,
   closeModal,
 }: ModalProps) {
+  const { t } = useLocale();
+
   return (
     <Wrapper onClick={closeModal}>
-      <ModalBox>
+      <ModalBox onClick={(e) => e.stopPropagation()}>
         <SortedBox>
-          {sorted.map((sort) => (
+          {t.category.sorted.map((sort: string) => (
             <Sorted
               key={sort}
               $selected={selectedSort === sort}

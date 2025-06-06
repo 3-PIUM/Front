@@ -5,7 +5,8 @@ import colors from "../../styles/colors";
 import categories from "../../data/categories.json";
 import { useRef, useState, useEffect } from "react";
 import { VscChevronRight } from "react-icons/vsc";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`
   display: flex;
@@ -41,7 +42,7 @@ const CategoryItem = styled.li<{ $selected: boolean }>`
   flex-direction: column;
   height: 3.5rem;
   line-height: 3.5rem;
-  font-family: ${({ $selected }) => ($selected ? 700 : 400)};
+  font-weight: ${({ $selected }) => ($selected ? 700 : 400)};
   color: ${({ $selected }) => ($selected ? colors.black : colors.mediumGrey)};
   font-size: 0.875rem;
   padding: 0 1rem;
@@ -92,22 +93,46 @@ const Divider = styled.hr`
 `;
 
 export default function Category() {
-  const [clicked, setClicked] = useState("스킨케어");
-  const selected = categories.find((c) => c.name === clicked);
+  const { t } = useLocale();
+  const [clicked, setClicked] = useState(t.category.categoryname[0].name);
+
+  const selected = t.category.categoryname.find(
+    (c: { id: number; name: string; items: string[] }) => c.name === clicked
+  );
 
   const refMap = useRef<Record<string, HTMLDivElement | null>>({});
 
   const navigate = useNavigate();
 
-  // 스크롤 위치 기준으로 화면 중앙과 가장 가까운 블록 찾기
   useEffect(() => {
     const onScroll = () => {
-      const middle = window.innerHeight * 0.3;
+      const categoryList = t.category.categoryname;
+      const scrollTop = window.scrollY;
+      const scrollBottom = scrollTop + window.innerHeight;
+      const pageHeight = document.documentElement.scrollHeight;
 
-      let closestCategory = clicked;
+      if (scrollTop === 0) {
+        const first = categoryList[0];
+        if (first && clicked !== first.name) {
+          setClicked(first.name);
+        }
+        return;
+      }
+
+      if (scrollBottom >= pageHeight - 1) {
+        const last = categoryList[categoryList.length - 1];
+        if (last && clicked !== last.name) {
+          setClicked(last.name);
+        }
+        return;
+      }
+
+      const middle = window.innerHeight * 0.3;
+      let currentCategory = clicked;
       let minDistance = Infinity;
 
-      categories.forEach((cat) => {
+      for (let i = 0; i < categoryList.length; i++) {
+        const cat = categoryList[i];
         const el = refMap.current[cat.name];
         if (el) {
           const rect = el.getBoundingClientRect();
@@ -115,21 +140,31 @@ export default function Category() {
 
           if (distance < minDistance) {
             minDistance = distance;
-            closestCategory = cat.name;
+            currentCategory = cat.name;
           }
         }
-      });
+      }
 
-      if (closestCategory !== clicked) {
-        setClicked(closestCategory);
+      if (currentCategory !== clicked) {
+        setClicked(currentCategory);
       }
     };
 
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, [clicked]);
+  }, [clicked, t]);
 
-  // const { categoryName, subcategoryName } = useParams();
+  const handleCategoryClick = (categoryName: string) => {
+    setClicked(categoryName);
+    const el = refMap.current[categoryName];
+    if (el) {
+      const top = el.offsetTop - 90;
+      window.scrollTo({
+        top,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const handleSubCategoryClick = (
     categoryName: string,
@@ -143,53 +178,70 @@ export default function Category() {
   return (
     <Wrap>
       <Header />
-      <PageTitle pageName="카테고리" />
+      <PageTitle pageName={t.category.pageTitle} />
       <Line />
       <CategoryWrapper>
         <CategoryItemList>
           <ul>
-            {categories.map((category, index) => (
-              <>
-                <CategoryItem
-                  key={index}
-                  $selected={clicked === category.name}
-                  onClick={() => setClicked(category.name)}
-                >
-                  {category.name}
-                </CategoryItem>
-              </>
-            ))}
+            {t.category.categoryname.map(
+              (
+                item: { id: number; name: string; items: string[] },
+                index: number
+              ) => (
+                <>
+                  <CategoryItem
+                    key={index}
+                    $selected={clicked === item.name}
+                    onClick={() => {
+                      setClicked(item.name);
+                      handleCategoryClick(item.name);
+                    }}
+                  >
+                    {item.name}
+                  </CategoryItem>
+                </>
+              )
+            )}
           </ul>
         </CategoryItemList>
         <SubCategoryItemList>
-          {categories.map((category, index) => (
-            <div
-              key={index}
-              ref={(el) => {
-                if (el) {
-                  refMap.current[category.name] = el;
-                }
-              }}
-            >
-              <Label>
-                <Title>{category.name}</Title>
-                <Icon>
-                  <VscChevronRight fontSize={"1.5rem"} />
-                </Icon>
-              </Label>
-              {category.items.map((item) => (
-                <SubCategoryItem
-                  key={item}
-                  onClick={() => {
-                    handleSubCategoryClick(category.name, item);
-                  }}
-                >
-                  {item}
-                </SubCategoryItem>
-              ))}
-              {index !== categories.length - 1 && <Divider />}
-            </div>
-          ))}
+          {t.category.categoryname.map(
+            (
+              item: { id: number; name: string; items: string[] },
+              index: number
+            ) => (
+              <div
+                key={index}
+                ref={(el) => {
+                  if (el) {
+                    refMap.current[item.name] = el;
+                  }
+                }}
+              >
+                <Label>
+                  <Title>{item.name}</Title>
+                  <Icon>
+                    <VscChevronRight fontSize={"1.5rem"} />
+                  </Icon>
+                </Label>
+                {item.items.map((subcategory) => (
+                  <SubCategoryItem
+                    key={subcategory}
+                    onClick={() => {
+                      handleSubCategoryClick(item.name, subcategory);
+                      refMap.current[item.name]?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                    }}
+                  >
+                    {subcategory}
+                  </SubCategoryItem>
+                ))}
+                {index !== categories.length - 1 && <Divider />}
+              </div>
+            )
+          )}
         </SubCategoryItemList>
       </CategoryWrapper>
     </Wrap>

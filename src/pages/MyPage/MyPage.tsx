@@ -98,7 +98,7 @@ const Line = styled.hr`
 export default function MyPage() {
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
-  const { setLanguage, t } = useLocale();
+  const { t } = useLocale();
 
   useEffect(() => {
     const fetchMemberInfo = async () => {

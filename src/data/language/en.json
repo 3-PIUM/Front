@@ -1,4 +1,10 @@
 {
+  "menuLayout": {
+    "category": "Category",
+    "report": "Report",
+    "wishlist": "Wishlist",
+    "mypage": "MyPage"
+  },
   "login": {
     "emailPlaceholder": "email",
     "passwordPlaceholder": "password",
@@ -64,69 +70,73 @@
       "goTestTitle": "Not sure? Take the skin type test"
     }
   },
-  "category": [
-    {
-      "id": 1,
-      "name": "Skincare",
-      "items": [
-        "Skin/Toner",
-        "Essence/Serum/Ampoule",
-        "Cream",
-        "Lotion",
-        "Mist/Oil",
-        "Skincare Set",
-        "Skincare Device"
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Mask Pack",
-      "items": ["Sheet Mask", "Pad", "Facial Pack", "Nose Pack", "Patch"]
-    },
-    {
-      "id": 3,
-      "name": "Makeup",
-      "items": ["Lip Makeup", "Base Makeup", "Eye Makeup"]
-    },
-    {
-      "id": 4,
-      "name": "Cleansing",
-      "items": [
-        "Cleansing Foam/Gel",
-        "Oil/Balm",
-        "Water/Milk",
-        "Peeling & Scrub",
-        "Tissue/Pad",
-        "Lip & Eye Remover",
-        "Cleansing Device"
-      ]
-    },
-    {
-      "id": 5,
-      "name": "Sun Care",
-      "items": [
-        "Sunscreen",
-        "Sun Stick",
-        "Sun Cushion",
-        "Sun Spray/Patch",
-        "Tanning/After Sun"
-      ]
-    },
-    {
-      "id": 6,
-      "name": "Men's Care",
-      "items": [
-        "Skincare",
-        "Makeup",
-        "Shaving/Waxing",
-        "Body Care",
-        "Hair Care",
-        "Fragrance",
-        "Fashion/Hobbies",
-        "Health Products/Foods"
-      ]
-    }
-  ],
+  "category": {
+    "pageTitle": "Category",
+    "categoryname": [
+      {
+        "id": 1,
+        "name": "Skincare",
+        "items": [
+          "Skin/Toner",
+          "Essence/Serum/Ampoule",
+          "Cream",
+          "Lotion",
+          "Mist/Oil",
+          "Skincare Set",
+          "Skincare Device"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Mask Pack",
+        "items": ["Sheet Mask", "Pads", "Facial Pack", "Nose Pack", "Patches"]
+      },
+      {
+        "id": 3,
+        "name": "Makeup",
+        "items": ["Lip Makeup", "Base Makeup", "Eye Makeup"]
+      },
+      {
+        "id": 4,
+        "name": "Cleansing",
+        "items": [
+          "Cleansing Foam/Gel",
+          "Oil/Balm",
+          "Water/Milk",
+          "Peeling & Scrub",
+          "Tissues/Pads",
+          "Lip & Eye Remover",
+          "Cleansing Device"
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Sun Care",
+        "items": [
+          "Sun Cream",
+          "Sun Stick",
+          "Sun Cushion",
+          "Sun Spray/Patch",
+          "Tanning/After Sun"
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Men's Care",
+        "items": [
+          "Skincare",
+          "Makeup",
+          "Shaving/Waxing",
+          "Body Care",
+          "Hair Care",
+          "Fragrance",
+          "Fashion/Hobbies",
+          "Health Supplies/Food"
+        ]
+      }
+    ],
+    "sorted": ["Recommended", "Lowest Price", "Discount"]
+  },
   "home": {
     "personalInfo": {
       "subtitle": {
@@ -134,14 +144,6 @@
         "suffix": "Get personalized product recommendations!"
       },
       "registerSkinType": "Register your skin type"
-    },
-    "category": {
-      "all": "전체",
-      "skincare": "스킨케어",
-      "cleansing": "클렌징",
-      "makeup": "메이크업",
-      "suncare": "선케어",
-      "sheetmask": "마스크팩"
     }
   },
   "wishlist": {
