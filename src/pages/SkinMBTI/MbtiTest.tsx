@@ -1,4 +1,4 @@
-import TextHeader from "../components/TextHeader";
+import TextHeader from "../../components/TextHeader";
 import styled from "styled-components";
 import mbtiCharacter from "../assets/images/testImage.png";
 import { useEffect } from "react";
@@ -44,7 +44,7 @@ const Button = styled.button`
   background-color: #a6ff83;
 `;
 
-export default function MbtiQuestion() {
+export default function MbtiTest() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,7 +71,16 @@ export default function MbtiQuestion() {
   return (
     <Wrap>
       <TextHeader pageName="피부 MBTI 진단" bgColor="transparent" />
-      <Wrapper></Wrapper>
+      <Wrapper>
+        <Title>
+          <div>나의 피부 MBTI</div>
+          <div>테스트하러 가기!</div>
+        </Title>
+        <Character src={mbtiCharacter} alt="mbti 캐릭터" />
+        <Button onClick={() => navigate("/mbti/question")}>
+          테스트하러 가기
+        </Button>
+      </Wrapper>
     </Wrap>
   );
 }
