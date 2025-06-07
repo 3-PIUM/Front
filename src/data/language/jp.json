@@ -1,4 +1,10 @@
 {
+  "menuLayout": {
+    "category": "カテゴリー",
+    "report": "成分レポート",
+    "wishlist": "ウィッシュリスト",
+    "mypage": "マイページ"
+  },
   "login": {
     "emailPlaceholder": "メールアドレス",
     "passwordPlaceholder": "パスワード",
@@ -64,5 +70,122 @@
       },
       "goTestTitle": "よく分からない方は？ 肌タイプ診断を受けてみましょう"
     }
+  },
+  "category": {
+    "pageTitle": "カテゴリ",
+    "categoryname": [
+      {
+        "id": 1,
+        "name": "スキンケア",
+        "items": [
+          "スキン/トナー",
+          "エッセンス/セラム/アンプル",
+          "クリーム",
+          "ローション",
+          "ミスト/オイル",
+          "スキンケアセット",
+          "スキンケアデバイス"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "マスクパック",
+        "items": [
+          "シートマスク",
+          "パッド",
+          "フェイシャルパック",
+          "ノーズパック",
+          "パッチ"
+        ]
+      },
+      {
+        "id": 3,
+        "name": "メイクアップ",
+        "items": ["リップメイク", "ベースメイク", "アイメイク"]
+      },
+      {
+        "id": 4,
+        "name": "クレンジング",
+        "items": [
+          "クレンジングフォーム/ジェル",
+          "オイル/バーム",
+          "ウォーター/ミルク",
+          "ピーリング & スクラブ",
+          "ティッシュ/パッド",
+          "リップ & アイリムーバー",
+          "クレンジングデバイス"
+        ]
+      },
+      {
+        "id": 5,
+        "name": "サンケア",
+        "items": [
+          "日焼け止めクリーム",
+          "サンスティック",
+          "サンクッション",
+          "サンスプレー/サンパッチ",
+          "タンニング/アフターサン"
+        ]
+      },
+      {
+        "id": 6,
+        "name": "メンズケア",
+        "items": [
+          "スキンケア",
+          "メイクアップ",
+          "シェービング/ワックス",
+          "ボディケア",
+          "ヘアケア",
+          "フレグランス",
+          "ファッション/趣味",
+          "健康用品/食品"
+        ]
+      }
+    ],
+    "sorted": ["おすすめ順", "価格が安い順", "割引順"]
+  },
+  "home": {
+    "personalInfo": {
+      "subtitle": {
+        "prefix": "今すぐ肌タイプを登録して、",
+        "suffix": "あなたに合った商品を見つけましょう！"
+      },
+      "registerSkinType": "肌タイプを登録する"
+    }
+  },
+  "wishlist": {
+    "pageTitle": "お気に入り"
+  },
+  "mypage": {
+    "pageTitle": "マイページ (",
+    "personalTitle": "個人情報",
+    "editPersonal": "個人情報を編集",
+    "skinProfile": "私の肌情報",
+    "skinType": "肌タイプ",
+    "personalColor": "パーソナルカラー",
+    "skinConcerns": "肌の悩み",
+    "purchase": "購入",
+    "purchaseHistory": "購入履歴",
+    "language": "言語",
+    "languageSetting": "言語設定",
+    "logout": "ログアウト",
+    "deleteAccount": "退会"
+  },
+  "cart": {
+    "pageTitle": "カート",
+    "selected": "選択済み",
+    "deleteAll": "すべて選択",
+    "changeOption": "オプションを変更",
+    "qrCode": "支払い用QRコードを生成"
+  },
+  "productDetail": {
+    "stockQuantity": "在庫数",
+    "quantityNumber": {
+      "one": "個",
+      "more": "個"
+    },
+    "addCart": "カートに入れる",
+    "detail": "商品詳細ページ",
+    "analysisAndReview": "成分分析とレビュー"
   }
 }

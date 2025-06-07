@@ -4,6 +4,7 @@ import TextHeader from "../components/TextHeader";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import OptionModal from "../components/OptionModal";
+import { useLocale } from "../context/LanguageContext";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -210,6 +211,7 @@ const CartPage = () => {
   const [showOptionFor, setShowOptionFor] = useState<string | null>(null);
   // const [optionList, setOptionList] = useState<{ [key: string]: string[] }>({});
   const navigate = useNavigate();
+  const { t } = useLocale();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -253,13 +255,13 @@ const CartPage = () => {
 
   return (
     <PageWrapper>
-      <TextHeader pageName="장바구니" />
+      <TextHeader pageName={t.cart.pageTitle} />
 
       <HeaderControlBar>
         <SelectAll onClick={toggleAll}>
-          선택 ({selectedIds.length}/{items.length})
+          {t.cart.selected} ({selectedIds.length}/{items.length})
         </SelectAll>
-        <DeleteAll onClick={handleDeleteSelected}>전체 삭제</DeleteAll>
+        <DeleteAll onClick={handleDeleteSelected}>{t.cart.deleteAll}</DeleteAll>
       </HeaderControlBar>
 
       {items.map((item) => (
@@ -327,7 +329,7 @@ const CartPage = () => {
             });
           }}
         >
-          결제 QR 코드 생성하기
+          {t.cart.qrCode}
         </SubmitButton>
       </StickyBottom>
 

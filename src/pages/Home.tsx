@@ -8,8 +8,42 @@ import Header from "../components/Header";
 import StoreModal from "../components/StoreModal";
 import bannerImg from "../assets/images/mbtiBanner.png";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../api/axiosInstance";
+import surveyImage from "../assets/images/surveyImage.png";
+import { useLocale } from "../context/LanguageContext";
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${colors.subPink};
+  padding: 1.5rem 1rem;
+  margin: 44px 1rem 0 1rem;
+  border-radius: 1rem;
+  color: ${colors.mainPink};
+  text-align: center;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1rem;
+`;
+
+const InfoBoxBtn = styled.button`
+  display: flex;
+  background-color: ${colors.mainPink};
+  border: none;
+  width: fit-content;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  color: ${colors.white};
+  font-size: 1rem;
+  /* font-weight: 700; */
+`;
+
+const InfoSubTitle = styled.div`
   display: flex;
   flex-direction: column;
 `;
@@ -82,6 +116,8 @@ const RecommandListWrap = styled.div`
 const RecommandBox = styled.div``;
 
 const RecommandTitle = styled.div`
+  display: flex;
+  flex-direction: row;
   font-weight: 700;
   font-size: 1.125rem;
 `;
@@ -150,10 +186,10 @@ const RecommandListWrapper = styled.div`
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("전체");
-  const nickname = "겸손한 치타";
-  const skinType = "지성";
   const [showStoreModal, setShowStoreModal] = useState(false);
   const navigate = useNavigate();
+  const [memberInfo, setMemberInfo] = useState<any>(null);
+  const { t, setLanguage } = useLocale();
 
   const tabs = [
     { id: 1, label: "전체", items: [] },
@@ -372,27 +408,57 @@ export default function Home() {
     }
   }, [activeTab]);
 
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      try {
+        const response = await axiosInstance.get("/member");
+        const result = response.data.result;
+        if (result.language === "EN") setLanguage("English");
+        if (result.language === "JP") setLanguage("日本語");
+        if (result.language === "KR") setLanguage("한국어");
+      } catch (error) {
+        console.error("회원 정보 불러오기 실패:", error);
+      }
+    };
+    fetchMemberInfo();
+  }, []);
+
   return (
     <Wrapper>
       <Header />
       <LogoHeader onStoreClick={() => setShowStoreModal(true)} />
-      <PersonalInfo>
-        <TextInfo>
-          <UserSkin>
-            <div>{nickname}님은</div>
-            <SkinType>
-              <Highlight>{skinType} 피부</Highlight> 입니다
-            </SkinType>
-          </UserSkin>
-          <RecommendInfo>
-            <RecommendTitle>추천 성분</RecommendTitle>
-            <Ingredients>히알루론산, 글리세린</Ingredients>
-          </RecommendInfo>
-        </TextInfo>
-        <CharacterBox>
-          <CharacterImg src={OilySkin} alt="지성 피부" />
-        </CharacterBox>
-      </PersonalInfo>
+      {memberInfo?.skinType == null ? (
+        <InfoBox>
+          <img src={surveyImage} width="60%" />
+          <InfoSubTitle>
+            <div>{t.home.personalInfo.subtitle.prefix}</div>
+            <div>{t.home.personalInfo.subtitle.suffix}</div>
+          </InfoSubTitle>
+          <InfoBoxBtn onClick={() => navigate("/mypage/skintype")}>
+            {t.home.personalInfo.registerSkinType}
+          </InfoBoxBtn>
+        </InfoBox>
+      ) : (
+        <PersonalInfo>
+          <TextInfo>
+            <UserSkin>
+              <div>{memberInfo?.nickname ?? "null"}님은</div>
+              <SkinType>
+                <Highlight>{memberInfo?.skinType ?? "null"} 피부</Highlight>{" "}
+                입니다
+              </SkinType>
+            </UserSkin>
+            <RecommendInfo>
+              <RecommendTitle>추천 성분</RecommendTitle>
+              <Ingredients>히알루론산, 글리세린</Ingredients>
+            </RecommendInfo>
+          </TextInfo>
+          <CharacterBox>
+            <CharacterImg src={OilySkin} alt="지성 피부" />
+          </CharacterBox>
+        </PersonalInfo>
+      )}
+
       <BannerWrap>
         <BannerImage
           src={bannerImg}
@@ -402,7 +468,9 @@ export default function Home() {
       </BannerWrap>
       <RecommandListWrap>
         <RecommandBox>
-          <RecommandTitle>겸손한 치타님을 위한 추천 제품</RecommandTitle>
+          <RecommandTitle>
+            <div>{memberInfo?.nickname ?? "null"}</div>님을 위한 추천 제품
+          </RecommandTitle>
           <RecommandCategoryWrapper>
             {tabs.map((item) => {
               return (

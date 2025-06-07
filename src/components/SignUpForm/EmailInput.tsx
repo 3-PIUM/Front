@@ -3,6 +3,8 @@ import InputField from "../InputField";
 import { useLocale } from "../../context/LanguageContext";
 import axios from "axios";
 import colors from "../../styles/colors";
+import { useState, useEffect } from "react";
+import { VscCheck } from "react-icons/vsc";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,7 +28,7 @@ const ButtonInputWrap = styled.div`
   gap: 0.5rem;
 `;
 
-const FunctionBtn = styled.button`
+const FunctionBtn = styled.button<{ $disabled?: boolean }>`
   display: flex;
   flex-shrink: 0;
   width: max-content;
@@ -34,10 +36,12 @@ const FunctionBtn = styled.button`
   font-size: 0.875rem;
   border-radius: 1.25rem;
   border: none;
-  background-color: ${colors.subPink};
+  background-color: ${({ $disabled }) =>
+    $disabled ? colors.lightGrey : colors.subPink};
   justify-content: center;
   align-items: center;
-  color: ${colors.mainPink};
+  color: ${({ $disabled }) =>
+    $disabled ? colors.mediumGrey : colors.mainPink};
   font-weight: bold;
 `;
 
@@ -71,6 +75,17 @@ export default function EmailInput({
   setCheckVerifyCode,
 }: EmailProps) {
   const { t } = useLocale();
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (timeLeft === null || timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev != null ? prev - 1 : null));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
   const handleSendEmail = async () => {
     if (!email) {
@@ -79,11 +94,12 @@ export default function EmailInput({
       return;
     }
     try {
-      const response = await axios.post("http://localhost:8080/main/send", {
+      const response = await axios.post("http://localhost:8080/mail/send", {
         email,
       });
       setSendEmail(true);
-      setSendEmailText("이메일을 확인해주세요");
+      setSendEmailText(null);
+      setTimeLeft(180);
     } catch {
       setSendEmail(false);
       setSendEmailText("이메일 전송에 실패했습니다");
@@ -98,13 +114,15 @@ export default function EmailInput({
 
     try {
       const verifyResponse = await axios.post(
-        "http://localhost:8080/main/verify",
+        "http://localhost:8080/mail/verify",
         {
           email,
-          verifyCode,
+          code: verifyCode,
         }
       );
       setCheckVerifyCode(true);
+      setVerifyCodeText(null);
+      //인증 성공시 비활성화
     } catch {
       setCheckVerifyCode(false);
       setVerifyCodeText("인증에 실패했습니다. 다시 시도해주세요.");
@@ -123,8 +141,12 @@ export default function EmailInput({
                 setEmail(e.target.value);
                 setSendEmailText(null);
               }}
+              disabled={checkVerifyCode === true}
             />
-            <FunctionBtn onClick={handleSendEmail}>
+            <FunctionBtn
+              onClick={handleSendEmail}
+              $disabled={checkVerifyCode === true}
+            >
               {t.signup.emailRequest}
             </FunctionBtn>
           </ButtonInputWrap>
@@ -140,6 +162,19 @@ export default function EmailInput({
               {sendEmailText}
             </div>
           )}
+          {timeLeft && !checkVerifyCode && (
+            <div
+              style={{
+                color: colors.mainPink,
+                fontSize: "0.875rem",
+                fontWeight: 500,
+                marginTop: "0.5rem",
+              }}
+            >
+              남은 시간: {Math.floor(timeLeft / 60)}:
+              {(timeLeft % 60).toString().padStart(2, "0")}
+            </div>
+          )}
         </div>
       </InputBox>
 
@@ -153,9 +188,17 @@ export default function EmailInput({
                 setVerifyCode(e.target.value);
                 setVerifyCodeText(null);
               }}
+              disabled={checkVerifyCode === true}
             />
-            <FunctionBtn onClick={handleCheckVerify}>
-              {t.signup.emailVerify}
+            <FunctionBtn
+              onClick={handleCheckVerify}
+              $disabled={checkVerifyCode === true}
+            >
+              {checkVerifyCode === true ? (
+                <VscCheck fontSize={"1rem"} />
+              ) : (
+                t.signup.emailVerify
+              )}
             </FunctionBtn>
           </ButtonInputWrap>
           {sendEmailText && (
@@ -167,7 +210,7 @@ export default function EmailInput({
                 marginTop: "0.5rem",
               }}
             >
-              {sendEmailText}
+              {verifyCodeText}
             </div>
           )}
         </div>

@@ -8,6 +8,7 @@ import colors from "../styles/colors";
 import { LuScanLine } from "react-icons/lu";
 import { Link, useLocation } from "react-router-dom";
 import ChatBotButton from "../components/ChatBotButton";
+import { useLocale } from "../context/LanguageContext";
 
 const MenuWrap = styled.div`
   position: fixed;
@@ -77,37 +78,39 @@ const StyledLink = styled(Link)`
   color: inherit;
 `;
 
-const leftmenuItems = [
-  {
-    path: "/category",
-    label: "카테고리",
-    icon: <LuMenu fontSize="1.25rem" color={colors.lightGrey} />,
-    activeIcon: <LuSquareMenu fontSize="1.25rem" color={colors.mainPink} />,
-  },
-  {
-    path: "/home",
-    label: "성분리포트",
-    icon: <FaRegFileLines fontSize="1.25rem" color={colors.lightGrey} />,
-    activeIcon: <FaFileLines fontSize="1.25rem" color={colors.mainPink} />,
-  },
-];
-
-const rightMenuItems = [
-  {
-    path: "/wishlist",
-    label: "찜",
-    icon: <FaRegHeart fontSize="1.25rem" color={colors.lightGrey} />,
-    activeIcon: <FaHeart fontSize="1.25rem" color={colors.mainPink} />,
-  },
-  {
-    path: "/mypage",
-    label: "마이페이지",
-    icon: <FaRegUser fontSize="1.25rem" color={colors.lightGrey} />,
-    activeIcon: <FaUser fontSize="1.25rem" color={colors.mainPink} />,
-  },
-];
-
 export default function MenuLayout() {
+  const { t } = useLocale();
+
+  const leftmenuItems = [
+    {
+      path: "/category",
+      label: t.menuLayout.category,
+      icon: <LuMenu fontSize="1.25rem" color={colors.lightGrey} />,
+      activeIcon: <LuSquareMenu fontSize="1.25rem" color={colors.mainPink} />,
+    },
+    {
+      path: "/home",
+      label: t.menuLayout.report,
+      icon: <FaRegFileLines fontSize="1.25rem" color={colors.lightGrey} />,
+      activeIcon: <FaFileLines fontSize="1.25rem" color={colors.mainPink} />,
+    },
+  ];
+
+  const rightMenuItems = [
+    {
+      path: "/wishlist",
+      label: t.menuLayout.wishlist,
+      icon: <FaRegHeart fontSize="1.25rem" color={colors.lightGrey} />,
+      activeIcon: <FaHeart fontSize="1.25rem" color={colors.mainPink} />,
+    },
+    {
+      path: "/mypage",
+      label: t.menuLayout.mypage,
+      icon: <FaRegUser fontSize="1.25rem" color={colors.lightGrey} />,
+      activeIcon: <FaUser fontSize="1.25rem" color={colors.mainPink} />,
+    },
+  ];
+
   // useLocation : 현재 경로를 알려줌
   const location = useLocation();
   console.log(location.pathname);

@@ -5,6 +5,7 @@ import { useState } from "react";
 interface StyledInputProps {
   width?: string;
   $isFocused: boolean;
+  $disabled?: boolean;
 }
 
 const TextFieldWrap = styled.input<StyledInputProps>`
@@ -17,6 +18,8 @@ const TextFieldWrap = styled.input<StyledInputProps>`
   border-radius: 1.25rem;
   padding: 0 1rem;
   font-size: 1rem;
+  background-color: ${({ $disabled }) =>
+    $disabled ? colors.lightGrey : colors.white};
 `;
 
 interface InputProps {
@@ -24,6 +27,7 @@ interface InputProps {
   type: "password" | "text";
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
 export default function InputField({
@@ -31,6 +35,7 @@ export default function InputField({
   type,
   value,
   onChange,
+  disabled,
 }: InputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -43,6 +48,8 @@ export default function InputField({
       type={type === "password" ? "password" : "text"}
       value={value}
       onChange={onChange}
+      $disabled={disabled}
+      disabled={disabled}
     ></TextFieldWrap>
   );
 }

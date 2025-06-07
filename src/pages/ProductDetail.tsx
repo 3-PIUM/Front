@@ -25,6 +25,7 @@ const PageWrapper = styled.div`
     display: none;
   }
 `;
+import { useLocale } from "../context/LanguageContext";
 
 const HeaderBar = styled.div`
   position: fixed;
@@ -123,6 +124,7 @@ export default function ProductDetail() {
     console.log("skinRegistered:", value);
     setIsSkinRegistered(value === "true");
   }, []);
+  const { t } = useLocale();
 
   const product = location.state?.product ||
     JSON.parse(localStorage.getItem("scannedProduct") || "null") || {
@@ -240,7 +242,7 @@ export default function ProductDetail() {
 
       <div style={{ padding: "0 1rem" }}>
         <Button
-          label="장바구니 담기"
+          label={t.productDetail.addCart}
           onClick={() => {
             const selected = dummyOptions.find((o) => o.id === selectedOption);
             if (!selected) {
@@ -264,13 +266,13 @@ export default function ProductDetail() {
           active={selectedTab === "detail"}
           onClick={() => setSelectedTab("detail")}
         >
-          상세페이지
+          {t.productDetail.detail}
         </TabButton>
         <TabButton
           active={selectedTab === "ingredient"}
           onClick={() => setSelectedTab("ingredient")}
         >
-          성분 분석 & 리뷰
+          {t.productDetail.analysisAndReview}
         </TabButton>
       </TabMenu>
 

@@ -1,6 +1,6 @@
-import TextHeader from "../components/TextHeader";
+import TextHeader from "../../components/TextHeader";
 import styled from "styled-components";
-import mbtiCharacter from "../assets/images/testImage.png";
+import mbtiCharacter from "../../assets/images/testImage.png";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
