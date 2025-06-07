@@ -1,4 +1,10 @@
 {
+  "menuLayout": {
+    "category": "카테고리",
+    "report": "성분리포트",
+    "wishlist": "찜",
+    "mypage": "마이페이지"
+  },
   "login": {
     "emailPlaceholder": "이메일",
     "passwordPlaceholder": "비밀번호",
@@ -63,5 +69,116 @@
       },
       "goTestTitle": "잘 모르겠다면? 피부 타입 진단을 받아보세요"
     }
+  },
+  "category": {
+    "pageTitle": "카테고리",
+    "categoryname": [
+      {
+        "id": 1,
+        "name": "스킨케어",
+        "items": [
+          "스킨/토너",
+          "에센스/세럼/앰플",
+          "크림",
+          "로션",
+          "미스트/오일",
+          "스킨케어세트",
+          "스킨케어 디바이스"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "마스크팩",
+        "items": ["시트팩", "패드", "페이셜팩", "코팩", "패치"]
+      },
+      {
+        "id": 3,
+        "name": "메이크업",
+        "items": ["립메이크업", "베이스메이크업", "아이메이크업"]
+      },
+      {
+        "id": 4,
+        "name": "클렌징",
+        "items": [
+          "클렌징폼/젤",
+          "오일/밤",
+          "워터/밀크",
+          "필리&스크럽",
+          "티슈/패드",
+          "립&아이리무버",
+          "클렌징 디바이스"
+        ]
+      },
+      {
+        "id": 5,
+        "name": "선케어",
+        "items": [
+          "선크림",
+          "선스틱",
+          "선쿠션",
+          "선스프레이/선패치",
+          "태닝/애프터선"
+        ]
+      },
+      {
+        "id": 6,
+        "name": "맨즈케어",
+        "items": [
+          "스킨케어",
+          "메이크업",
+          "쉐이빙/왁싱",
+          "바디케어",
+          "헤어케어",
+          "프래그런스",
+          "패션/취미",
+          "헬스용품/식품"
+        ]
+      }
+    ],
+    "sorted": ["추천순", "낮은 가격순", "할인율순"]
+  },
+  "home": {
+    "personalInfo": {
+      "subtitle": {
+        "prefix": "지금 피부 타입을 등록하고",
+        "suffix": "맞춤 추천을 받아보세요!"
+      },
+      "registerSkinType": "피부 타입 등록하기"
+    }
+  },
+  "wishlist": {
+    "pageTitle": "찜"
+  },
+  "mypage": {
+    "pageTitle": "마이페이지",
+    "personalTitle": "개인정보",
+    "editPersonal": "개인정보 수정",
+    "skinProfile": "나의 피부 정보",
+    "skinType": "피부 타입",
+    "personalColor": "퍼스널컬러",
+    "skinConcerns": "피부 고민",
+    "purchase": "구매",
+    "purchaseHistory": "구매 내역",
+    "language": "언어",
+    "languageSetting": "언어 설정",
+    "logout": "로그아웃",
+    "deleteAccount": "탈퇴"
+  },
+  "cart": {
+    "pageTitle": "장바구니",
+    "selected": "선택",
+    "deleteAll": "전체 선택",
+    "changeOption": "옵션 변경",
+    "qrCode": "결제 QR 코드 생성하기"
+  },
+  "productDetail": {
+    "stockQuantity": "재고 수량",
+    "quantityNumber": {
+      "one": "개",
+      "more": "개"
+    },
+    "addCart": "장바구니 담기",
+    "detail": "상세페이지",
+    "analysisAndReview": "성분 분석 & 리뷰"
   }
 }

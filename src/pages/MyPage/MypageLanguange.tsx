@@ -1,9 +1,11 @@
 import styled from "styled-components";
-import TextHeader from "../components/TextHeader";
-import Header from "../components/Header";
-import colors from "../styles/colors";
+import TextHeader from "../../components/TextHeader";
+import Header from "../../components/Header";
+import colors from "../../styles/colors";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
+import axiosInstance from "../../api/axiosInstance";
 
 const Wrap = styled.div`
   display: flex;
@@ -47,8 +49,10 @@ const Line = styled.hr`
 `;
 
 export default function SettingLanguange() {
-  const [language, setLanguage] = useState("한국어");
+  const { t, language, setLanguage } = useLocale();
+  const [clickedLanguage, setClickedLanguage] = useState(language);
   const navigate = useNavigate();
+  const [memberInfo, setMemberInfo] = useState<any>(null);
 
   useEffect(() => {
     const root = document.getElementById("root");
@@ -56,22 +60,52 @@ export default function SettingLanguange() {
 
     if (root) root.style.backgroundColor = "#f5f5f5"; // 원하는 색상으로 설정
 
+    const fetchMemberData = async () => {
+      try {
+        const response = await axiosInstance.get("/member");
+        const result = response.data.result;
+        setMemberInfo(result);
+      } catch (error) {
+        console.log("정보 불러오는데 실패하였습니다", error);
+      }
+    };
+
+    fetchMemberData();
+
     return () => {
       if (root) root.style.backgroundColor = originalBg || ""; // 원상복구
     };
   }, []);
 
+  console.log(memberInfo);
+
+  const handleChangeLanguage = (lang: string) => {
+    setLanguage(lang);
+    setClickedLanguage(lang);
+    console.log("토큰 확인", sessionStorage.getItem("accessToken"));
+
+    const editMemberInfo = async () => {
+      try {
+        await axiosInstance.patch("/member", {
+          language: lang,
+        });
+      } catch (error) {
+        console.log("회원정보 수정에 실패하였습니다", error);
+      }
+    };
+    editMemberInfo();
+  };
+
   return (
     <Wrap>
       <Header />
-      <TextHeader pageName="언어 설정" />
+      <TextHeader pageName={t.mypage.languageSetting} />
       <Space />
       <LanguageWrapper>
         <LanguageBox
           $selected={language === "한국어"}
           onClick={() => {
-            setLanguage("한국어");
-            navigate(-1);
+            handleChangeLanguage("한국어");
           }}
         >
           한국어
@@ -80,8 +114,7 @@ export default function SettingLanguange() {
         <LanguageBox
           $selected={language === "English"}
           onClick={() => {
-            setLanguage("English");
-            navigate(-1);
+            handleChangeLanguage("English");
           }}
         >
           English
@@ -90,8 +123,7 @@ export default function SettingLanguange() {
         <LanguageBox
           $selected={language === "日本語"}
           onClick={() => {
-            setLanguage("日本語");
-            navigate(-1);
+            handleChangeLanguage("日本語");
           }}
         >
           日本語

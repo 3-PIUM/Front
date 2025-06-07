@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import SelectButton from "./SelectButton";
+import SelectButton from "./../SelectButton";
 import { Link } from "react-router-dom";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 import { useState } from "react";
 
 const Wrapper = styled.div`
@@ -39,27 +39,15 @@ const Options = [
   },
   {
     id: 2,
-    option: "중성",
-  },
-  {
-    id: 3,
     option: "지성",
   },
   {
-    id: 4,
+    id: 3,
     option: "복합성",
   },
   {
-    id: 5,
+    id: 4,
     option: "민감성",
-  },
-  {
-    id: 6,
-    option: "약건성",
-  },
-  {
-    id: 7,
-    option: "트러블성",
   },
 ];
 

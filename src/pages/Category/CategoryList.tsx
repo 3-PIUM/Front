@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import Header from "../components/Header";
-import TextIconHeader from "../components/TextIconHeader ";
+import Header from "../../components/Header";
+import TextIconHeader from "../../components/TextIconHeader ";
 import { useNavigate, useParams } from "react-router-dom";
-import categories from "../data/categories.json";
-import colors from "../styles/colors";
+import categories from "../../data/categories.json";
+import colors from "../../styles/colors";
 import { useState } from "react";
 import { VscChevronDown } from "react-icons/vsc";
-import SortedModal from "../components/SortedModal";
+import SortedModal from "../../components/SortedModal";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`
   display: flex;
@@ -56,21 +57,26 @@ const SortValue = styled.div`
 `;
 
 export default function CategoryList() {
+  const { t } = useLocale();
   const { categoryName, subcategoryName } = useParams();
 
   const decodedCategory = decodeURIComponent(categoryName || "");
   const decodedSubcategory = decodeURIComponent(subcategoryName || "");
 
-  const selectedCategory = categories.find(
-    (cat) => cat.name === decodedCategory
+  const selectedCategory = t.category.categoryname.find(
+    (cat: { name: string; items: string[] }) => cat.name === decodedCategory
   );
 
   const navigate = useNavigate();
 
-  const [selectedSort, setSelectedSort] = useState("추천순");
+  const [selectedSort, setSelectedSort] = useState(
+    t.category.sorted.recommended ?? "Recommended"
+  );
   const [openModal, setOpenModal] = useState(false);
 
-  const handleShowSorts = () => {};
+  const handleShowSorts = () => {
+    setOpenModal(true);
+  };
 
   return (
     <Wrap>
@@ -78,7 +84,7 @@ export default function CategoryList() {
       <TextIconHeader pageName={decodedCategory} />
       <SubCategoryList>
         <SubCategoryUl>
-          {selectedCategory?.items.map((item) => (
+          {selectedCategory?.items.map((item: string) => (
             <SubCategoryLi
               $selected={item === decodedSubcategory}
               onClick={() =>
@@ -95,7 +101,7 @@ export default function CategoryList() {
         </SubCategoryUl>
       </SubCategoryList>
       <SortOptions onClick={handleShowSorts}>
-        <SortValue onClick={() => setOpenModal(true)}>{selectedSort}</SortValue>
+        <SortValue>{selectedSort}</SortValue>
         <VscChevronDown fontSize={"1.2rem"} />
       </SortOptions>
       {openModal && (

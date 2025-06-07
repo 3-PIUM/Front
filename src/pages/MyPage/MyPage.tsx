@@ -1,10 +1,14 @@
 import styled from "styled-components";
-import ProfileSource from "../assets/images/ProfileImage.jpg";
+import ProfileSource from "../../assets/images/ProfileImage.jpg";
+import dafaultProfileImage from "../../assets/images/dafaultProfileImage.png";
 import { FiEdit2 } from "react-icons/fi";
-import colors from "../styles/colors";
-import Header from "../components/Header";
+import colors from "../../styles/colors";
+import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
-import PageTitle from "../components/PageTitle";
+import PageTitle from "../../components/PageTitle";
+import axiosInstance from "../../api/axiosInstance";
+import { useEffect, useState } from "react";
+import { useLocale } from "../../context/LanguageContext";
 
 const TopWrapper = styled.div`
   display: flex;
@@ -92,59 +96,98 @@ const Line = styled.hr`
 `;
 
 export default function MyPage() {
-  const nickname = "겸손한 치타";
   const navigate = useNavigate();
+  const [memberInfo, setMemberInfo] = useState<any>(null);
+  const { t } = useLocale();
+
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      try {
+        const response = await axiosInstance.get("/member");
+        const result = response.data.result;
+        setMemberInfo(result);
+      } catch (error) {
+        console.log("사용자 정보 불러오는데 실패했습니다", error);
+      }
+    };
+
+    fetchMemberInfo();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post("/logout");
+      console.log("로그아웃 성공");
+      navigate("/");
+    } catch (error) {
+      console.log("로그아웃 실패:", error);
+    }
+  };
 
   return (
     <>
       <Header />
-      <PageTitle pageName="마이페이지" />
+      <PageTitle pageName={t.mypage.pageTitle} />
       <TopWrapper>
         <ImageSection>
           <ImageBox>
-            <ProfileImage src={ProfileSource} alt="프로필사진" />
+            {memberInfo?.profileImg == null ? (
+              <ProfileImage src={dafaultProfileImage} alt="기본 프로필사진" />
+            ) : (
+              <ProfileImage src={dafaultProfileImage} alt="프로필사진" />
+            )}
           </ImageBox>
           <ImageEdit>
             <FiEdit2 fontSize={"1.125rem"} color={colors.white} />
           </ImageEdit>
         </ImageSection>
-        <Nickname>{nickname}</Nickname>
+        <Nickname>{memberInfo?.nickname ?? "null"}</Nickname>
       </TopWrapper>
       <Space />
       <Settings>
         <SettingBox>
-          <Title>개인정보</Title>
+          <Title>{t.mypage.personalTitle}</Title>
           <SettingItem>
-            <div>개인정보 수정</div>
+            <div>{t.mypage.editPersonal}</div>
           </SettingItem>
         </SettingBox>
         <SettingBox>
-          <Title>나의 피부 정보</Title>
+          <Title>{t.mypage.skinProfile}</Title>
           <SettingItem>
-            <div onClick={() => navigate("/mypage/skintype")}>피부 타입</div>
-            <div onClick={() => navigate("/mypage/personalcolor")}>
-              퍼스널컬러
+            <div onClick={() => navigate("/mypage/skintype")}>
+              {t.mypage.skinType}
             </div>
-            <div onClick={() => navigate("/mypage/skinconcern")}>피부 고민</div>
+            <div onClick={() => navigate("/mypage/personalcolor")}>
+              {t.mypage.personalColor}
+            </div>
+            <div onClick={() => navigate("/mypage/skinconcern")}>
+              {t.mypage.skinConcerns}
+            </div>
           </SettingItem>
         </SettingBox>
         <SettingBox>
-          <Title>구매</Title>
+          <Title>{t.mypage.purchase}</Title>
           <SettingItem>
-            <div onClick={() => navigate("/purchase-list")}>구매 내역</div>
+            <div onClick={() => navigate("/purchase-list")}>
+              {t.mypage.purchaseHistory}
+            </div>
           </SettingItem>
         </SettingBox>
         <SettingBox>
-          <Title>언어</Title>
+          <Title>{t.mypage.language}</Title>
           <SettingItem>
-            <div onClick={() => navigate("/mypage/language")}>언어 설정</div>
+            <div onClick={() => navigate("/mypage/language")}>
+              {t.mypage.languageSetting}
+            </div>
           </SettingItem>
         </SettingBox>
         <Line />
         <SettingBox>
           <SettingItem>
-            <div>로그아웃</div>
-            <div onClick={() => navigate("/Withdraw")}>탈퇴</div>
+            <div onClick={handleLogout}>{t.mypage.logout}</div>
+            <div onClick={() => navigate("/Withdraw")}>
+              {t.mypage.deleteAccount}
+            </div>
           </SettingItem>
         </SettingBox>
       </Settings>

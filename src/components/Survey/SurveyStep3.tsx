@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import colors from "../styles/colors";
-import PersonalColorButton from "./PersonalColorButton";
+import colors from "../../styles/colors";
+import PersonalColorButton from "../PersonalColorButton";
 import { useState } from "react";
 
 const Wrapper = styled.div`

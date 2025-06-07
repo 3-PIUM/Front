@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import SelectButton from "./SelectButton";
+import SelectButton from "./../SelectButton";
 import { useState } from "react";
 
 const Wrapper = styled.div`
   margin-top: 1rem;
   width: 100%;
-  padding-right: 1rem;
 `;
 
 const TitleWrapper = styled.div`
@@ -17,7 +16,7 @@ const TitleWrapper = styled.div`
 
 const AnswerWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); // 한 줄에 2개
+  grid-template-columns: repeat(3, calc((100% - 2 * 0.75rem) / 3));
   gap: 0.75rem;
   margin-top: 2rem;
 `;

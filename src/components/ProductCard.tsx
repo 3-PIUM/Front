@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useLocale } from "../context/LanguageContext";
 
 const CardWrapper = styled.div`
   width: 100%;
@@ -84,6 +85,8 @@ const ProductCard = ({
   const discountRate = Math.round(
     ((originalPrice - currentPrice) / originalPrice) * 100
   );
+
+  const { t } = useLocale();
 
   return (
     <CardWrapper>
