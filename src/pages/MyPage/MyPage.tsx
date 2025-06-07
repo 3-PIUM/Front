@@ -106,7 +106,6 @@ export default function MyPage() {
         const response = await axiosInstance.get("/member");
         const result = response.data.result;
         setMemberInfo(result);
-        console.log(memberInfo);
       } catch (error) {
         console.log("사용자 정보 불러오는데 실패했습니다", error);
       }

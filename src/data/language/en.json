@@ -164,5 +164,22 @@
     "languageSetting": "Language Settings",
     "logout": "Log Out",
     "deleteAccount": "Delete Account"
+  },
+  "cart": {
+    "pageTitle": "Shopping Cart",
+    "selected": "Selected",
+    "deleteAll": "Delete All",
+    "changeOption": "Change Option",
+    "qrCode": "Generate Payment QR Code"
+  },
+  "productDetail": {
+    "stockQuantity": "Stock quantity",
+    "quantityNumber": {
+      "one": "piece",
+      "more": "pieces"
+    },
+    "addCart": "Add to cart",
+    "detail": "Product details",
+    "analysisAndReview": "Ingredient analysis & Reviews"
   }
 }

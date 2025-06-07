@@ -13,6 +13,7 @@ import FullHeader from "../components/TextIconHeader ";
 import IngredientWarningSummary from "../components/IngredientWarningSummary";
 import ScoreRadarChart from "../components/ScoreRadarChart";
 import IngredientScoreSummary from "../components/IngredientScoreSummary";
+import { useLocale } from "../context/LanguageContext";
 
 const HeaderBar = styled.div`
   display: flex;
@@ -82,6 +83,7 @@ export default function ProductDetail() {
   const location = useLocation();
   const { addItem } = useCartStore();
   const newReview = location.state?.newReview;
+  const { t } = useLocale();
 
   const product = location.state?.product ||
     JSON.parse(localStorage.getItem("scannedProduct") || "null") || {
@@ -152,7 +154,7 @@ export default function ProductDetail() {
 
       <div style={{ padding: "0 1rem" }}>
         <Button
-          label="장바구니 담기"
+          label={t.productDetail.addCart}
           onClick={() => {
             addItem(product);
             navigate("/cart");
@@ -165,13 +167,13 @@ export default function ProductDetail() {
           active={selectedTab === "detail"}
           onClick={() => setSelectedTab("detail")}
         >
-          상세페이지
+          {t.productDetail.detail}
         </TabButton>
         <TabButton
           active={selectedTab === "ingredient"}
           onClick={() => setSelectedTab("ingredient")}
         >
-          성분 분석 & 리뷰
+          {t.productDetail.analysisAndReview}
         </TabButton>
       </TabMenu>
 

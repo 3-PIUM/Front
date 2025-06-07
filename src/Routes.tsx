@@ -61,10 +61,10 @@ const routes = [
     path: "/mbti/question",
     element: <MbtiQuestion />,
   },
-  {
-    path: "/category/:categoryName/:subcategoryName",
-    element: <CategoryList />,
-  },
+  // {
+  //   path: "/category/:categoryName/:subcategoryName",
+  //   element: <CategoryList />,
+  // },
 
   // MenuLayout
   {
@@ -82,6 +82,10 @@ const routes = [
       { path: "qr", element: <QRCodePage /> },
       { path: "purchase-list", element: <PurchaseList /> },
       { path: "purchase-detail", element: <PurchaseDetail /> },
+      {
+        path: "/category/:categoryName/:subcategoryName",
+        element: <CategoryList />,
+      },
     ],
   },
 ];

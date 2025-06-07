@@ -170,5 +170,22 @@
     "languageSetting": "言語設定",
     "logout": "ログアウト",
     "deleteAccount": "退会"
+  },
+  "cart": {
+    "pageTitle": "カート",
+    "selected": "選択済み",
+    "deleteAll": "すべて選択",
+    "changeOption": "オプションを変更",
+    "qrCode": "支払い用QRコードを生成"
+  },
+  "productDetail": {
+    "stockQuantity": "在庫数",
+    "quantityNumber": {
+      "one": "個",
+      "more": "個"
+    },
+    "addCart": "カートに入れる",
+    "detail": "商品詳細ページ",
+    "analysisAndReview": "成分分析とレビュー"
   }
 }

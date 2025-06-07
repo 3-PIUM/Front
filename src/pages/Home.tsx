@@ -436,7 +436,7 @@ export default function Home() {
             <div>{t.home.personalInfo.subtitle.suffix}</div>
           </InfoSubTitle>
           <InfoBoxBtn onClick={() => navigate("/mypage/skintype")}>
-            피부 타입 등록하기
+            {t.home.personalInfo.registerSkinType}
           </InfoBoxBtn>
         </InfoBox>
       ) : (

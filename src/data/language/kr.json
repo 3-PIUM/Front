@@ -163,5 +163,22 @@
     "languageSetting": "언어 설정",
     "logout": "로그아웃",
     "deleteAccount": "탈퇴"
+  },
+  "cart": {
+    "pageTitle": "장바구니",
+    "selected": "선택",
+    "deleteAll": "전체 선택",
+    "changeOption": "옵션 변경",
+    "qrCode": "결제 QR 코드 생성하기"
+  },
+  "productDetail": {
+    "stockQuantity": "재고 수량",
+    "quantityNumber": {
+      "one": "개",
+      "more": "개"
+    },
+    "addCart": "장바구니 담기",
+    "detail": "상세페이지",
+    "analysisAndReview": "성분 분석 & 리뷰"
   }
 }
