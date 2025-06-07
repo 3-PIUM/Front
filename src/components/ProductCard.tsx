@@ -9,6 +9,7 @@ const CardWrapper = styled.div`
 const ImageWrapper = styled.div`
   position: relative;
   display: flex;
+  margin-top: 2.8rem;
 `;
 
 const ProductImage = styled.img`
@@ -16,7 +17,7 @@ const ProductImage = styled.img`
 `;
 
 const InfoWrapper = styled.div`
-  padding: 1rem;
+  padding: 0.8rem 1rem;
 `;
 
 const Brand = styled.div`

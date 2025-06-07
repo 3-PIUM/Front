@@ -208,8 +208,12 @@ const CartPage = () => {
     useCartStore();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [showOptionFor, setShowOptionFor] = useState<string | null>(null);
-  const [optionList, setOptionList] = useState<string[]>([]);
+  // const [optionList, setOptionList] = useState<{ [key: string]: string[] }>({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const toggleSelect = (id: string) => {
     setSelectedIds((prev) =>
@@ -242,19 +246,6 @@ const CartPage = () => {
       0
     );
 
-  const dummyOptions = items.reduce((acc, item) => {
-    acc[item.id] = ["옵션 A", "옵션 B", "옵션 C"];
-    return acc;
-  }, {} as { [key: string]: string[] });
-
-  useEffect(() => {
-    const initialOptions: { [key: string]: string[] } = {};
-    items.forEach((item) => {
-      initialOptions[item.id] = ["옵션 1", "옵션 2", "옵션 3"];
-    });
-    setOptionList(initialOptions);
-  }, [items]);
-
   const handleOptionChange = (productId: string, newOption: string) => {
     useCartStore.getState().updateOption(productId, newOption);
     setShowOptionFor(null);
@@ -284,7 +275,9 @@ const CartPage = () => {
               <UpperInfo>
                 <TitleBlock>
                   <Title>{item.name}</Title>
-                  <DeleteButton onClick={() => removeItem(item.id)}>
+                  <DeleteButton
+                    onClick={() => removeItem(item.id, item.option)}
+                  >
                     ✕
                   </DeleteButton>
                 </TitleBlock>
@@ -297,12 +290,7 @@ const CartPage = () => {
 
           <LowerInfo>
             <LeftRow>
-              <OptionButton
-                onClick={() => {
-                  setShowOptionFor(item.id);
-                  setOptionList(dummyOptions[item.id] || ["기본 옵션"]);
-                }}
-              >
+              <OptionButton onClick={() => setShowOptionFor(item.id)}>
                 옵션 변경
               </OptionButton>
               <QuantityControl>
@@ -345,7 +333,10 @@ const CartPage = () => {
 
       {showOptionFor && (
         <OptionModal
-          options={optionList}
+          options={
+            items.find((item) => item.id === showOptionFor)?.availableOptions ||
+            []
+          }
           onSelect={(newOption) => handleOptionChange(showOptionFor, newOption)}
           onClose={() => setShowOptionFor(null)}
         />

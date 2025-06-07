@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { useState } from "react";
-import ScoreRadarChart from "../components/ScorePieChart";
+import { useEffect, useState } from "react";
 import TextHeader from "../components/TextHeader";
 import ScorePieChart from "../components/ScorePieChart";
 
@@ -65,6 +64,31 @@ const dummyData = [
     ingredients: [{ name: "정제수", description: "가장 일반적인 기본 성분." }],
   },
 ];
+
+const FixedHeader = styled.div`
+  position: fixed;
+  top: 1;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background: #fff;
+`;
+
+const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const ScrollableContent = styled.div`
+  overflow-y: auto;
+  flex: 1;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 const Container = styled.div`
   padding: 4rem 1rem;
@@ -134,61 +158,68 @@ const Highlight = styled.strong`
 
 export default function IngredientDetailPage() {
   const [openScore, setOpenScore] = useState<string | null>("4~3");
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const maxScoreSection = dummyData.reduce((prev, curr) =>
     prev.count > curr.count ? prev : curr
   );
 
   return (
-    <>
-      <TextHeader pageName="성분 설명" />
-      <Container>
-        <Title>성분 스코어</Title>
-        <Description>
-          이 제품은 <Highlight>{maxScoreSection.score}점</Highlight>대 성분이
-          상대적으로 많은 편입니다.
-          <br />
-          그래프의 점수 클릭 시 성분 확인이 가능합니다.
-          <p>* 스코어가 높을수록 주의가 필요한 성분일 확률이 높습니다.</p>
-        </Description>
+    <PageWrapper>
+      <FixedHeader>
+        <TextHeader pageName="성분 설명" />
+      </FixedHeader>
+      <ScrollableContent>
+        <Container>
+          <Title>성분 스코어</Title>
+          <Description>
+            이 제품은 <Highlight>{maxScoreSection.score}점</Highlight>대 성분이
+            상대적으로 많은 편입니다.
+            <br />
+            그래프의 점수 클릭 시 성분 확인이 가능합니다.
+            <p>* 스코어가 높을수록 주의가 필요한 성분일 확률이 높습니다.</p>
+          </Description>
 
-        <ChartCenterWrapper>
-          <ScorePieChart
-            data={[
-              { score: "1~2점", count: 9 },
-              { score: "3~4점", count: 3 },
-              { score: "5~6점", count: 9 },
-              { score: "7~8점", count: 4 },
-              { score: "9점", count: 1 },
-            ]}
-          />
-        </ChartCenterWrapper>
+          <ChartCenterWrapper>
+            <ScorePieChart
+              data={[
+                { score: "1~2점", count: 9 },
+                { score: "3~4점", count: 3 },
+                { score: "5~6점", count: 9 },
+                { score: "7~8점", count: 4 },
+                { score: "9점", count: 1 },
+              ]}
+            />
+          </ChartCenterWrapper>
 
-        {[...dummyData]
-          .sort((a, b) => b.count - a.count)
-          .map((section) => (
-            <Section key={section.score}>
-              <ScoreHeader
-                active={openScore === section.score}
-                onClick={() =>
-                  setOpenScore((prev) =>
-                    prev === section.score ? null : section.score
-                  )
-                }
-              >
-                <span>{section.score}점</span>
-                <span>{section.count}개</span>
-              </ScoreHeader>
+          {[...dummyData]
+            .sort((a, b) => b.count - a.count)
+            .map((section) => (
+              <Section key={section.score}>
+                <ScoreHeader
+                  active={openScore === section.score}
+                  onClick={() =>
+                    setOpenScore((prev) =>
+                      prev === section.score ? null : section.score
+                    )
+                  }
+                >
+                  <span>{section.score}점</span>
+                  <span>{section.count}개</span>
+                </ScoreHeader>
 
-              {openScore === section.score &&
-                section.ingredients.map((ing, idx) => (
-                  <IngredientBox key={idx}>
-                    <IngredientName>{ing.name}</IngredientName>
-                    <IngredientDesc>{ing.description}</IngredientDesc>
-                  </IngredientBox>
-                ))}
-            </Section>
-          ))}
-      </Container>
-    </>
+                {openScore === section.score &&
+                  section.ingredients.map((ing, idx) => (
+                    <IngredientBox key={idx}>
+                      <IngredientName>{ing.name}</IngredientName>
+                      <IngredientDesc>{ing.description}</IngredientDesc>
+                    </IngredientBox>
+                  ))}
+              </Section>
+            ))}
+        </Container>
+      </ScrollableContent>
+    </PageWrapper>
   );
 }

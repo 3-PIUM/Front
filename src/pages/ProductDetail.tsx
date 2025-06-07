@@ -5,20 +5,37 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import SkinTypeRankList from "../components/SkinTypeRankList";
 import ReviewSatisfactionCard from "../components/ReviewSatisfactionCard";
-import AIReviewCard from "../components/AIReviewCard";
 import ReviewCard from "../components/ReviewCard";
 import Button from "../components/Button";
 import { useCartStore } from "../store/useCartStore";
 import FullHeader from "../components/TextIconHeader ";
 import IngredientWarningSummary from "../components/IngredientWarningSummary";
-import ScoreRadarChart from "../components/ScoreRadarChart";
 import IngredientScoreSummary from "../components/IngredientScoreSummary";
+import StackedBarChart from "../components/StackedBarChart";
+import GroupedDonutChart from "../components/GroupedDonutChart";
+import ProductOptionSelector from "../components/ProductOptionSelector";
+
+const PageWrapper = styled.div`
+  height: 100vh;
+  overflow-y: scroll;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 const HeaderBar = styled.div`
+  position: fixed;
+  width: 100%;
+  z-index: 1000; // 다른 요소 위에 표시
+  background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-right: 1.3rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 `;
 
 const TabMenu = styled.div`
@@ -74,6 +91,16 @@ const Label = styled.span`
   color: #222;
 `;
 
+const UnderlinedPointButton = styled.button`
+  background: none;
+  border: none;
+  color: #e6005a;
+  text-decoration: underline;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+`;
+
 export default function ProductDetail() {
   const [selectedTab, setSelectedTab] = useState<"detail" | "ingredient">(
     "detail"
@@ -82,6 +109,20 @@ export default function ProductDetail() {
   const location = useLocation();
   const { addItem } = useCartStore();
   const newReview = location.state?.newReview;
+  const [isSkinRegistered, setIsSkinRegistered] = useState<boolean | null>(
+    null
+  );
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const value = localStorage.getItem("skinRegistered");
+    console.log("skinRegistered:", value);
+    setIsSkinRegistered(value === "true");
+  }, []);
 
   const product = location.state?.product ||
     JSON.parse(localStorage.getItem("scannedProduct") || "null") || {
@@ -108,29 +149,71 @@ export default function ProductDetail() {
     };
   }, []);
 
-  const aiReviews = [
-    "정말 효과가 좋아요! 피부가 촉촉해졌어요",
-    "향도 좋고 발림성도 마음에 들어요",
-    "자극 없이 순해서 민감한 피부도 쓸 수 있어요",
+  const dummyOptions = [
+    {
+      id: "a00",
+      imageUrl:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018590325ko.png?l=ko",
+      name: "[기획] A00(+리필+모공브러쉬)",
+      // sub: "예약 06.13부터 순차 배송시작",
+      price: 27880,
+    },
+    {
+      id: "a01",
+      imageUrl:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018590325ko.png?l=ko",
+      name: "[기획] A01(+리필+모공브러쉬)",
+      // sub: "예약 06.13부터 순차 배송시작",
+      price: 27880,
+    },
+    {
+      id: "a02",
+      imageUrl:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018590325ko.png?l=ko",
+      name: "[기획] A02(+리필+모공브러쉬)",
+      // sub: "예약 06.13부터 순차 배송시작",
+      price: 27880,
+    },
   ];
 
-  const radarChartData = [
-    { score: "피부타입", count: 38 },
-    { score: "피부고민", count: 76 },
-    { score: "자극도", count: 80 },
-  ];
+  // const selected = dummyOptions.find((o) => o.id === selectedOption);
+
+  // if (!selected) {
+  //   alert("옵션을 선택해주세요!");
+  //   return;
+  // }
+
+  // addItem({
+  //   ...product,
+  //   option: selected.name,
+  //   availableOptions: dummyOptions.map((o) => o.name),
+  // });
 
   const [realReviews, setRealReviews] = useState<any[]>([]);
   useEffect(() => {
     if (newReview) {
-      setRealReviews((prev) => [...prev, newReview]);
+      setRealReviews((prev) => {
+        const isDuplicate = prev.some(
+          (review) =>
+            review.content === newReview.content &&
+            review.username === newReview.username
+        );
+        if (!isDuplicate) return [...prev, newReview];
+        return prev;
+      });
     }
   }, [newReview]);
+
+  const averageRating =
+    realReviews.length > 0
+      ? realReviews.reduce((sum, review) => sum + review.rating, 0) /
+        realReviews.length
+      : 0;
 
   if (!product) return null;
 
   return (
-    <div>
+    <PageWrapper>
       <HeaderBar>
         <FullHeader pageName="" />
       </HeaderBar>
@@ -150,11 +233,27 @@ export default function ProductDetail() {
         stock={product.stock}
       />
 
+      <ProductOptionSelector
+        options={dummyOptions}
+        onChange={setSelectedOption}
+      />
+
       <div style={{ padding: "0 1rem" }}>
         <Button
           label="장바구니 담기"
           onClick={() => {
-            addItem(product);
+            const selected = dummyOptions.find((o) => o.id === selectedOption);
+            if (!selected) {
+              alert("옵션을 선택해주세요!");
+              return;
+            }
+
+            addItem({
+              ...product,
+              option: selected.name,
+              availableOptions: dummyOptions.map((opt) => opt.name),
+            });
+
             navigate("/cart");
           }}
         />
@@ -176,40 +275,71 @@ export default function ProductDetail() {
       </TabMenu>
 
       {selectedTab === "detail" && (
-        <BannerImage
-          src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/html/crop/A000000214290/202505231611/crop0/www.themedicube.co.kr/web/upload/appfiles/ZaReJam3QiELznoZeGGkMG/f8a9f171c092ffb5025943539c750574.jpg"
-          alt="banner"
-        />
+        <div style={{ marginBottom: "3rem" }}>
+          <BannerImage
+            src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/html/crop/A000000214290/202505231611/crop0/www.themedicube.co.kr/web/upload/appfiles/ZaReJam3QiELznoZeGGkMG/f8a9f171c092ffb5025943539c750574.jpg"
+            alt="banner"
+          />
+        </div>
       )}
 
-      {selectedTab === "ingredient" && (
+      {selectedTab === "ingredient" && isSkinRegistered !== null && (
         <>
-          <SkinTypeWrapper onClick={() => navigate("/ingredient-detail")}>
-            <IngredientScoreSummary safe={3} caution={1} harmful={1} />
-            <ScoreRadarChart data={radarChartData} />
-            <IngredientWarningSummary />
+          <SkinTypeWrapper>
+            {!isSkinRegistered ? (
+              <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
+                <p
+                  style={{
+                    marginBottom: "0.5rem",
+                    fontSize: "1rem",
+                    color: "#666",
+                  }}
+                >
+                  피부 타입을 먼저 등록해주세요.
+                </p>
+                <UnderlinedPointButton
+                  onClick={() => {
+                    localStorage.setItem("skinRegistered", "true");
+                    setIsSkinRegistered(true);
+                    navigate("/mypage/skintype");
+                  }}
+                >
+                  피부 등록하러 가기
+                </UnderlinedPointButton>
+              </div>
+            ) : (
+              <>
+                <div style={{ marginTop: "0.5rem" }}>
+                  <IngredientScoreSummary safe={3} caution={1} harmful={1} />
+                  <IngredientWarningSummary />
+                  <StackedBarChart />
+                  {/* <GroupedDonutChart /> */}
+                </div>
+              </>
+            )}
           </SkinTypeWrapper>
 
           <SkinTypeWrapper>
-            <SectionTitle>추천 피부 타입</SectionTitle>
+            <SectionTitle>피부 타입 리뷰 요약</SectionTitle>
             <SkinTypeRankList />
           </SkinTypeWrapper>
 
           <ReviewWrapper>
             <SectionTitle>리뷰</SectionTitle>
-            <ReviewSatisfactionCard score={4.62} />
-            {aiReviews.map((text, idx) => (
+            <ReviewSatisfactionCard score={averageRating} />
+            {/* {aiReviews.map((text, idx) => (
               <AIReviewCard key={idx} content={text} />
+            ))} */}
+
+            {realReviews.map((r, idx) => (
+              <ReviewCard key={idx} {...r} />
             ))}
             <ReviewButton onClick={() => navigate("/review-write")}>
               <Label>리뷰 작성</Label>
             </ReviewButton>
-            {realReviews.map((r, idx) => (
-              <ReviewCard key={idx} {...r} />
-            ))}
           </ReviewWrapper>
         </>
       )}
-    </div>
+    </PageWrapper>
   );
 }

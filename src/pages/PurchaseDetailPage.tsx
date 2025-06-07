@@ -96,6 +96,11 @@ const TotalPrice = styled.span`
   font-weight: bold;
   color: #e6005a;
 `;
+const Option = styled.span`
+  font-size: 13px;
+  color: #e6005a;
+  margin-bottom: 2px;
+`;
 
 export default function PurchaseDetailPage() {
   const { state } = useLocation();
@@ -121,6 +126,7 @@ export default function PurchaseDetailPage() {
               <Image src={item.imageUrl} />
               <InfoWrapper>
                 <Name>{item.name}</Name>
+                {item.option && <Option>{item.option}</Option>}
                 <Quantity>{item.quantity || 1}개</Quantity>
               </InfoWrapper>
             </ProductBox>

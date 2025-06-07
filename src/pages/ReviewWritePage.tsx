@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TextHeader from "../components/TextHeader";
 import ImageUploadList from "../components/ImageUploadList";
@@ -85,6 +85,9 @@ const SubmitButton = styled.button`
 const ReviewWritePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const editingReview = location.state?.editReview;
 

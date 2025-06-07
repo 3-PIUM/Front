@@ -3,7 +3,8 @@ import colors from "../styles/colors";
 
 const Wrapper = styled.div`
   background-color: white;
-  padding-top: 1rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
 `;
 
 const Title = styled.div`
@@ -20,7 +21,6 @@ const IngredientList = styled.div`
   display: flex;
   gap: 2.6rem;
   overflow-x: auto;
-  padding-bottom: 0.5rem;
 
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
@@ -84,7 +84,6 @@ export default function IngredientWarningSummary() {
         name: "성분 이름",
         image:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYHQgcsUecY-ieBX_lFA12lwTXQSy8erIWddF48JeloIANeMRFPVrRYxQW7ZATLPsEcWw&usqp=CAU",
-
       },
     ],
   };

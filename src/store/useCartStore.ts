@@ -8,13 +8,14 @@ interface CartItem {
   originalPrice: number;
   discountRate: number;
   option?: string;
+  availableOptions?: string[];
   quantity: number;
 }
 
 interface CartStore {
   items: CartItem[];
   addItem: (item: CartItem) => void;
-  removeItem: (id: string) => void;
+  removeItem: (id: string, option?: string) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
   updateOption: (id: string, newOption: string) => void;
@@ -24,19 +25,28 @@ export const useCartStore = create<CartStore>((set) => ({
   items: [],
   addItem: (item) =>
     set((state) => {
-      const existing = state.items.find((i) => i.id === item.id);
+      const existing = state.items.find(
+        (i) => i.id === item.id && i.option === item.option
+      );
+
       if (existing) {
         return {
           items: state.items.map((i) =>
-            i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+            i.id === item.id && i.option === item.option
+              ? { ...i, quantity: i.quantity + 1 }
+              : i
           ),
         };
       }
+
       return { items: [...state.items, { ...item, quantity: 1 }] };
     }),
-  removeItem: (id) =>
+
+  removeItem: (id: string, option?: string) =>
     set((state) => ({
-      items: state.items.filter((item) => item.id !== id),
+      items: state.items.filter(
+        (item) => !(item.id === id && item.option === option)
+      ),
     })),
   increaseQuantity: (id) =>
     set((state) => ({
@@ -52,7 +62,7 @@ export const useCartStore = create<CartStore>((set) => ({
           : item
       ),
     })),
-  updateOption: (id, newOption) =>
+  updateOption: (id: string, newOption: string) =>
     set((state) => ({
       items: state.items.map((item) =>
         item.id === id ? { ...item, option: newOption } : item
