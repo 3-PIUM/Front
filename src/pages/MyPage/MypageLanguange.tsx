@@ -82,7 +82,6 @@ export default function SettingLanguange() {
   const handleChangeLanguage = (lang: string) => {
     setLanguage(lang);
     setClickedLanguage(lang);
-    sessionStorage.setItem("language", lang);
     console.log("토큰 확인", sessionStorage.getItem("accessToken"));
 
     const editMemberInfo = async () => {

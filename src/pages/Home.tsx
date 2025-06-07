@@ -416,7 +416,6 @@ export default function Home() {
         if (result.language === "EN") setLanguage("English");
         if (result.language === "JP") setLanguage("日本語");
         if (result.language === "KR") setLanguage("한국어");
-        sessionStorage.setItem("language", result.language);
       } catch (error) {
         console.error("회원 정보 불러오기 실패:", error);
       }
