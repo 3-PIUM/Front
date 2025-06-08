@@ -114,6 +114,8 @@ export default function MyPage() {
     fetchMemberInfo();
   }, []);
 
+  console.log("mypage:", memberInfo);
+
   const handleLogout = async () => {
     try {
       await axiosInstance.post("/logout");
@@ -155,10 +157,10 @@ export default function MyPage() {
           <Title>{t.mypage.skinProfile}</Title>
           <SettingItem>
             <div onClick={() => navigate("/mypage/skintype")}>
-              {t.mypage.skinType}
+              {t.mypage.skinType.pageTitle}
             </div>
             <div onClick={() => navigate("/mypage/personalcolor")}>
-              {t.mypage.personalColor}
+              {t.mypage.personalColor.pageTitle}
             </div>
             <div onClick={() => navigate("/mypage/skinconcern")}>
               {t.mypage.skinConcerns}

@@ -6,13 +6,15 @@ interface StyledButtonProps {
   backgroundColor?: string;
   color?: string;
   border?: string;
+  disabled?: boolean;
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
-  background-color: ${({ backgroundColor }) =>
-    backgroundColor || colors.mainPink};
+  background-color: ${({ backgroundColor, disabled }) =>
+    disabled ? colors.lightGrey : backgroundColor || colors.mainPink};
   border: ${({ border }) => border || "none"};
-  color: ${({ color }) => color || colors.white};
+  color: ${({ color, disabled }) =>
+    disabled ? colors.mediumGrey : color || colors.white};
   font-size: 1rem;
   font-weight: 700;
   width: ${({ width }) => width || "100%"};
@@ -28,6 +30,7 @@ interface ButtonProps {
   color?: string;
   border?: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 export default function Button({
@@ -37,6 +40,7 @@ export default function Button({
   color,
   border,
   onClick,
+  disabled,
 }: ButtonProps) {
   return (
     <StyledButton
@@ -45,6 +49,7 @@ export default function Button({
       color={color}
       border={border}
       onClick={onClick}
+      disabled={!disabled}
     >
       {label}
     </StyledButton>

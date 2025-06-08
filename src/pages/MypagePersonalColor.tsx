@@ -3,8 +3,10 @@ import Header from "../components/Header";
 import TextHeader from "../components/TextHeader";
 import colors from "../styles/colors";
 import PersonalColorButton from "../components/PersonalColorButton";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocale } from "../context/LanguageContext";
+import Button from "../components/Button";
+import axiosInstance from "../api/axiosInstance";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,67 +17,86 @@ const Wrapper = styled.div`
 
 const AnswerWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr); // 한 줄에 2개
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
   margin-top: 2rem;
 `;
 
-const SkinTestWrapper = styled.div`
-  display: flex;
-  margin-top: 3rem;
-  font-size: 0.75rem;
-  color: ${colors.mediumGrey};
-  text-decoration: underline;
-  justify-content: center;
+const ButtonWrapper = styled.div`
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  padding: 2rem 1rem;
 `;
 
-const Options = [
-  {
-    id: 1,
-    name: "봄 웜",
-    colors: ["#FFD8A9", "#FFC0A9", "#FFE6CC"],
-  },
-  {
-    id: 2,
-    name: "여름 쿨",
-    colors: ["#C3D5FF", "#E0B5DB", "#A4B8D1"],
-  },
-  {
-    id: 3,
-    name: "가을 웜",
-    colors: ["#CFA36E", "#A06045", "#E2C1A0"],
-  },
-  {
-    id: 4,
-    name: "겨울 쿨",
-    colors: ["#C5CBE1", "#B4A4DD", "#333C57"],
-  },
-];
-
 export default function SettingPersonalColor() {
+  const { t } = useLocale();
+  const [memberInfo, setMemberInfo] = useState<MemberInfo>();
   const [selected, setSelected] = useState<String>();
+  const [isChanged, setIsChanged] = useState(false);
+
+  interface personalProps {
+    id: number;
+    option: string;
+    value: string;
+    colors: string[];
+  }
+
+  interface MemberInfo {
+    personalType?: string;
+  }
+
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      const response = await axiosInstance.get("/member");
+      const result = response.data.result;
+      setMemberInfo(result);
+      setSelected(result.personalType);
+    };
+    fetchMemberInfo();
+  }, []);
+
+  const goSave = () => {
+    const savePersonalColor = async () => {
+      try {
+        await axiosInstance.patch("/member", {
+          personalType: selected,
+        });
+      } catch (error) {
+        console.log("error:", error);
+      }
+    };
+    savePersonalColor();
+    setIsChanged(false);
+  };
 
   return (
     <>
       <Header />
-      <TextHeader pageName="퍼스널컬러" />
+      <TextHeader pageName={t.mypage.personalColor.pageTitle} />
       <Wrapper>
         <AnswerWrapper>
-          {Options.map((item) => (
+          {t.mypage.personalColor.options.map((item: personalProps) => (
             <PersonalColorButton
-              buttonName={item.name}
-              isActivated={selected === item.name}
+              key={item.id}
+              buttonName={item.option}
+              isActivated={selected === item.value}
               colors={item.colors}
-              onClick={() => setSelected(item.name)}
+              onClick={() => {
+                setSelected(item.value);
+                setIsChanged(item.value !== memberInfo?.personalType);
+              }}
             />
           ))}
         </AnswerWrapper>
-        <Link to="">
-          <SkinTestWrapper>
-            잘 모르겠다면? 퍼스널 컬러 진단을 받아보세요
-          </SkinTestWrapper>
-        </Link>
       </Wrapper>
+      <ButtonWrapper>
+        <Button
+          label={t.mypage.personalColor.save}
+          onClick={goSave}
+          disabled={isChanged}
+        />
+      </ButtonWrapper>
     </>
   );
 }

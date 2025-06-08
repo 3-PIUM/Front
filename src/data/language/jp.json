@@ -161,8 +161,48 @@
     "personalTitle": "個人情報",
     "editPersonal": "個人情報を編集",
     "skinProfile": "私の肌情報",
-    "skinType": "肌タイプ",
-    "personalColor": "パーソナルカラー",
+    "skinType": {
+      "pageTitle": "肌タイプ",
+      "options": [
+        { "id": 1, "option": "乾燥肌", "value": "건성" },
+        { "id": 2, "option": "脂性肌", "value": "지성" },
+        { "id": 3, "option": "混合肌", "value": "복합성" },
+        { "id": 4, "option": "敏感肌", "value": "민감성" }
+      ],
+      "goTest": "迷ったら、肌タイプ診断から始めましょう",
+      "save": "保存する"
+    },
+    "personalColor": {
+      "pageTitle": "パーソナルカラー",
+      "options": [
+        {
+          "id": 1,
+          "option": "スプリング・ウォーム",
+          "value": "봄_웜",
+          "colors": ["#FFD8A9", "#FFC0A9", "#FFE6CC"]
+        },
+        {
+          "id": 2,
+          "option": "サマー・クール",
+          "value": "여름_쿨",
+          "colors": ["#C3D5FF", "#E0B5DB", "#A4B8D1"]
+        },
+        {
+          "id": 3,
+          "option": "オータム・ウォーム",
+          "value": "가을_웜",
+          "colors": ["#CFA36E", "#A06045", "#E2C1A0"]
+        },
+        {
+          "id": 4,
+          "option": "ウィンター・クール",
+          "value": "겨울_쿨",
+          "colors": ["#C5CBE1", "#B4A4DD", "#333C57"]
+        }
+      ],
+      "goTest": "よくわからない方は、パーソナルカラー診断を受けてみましょう",
+      "save": "保存する"
+    },
     "skinConcerns": "肌の悩み",
     "purchase": "購入",
     "purchaseHistory": "購入履歴",

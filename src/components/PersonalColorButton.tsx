@@ -15,7 +15,7 @@ const ButtonWrap = styled.button<{ $isActivated: boolean }>`
 `;
 
 const ButtonName = styled.div<{ $isActivated: boolean }>`
-  font-size: 1rem;
+  font-size: 0.825rem;
   color: ${({ $isActivated }) =>
     $isActivated ? colors.mainPink : colors.lightGrey};
   font-weight: ${({ $isActivated }) => ($isActivated ? 700 : 400)};
