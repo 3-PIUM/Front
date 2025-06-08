@@ -46,7 +46,6 @@ interface PersonalColorProps {
 export default function PersonalColorButton({
   buttonName,
   colors,
-  isWide = false,
   isActivated,
   onClick,
 }: PersonalColorProps) {

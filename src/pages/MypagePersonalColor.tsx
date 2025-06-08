@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import Header from "../components/Header";
 import TextHeader from "../components/TextHeader";
-import colors from "../styles/colors";
 import PersonalColorButton from "../components/PersonalColorButton";
 import { useEffect, useState } from "react";
 import { useLocale } from "../context/LanguageContext";
