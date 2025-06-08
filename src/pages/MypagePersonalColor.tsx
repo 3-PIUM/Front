@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Header from "../components/Header";
 import TextHeader from "../components/TextHeader";
-import PersonalColorButton from "../components/PersonalColorButton";
+import PersonalColorButton from "../components/SelectForm/PersonalColorButton";
 import { useEffect, useState } from "react";
 import { useLocale } from "../context/LanguageContext";
 import Button from "../components/Button";
@@ -31,7 +31,7 @@ const ButtonWrapper = styled.div`
 export default function SettingPersonalColor() {
   const { t } = useLocale();
   const [memberInfo, setMemberInfo] = useState<MemberInfo>();
-  const [selected, setSelected] = useState<String>();
+  const [selected, setSelected] = useState<string>("");
   const [isChanged, setIsChanged] = useState(false);
 
   interface personalProps {
@@ -90,11 +90,7 @@ export default function SettingPersonalColor() {
         </AnswerWrapper>
       </Wrapper>
       <ButtonWrapper>
-        <Button
-          label={t.mypage.personalColor.save}
-          onClick={goSave}
-          disabled={isChanged}
-        />
+        <Button label={t.save} onClick={goSave} disabled={!isChanged} />
       </ButtonWrapper>
     </>
   );

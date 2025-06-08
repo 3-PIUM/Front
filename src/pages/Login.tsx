@@ -175,7 +175,11 @@ export default function Login() {
         {showError && <ErrorText>{t.login.error}</ErrorText>}
       </Wrap>
       <ButtonWrap>
-        <Button label={t.login.loginButton} onClick={handleLogin} />
+        <Button
+          label={t.login.loginButton}
+          onClick={handleLogin}
+          disabled={!email || !password}
+        />
       </ButtonWrap>
 
       {openModal && (

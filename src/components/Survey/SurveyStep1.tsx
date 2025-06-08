@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SelectButton from "./../SelectButton";
+import SelectButton from "../SelectForm/SelectButton";
 import { Link } from "react-router-dom";
 import colors from "../../styles/colors";
 import { useState } from "react";

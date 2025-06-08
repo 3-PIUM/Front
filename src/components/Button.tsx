@@ -49,7 +49,7 @@ export default function Button({
       color={color}
       border={border}
       onClick={onClick}
-      disabled={!disabled}
+      disabled={disabled}
     >
       {label}
     </StyledButton>

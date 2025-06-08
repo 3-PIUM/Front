@@ -150,7 +150,9 @@ export default function MyPage() {
         <SettingBox>
           <Title>{t.mypage.personalTitle}</Title>
           <SettingItem>
-            <div>{t.mypage.editPersonal}</div>
+            <div onClick={() => navigate("/editprofile")}>
+              {t.mypage.editPersonal}
+            </div>
           </SettingItem>
         </SettingBox>
         <SettingBox>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
 import { useState, useEffect } from "react";
-import SelectButton from "../components/SelectButton";
+import SelectButton from "../components/SelectForm/SelectButton";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import TextHeader from "../components/TextHeader";
@@ -113,7 +113,7 @@ export default function SettingSkinType() {
         </SkinTestWrapper>
       </Wrapper>
       <ButtonWrapper onClick={goSave}>
-        <Button label={t.mypage.skinType.save} disabled={isChanged} />
+        <Button label={t.save} disabled={!isChanged} />
       </ButtonWrapper>
     </>
   );
