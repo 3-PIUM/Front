@@ -157,7 +157,6 @@ export default function EditProfile() {
           setBirth={setBirth}
           birthText={birthText}
           setBirthText={setBirthText}
-          readOnly={true}
         />
 
         <EmailInput

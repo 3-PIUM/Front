@@ -1,8 +1,9 @@
 import TextHeader from "../../components/TextHeader";
 import styled from "styled-components";
-import mbtiCharacter from "../../assets/images/testImage.png";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance";
+import { useState } from "react";
+import colors from "../../styles/colors";
 
 const Wrap = styled.div`
   display: flex;
@@ -19,35 +20,125 @@ const Wrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  margin-top: 4rem;
+  padding: 0 1rem;
   align-items: center;
-  gap: 2rem;
+  margin: 8rem 0;
 `;
 
-const Title = styled.div`
-  font-size: 1.5rem;
-  font-weight: 700;
-`;
-
-const Character = styled.img`
+const TestCategory = styled.div`
   display: flex;
-  width: 17.5rem;
-`;
-
-const Button = styled.button`
-  display: flex;
-  font-size: 1.2rem;
-  padding: 0.5rem 1rem;
+  width: fit-content;
+  font-size: 0.8rem;
+  border: 1px solid;
   border-radius: 1rem;
-  border: 1px solid black;
   font-weight: 700;
   background-color: #a6ff83;
+  padding: 0.5rem;
+  justify-content: center;
+`;
+
+const TestWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin: 4rem 0;
+`;
+
+const Question = styled.div`
+  display: flex;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: 0 1rem;
+`;
+
+const Answer = styled.div<{ isox: boolean }>`
+  display: flex;
+  width: 100%;
+  flex-direction: ${({ isox }) => (isox ? "row" : "column")};
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+`;
+
+const AnswerBtn = styled.button`
+  display: flex;
+  background-color: ${colors.white};
+  border: none;
+  border-radius: 1rem;
+  font-size: 1rem;
+  padding: 1rem 1rem;
+  width: 100%;
+  justify-content: center;
 `;
 
 export default function MbtiQuestion() {
-  const navigate = useNavigate();
+  const [questionsList, setQuestionsList] = useState<
+    {
+      id: number;
+      content: string;
+      answers: {
+        answer: string;
+        nextQuestionId: number | null;
+        isResult: boolean;
+      }[];
+    }[]
+  >([]);
+
+  const [pigmentQuestions, setPigmentQuestions] = useState<
+    {
+      id: number;
+      content: string;
+      answers: {
+        answer: string;
+        nextQuestionId: number | null;
+        isResult: boolean;
+      }[];
+    }[]
+  >([]);
+
+  const [moistureQuestions, setMoistureQuestions] = useState<
+    {
+      id: number;
+      content: string;
+      answers: {
+        answer: string;
+        nextQuestionId: number | null;
+        isResult: boolean;
+      }[];
+    }[]
+  >([]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const currentQuestion = pigmentQuestions[currentIndex];
 
   useEffect(() => {
+    const fetchMBTIQuestions = async () => {
+      try {
+        console.log(localStorage.getItem("language"), "seok");
+
+        const response = await axiosInstance.get("/mbti/questions", {
+          params: {
+            axis: "PIGMENT",
+            lang: localStorage.getItem("language"),
+          },
+        });
+        const questions = response.data.result.questions;
+        console.log("성공", questions);
+        setPigmentQuestions(questions);
+        setQuestionsList(questions);
+      } catch (error) {
+        console.log("mbti 질문 가져오는데 실패했습니다", error);
+      }
+    };
+
+    console.log(localStorage.getItem("language"));
+
+    fetchMBTIQuestions();
+
     const root = document.getElementById("root");
     const originalBg = root?.style.backgroundColor;
     const originalTop = root?.style.paddingTop;
@@ -68,10 +159,44 @@ export default function MbtiQuestion() {
     };
   }, []);
 
+  const handleAnswerClick = (ans: string) => {
+    if (ans.isResult === true) {
+    }
+    setCurrentIndex(ans.nextQuestionId - 1);
+  };
+
   return (
     <Wrap>
       <TextHeader pageName="피부 MBTI 진단" bgColor="transparent" />
-      <Wrapper></Wrapper>
+      <Wrapper>
+        <TestCategory>색소 VS 구조</TestCategory>
+        {currentQuestion ? (
+          <TestWrapper>
+            <Question>{currentQuestion.content}</Question>
+            {(() => {
+              const isox = currentQuestion.answers.every(
+                (a) => a.answer === "O" || a.answer === "X"
+              );
+              return (
+                <Answer isox={isox}>
+                  {currentQuestion.answers.map((ans, idx) => {
+                    return (
+                      <AnswerBtn
+                        key={idx}
+                        onClick={() => handleAnswerClick(ans)}
+                      >
+                        {ans.answer}
+                      </AnswerBtn>
+                    );
+                  })}
+                </Answer>
+              );
+            })()}
+          </TestWrapper>
+        ) : (
+          <div>완료</div>
+        )}
+      </Wrapper>
     </Wrap>
   );
 }

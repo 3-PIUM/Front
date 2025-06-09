@@ -59,7 +59,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const languageCode = languageCodeMap[language] || "KR";
 
   useEffect(() => {
-    localStorage.setItem("language", JSON.stringify(language));
+    localStorage.setItem("language", language);
   }, [language]);
 
   return (

@@ -35,10 +35,8 @@ export default function Signup() {
   const { t, language } = useLocale();
 
   const [nickname, setNickname] = useState<string>("");
-  const [nicknameVaildMessage, setNicknameVaildMessage] = useState<
-    string | null
-  >(null);
-  const [nicknameVaild, setNicknameVaild] = useState<boolean | null>(null);
+  const [nicknameVaildMessage, setNicknameVaildMessage] = useState<string>("");
+  const [nicknameVaild, setNicknameVaild] = useState<boolean>(false);
 
   const [birth, setBirth] = useState<string>("");
   const [birthText, setBirthText] = useState<string>("");
@@ -117,43 +115,6 @@ export default function Signup() {
   //     setSendEmailText("이메일 전송에 실패했습니다");
   //   }
   // };
-
-  // useEffect(() => {
-  //   const fetchCountries = async () => {
-  //     try {
-  //       const response = await fetch("https://restcountries.com/v3.1/all");
-  //       const data = await response.json();
-
-  //       const parsed = data.map((item: any) => {
-  //         let name: string;
-
-  //         switch (language) {
-  //           case "ko":
-  //           case "한국어":
-  //             name = item.translations?.kor?.official;
-  //             break;
-  //           case "jp":
-  //           case "日本語":
-  //             name = item.translations?.jpn?.official;
-  //             break;
-  //           default:
-  //             name = item.name?.official;
-  //         }
-
-  //         return {
-  //           name,
-  //           flag: item.flag,
-  //         };
-  //       });
-
-  //       setCountries(parsed);
-  //     } catch (error) {
-  //       console.error("국가 목록을 불러오는 데 실패했습니다.", error);
-  //     }
-  //   };
-
-  //   fetchCountries();
-  // }, [language]);
 
   const handleSignup = async () => {
     if (isFormValid) {

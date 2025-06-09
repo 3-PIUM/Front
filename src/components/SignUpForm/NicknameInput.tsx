@@ -45,7 +45,7 @@ interface NicknameProps {
   setNicknameVaild: (value: boolean) => void;
   nicknameVaildMessage: string;
   setNicknameVaildMessage: (value: string) => void;
-  disabled: boolean | undefined;
+  disabled?: boolean | undefined;
 }
 
 export default function Nickname({
