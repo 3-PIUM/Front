@@ -22,6 +22,11 @@ export default function CountryInput({
 }: CountryProps) {
   const { t, language } = useLocale();
 
+  const selectedCountry = dummyCountry.find((c) => c.code == country);
+  const selectedCountryName = selectedCountry
+    ? selectedCountry.name[language as keyof typeof selectedCountry.name]
+    : "";
+
   return (
     <>
       <FieldName>{t.signup.country} </FieldName>
@@ -37,6 +42,7 @@ export default function CountryInput({
         onChange={(e) => {
           setCountry(e.target.value);
         }}
+        value={country || ""}
       >
         <option value="" disabled selected>
           {t.signup.countryPlaceholder}
@@ -47,10 +53,10 @@ export default function CountryInput({
             {
               country.name[
                 language === "한국어"
-                  ? "ko"
+                  ? "한국어"
                   : language === "日本語"
-                  ? "jp"
-                  : "en"
+                  ? "日本語"
+                  : "English"
               ]
             }
           </option>

@@ -7,7 +7,6 @@ import styled from "styled-components";
 import Nickname from "../../components/SignUpForm/NicknameInput";
 import { useNavigate } from "react-router-dom";
 import Birth from "../../components/SignUpForm/BirthInput";
-import EmailInput from "../../components/SignUpForm/EmailInput";
 import PasswordInput from "../../components/SignUpForm/PasswordInput";
 import CountryInput from "../../components/SignUpForm/CountryInput";
 import GenderInput from "../../components/SignUpForm/GenderInput";
@@ -53,6 +52,9 @@ export default function EditProfile() {
     gender: "MALE" | "FEMALE";
     language: "EN" | "KR" | "JP";
     nickname: string;
+    profileImg: string | null;
+    personalType: string | null;
+    skinType: string | null;
   }
 
   const [memberInfo, setMemberInfo] = useState<MemberInfo>();
@@ -65,11 +67,6 @@ export default function EditProfile() {
   const [birthText, setBirthText] = useState<string>("");
 
   const [email, setEmail] = useState<string>("");
-  const [sendEmail, setSendEmail] = useState<boolean | null>(null);
-  const [sendEmailText, setSendEmailText] = useState<string | null>(null);
-  const [verifyCode, setVerifyCode] = useState<string>("");
-  const [checkVerifyCode, setCheckVerifyCode] = useState<boolean | null>(null);
-  const [verifyCodeText, setVerifyCodeText] = useState<string | null>(null);
 
   const [password, setPassword] = useState<string>("");
   const [secondPassword, setSecondPassword] = useState<string>("");
@@ -80,8 +77,6 @@ export default function EditProfile() {
 
   const [gender, setGender] = useState<"MALE" | "FEMALE" | null>(null);
   const [genderText, setGenderText] = useState<string | null>(null);
-
-  const navigate = useNavigate();
 
   function isValidDateString(dateStr: string): boolean {
     if (dateStr.length !== 8) return false;
@@ -106,14 +101,12 @@ export default function EditProfile() {
 
   const isNicknameValid = nicknameVaild === true;
   const isBirthValid = birth.length === 8 && isValidDateString(birth);
-  const isEmailVerified = checkVerifyCode === true;
   const isPasswordMatch = password === secondPassword;
   const isCountrySelected = Boolean(country);
   const isGenderSelected = Boolean(gender);
   const isFormValid =
     isNicknameValid &&
     isBirthValid &&
-    isEmailVerified &&
     isPasswordMatch &&
     isCountrySelected &&
     isGenderSelected;
@@ -125,9 +118,10 @@ export default function EditProfile() {
         const result = response.data.result;
         setMemberInfo(result);
         setNickname(result.nickname);
-        setBirth(result.birth);
+        setBirth(result.birth.replaceAll("-", ""));
         setEmail(result.email);
         setGender(result.gender);
+        setCountry(result.area);
       } catch (error) {
         console.log("회원정보 불러오는데 실패했습니다", error);
       }
@@ -139,13 +133,34 @@ export default function EditProfile() {
   console.log("memberInfo:", memberInfo);
 
   const goSave = () => {
-    const savePersonalColor = async () => {
-      try {
-        await axiosInstance.patch("/member", {});
-      } catch (error) {
-        console.log("error:", error);
-      }
-    };
+    if (isFormValid) {
+      const saveMemberInfo = async () => {
+        try {
+          await axiosInstance.patch("/member", {
+            nickname,
+            birth: formattedBirth,
+            area: country,
+            password: password,
+            lang: memberInfo?.language,
+            profileImg: memberInfo?.profileImg,
+            personalType: memberInfo?.personalType,
+            skinType: memberInfo?.skinType,
+          });
+          console.log("정보 수정 완료");
+          !isFormValid;
+        } catch (err) {
+          console.log("정보를 수정하지 못했습니다", err);
+        }
+      };
+      saveMemberInfo();
+    } else {
+      if (!isNicknameValid) setNicknameVaildMessage("닉네임을 확인해주세요");
+      else if (!isBirthValid) setBirthText("생년월일은 8자리를 입력해주세요");
+      else if (!isPasswordMatch)
+        setPasswordText("비밀번호가 일치하지 않습니다");
+      else if (!isCountrySelected) setCountryText("국가를 선택해주세요");
+      else if (!isGenderSelected) setGenderText("성별을 선택해주세요");
+    }
   };
 
   return (
@@ -172,15 +187,7 @@ export default function EditProfile() {
 
         <FieldName>{t.signup.email} </FieldName>
         <ButtonInputWrap>
-          <InputField
-            type="text"
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setSendEmailText(null);
-            }}
-            disabled={true}
-            value={memberInfo?.email}
-          />
+          <InputField type="text" disabled={true} value={memberInfo?.email} />
         </ButtonInputWrap>
 
         <PasswordInput
@@ -208,7 +215,7 @@ export default function EditProfile() {
         />
       </FormWrapper>
       <ButtonWrapper>
-        <Button label={t.save} onClick={goSave} />
+        <Button label={t.save} onClick={goSave} disabled={!isFormValid} />
       </ButtonWrapper>
     </Wrap>
   );
