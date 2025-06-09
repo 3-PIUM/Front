@@ -6,7 +6,9 @@ import { useState, useRef, useEffect } from "react";
 import ItemCard from "../components/product/ItemCard";
 import Header from "../components/common/Header";
 import StoreModal from "../components/model/StoreModal";
-import bannerImg from "../assets/images/mbtiBanner.png";
+import bannerKR from "../assets/images/bannerKR.png";
+import bannerJP from "../assets/images/bannerJP.png";
+import bannerEN from "../assets/images/bannerEN.png";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import surveyImage from "../assets/images/surveyImage.png";
@@ -201,7 +203,7 @@ export default function Home() {
   const [showStoreModal, setShowStoreModal] = useState(false);
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
-  const { t, setLanguage } = useLocale();
+  const { t, setLanguage, language } = useLocale();
 
   const dummyStores = [
     {
@@ -319,7 +321,13 @@ export default function Home() {
 
       <BannerWrap>
         <BannerImage
-          src={bannerImg}
+          src={
+            language === "한국어"
+              ? bannerKR
+              : language == "English"
+              ? bannerEN
+              : bannerJP
+          }
           alt="mbti 배너"
           onClick={() => navigate("/mbti")}
         />

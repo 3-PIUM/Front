@@ -77,7 +77,7 @@ export default function ItemCard({
       const wishItem = async () => {
         await axiosInstance.post("/wishlist", {
           param: {
-            itemId: id,
+            // itemId: id,
           },
         });
       };
