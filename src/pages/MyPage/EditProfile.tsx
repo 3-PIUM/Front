@@ -196,6 +196,7 @@ export default function EditProfile() {
           setGender={setGender}
           genderText={genderText}
           setGenderText={setGenderText}
+          readOnly={true}
         />
       </FormWrapper>
       <ButtonWrapper>
