@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import axiosInstance from "../../api/axiosInstance";
 import { useState } from "react";
 import colors from "../../styles/colors";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`
   display: flex;
@@ -75,6 +76,7 @@ const AnswerBtn = styled.button`
 `;
 
 export default function MbtiQuestion() {
+  const { t } = useLocale();
   const [questionsList, setQuestionsList] = useState<
     {
       id: number;
@@ -165,7 +167,7 @@ export default function MbtiQuestion() {
 
   return (
     <Wrap>
-      <TextHeader pageName="피부 MBTI 진단" bgColor="transparent" />
+      <TextHeader pageName={t.mbti.pageTitle} bgColor="transparent" />
       <Wrapper>
         <TestCategory>색소 VS 구조</TestCategory>
         {currentQuestion ? (

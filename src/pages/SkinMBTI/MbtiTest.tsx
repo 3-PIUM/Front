@@ -28,6 +28,7 @@ const Wrapper = styled.div`
 const Title = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
+  text-align: center;
 `;
 
 const Character = styled.img`
@@ -72,15 +73,15 @@ export default function MbtiTest() {
 
   return (
     <Wrap>
-      <TextHeader pageName="피부 MBTI 진단" bgColor="transparent" />
+      <TextHeader pageName={t.mbti.pageTitle} bgColor="transparent" />
       <Wrapper>
         <Title>
-          <div>나의 피부 MBTI</div>
-          <div>테스트하러 가기!</div>
+          <div>{t.mbti.title.prefix}</div>
+          <div>{t.mbti.title.suffix}</div>
         </Title>
         <Character src={mbtiCharacter} alt="mbti 캐릭터" />
         <Button onClick={() => navigate("/mbti/question")}>
-          테스트하러 가기
+          {t.mbti.goTestBtn}
         </Button>
       </Wrapper>
     </Wrap>

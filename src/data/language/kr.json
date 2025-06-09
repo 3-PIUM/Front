@@ -143,6 +143,14 @@
       "registerSkinType": "피부 타입 등록하기"
     }
   },
+  "mbti": {
+    "pageTitle": "피부 MBTI 진단",
+    "title": {
+      "prefix": "나의 피부 MBI",
+      "suffix": "테스트하러 가기！"
+    },
+    "goTestBtn": "테스트하러 가기"
+  },
   "wishlist": {
     "pageTitle": "찜"
   },

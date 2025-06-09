@@ -150,6 +150,14 @@
       "registerSkinType": "肌タイプを登録する"
     }
   },
+  "mbti": {
+    "pageTitle": "肌タイプMBTI診断",
+    "title": {
+      "prefix": "あなたの肌MBTIを",
+      "suffix": "チェックしよう！"
+    },
+    "goTestBtn": "診断してみる"
+  },
   "wishlist": {
     "pageTitle": "お気に入り"
   },

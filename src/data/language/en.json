@@ -143,6 +143,14 @@
       "registerSkinType": "Register your skin type"
     }
   },
+  "mbti": {
+    "pageTitle": "Skin MBTI Test",
+    "title": {
+      "prefix": "Find out your",
+      "suffix": "Skin MBTI type!"
+    },
+    "goTestBtn": "Take the Test"
+  },
   "wishlist": {
     "pageTitle": "Wishlist"
   },
