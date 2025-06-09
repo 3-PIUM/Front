@@ -13,6 +13,30 @@ const BirthWrap = styled.div`
   flex-direction: column;
 `;
 
+const StyledInput = styled.input<{ readOnly?: boolean }>`
+  width: 100%;
+  height: 3rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 1rem;
+  font-size: 1rem;
+  padding: 0 1rem;
+  appearance: none;
+  tab-size: 1;
+  background-color: ${({ readOnly }) =>
+    readOnly ? colors.lightGrey : colors.white};
+
+  ${({ readOnly }) =>
+    readOnly &&
+    `
+    pointer-events: none;    /* 클릭/포커스 자체를 막음 */
+    border: 1px solid ${colors.lightGrey};  /* 클릭해도 border 유지 */
+    &:focus {
+      border: 1px solid ${colors.lightGrey}; /* 포커스 시 border 변화 없음 */
+      box-shadow: none;
+    }
+  `}
+`;
+
 const ErrorText = styled.div`
   font-size: 0.875rem;
   font-weight: 500;
@@ -24,6 +48,7 @@ interface BirthProps {
   setBirth: (value: string) => void;
   birthText: string;
   setBirthText: (value: string) => void;
+  readOnly?: boolean;
 }
 
 function isValidDateString(dateStr: string): boolean {
@@ -47,10 +72,16 @@ export default function Birth({
   setBirth,
   birthText,
   setBirthText,
+  readOnly,
 }: BirthProps) {
   const { t } = useLocale();
 
   useEffect(() => {
+    if (readOnly) {
+      setBirthText("");
+      return;
+    }
+
     if (birth.length === 0) {
       setBirthText("");
       return;
@@ -69,7 +100,7 @@ export default function Birth({
     <>
       <FieldName>{t.signup.birthTitle} </FieldName>
       <BirthWrap>
-        <input
+        <StyledInput
           type="text"
           value={birth}
           inputMode="numeric"
@@ -79,16 +110,7 @@ export default function Birth({
           onChange={(e) => {
             setBirth(e.target.value);
           }}
-          style={{
-            width: "100%",
-            height: "3rem",
-            border: "1px solid #E6E6E6",
-            borderRadius: "1rem",
-            fontSize: "1rem",
-            padding: "0 1rem",
-            appearance: "none",
-            tabSize: "1",
-          }}
+          readOnly={readOnly}
         />
         {birthText && (
           <ErrorText style={{ color: colors.mainPink }}>{birthText}</ErrorText>

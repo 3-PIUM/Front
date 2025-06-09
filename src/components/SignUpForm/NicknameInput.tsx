@@ -14,7 +14,9 @@ const ButtonInputWrap = styled.div`
   gap: 0.5rem;
 `;
 
-const FunctionBtn = styled.button`
+const FunctionBtn = styled.button.attrs<{ disabled: boolean }>((props) => ({
+  disabled: props.disabled,
+}))`
   display: flex;
   flex-shrink: 0;
   width: max-content;
@@ -22,10 +24,11 @@ const FunctionBtn = styled.button`
   font-size: 0.875rem;
   border-radius: 1.25rem;
   border: none;
-  background-color: ${colors.subPink};
+  background-color: ${({ disabled }) =>
+    disabled ? colors.lightGrey : colors.subPink};
   justify-content: center;
   align-items: center;
-  color: ${colors.mainPink};
+  color: ${({ disabled }) => (disabled ? colors.mediumGrey : colors.mainPink)};
   font-weight: bold;
 `;
 
@@ -38,10 +41,11 @@ const ErrorText = styled.div`
 interface NicknameProps {
   nickname: string;
   setNickname: (value: string) => void;
-  nicknameVaild: boolean | null;
+  nicknameVaild: boolean;
   setNicknameVaild: (value: boolean) => void;
-  nicknameVaildMessage: string | null;
-  setNicknameVaildMessage: (value: string | null) => void;
+  nicknameVaildMessage: string;
+  setNicknameVaildMessage: (value: string) => void;
+  disabled: boolean | undefined;
 }
 
 export default function Nickname({
@@ -51,6 +55,7 @@ export default function Nickname({
   setNicknameVaild,
   nicknameVaildMessage,
   setNicknameVaildMessage,
+  disabled,
 }: NicknameProps) {
   const { t } = useLocale();
 
@@ -85,10 +90,10 @@ export default function Nickname({
             value={nickname}
             onChange={(e) => {
               setNickname(e.target.value);
-              setNicknameVaildMessage(null);
+              setNicknameVaildMessage("");
             }}
           />
-          <FunctionBtn onClick={handleDuplicate}>
+          <FunctionBtn onClick={handleDuplicate} disabled={disabled ?? false}>
             {t.signup.nicknameDuplicate}
           </FunctionBtn>
         </ButtonInputWrap>

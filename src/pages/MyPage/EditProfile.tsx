@@ -34,13 +34,21 @@ const ButtonWrapper = styled.div`
 
 export default function EditProfile() {
   const { t } = useLocale();
-  const [memberInfo, setMemberInfo] = useState();
+
+  interface MemberInfo {
+    area: string;
+    birth: string;
+    email: string;
+    gender: "MALE" | "FEMALE";
+    language: "EN" | "KR" | "JP";
+    nickname: string;
+  }
+
+  const [memberInfo, setMemberInfo] = useState<MemberInfo>();
 
   const [nickname, setNickname] = useState<string>("");
-  const [nicknameVaildMessage, setNicknameVaildMessage] = useState<
-    string | null
-  >(null);
-  const [nicknameVaild, setNicknameVaild] = useState<boolean | null>(null);
+  const [nicknameVaildMessage, setNicknameVaildMessage] = useState<string>("");
+  const [nicknameVaild, setNicknameVaild] = useState<boolean>(false);
 
   const [birth, setBirth] = useState<string>("");
   const [birthText, setBirthText] = useState<string>("");
@@ -104,6 +112,11 @@ export default function EditProfile() {
       try {
         const response = await axiosInstance.get("/member");
         const result = response.data.result;
+        setMemberInfo(result);
+        setNickname(result.nickname);
+        setBirth(result.birth);
+        setEmail(result.email);
+        setGender(result.gender);
       } catch (error) {
         console.log("회원정보 불러오는데 실패했습니다", error);
       }
@@ -111,6 +124,8 @@ export default function EditProfile() {
 
     fetchMemberInfo();
   }, []);
+
+  console.log("memberInfo:", memberInfo);
 
   const goSave = () => {
     const savePersonalColor = async () => {
@@ -134,6 +149,7 @@ export default function EditProfile() {
           setNicknameVaild={setNicknameVaild}
           nicknameVaildMessage={nicknameVaildMessage}
           setNicknameVaildMessage={setNicknameVaildMessage}
+          disabled={nickname == memberInfo?.nickname}
         />
 
         <Birth
@@ -141,6 +157,7 @@ export default function EditProfile() {
           setBirth={setBirth}
           birthText={birthText}
           setBirthText={setBirthText}
+          readOnly={true}
         />
 
         <EmailInput
