@@ -56,19 +56,16 @@
     "btn": "確認"
   },
   "survey": {
+    "skipBtn": "スキップ",
+    "nextBtn": "次へ",
+    "previousBtn": "前の質問",
     "survey1": {
-      "skipBtn": "スキップ",
       "title": "肌タイプについて教えてください！",
-      "btn": {
-        "type1": "乾燥肌",
-        "type2": "普通肌",
-        "type3": "脂性肌",
-        "type4": "混合肌",
-        "type5": "敏感肌",
-        "type6": "超乾燥肌",
-        "type7": "トラブル肌"
-      },
       "goTestTitle": "よく分からない方は？ 肌タイプ診断を受けてみましょう"
+    },
+    "survey3": {
+      "title": "Tell us about your personal color!",
+      "goTestTitle": "Not sure? Take a personal color test"
     }
   },
   "category": {

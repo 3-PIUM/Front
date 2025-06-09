@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import colors from "../../styles/colors";
 import PersonalColorButton from "../SelectForm/PersonalColorButton";
 import { useState } from "react";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
   margin-top: 1rem;
@@ -26,56 +27,51 @@ const AnswerWrapper = styled.div`
 const SkinTestWrapper = styled.div`
   display: flex;
   margin-top: 3rem;
-  font-size: 0.75rem;
+  font-size: 0.825rem;
   color: ${colors.mediumGrey};
   text-decoration: underline;
   justify-content: center;
 `;
 
-const Options = [
-  {
-    id: 1,
-    name: "봄 웜",
-    colors: ["#FFD8A9", "#FFC0A9", "#FFE6CC"],
-  },
-  {
-    id: 2,
-    name: "여름 쿨",
-    colors: ["#C3D5FF", "#E0B5DB", "#A4B8D1"],
-  },
-  {
-    id: 3,
-    name: "가을 웜",
-    colors: ["#CFA36E", "#A06045", "#E2C1A0"],
-  },
-  {
-    id: 4,
-    name: "겨울 쿨",
-    colors: ["#C5CBE1", "#B4A4DD", "#333C57"],
-  },
-];
+interface personalColorProps {
+  personalColor: string | null;
+  setPersonalColor: (value: string) => void;
+}
 
-export default function SurveyStep2() {
+export default function SurveyStep2({
+  personalColor,
+  setPersonalColor,
+}: personalColorProps) {
   const [selected, setSelected] = useState<String>();
+  const { t } = useLocale();
+
+  interface personalProps {
+    id: number;
+    option: string;
+    value: string;
+    colors: string[];
+  }
 
   return (
     <>
       <Wrapper>
-        <TitleWrapper>퍼스널 컬러에 대해 알려주세요!</TitleWrapper>
+        <TitleWrapper>{t.survey.survey3.title}</TitleWrapper>
         <AnswerWrapper>
-          {Options.map((item) => (
+          {t.mypage.personalColor.options.map((item: personalProps) => (
             <PersonalColorButton
-              buttonName={item.name}
-              isActivated={selected === item.name}
+              key={item.id}
+              buttonName={item.option}
+              isActivated={selected === item.option}
               colors={item.colors}
-              onClick={() => setSelected(item.name)}
+              onClick={() => {
+                setSelected(item.option);
+                setPersonalColor(item.value);
+              }}
             />
           ))}
         </AnswerWrapper>
         <Link to="">
-          <SkinTestWrapper>
-            잘 모르겠다면? 퍼스널 컬러 진단을 받아보세요
-          </SkinTestWrapper>
+          <SkinTestWrapper>{t.survey.survey3.goTestTitle}</SkinTestWrapper>
         </Link>
       </Wrapper>
     </>

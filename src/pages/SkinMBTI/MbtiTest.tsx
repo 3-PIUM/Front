@@ -3,6 +3,7 @@ import styled from "styled-components";
 import mbtiCharacter from "../../assets/images/testImage.png";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`
   display: flex;
@@ -46,6 +47,7 @@ const Button = styled.button`
 
 export default function MbtiTest() {
   const navigate = useNavigate();
+  const { t } = useLocale();
 
   useEffect(() => {
     const root = document.getElementById("root");

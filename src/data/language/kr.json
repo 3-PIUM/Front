@@ -55,19 +55,16 @@
     "btn": "확인"
   },
   "survey": {
+    "skipBtn": "건너뛰기",
+    "nextBtn": "다음",
+    "previousBtn": "이전 질문",
     "survey1": {
-      "skipBtn": "건너뛰기",
       "title": "피부 타입에 대해 알려주세요!",
-      "btn": {
-        "type1": "건성",
-        "type2": "중성",
-        "type3": "지성",
-        "type4": "복합성",
-        "type5": "민감성",
-        "type6": "악건성",
-        "type7": "트러블성"
-      },
       "goTestTitle": "잘 모르겠다면? 피부 타입 진단을 받아보세요"
+    },
+    "survey3": {
+      "title": "퍼스널컬러에 대해 알려주세요!",
+      "goTestTitle": "잘 모르겠다면? 퍼스널 컬러 진단을 받아보세요"
     }
   },
   "category": {

@@ -2,12 +2,14 @@ import styled from "styled-components";
 import Header from "../../components/Header";
 import colors from "../../styles/colors";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SurveyStep1 from "../../components/Survey/SurveyStep1";
 import SurveyStep2 from "../../components/Survey/SurveyStep2";
 import SurveyStep3 from "../../components/Survey/SurveyStep3";
 import Button from "../../components/Button";
 import StepIndicator from "../../components/StepIndicator";
+import { useLocale } from "../../context/LanguageContext";
+import axios from "axios";
 
 const Wrap = styled.div`
   width: 100vw;
@@ -70,14 +72,57 @@ const ButtonWrapper = styled.div`
 
 export default function WelcomePage() {
   const [step, setStep] = useState(1);
-  const [skinType, setSkinType] = useState<String | null>("");
-  const [personalColor, setPersonalColor] = useState<String | null>("");
-  const [concern, setConcern] = useState<String[] | null>([]);
+  const [skinType, setSkinType] = useState<string | null>(null);
+  const [personalColor, setPersonalColor] = useState<string | null>(null);
+  const [concern, setConcern] = useState<string[] | null>(null);
   const navigate = useNavigate();
+  const { t } = useLocale();
 
-  const goFinish = () => {
-    navigate("/welcome");
+  const storedDataRaw = sessionStorage.getItem("signupData");
+  const storedData = storedDataRaw ? JSON.parse(storedDataRaw) : null;
+
+  const goFinish = async () => {
+    try {
+      const response = await axios.post("http://localhost:8080/member/join", {
+        nickname: storedData.nickname,
+        birth: storedData.birth,
+        email: storedData.email,
+        password: storedData.password,
+        gender: storedData.gender,
+        area: storedData.area,
+        language: storedData.lang,
+        skinType: skinType,
+        personalType: personalColor,
+      });
+      console.log("성공");
+      console.log(response);
+      navigate("/welcome");
+      sessionStorage.removeItem("signupData");
+      sessionStorage.removeItem("language");
+      sessionStorage.removeItem("skinType");
+      sessionStorage.removeItem("personalColor");
+    } catch {
+      console.log("실패");
+    }
   };
+
+  useEffect(() => {
+    if (skinType) {
+      setSkinType(skinType);
+    }
+    console.log(skinType);
+  }, [skinType]);
+
+  console.log(skinType);
+
+  useEffect(() => {
+    if (personalColor) {
+      setPersonalColor(personalColor);
+    }
+  }, [personalColor]);
+
+  console.log(skinType);
+  console.log(personalColor);
 
   return (
     <>
@@ -86,7 +131,7 @@ export default function WelcomePage() {
         <SkipWrapper>
           <TextWrapper>
             <Link to="/welcome">
-              <SkipText>건너뛰기</SkipText>
+              <SkipText>{t.survey.skipBtn}</SkipText>
             </Link>
           </TextWrapper>
         </SkipWrapper>
@@ -94,37 +139,46 @@ export default function WelcomePage() {
         <SurveyWrapper>
           <SlideContainer step={step}>
             <SlidePage>
-              <SurveyStep1 />
+              <SurveyStep1 skinType={skinType} setSkinType={setSkinType} />
             </SlidePage>
             <SlidePage>
               <SurveyStep2 />
             </SlidePage>
             <SlidePage>
-              <SurveyStep3 />
+              <SurveyStep3
+                personalColor={personalColor}
+                setPersonalColor={setPersonalColor}
+              />
             </SlidePage>
           </SlideContainer>
         </SurveyWrapper>
         <ButtonWrapper>
-          {step === 1 && <Button label="다음" onClick={() => setStep(2)} />}
+          {step === 1 && (
+            <Button label={t.survey.nextBtn} onClick={() => setStep(2)} />
+          )}
 
           {step === 2 && (
             <>
               <Button
-                label="이전 질문"
+                label={t.survey.previousBtn}
                 width="48vw"
                 backgroundColor={colors.white}
                 color={colors.darkGrey}
                 border="1px solid #7F7F7F"
                 onClick={() => setStep(1)}
               />
-              <Button label="다음" width="48vw" onClick={() => setStep(3)} />
+              <Button
+                label={t.survey.nextBtn}
+                width="48vw"
+                onClick={() => setStep(3)}
+              />
             </>
           )}
 
           {step === 3 && (
             <>
               <Button
-                label="이전 질문"
+                label={t.survey.previousBtn}
                 width="48vw"
                 backgroundColor={colors.white}
                 color={colors.darkGrey}
