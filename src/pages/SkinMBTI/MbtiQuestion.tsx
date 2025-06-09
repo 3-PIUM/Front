@@ -118,8 +118,6 @@ export default function MbtiQuestion() {
   useEffect(() => {
     const fetchMBTIQuestions = async () => {
       try {
-        console.log(localStorage.getItem("language"), "seok");
-
         const response = await axiosInstance.get("/mbti/questions", {
           params: {
             axis: "PIGMENT",
