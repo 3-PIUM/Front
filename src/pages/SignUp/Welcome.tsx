@@ -1,9 +1,9 @@
 import WelcomeImage from "../../assets/images/welcomeImage.png";
 import styled from "styled-components";
 import colors from "../../styles/colors";
-import Button from "../../components/Button";
+import Button from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
+import Header from "../../components/common/Header";
 import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`

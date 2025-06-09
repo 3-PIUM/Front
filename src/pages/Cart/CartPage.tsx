@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useCartStore } from "../../store/useCartStore";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import OptionModal from "../../components/OptionModal";
+import OptionModal from "../../components/model/OptionModal";
 import { useLocale } from "../../context/LanguageContext";
-import TextHeader from "../../components/TextHeader";
+import TextHeader from "../../components/common/TextHeader";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -293,7 +293,7 @@ const CartPage = () => {
           <LowerInfo>
             <LeftRow>
               <OptionButton onClick={() => setShowOptionFor(item.id)}>
-                옵션 변경
+                {t.cart.changeOption}
               </OptionButton>
               <QuantityControl>
                 <Button onClick={() => decreaseQuantity(item.id)}>-</Button>
@@ -304,7 +304,10 @@ const CartPage = () => {
             <RightColumn>
               <PriceBox>
                 <Discount>{item.discountRate}%</Discount>
-                <Price>{item.originalPrice.toLocaleString()}원</Price>
+                <Price>
+                  {item.originalPrice.toLocaleString()}
+                  {t.cart.won}
+                </Price>
               </PriceBox>
             </RightColumn>
           </LowerInfo>

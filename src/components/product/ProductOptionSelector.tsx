@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
+import { useLocale } from "../../context/LanguageContext";
 
 interface ProductOption {
   id: string;
@@ -84,6 +85,7 @@ export default function ProductOptionSelector({
 }: ProductOptionSelectorProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  const { t } = useLocale();
 
   const toggle = () => setOpen((prev) => !prev);
   const handleSelect = (id: string) => {
@@ -103,7 +105,7 @@ export default function ProductOptionSelector({
         {selectedOption ? (
           <span style={{ color: "#111" }}>{selectedOption.name}</span>
         ) : (
-          <span style={{ color: "#aaa" }}>상품을 선택해주세요</span>
+          <span style={{ color: "#aaa" }}>{t.productDetail.selectProduct}</span>
         )}
         {open ? <MdExpandLess size={15} /> : <MdExpandMore size={15} />}
       </SelectBox>
@@ -124,7 +126,10 @@ export default function ProductOptionSelector({
               <OptionInfo>
                 <OptionName>{option.name}</OptionName>
               </OptionInfo>
-              <Price>{option.price.toLocaleString()}원</Price>
+              <Price>
+                {option.price.toLocaleString()}
+                {t.productDetail.won}
+              </Price>
             </OptionItem>
           ))}
         </OptionList>

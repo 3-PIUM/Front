@@ -1,6 +1,7 @@
 // ReviewSatisfactionCard.tsx
 import styled from "styled-components";
 import { FaStar } from "react-icons/fa";
+import { useLocale } from "../../context/LanguageContext";
 
 // styled-components
 const Wrapper = styled.div`
@@ -36,9 +37,10 @@ interface ReviewSatisfactionCardProps {
 }
 
 const ReviewSatisfactionCard = ({ score }: ReviewSatisfactionCardProps) => {
+  const { t } = useLocale();
   return (
     <Wrapper>
-      <Label>제품 만족도</Label>
+      <Label>{t.productDetail.satisfaction}</Label>
       <Score>{score.toFixed(2)}</Score>
       <StarIcon />
     </Wrapper>

@@ -1,6 +1,6 @@
 import { VscChevronLeft } from "react-icons/vsc";
 import styled from "styled-components";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 import { useNavigate } from "react-router-dom";
 
 const HeaderWrap = styled.div<{ bgColor?: string }>`

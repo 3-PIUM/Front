@@ -1,12 +1,13 @@
 import styled from "styled-components";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 import { useState } from "react";
+import { useLocale } from "../../context/LanguageContext";
 
 interface Store {
   name: string;
   distance: string;
   imageUrl: string;
-  status: string;
+  status: "영업 중" | "영업 준비 중";
   hours: string;
 }
 
@@ -30,7 +31,6 @@ const ModalContainer = styled.div`
   position: fixed;
   bottom: 4.5rem;
   width: 100%;
-  max-height: auto;
   background-color: ${colors.white};
   border-radius: 16px 16px 0 0;
   padding: 1rem;
@@ -44,7 +44,6 @@ const Title = styled.div`
 `;
 
 const StoreList = styled.div`
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -60,7 +59,6 @@ const StoreItem = styled.div<{ $selected?: boolean }>`
   padding: 0.75rem;
   border-radius: 0.75rem;
   cursor: pointer;
-
   background-color: ${({ $selected }) =>
     $selected ? "#fff0f5" : "transparent"};
   border: 1px solid ${({ $selected }) => ($selected ? "#F23477" : "#ddd")};
@@ -94,32 +92,40 @@ export default function StoreModal({
   const [selectedStoreName, setSelectedStoreName] = useState<string | null>(
     null
   );
+  const { t } = useLocale();
 
   return (
     <Overlay onClick={onClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
-        <Title>내 주변 매장 찾기</Title>
+        <Title>{t.storeModal.title}</Title>
         <StoreList>
-          {stores.map((store, index) => (
-            <StoreItem
-              key={index}
-              $selected={selectedStoreName === store.name}
-              onClick={() => {
-                setSelectedStoreName(store.name);
-                onSelect(store);
-                onClose();
-              }}
-            >
-              <StoreImage src={store.imageUrl} alt={store.name} />
-              <StoreDetails>
-                <StoreName>{store.name}</StoreName>
-                <StoreInfo>
-                  {store.status} · {store.hours}
-                </StoreInfo>
-                <StoreInfo>{store.distance}</StoreInfo>
-              </StoreDetails>
-            </StoreItem>
-          ))}
+          {stores.map((store, index) => {
+            const translatedStatus =
+              store.status === "영업 중"
+                ? t.storeModal.status.open
+                : t.storeModal.status.preparing;
+
+            return (
+              <StoreItem
+                key={index}
+                $selected={selectedStoreName === store.name}
+                onClick={() => {
+                  setSelectedStoreName(store.name);
+                  onSelect(store);
+                  onClose();
+                }}
+              >
+                <StoreImage src={store.imageUrl} alt={store.name} />
+                <StoreDetails>
+                  <StoreName>{t.storeModal.names[store.name]}</StoreName>
+                  <StoreInfo>
+                    {translatedStatus} · {store.hours}
+                  </StoreInfo>
+                  <StoreInfo>{store.distance}</StoreInfo>
+                </StoreDetails>
+              </StoreItem>
+            );
+          })}
         </StoreList>
       </ModalContainer>
     </Overlay>

@@ -1,5 +1,6 @@
 import { PieChart, Pie, Cell } from "recharts";
 import styled from "styled-components";
+import { useLocale } from "../../context/LanguageContext";
 
 interface IngredientData {
   score: string;
@@ -50,6 +51,7 @@ const ScorePieChart = ({ data }: ScorePieChartProps) => {
     value: percent,
     fill: color,
   }));
+  const { t } = useLocale();
 
   return (
     <ChartWrapper>
@@ -78,7 +80,12 @@ const ScorePieChart = ({ data }: ScorePieChartProps) => {
           <LegendItem key={idx}>
             <Dot color={item.color} />
             <ValueText>
-              {item.score} - {item.value}개
+              {`${item.score}${t.ingredientDetail.scoreUnit}`} -{" "}
+              {`${item.value}${
+                item.value === 1
+                  ? t.ingredientDetail.quantityNumber.one
+                  : t.ingredientDetail.quantityNumber.more
+              }`}
             </ValueText>
           </LegendItem>
         ))}

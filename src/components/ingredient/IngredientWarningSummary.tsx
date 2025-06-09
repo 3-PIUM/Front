@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
   background-color: white;
@@ -9,7 +10,7 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 18px;
+  font-size: 17px;
   margin-bottom: 1rem;
 `;
 
@@ -89,11 +90,12 @@ export default function IngredientWarningSummary() {
   };
 
   const { skinType, warningIngredients } = warningData;
+  const { t } = useLocale();
 
   return (
     <Wrapper>
       <Title>
-        <Highlight>{skinType}</Highlight> 주의 성분 요약
+        <Highlight>{skinType}</Highlight> {t.productDetail.cautionSummary}
       </Title>
       <IngredientList>
         {warningIngredients.map((item: Ingredient, idx: number) => (

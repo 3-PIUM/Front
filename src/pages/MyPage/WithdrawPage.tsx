@@ -1,8 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import TextHeader from "../../components/TextHeader";
-import Button from "../../components/Button";
+import TextHeader from "../../components/common/TextHeader";
+import Button from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
 
 const PageWrapper = styled.div`
   padding: 4rem 1.2rem 8rem;
@@ -116,33 +117,34 @@ export default function WithdrawalPage() {
   const [customReason, setCustomReason] = useState("");
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLocale();
 
   const handleWithdrawal = () => {
-    if (!selectedReason) return alert("탈퇴 사유를 선택해주세요");
-    if (selectedReason === "기타" && !customReason.trim()) {
-      return alert("기타 사유를 입력해주세요");
+    if (!selectedReason) return alert(t.withdrawal.alert.selectReason);
+    if (selectedReason === t.withdrawal.reasons.etc && !customReason.trim()) {
+      return alert(t.withdrawal.alert.fillEtc);
     }
     setShowModal(true);
   };
 
   const confirmWithdrawal = () => {
     setShowModal(false);
-    alert("회원 탈퇴가 완료되었습니다.");
+    alert(t.withdrawal.alert.complete);
     // 예: localStorage.clear();
     navigate("/");
   };
 
   return (
     <>
-      <TextHeader pageName="회원 탈퇴" />
+      <TextHeader pageName={t.withdrawal.pageTitle} />
       <PageWrapper>
-        <Question>탈퇴하시려는 이유를 선택해주세요.</Question>
+        <Question>{t.withdrawal.question}</Question>
         <OptionList>
           {[
-            "원하는 제품이 없어서",
-            "잦은 오류, 장애가 발생해서",
-            "다른 계정으로 재가입하려고",
-            "기타",
+            t.withdrawal.reasons.noProduct,
+            t.withdrawal.reasons.error,
+            t.withdrawal.reasons.rejoin,
+            t.withdrawal.reasons.etc,
           ].map((reason) => (
             <Option key={reason}>
               <Radio
@@ -155,9 +157,9 @@ export default function WithdrawalPage() {
               {reason}
             </Option>
           ))}
-          {selectedReason === "기타" && (
+          {selectedReason === t.withdrawal.reasons.etc && (
             <Textarea
-              placeholder="탈퇴 사유를 입력해주세요"
+              placeholder={t.withdrawal.textareaPlaceholder}
               value={customReason}
               onChange={(e) => setCustomReason(e.target.value)}
             />
@@ -166,25 +168,22 @@ export default function WithdrawalPage() {
       </PageWrapper>
 
       <FixedBottom>
-        <Button label="탈퇴하기" onClick={handleWithdrawal} />
+        <Button label={t.withdrawal.submit} onClick={handleWithdrawal} />
       </FixedBottom>
 
       {showModal && (
         <>
           <Overlay onClick={() => setShowModal(false)} />
           <Modal>
-            <ModalTitle>잠시만요, 중요한 안내가 있어요</ModalTitle>
-            <ModalDesc>
-              탈퇴 시 모든 정보가 삭제되며
-              <br />
-              복구가 불가능합니다.
-              <br />
-              탈퇴를 진행하시겠습니까?
-            </ModalDesc>
+            <ModalTitle>{t.withdrawal.modal.title}</ModalTitle>
+            <ModalDesc>{t.withdrawal.modal.desc}</ModalDesc>
             <ButtonBox>
-              <ModalButton label="탈퇴하기" onClick={confirmWithdrawal} />
+              <ModalButton
+                label={t.withdrawal.submit}
+                onClick={confirmWithdrawal}
+              />
               <CancelButton onClick={() => setShowModal(false)}>
-                취소
+                {t.withdrawal.modal.cancel}
               </CancelButton>
             </ButtonBox>
           </Modal>

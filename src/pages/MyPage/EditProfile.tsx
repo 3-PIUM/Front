@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Header from "../../components/Header";
-import TextHeader from "../../components/TextHeader";
+import Header from "../../components/common/Header";
+import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import styled from "styled-components";
@@ -11,7 +11,7 @@ import EmailInput from "../../components/SignUpForm/EmailInput";
 import PasswordInput from "../../components/SignUpForm/PasswordInput";
 import CountryInput from "../../components/SignUpForm/CountryInput";
 import GenderInput from "../../components/SignUpForm/GenderInput";
-import Button from "../../components/Button";
+import Button from "../../components/common/Button";
 
 const Wrap = styled.div`
   display: flex;

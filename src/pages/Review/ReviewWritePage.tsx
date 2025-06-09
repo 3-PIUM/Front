@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import TextHeader from "../../components/TextHeader";
-import ImageUploadList from "../../components/ImageUploadList";
+import TextHeader from "../../components/common/TextHeader";
+import ImageUploadList from "../../components/review/ImageUploadList";
 import { useNavigate, useLocation } from "react-router-dom";
-import TermsToggle from "../../components/TermsToggle";
-import Header from "../../components/Header";
+import TermsToggle from "../../components/common/TermsToggle";
+import Header from "../../components/common/Header";
+import { useLocale } from "../../context/LanguageContext";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -85,6 +86,7 @@ const SubmitButton = styled.button`
 const ReviewWritePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useLocale();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -112,7 +114,7 @@ const ReviewWritePage = () => {
       };
       navigate("/product-detail", { state: { newReview: review } });
     } else {
-      alert("별점과 내용을 모두 작성해주세요");
+      alert(t.review.alert);
     }
   };
 
@@ -135,7 +137,7 @@ const ReviewWritePage = () => {
   return (
     <PageWrapper>
       <Header />
-      <TextHeader pageName="리뷰작성" />
+      <TextHeader pageName={t.review.writePageTitle} />
 
       <ContentWrapper>
         <StarRow>
@@ -146,26 +148,26 @@ const ReviewWritePage = () => {
           ))}
         </StarRow>
 
-        <Label>솔직한 상품 리뷰를 남겨주세요</Label>
+        <Label>{t.review.reviewLabel}</Label>
         <TextArea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="꼼꼼 가득, 상세한 리뷰를 작성해보세요!"
+          placeholder="{t.review.reviewPlaceholder}"
         />
 
-        <Label>포토</Label>
+        <Label>{t.review.photoLabel}</Label>
         <ImageUploadList
           images={images}
           onImageSelect={handleImageSelect}
           onDeleteImage={handleDeleteImage}
         />
-        <InfoText>사진은 4장 이하의 PNG, JPG 파일만 등록 가능합니다.</InfoText>
+        <InfoText>{t.review.photoInfo}</InfoText>
         <Divider />
         <TermsToggle />
       </ContentWrapper>
 
       <StickyFooter>
-        <SubmitButton onClick={handleSubmit}>리뷰 등록 하기</SubmitButton>
+        <SubmitButton onClick={handleSubmit}>{t.review.submit}</SubmitButton>
       </StickyFooter>
     </PageWrapper>
   );

@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 import { createPortal } from "react-dom";
-import { useLocale } from "../context/LanguageContext";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -25,7 +24,7 @@ const ModalBox = styled.div`
   transform: translateX(-50%);
   height: fit-content;
   background-color: ${colors.white};
-  padding: 1.5rem 1rem;
+  padding: 2.5rem 1rem;
   z-index: 10001;
   border-radius: 2rem 2rem 0 0;
   animation: slideUp 0.4s ease-out forwards;
@@ -40,13 +39,20 @@ const ModalBox = styled.div`
   }
 `;
 
-const SortedBox = styled.div`
+const TextBox = styled.div`
+  display: flex;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+`;
+
+const LanguageBox = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
 `;
 
-const Sorted = styled.div<{ $selected: boolean }>`
+const Language = styled.div<{ $selected: boolean }>`
   padding: 1rem 0;
   font-size: 1rem;
   font-weight: ${({ $selected }) => ($selected ? 700 : 500)};
@@ -54,37 +60,38 @@ const Sorted = styled.div<{ $selected: boolean }>`
 `;
 
 interface ModalProps {
-  selectedSort: String;
-  onSelectedSort: (sort: string) => void;
+  selectedLanguage: String;
+  onSelectedLanguage: (lang: string) => void;
   closeModal: () => void;
 }
 
+const languages = ["한국어", "English", "日本語"];
+
 function ModalContent({
-  selectedSort,
-  onSelectedSort,
+  selectedLanguage,
+  onSelectedLanguage,
   closeModal,
 }: ModalProps) {
-  const { t } = useLocale();
-
   return (
-    <Wrapper onClick={closeModal}>
-      <ModalBox onClick={(e) => e.stopPropagation()}>
-        <SortedBox>
-          {t.category.sorted.map((sort: string) => (
-            <Sorted
-              key={sort}
-              $selected={selectedSort === sort}
-              onClick={() => onSelectedSort(sort)}
+    <Wrapper onClick={() => closeModal}>
+      <ModalBox>
+        <TextBox>언어를 선택해주세요</TextBox>
+        <LanguageBox>
+          {languages.map((lang) => (
+            <Language
+              key={lang}
+              $selected={selectedLanguage === lang}
+              onClick={() => onSelectedLanguage(lang)}
             >
-              {sort}
-            </Sorted>
+              {lang}
+            </Language>
           ))}
-        </SortedBox>
+        </LanguageBox>
       </ModalBox>
     </Wrapper>
   );
 }
 
-export default function SortedModal(props: ModalProps) {
+export default function LanguageModal(props: ModalProps) {
   return createPortal(<ModalContent {...props} />, document.body);
 }

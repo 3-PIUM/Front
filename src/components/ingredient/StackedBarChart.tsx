@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useLocale } from "../../context/LanguageContext";
 
 // ===== 스타일 =====
 const Wrapper = styled.div`
@@ -121,12 +122,13 @@ const data = [
 
 // ===== 컴포넌트 =====
 const StackedBarChart: React.FC = () => {
+  const { t } = useLocale();
   return (
     <Wrapper>
       {data.map((group) => (
         <ChartGroupWrapper key={group.category}>
           <GroupTitle>
-            <Highlight>{group.category}</Highlight> 그래프
+            <Highlight>{group.category}</Highlight> {t.productDetail.graph}
           </GroupTitle>
           <ChartGroup>
             {Object.entries(group)

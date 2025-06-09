@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useLocale } from "../context/LanguageContext";
+import { useLocale } from "../../context/LanguageContext";
 
 const CardWrapper = styled.div`
   width: 100%;
@@ -98,10 +98,18 @@ const ProductCard = ({
         <Brand>{brand}</Brand>
         <Title>{title}</Title>
         <InfoRow>
-          <Stock>재고 수량: {stock}개</Stock>
+          <Stock>
+            {t.productDetail.stockQuantity} {stock}
+            {stock === 1
+              ? t.productDetail.quantityNumber.one
+              : t.productDetail.quantityNumber.more}
+          </Stock>
           <PriceWrapper>
             <Discount>{discountRate}%</Discount>
-            <Price>{currentPrice.toLocaleString()}원</Price>
+            <Price>
+              {currentPrice.toLocaleString()}
+              {t.productDetail.won}
+            </Price>
           </PriceWrapper>
         </InfoRow>
       </InfoWrapper>

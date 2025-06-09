@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
-import TextHeader from "../../components/TextHeader";
+import TextHeader from "../../components/common/TextHeader";
+import { useLocale } from "../../context/LanguageContext";
 
 const PageWrapper = styled.div`
   padding: 4rem 1rem;
@@ -105,6 +106,7 @@ const Option = styled.span`
 export default function PurchaseDetailPage() {
   const { state } = useLocation();
   const { purchase } = state;
+  const { t } = useLocale();
 
   const formattedDate = purchase.date.replace(/-/g, ".");
 
@@ -116,7 +118,7 @@ export default function PurchaseDetailPage() {
 
   return (
     <>
-      <TextHeader pageName="구매 상세" />
+      <TextHeader pageName={t.order.detaiTitle} />
       <PageWrapper>
         <DateText>{formattedDate}</DateText>
 
@@ -127,19 +129,30 @@ export default function PurchaseDetailPage() {
               <InfoWrapper>
                 <Name>{item.name}</Name>
                 {item.option && <Option>{item.option}</Option>}
-                <Quantity>{item.quantity || 1}개</Quantity>
+                <Quantity>
+                  {item.quantity || 1}{" "}
+                  {item.quantity === 1
+                    ? t.order.quantityNumber.one
+                    : t.order.quantityNumber.more}
+                </Quantity>
               </InfoWrapper>
             </ProductBox>
             <PriceBox>
               <Discount>{item.discountRate}%</Discount>
-              <Price>{item.originalPrice.toLocaleString()}원</Price>
+              <Price>
+                {item.originalPrice.toLocaleString()}
+                {t.order.won}
+              </Price>
             </PriceBox>
           </ProductWrapper>
         ))}
 
         <TotalWrapper>
-          <TotalLabel>총 금액</TotalLabel>
-          <TotalPrice>{Math.round(total).toLocaleString()}원</TotalPrice>
+          <TotalLabel>{t.order.totalAmount}</TotalLabel>
+          <TotalPrice>
+            {Math.round(total).toLocaleString()}
+            {t.order.won}
+          </TotalPrice>
         </TotalWrapper>
       </PageWrapper>
     </>

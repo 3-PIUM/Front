@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import QRCode from "react-qr-code";
-import TextHeader from "../../components/TextHeader";
+import TextHeader from "../../components/common/TextHeader";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useLocale } from "../../context/LanguageContext";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -50,18 +51,15 @@ const QRCodePage = () => {
   }, [selectedCartItems, navigate]);
 
   const qrValue = "https://example.com/pay";
+  const { t } = useLocale();
 
   return (
     <PageWrapper>
-      <TextHeader pageName="QR 코드" />
+      <TextHeader pageName={t.qrPage.title} />
       <QRBox>
         <QRCode value={qrValue} size={200} />
       </QRBox>
-      <InfoText>
-        해당 QR 코드를 카운터에 보여주시면
-        <br />
-        빠르게 결제 도와드리겠습니다
-      </InfoText>
+      <InfoText>{t.qrPage.instruction}</InfoText>
     </PageWrapper>
   );
 };

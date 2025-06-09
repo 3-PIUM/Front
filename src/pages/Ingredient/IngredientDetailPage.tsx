@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { PieChart, Pie, Cell } from "recharts";
 import { useState, useEffect } from "react";
-import TextHeader from "../../components/TextHeader";
-import ScorePieChart from "../../components/ScorePieChart";
-import ScoreBar from "../../components/ScoreBar";
+import TextHeader from "../../components/common/TextHeader";
+import ScorePieChart from "../../components/ingredient/ScorePieChart";
+import ScoreBar from "../../components/ingredient/ScoreBar";
+import { useLocale } from "../../context/LanguageContext";
 
 const Container = styled.div`
   padding: 4rem 1rem;
@@ -58,7 +59,7 @@ const IngredientBox = styled.div`
 
 const ingredientData = [
   {
-    score: "9점",
+    score: "9",
     percent: 5,
     value: 1,
     color: "#a78bfa",
@@ -74,7 +75,7 @@ const ingredientData = [
     ],
   },
   {
-    score: "7~8점",
+    score: "7~8",
     percent: 20,
     value: 2,
     color: "#38bdf8",
@@ -87,7 +88,7 @@ const ingredientData = [
     ],
   },
   {
-    score: "5~6점",
+    score: "5~6",
     percent: 30,
     value: 5,
     color: "#facc15",
@@ -103,7 +104,7 @@ const ingredientData = [
     ],
   },
   {
-    score: "3~4점",
+    score: "3~4",
     percent: 25,
     value: 3,
     color: "#f472b6",
@@ -119,7 +120,7 @@ const ingredientData = [
     ],
   },
   {
-    score: "1~2점",
+    score: "1~2",
     percent: 20,
     value: 3,
     color: "#ec4899",
@@ -136,18 +137,23 @@ export default function IngredientDetailPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const { t } = useLocale();
 
   return (
     <>
-      <TextHeader pageName="성분 설명" />
+      <TextHeader pageName={t.ingredientDetail.ingredientDetail} />
       <Container>
-        <Title>성분 스코어</Title>
+        <Title>{t.ingredientDetail.title}</Title>
         <Description>
-          이 제품은 <Highlight>{maxScoreSection.score}점</Highlight>대 성분이
-          상대적으로 많은 편입니다.
+          {t.ingredientDetail.summary1}{" "}
+          <Highlight>
+            {maxScoreSection.score}
+            {t.ingredientDetail.scoreUnit}
+          </Highlight>
+          {t.ingredientDetail.summary2}
           <br />
-          그래프의 점수 클릭 시 성분 확인이 가능합니다.
-          <p>* 스코어가 높을수록 주의가 필요한 성분일 확률이 높습니다.</p>
+          {t.ingredientDetail.sub}
+          <p>{t.ingredientDetail.warning}</p>
         </Description>
         <Wrapper>
           <ChartWrapper>
@@ -159,7 +165,7 @@ export default function IngredientDetailPage() {
             .map((item) => (
               <div key={item.score}>
                 <ScoreBar
-                  score={item.score}
+                  score={`${item.score}${t.ingredientDetail.scoreUnit}`}
                   percent={item.percent}
                   color={item.color}
                   active={openScore === item.score}

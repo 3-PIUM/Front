@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiSend } from "react-icons/fi";
-import TextHeader from "../../components/TextHeader";
+import TextHeader from "../../components/common/TextHeader";
 import profileImg from "../../assets/images/surveyImage.png";
+import { useLocale } from "../../context/LanguageContext";
 
 const ChatPageContainer = styled.div`
   display: flex;
@@ -12,7 +13,6 @@ const ChatPageContainer = styled.div`
 
 const DateText = styled.div`
   text-align: center;
-  margin: 1rem 0 0.5rem;
   font-size: 0.875rem;
   color: #666;
 `;
@@ -114,39 +114,30 @@ interface Message {
 }
 
 export default function ChatbotPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      sender: "bot",
-      text: "안녕하세요, 피움 챗봇입니다 💕 \n무엇이 궁금하신가요? \n빠르게 답변 도와드릴게요 😊",
-      time: "17:15",
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const { t } = useLocale();
+
+  useEffect(() => {
+    setMessages([
+      {
+        sender: "bot",
+        text: t.chatbot.welcome,
+        time: getTime(),
+      },
+    ]);
+  }, [t]);
   const [input, setInput] = useState("");
   const today = new Date();
-  const week = [
-    "일요일",
-    "월요일",
-    "화요일",
-    "수요일",
-    "목요일",
-    "금요일",
-    "토요일",
-  ];
-
+  const dayLabel = t.chatbot.days?.[today.getDay()] ?? "";
   const formattedDate = `${today.getFullYear()}.${String(
     today.getMonth() + 1
-  ).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")} ${
-    week[today.getDay()]
-  }`;
+  ).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")} ${dayLabel}`;
 
   const botReply = (message: string): string => {
-    if (message.includes("제품"))
-      return "피부 타입을 알려주시면 제품을 추천해드릴게요!";
-    if (message.includes("예산"))
-      return "예산 범위를 알려주세요. 추천드릴게요!";
-    if (message.includes("피부진단"))
-      return "피부 상태를 입력해주세요: 건성, 지성, 복합성";
-    return "죄송해요, 조금 더 구체적으로 말씀해주실 수 있을까요?";
+    if (message.includes("제품")) return t.chatbot.product;
+    if (message.includes("예산")) return t.chatbot.budget;
+    if (message.includes("피부진단")) return t.chatbot.diagnosis;
+    return t.chatbot.default;
   };
 
   const getTime = () => {
@@ -169,7 +160,7 @@ export default function ChatbotPage() {
 
   return (
     <ChatPageContainer>
-      <TextHeader pageName="챗봇" />
+      <TextHeader pageName={t.chatbot.pageTitle} />
       <ChatContent>
         <DateText>{formattedDate}</DateText>
         {messages.map((msg, idx) => (
@@ -177,7 +168,7 @@ export default function ChatbotPage() {
             {msg.sender === "bot" && (
               <BotRow>
                 <BotImage src={profileImg} alt="bot" />
-                <BotName>피움 챗봇</BotName>
+                <BotName>{t.chatbot.botName}</BotName>
               </BotRow>
             )}
             <BotRow>
@@ -191,11 +182,11 @@ export default function ChatbotPage() {
 
         {messages.length === 1 && (
           <SuggestionButtons>
-            <SuggestionButton onClick={() => setInput("제품 추천")}>
-              제품 추천
+            <SuggestionButton onClick={() => setInput(t.chatbot.product)}>
+              {t.chatbot.product}
             </SuggestionButton>
-            <SuggestionButton onClick={() => setInput("예산 추천")}>
-              예산 추천
+            <SuggestionButton onClick={() => setInput(t.chatbot.budget)}>
+              {t.chatbot.budget}
             </SuggestionButton>
           </SuggestionButtons>
         )}

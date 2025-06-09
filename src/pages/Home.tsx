@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import LogoHeader from "../components/LogoHeader";
+import LogoHeader from "../components/common/LogoHeader";
 import colors from "../styles/colors";
 import OilySkin from "../assets/images/SkinType/oily.png";
 import { useState, useRef, useEffect } from "react";
-import ItemCard from "../components/ItemCard";
-import Header from "../components/Header";
-import StoreModal from "../components/StoreModal";
+import ItemCard from "../components/product/ItemCard";
+import Header from "../components/common/Header";
+import StoreModal from "../components/model/StoreModal";
 import bannerImg from "../assets/images/mbtiBanner.png";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
@@ -356,7 +356,7 @@ export default function Home() {
 
   const dummyStores = [
     {
-      name: "올리브영 강남점",
+      name: "강남점",
       distance: "500m",
       imageUrl:
         "https://image.oliveyoung.co.kr/cfimages/oystore/DD1D_1.jpg?rs=800x0",
@@ -364,7 +364,7 @@ export default function Home() {
       hours: "10:00 ~ 22:00",
     },
     {
-      name: "올리브영 신촌점",
+      name: "신촌점",
       distance: "1.2km",
       imageUrl:
         "https://image.oliveyoung.co.kr/cfimages/oystore/DD1D_1.jpg?rs=800x0",
@@ -372,7 +372,7 @@ export default function Home() {
       hours: "11:00 ~ 21:00",
     },
     {
-      name: "올리브영 홍대점",
+      name: "홍대점",
       distance: "4.2km",
       imageUrl:
         "https://image.oliveyoung.co.kr/cfimages/oystore/DD1D_1.jpg?rs=800x0",

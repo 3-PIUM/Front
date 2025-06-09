@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import TextHeader from "../../components/TextHeader";
+import TextHeader from "../../components/common/TextHeader";
+import { useLocale } from "../../context/LanguageContext";
 
 const mockPurchases = JSON.parse(
   localStorage.getItem("purchaseHistory") || "[]"
@@ -12,8 +13,8 @@ const Wrapper = styled.div`
 
 const TopList = styled.div`
   display: flex;
-  justify-content: space-around;
-  gap: 11rem;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const PurchaseItem = styled.div`
@@ -45,10 +46,11 @@ const DetailButton = styled.div`
 
 export default function PurchaseListPage() {
   const navigate = useNavigate();
+  const { t } = useLocale();
 
   return (
     <>
-      <TextHeader pageName="구매 내역" />
+      <TextHeader pageName={t.order.history} />
       <Wrapper>
         {mockPurchases.map((purchase: any, idx: number) => (
           <PurchaseItem key={idx}>
@@ -59,7 +61,7 @@ export default function PurchaseListPage() {
                   navigate("/purchase-detail", { state: { purchase } })
                 }
               >
-                주문상세 &gt;
+                {t.order.detail} &gt;
               </DetailButton>
             </TopList>
 

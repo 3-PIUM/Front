@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
   /* padding: 1rem; */
@@ -12,12 +13,12 @@ const Header = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 18px;
+  font-size: 17px;
   font-weight: bold;
 `;
 
 const ViewAll = styled.span`
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #aaa;
 `;
 
@@ -60,12 +61,13 @@ export default function IngredientScoreSummary({
   harmful,
 }: IngredientScoreSummaryProps) {
   const navigate = useNavigate();
+  const { t } = useLocale();
   return (
     <Wrapper>
       <Header>
-        <Title>성분 스코어</Title>
+        <Title>{t.productDetail.scoreTitle}</Title>
         <ViewAll onClick={() => navigate("/ingredient-detail")}>
-          전체 성분 보기 &gt;
+          {t.productDetail.viewAll} &gt;
         </ViewAll>
       </Header>
       <ScoreBox>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useEffect, useRef } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
 
 const PageWrapper = styled.div`
   width: 100%;
@@ -49,6 +50,7 @@ const ScanPage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reader = useRef(new BrowserMultiFormatReader());
   const scanCooldownRef = useRef(false); // 쿨다운 중인지 여부
+  const { t } = useLocale();
 
   const dummyDatabase: Record<string, any> = {
     "8809695670114": {
@@ -86,6 +88,10 @@ const ScanPage = () => {
       }, 1000);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     let scanning = true;
@@ -139,7 +145,7 @@ const ScanPage = () => {
         }
       })
       .catch((err) => {
-        alert("카메라 권한이 필요합니다.");
+        alert(t.scan.cameraPermission);
         console.error(err);
       });
 
@@ -155,7 +161,7 @@ const ScanPage = () => {
 
   return (
     <PageWrapper>
-      <InstructionText>프레임 안에 바코드를 맞춰주세요</InstructionText>
+      <InstructionText>{t.scan.alignBarcode}</InstructionText>
       <Video ref={videoRef} autoPlay muted playsInline />
       <canvas ref={canvasRef} style={{ display: "none" }} />
       <FrameGuide />

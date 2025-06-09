@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import StarRating from "./StarRating";
+import StarRating from "../product/StarRating";
 import { useState } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";

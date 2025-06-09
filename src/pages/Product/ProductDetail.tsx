@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import ProductCard from "../../components/ProductCard";
-import SkinTypeRankList from "../../components/SkinTypeRankList";
-import ReviewSatisfactionCard from "../../components/ReviewSatisfactionCard";
-import ReviewCard from "../../components/ReviewCard";
-import Button from "../../components/Button";
+import ProductCard from "../../components/product/ProductCard";
+import SkinTypeRankList from "../../components/product/SkinTypeRankList";
+import ReviewSatisfactionCard from "../../components/review/ReviewSatisfactionCard";
+import ReviewCard from "../../components/review/ReviewCard";
+import Button from "../../components/common/Button";
 import { useCartStore } from "../../store/useCartStore";
-import FullHeader from "../../components/TextIconHeader ";
-import IngredientWarningSummary from "../../components/IngredientWarningSummary";
-import IngredientScoreSummary from "../../components/IngredientScoreSummary";
-import StackedBarChart from "../../components/StackedBarChart";
-import ProductOptionSelector from "../../components/ProductOptionSelector";
+import FullHeader from "../../components/common/TextIconHeader ";
+import IngredientWarningSummary from "../../components/ingredient/IngredientWarningSummary";
+import IngredientScoreSummary from "../../components/ingredient/IngredientScoreSummary";
+import StackedBarChart from "../../components/ingredient/StackedBarChart";
+import ProductOptionSelector from "../../components/product/ProductOptionSelector";
 import { useLocale } from "../../context/LanguageContext";
 import SkinTypePrompt from "../../components/SkinTypePrompt";
 
@@ -231,7 +231,7 @@ export default function ProductDetail() {
           onClick={() => {
             const selected = dummyOptions.find((o) => o.id === selectedOption);
             if (!selected) {
-              alert("옵션을 선택해주세요!");
+              alert(t.productDetail.selectOption);
               return;
             }
 
@@ -296,12 +296,12 @@ export default function ProductDetail() {
           </SkinTypeWrapper>
 
           <SkinTypeWrapper>
-            <SectionTitle>피부 타입 리뷰 요약</SectionTitle>
+            <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
             <SkinTypeRankList />
           </SkinTypeWrapper>
 
           <ReviewWrapper>
-            <SectionTitle>리뷰</SectionTitle>
+            <SectionTitle>{t.productDetail.review}</SectionTitle>
             <ReviewSatisfactionCard score={averageRating} />
             {/* {aiReviews.map((text, idx) => (
               <AIReviewCard key={idx} content={text} />
@@ -311,7 +311,7 @@ export default function ProductDetail() {
               <ReviewCard key={idx} {...r} />
             ))}
             <ReviewButton onClick={() => navigate("/review-write")}>
-              <Label>리뷰 작성</Label>
+              <Label>{t.productDetail.writeReview}</Label>
             </ReviewButton>
           </ReviewWrapper>
         </>
