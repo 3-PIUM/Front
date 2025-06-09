@@ -211,7 +211,8 @@
     "selected": "選択済み",
     "deleteAll": "すべて選択",
     "changeOption": "オプションを変更",
-    "qrCode": "支払い用QRコードを生成"
+    "qrCode": "支払い用QRコードを生成",
+    "won": "￥"
   },
   "productDetail": {
     "stockQuantity": "在庫数",
@@ -221,7 +222,136 @@
     },
     "addCart": "カートに入れる",
     "detail": "商品詳細ページ",
-    "analysisAndReview": "成分分析とレビュー"
+    "analysisAndReview": "成分分析とレビュー",
+    "selectProduct": "商品を選択してください",
+    "won": "￥",
+    "scoreTitle": "成分スコア",
+    "viewAll": "すべての成分を表示",
+    "cautionSummary": "注意が必要な成分の要約",
+    "graph": "グラフ",
+    "skinReviewSummary": "肌タイプのレビュー要約",
+    "review": "レビュー",
+    "writeReview": "レビューを書く",
+    "satisfaction": "製品満足度",
+    "selectOption": "オプションを選択してください"
   },
-  "save": "保存する"
+  "save": "保存する",
+  "review": {
+    "writePageTitle": "レビュー作成",
+    "reviewLabel": "率直な商品レビューを残してください",
+    "reviewPlaceholder": "丁寧で詳しいレビューを書いてみましょう！",
+    "photoLabel": "写真",
+    "photoInfo": "写真は4枚以下のPNG、JPGファイルのみ登録できます。",
+    "submit": "レビュー登録する",
+    "alert": "評価と内容をすべて記入してください。"
+  },
+  "reviewGuide": {
+    "title": "ご利用案内",
+    "bullets": [
+      "投稿されたレビューの権利と責任は投稿者にあります。",
+      "レビューは商品情報を探している他のユーザーにとって大変参考になります。",
+      "他人を中傷したり虚偽の内容が含まれたレビューは、予告なく削除されることがあります。",
+      "作成したレビューはマイページで確認および削除が可能です。",
+      "「食品等の表示・広告に関する法律」など関連法令に違反する表現は非表示になることがあります。",
+      "モニター、マーケティングなど利害関係がある場合は、その内容を必ず明記してください。"
+    ]
+  },
+  "scan": {
+    "cameraPermission": "カメラの許可が必要です。",
+    "alignBarcode": "フレーム内にバーコードを合わせてください"
+  },
+  "order": {
+    "history": "購入履歴",
+    "detail": "注文詳細",
+    "detaiTitle": "購入詳細",
+    "quantityNumber": {
+      "one": "個",
+      "more": "個"
+    },
+    "won": "￥",
+    "totalAmount": "合計金額"
+  },
+  "qrPage": {
+    "title": "QRコード",
+    "instruction": "このQRコードをレジで見せていただければ、\n迅速に決済いたします"
+  },
+  "withdrawal": {
+    "pageTitle": "会員退会",
+    "question": "退会する理由を選択してください。",
+    "reasons": {
+      "noProduct": "欲しい商品がないため",
+      "error": "頻繁にエラーや障害が発生するため",
+      "rejoin": "別のアカウントで再登録するため",
+      "etc": "その他"
+    },
+    "textareaPlaceholder": "退会理由を入力してください",
+    "submit": "退会する",
+    "alert": {
+      "selectReason": "退会理由を選択してください",
+      "fillEtc": "その他の理由を入力してください",
+      "complete": "退会が完了しました。"
+    },
+    "modal": {
+      "title": "ちょっと待ってください、大事なお知らせです",
+      "desc": "退会するとすべての情報が削除され、\n復元できません。\nそれでも退会しますか？",
+      "cancel": "キャンセル"
+    }
+  },
+  "ingredientDetail": {
+    "ingredientDetail": "成分の説明",
+    "title": "成分スコア",
+    "summary1": "この製品は",
+    "summary2": "点台の成分が比較的多く含まれています。",
+    "sub": "グラフのスコアをクリックすると、成分の詳細が確認できます。",
+    "warning": "* スコアが高いほど注意が必要な成分の可能性があります。",
+    "scoreUnit": "点",
+    "quantityNumber": {
+      "one": "個",
+      "more": "個"
+    }
+  },
+  "search": {
+    "placeholder": "検索ワードを入力してください"
+  },
+  "chatbot": {
+    "pageTitle": "チャットボット",
+    "placeholder": "メッセージを入力してください",
+    "welcome": "こんにちは、ピウムチャットボットです 💕 \nご質問はありますか？ \n迅速にお答えします 😊",
+    "suggestions": {
+      "product": "製品のおすすめ",
+      "budget": "予算のおすすめ"
+    },
+    "botName": "ピウムチャットボット",
+    "response": {
+      "product": "お肌のタイプを教えていただければ、製品をご案内します！",
+      "budget": "ご予算の範囲を教えてください。おすすめします！",
+      "diagnosis": "肌の状態を入力してください：乾燥肌、脂性肌、混合肌",
+      "default": "申し訳ありませんが、もう少し詳しく教えていただけますか？",
+      "days": [
+        "日曜日",
+        "月曜日",
+        "火曜日",
+        "水曜日",
+        "木曜日",
+        "金曜日",
+        "土曜日"
+      ]
+    }
+  },
+  "storeModal": {
+    "title": "近くの店舗を探す",
+    "status": {
+      "open": "営業中",
+      "preparing": "営業準備中"
+    },
+    "unit": {
+      "distance": "距離",
+      "hours": "営業時間"
+    },
+    "names": {
+      "강남점": "オリーブヤング カンナム店",
+      "신촌점": "オリーブヤング シンチョン店",
+      "홍대점": "オリーブヤング ホンデ店"
+    }
+  }
 }

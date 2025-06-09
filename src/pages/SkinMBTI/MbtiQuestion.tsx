@@ -1,4 +1,4 @@
-import TextHeader from "../../components/TextHeader";
+import TextHeader from "../../components/common/TextHeader";
 import styled from "styled-components";
 import { useEffect } from "react";
 import axiosInstance from "../../api/axiosInstance";

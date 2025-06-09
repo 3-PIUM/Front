@@ -205,17 +205,148 @@
     "selected": "Selected",
     "deleteAll": "Delete All",
     "changeOption": "Change Option",
-    "qrCode": "Generate Payment QR Code"
+    "qrCode": "Generate Payment QR Code",
+    "won": "$"
   },
   "productDetail": {
     "stockQuantity": "Stock quantity",
+
     "quantityNumber": {
       "one": "piece",
       "more": "pieces"
     },
     "addCart": "Add to cart",
     "detail": "Product details",
-    "analysisAndReview": "Ingredient analysis & Reviews"
+    "analysisAndReview": "Ingredient analysis & Reviews",
+    "selectProduct": "Please select a product",
+    "won": "$",
+    "scoreTitle": "Ingredient Score",
+    "viewAll": "View All Ingredients",
+    "cautionSummary": "Caution Ingredient Summary",
+    "graph": "Graph",
+    "skinReviewSummary": "Skin Type Review Summary",
+    "review": "Review",
+    "writeReview": "Write Review",
+    "satisfaction": "Product Satisfaction",
+    "selectOption": "Please select an option"
   },
-  "save": "Save"
+  "save": "Save",
+  "review": {
+    "writePageTitle": "Write a Review",
+    "reviewLabel": "Leave an honest product review",
+    "reviewPlaceholder": "Write a detailed and thoughtful review!",
+    "photoLabel": "Photo",
+    "photoInfo": "You can upload up to 4 PNG or JPG files.",
+    "submit": "Submit Review",
+    "alert": "Please complete both rating and content."
+  },
+  "reviewGuide": {
+    "title": "Review Guidelines",
+    "bullets": [
+      "The rights and responsibilities of posted reviews belong to the author.",
+      "Reviews are helpful for other users seeking product information.",
+      "Reviews containing defamation or false information may be deleted without prior notice.",
+      "You can view and delete your reviews on My Page.",
+      "Expressions that violate related laws such as the Food Labeling and Advertising Act may be hidden.",
+      "If you have a relationship of interest such as a trial group or marketing, please clearly state it."
+    ]
+  },
+  "scan": {
+    "cameraPermission": "Camera permission is required.",
+    "alignBarcode": "Please align the barcode within the frame"
+  },
+  "order": {
+    "history": "Purchase History",
+    "detail": "Order Details",
+    "detaiTitle": "Purchase Details",
+    "quantityNumber": {
+      "one": "piece",
+      "more": "pieces"
+    },
+    "won": "$",
+    "totalAmount": "Total Amount"
+  },
+  "qrPage": {
+    "title": "QR Code",
+    "instruction": "Please show this QR code at the counter\nfor quick checkout"
+  },
+  "withdrawal": {
+    "pageTitle": "Withdraw",
+    "question": "Please select your reason for withdrawal.",
+    "reasons": {
+      "noProduct": "Because the desired products are not available",
+      "error": "Frequent errors or malfunctions occurred",
+      "rejoin": "To re-register with another account",
+      "etc": "Other"
+    },
+    "textareaPlaceholder": "Please enter your reason for withdrawal",
+    "submit": "Withdraw",
+    "alert": {
+      "selectReason": "Please select a reason for withdrawal",
+      "fillEtc": "Please enter the other reason",
+      "complete": "Your account has been successfully withdrawn."
+    },
+    "modal": {
+      "title": "Hold on, important notice!",
+      "desc": "All data will be deleted upon withdrawal\nand cannot be recovered.\nDo you still wish to proceed?",
+      "cancel": "Cancel"
+    }
+  },
+  "ingredientDetail": {
+    "ingredientDetail": "Ingredient Details",
+    "title": "Ingredient Score",
+    "summary1": "This product contains a relatively high proportion of ingredients in the",
+    "summary2": " range.",
+    "sub": "Click a score on the chart to view the ingredient details.",
+    "warning": "* Higher scores may indicate potentially irritating ingredients.",
+    "scoreUnit": "pt",
+    "quantityNumber": {
+      "one": "piece",
+      "more": "pieces"
+    },
+    "search": {
+      "placeholder": "Please enter a search term"
+    }
+  },
+  "chatbot": {
+    "pageTitle": "Chatbot",
+    "placeholder": "Enter your message",
+    "welcome": "Hello, this is the Pium chatbot 💕 \nWhat would you like to know? \nI'm here to help you 😊",
+    "suggestions": {
+      "product": "Product Recommendation",
+      "budget": "Budget Recommendation"
+    },
+    "botName": "Pium Chatbot",
+    "response": {
+      "product": "Let me know your skin type and I’ll recommend products!",
+      "budget": "Tell me your budget range and I’ll give you some suggestions!",
+      "diagnosis": "Please enter your skin type: dry, oily, combination",
+      "default": "Sorry, could you be a bit more specific?",
+      "days": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ]
+    }
+  },
+  "storeModal": {
+    "title": "Find Nearby Stores",
+    "status": {
+      "open": "Open",
+      "preparing": "Preparing"
+    },
+    "unit": {
+      "distance": "Distance",
+      "hours": "Hours"
+    },
+    "names": {
+      "강남점": "Olive Young Gangnam",
+      "신촌점": "Olive Young Sinchon",
+      "홍대점": "Olive Young Hongdae"
+    }
+  }
 }

@@ -1,8 +1,8 @@
-import Button from "../../components/Button";
-import TextHeader from "../../components/TextHeader";
+import Button from "../../components/common/Button";
+import TextHeader from "../../components/common/TextHeader";
 import styled from "styled-components";
 import { useState } from "react";
-import Header from "../../components/Header";
+import Header from "../../components/common/Header";
 import { useLocale } from "../../context/LanguageContext";
 import Nickname from "../../components/SignUpForm/NicknameInput";
 import Birth from "../../components/SignUpForm/BirthInput";

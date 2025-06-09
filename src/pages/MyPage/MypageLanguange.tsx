@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import TextHeader from "../../components/TextHeader";
-import Header from "../../components/Header";
+import TextHeader from "../../components/common/TextHeader";
+import Header from "../../components/common/Header";
 import colors from "../../styles/colors";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";

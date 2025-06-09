@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Header from "../components/Header";
-import PageTitle from "../components/PageTitle";
-import ItemCard from "../components/ItemCard";
+import Header from "../components/common/Header";
+import PageTitle from "../components/common/PageTitle";
+import ItemCard from "../components/product/ItemCard";
 import { useLocale } from "../context/LanguageContext";
 import { useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";

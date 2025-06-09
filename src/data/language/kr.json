@@ -204,7 +204,8 @@
     "selected": "선택",
     "deleteAll": "전체 선택",
     "changeOption": "옵션 변경",
-    "qrCode": "결제 QR 코드 생성하기"
+    "qrCode": "결제 QR 코드 생성하기",
+    "won": "원"
   },
   "productDetail": {
     "stockQuantity": "재고 수량",
@@ -214,7 +215,136 @@
     },
     "addCart": "장바구니 담기",
     "detail": "상세페이지",
-    "analysisAndReview": "성분 분석 & 리뷰"
+    "analysisAndReview": "성분 분석 & 리뷰",
+    "selectProduct": "상품을 선택해주세요",
+    "won": "원",
+    "scoreTitle": "성분 스코어",
+    "viewAll": "전체 성분 보기",
+    "cautionSummary": "주의 성분 요약",
+    "graph": "그래프",
+    "skinReviewSummary": "피부 타입 리뷰 요약",
+    "review": "리뷰",
+    "writeReview": "리뷰 작성",
+    "satisfaction": "제품 만족도",
+    "selectOption": "옵션을 선택해주세요"
   },
-  "save": "저장하기"
+  "save": "저장하기",
+  "review": {
+    "writePageTitle": "리뷰작성",
+    "reviewLabel": "솔직한 상품 리뷰를 남겨주세요",
+    "reviewPlaceholder": "꼼꼼 가득, 상세한 리뷰를 작성해보세요!",
+    "photoLabel": "포토",
+    "photoInfo": "사진은 4장 이하의 PNG, JPG 파일만 등록 가능합니다.",
+    "submit": "리뷰 등록 하기",
+    "alert": "별점과 내용을 모두 작성해주세요"
+  },
+  "reviewGuide": {
+    "title": "이용안내",
+    "bullets": [
+      "게시된 리뷰의 권리와 책임은 작성자에게 있습니다.",
+      "리뷰는 상품 정보를 찾는 다른 사용자에게 큰 도움이 됩니다.",
+      "타인을 비방하거나 허위 사실이 포함된 리뷰는 사전 고지 없이 삭제될 수 있습니다.",
+      "작성한 리뷰는 마이페이지에서 확인 및 삭제가 가능합니다.",
+      "[식품 등의 표시‧광고법] 등 관련 법령을 위반하는 표현은 블라인드 처리될 수 있습니다.",
+      "체험단, 마케팅 등 이해관계가 있는 경우 반드시 해당 내용을 명시해 주세요."
+    ]
+  },
+  "scan": {
+    "cameraPermission": "카메라 권한이 필요합니다.",
+    "alignBarcode": "프레임 안에 바코드를 맞춰주세요"
+  },
+  "order": {
+    "history": "구매내역",
+    "detail": "주문 상세",
+    "detaiTitle": "구매상세",
+    "quantityNumber": {
+      "one": "개",
+      "more": "개"
+    },
+    "won": "원",
+    "totalAmount": "총 금액"
+  },
+  "qrPage": {
+    "title": "QR 코드",
+    "instruction": "해당 QR 코드를 카운터에 보여주시면\n빠르게 결제 도와드리겠습니다"
+  },
+  "withdrawal": {
+    "pageTitle": "회원 탈퇴",
+    "question": "탈퇴하시려는 이유를 선택해주세요.",
+    "reasons": {
+      "noProduct": "원하는 제품이 없어서",
+      "error": "잦은 오류, 장애가 발생해서",
+      "rejoin": "다른 계정으로 재가입하려고",
+      "etc": "기타"
+    },
+    "textareaPlaceholder": "탈퇴 사유를 입력해주세요",
+    "submit": "탈퇴하기",
+    "alert": {
+      "selectReason": "탈퇴 사유를 선택해주세요",
+      "fillEtc": "기타 사유를 입력해주세요",
+      "complete": "회원 탈퇴가 완료되었습니다."
+    },
+    "modal": {
+      "title": "잠시만요, 중요한 안내가 있어요",
+      "desc": "탈퇴 시 모든 정보가 삭제되며\n복구가 불가능합니다.\n탈퇴를 진행하시겠습니까?",
+      "cancel": "취소"
+    }
+  },
+  "ingredientDetail": {
+    "ingredientDetail": "성분 설명",
+    "title": "성분 스코어",
+    "summary1": "이 제품은",
+    "summary2": "대 성분이 상대적으로 많은 편입니다.",
+    "sub": "그래프의 점수 클릭 시 성분 확인이 가능합니다.",
+    "warning": "* 스코어가 높을수록 주의가 필요한 성분일 확률이 높습니다.",
+    "scoreUnit": "점",
+    "quantityNumber": {
+      "one": "개",
+      "more": "개"
+    }
+  },
+  "search": {
+    "placeholder": "검색어를 입력하세요"
+  },
+  "chatbot": {
+    "pageTitle": "챗봇",
+    "placeholder": "메시지를 입력하세요",
+    "welcome": "안녕하세요, 피움 챗봇입니다 💕 \n무엇이 궁금하신가요? \n빠르게 답변 도와드릴게요 😊",
+    "suggestions": {
+      "product": "제품 추천",
+      "budget": "예산 추천"
+    },
+    "botName": "피움 챗봇",
+    "response": {
+      "product": "피부 타입을 알려주시면 제품을 추천해드릴게요!",
+      "budget": "예산 범위를 알려주세요. 추천드릴게요!",
+      "diagnosis": "피부 상태를 입력해주세요: 건성, 지성, 복합성",
+      "default": "죄송해요, 조금 더 구체적으로 말씀해주실 수 있을까요?",
+      "days": [
+        "일요일",
+        "월요일",
+        "화요일",
+        "수요일",
+        "목요일",
+        "금요일",
+        "토요일"
+      ]
+    }
+  },
+  "storeModal": {
+    "title": "내 주변 매장 찾기",
+    "status": {
+      "open": "영업 중",
+      "preparing": "영업 준비 중"
+    },
+    "unit": {
+      "distance": "거리",
+      "hours": "운영 시간"
+    },
+    "names": {
+      "강남점": "올리브영 강남점",
+      "신촌점": "올리브영 신촌점",
+      "홍대점": "올리브영 홍대점"
+    }
+  }
 }

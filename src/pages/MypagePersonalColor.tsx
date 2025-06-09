@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import Header from "../components/Header";
-import TextHeader from "../components/TextHeader";
+import Header from "../components/common/Header";
+import TextHeader from "../components/common/TextHeader";
 import PersonalColorButton from "../components/SelectForm/PersonalColorButton";
 import { useEffect, useState } from "react";
 import { useLocale } from "../context/LanguageContext";
-import Button from "../components/Button";
+import Button from "../components/common/Button";
 import axiosInstance from "../api/axiosInstance";
 
 const Wrapper = styled.div`

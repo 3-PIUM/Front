@@ -7,21 +7,21 @@ import Home from "./pages/Home";
 import WishList from "./pages/WishList";
 import MyPage from "./pages/MyPage/MyPage";
 import Category from "./pages/Category/Category";
-import ProductDetail from "./pages/ProductDetail";
-import ReviewWritePage from "./pages/ReviewWritePage";
-import ScanPage from "./pages/ScanPage";
-import CartPage from "./pages/CartPage";
-import QRCodePage from "./pages/QRCodePage";
+import ProductDetail from "./pages/Product/ProductDetail";
+import ReviewWritePage from "./pages/Review/ReviewWritePage";
+import ScanPage from "./pages/Scan/ScanPage";
+import CartPage from "./pages/Cart/CartPage";
+import QRCodePage from "./pages/Purchase/QRCodePage";
 import Signup from "./pages/SignUp/Signup";
 import AboutYouPage from "./pages/SignUp/AboutYouPage";
 import Survey from "./pages/SignUp/SurveyPage";
 import Welcome from "./pages/SignUp/Welcome";
-import PurchaseList from "./pages/PurchaseListPage";
-import PurchaseDetail from "./pages/PurchaseDetailPage";
-import Withdraw from "./pages/WithdrawPage";
+import PurchaseList from "./pages/Purchase/PurchaseListPage";
+import PurchaseDetail from "./pages/Purchase/PurchaseDetailPage";
+import Withdraw from "./pages/MyPage/WithdrawPage";
 import SettingLanguange from "./pages/MyPage/MypageLanguange";
-import IngredientDetail from "./pages/IngredientDetailPage";
-import ChatbotPage from "./pages/Chatbotpage";
+import IngredientDetail from "./pages/Ingredient/IngredientDetailPage";
+import ChatbotPage from "./pages/Chatbot/Chatbotpage";
 import MypagePersonalColor from "./pages/MypagePersonalColor";
 import MypageSkinType from "./pages/MypageSkinType";
 import MypageSkinConcern from "./pages/MypageSkinConcern";
@@ -87,10 +87,6 @@ const routes = [
       { path: "qr", element: <QRCodePage /> },
       { path: "purchase-list", element: <PurchaseList /> },
       { path: "purchase-detail", element: <PurchaseDetail /> },
-      {
-        path: "/category/:categoryName/:subcategoryName",
-        element: <CategoryList />,
-      },
     ],
   },
 ];

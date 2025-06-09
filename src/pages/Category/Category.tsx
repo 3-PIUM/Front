@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Header from "../../components/Header";
-import PageTitle from "../../components/PageTitle";
+import Header from "../../components/common/Header";
+import PageTitle from "../../components/common/PageTitle";
 import colors from "../../styles/colors";
 import categories from "../../data/categories.json";
 import { useRef, useState, useEffect } from "react";
