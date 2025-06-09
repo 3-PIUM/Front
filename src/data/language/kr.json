@@ -154,8 +154,46 @@
     "personalTitle": "개인정보",
     "editPersonal": "개인정보 수정",
     "skinProfile": "나의 피부 정보",
-    "skinType": "피부 타입",
-    "personalColor": "퍼스널컬러",
+    "skinType": {
+      "pageTitle": "피부 타입",
+      "options": [
+        { "id": 1, "option": "건성", "value": "건성" },
+        { "id": 2, "option": "지성", "value": "지성" },
+        { "id": 3, "option": "복합성", "value": "복합성" },
+        { "id": 4, "option": "민감성", "value": "민감성" }
+      ],
+      "goTest": "잘 모르겠다면? 피부 타입 진단으로 시작해보세요"
+    },
+    "personalColor": {
+      "pageTitle": "퍼스널컬러",
+      "options": [
+        {
+          "id": 1,
+          "option": "봄 웜",
+          "value": "봄_웜",
+          "colors": ["#FFD8A9", "#FFC0A9", "#FFE6CC"]
+        },
+        {
+          "id": 2,
+          "option": "여름 쿨",
+          "value": "여름_쿨",
+          "colors": ["#C3D5FF", "#E0B5DB", "#A4B8D1"]
+        },
+        {
+          "id": 3,
+          "option": "가을 웜",
+          "value": "가을_웜",
+          "colors": ["#CFA36E", "#A06045", "#E2C1A0"]
+        },
+        {
+          "id": 4,
+          "option": "겨울 쿨",
+          "value": "겨울_쿨",
+          "colors": ["#C5CBE1", "#B4A4DD", "#333C57"]
+        }
+      ],
+      "goTest": "잘 모르겠다면? 퍼스널 컬러 진단을 받아보세요"
+    },
     "skinConcerns": "피부 고민",
     "purchase": "구매",
     "purchaseHistory": "구매 내역",
@@ -180,5 +218,6 @@
     "addCart": "장바구니 담기",
     "detail": "상세페이지",
     "analysisAndReview": "성분 분석 & 리뷰"
-  }
+  },
+  "save": "저장하기"
 }

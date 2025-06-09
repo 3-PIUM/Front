@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { useState } from "react";
-import SelectButton from "../components/SelectButton";
+import { useState, useEffect } from "react";
+import SelectButton from "../components/SelectForm/SelectButton";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import TextHeader from "../components/TextHeader";
+import { useLocale } from "../context/LanguageContext";
+import axiosInstance from "../api/axiosInstance";
+import Button from "../components/Button";
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,63 +32,89 @@ const SkinTestWrapper = styled.div`
   justify-content: center;
 `;
 
-const Options = [
-  {
-    id: 1,
-    option: "건성",
-  },
-  {
-    id: 2,
-    option: "중성",
-  },
-  {
-    id: 3,
-    option: "지성",
-  },
-  {
-    id: 4,
-    option: "복합성",
-  },
-  {
-    id: 5,
-    option: "민감성",
-  },
-  {
-    id: 6,
-    option: "약건성",
-  },
-  {
-    id: 7,
-    option: "트러블성",
-  },
-];
+const ButtonWrapper = styled.div`
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  padding: 2rem 1rem;
+`;
 
 export default function SettingSkinType() {
-  const [selected, setSelected] = useState<string>("건성");
+  const { t } = useLocale();
+  const [selected, setSelected] = useState<string>("");
+  const [memberInfo, setMemberInfo] = useState<{ skinType?: string }>();
+  const [isChanged, setIsChanged] = useState(false);
+
+  interface SkinTypeOption {
+    id: number;
+    option: string;
+    value: string;
+  }
+
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      const response = await axiosInstance.get("/member");
+      const result = response.data.result;
+      setMemberInfo(result);
+      setSelected(result.skinType);
+    };
+    fetchMemberInfo();
+  }, []);
+
+  useEffect(() => {
+    if (memberInfo?.skinType) {
+      setSelected(memberInfo.skinType);
+    }
+  }, [memberInfo]);
+
+  console.log(memberInfo?.skinType);
+
+  const goSave = () => {
+    const editSkinType = async () => {
+      try {
+        await axiosInstance.patch("/member", {
+          skinType: selected,
+        });
+        console.log("저장에 성공했습니다");
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    editSkinType();
+    setIsChanged(false);
+  };
+
+  console.log(memberInfo);
 
   return (
     <>
       <Header />
-      <TextHeader pageName="피부 타입" />
+      <TextHeader pageName={t.mypage.skinType.pageTitle} />
       <Wrapper>
         <AnswerWrapper>
-          {Options.map((item) => (
+          {t.mypage.skinType.options.map((item: SkinTypeOption) => (
             <SelectButton
               key={item.id}
               size="large"
               buttonName={item.option}
-              isActivated={selected === item.option}
-              onClick={() => setSelected(item.option)}
+              isActivated={selected === item.value}
+              onClick={() => {
+                setSelected(item.value);
+                setIsChanged(item.value !== memberInfo?.skinType);
+              }}
             />
           ))}
         </AnswerWrapper>
         <SkinTestWrapper>
           <Link to="">
-            잘 모르겠다면? 피부 타입 진단으로 시작해보세요{" "}
+            {t.mypage.skinType.goTest}
             <SkinTestWrapper></SkinTestWrapper>
           </Link>
         </SkinTestWrapper>
       </Wrapper>
+      <ButtonWrapper onClick={goSave}>
+        <Button label={t.save} disabled={!isChanged} />
+      </ButtonWrapper>
     </>
   );
 }

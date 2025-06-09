@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 
 const ButtonWrap = styled.button<{ $isActivated: boolean }>`
   display: flex;
@@ -15,7 +15,7 @@ const ButtonWrap = styled.button<{ $isActivated: boolean }>`
 `;
 
 const ButtonName = styled.div<{ $isActivated: boolean }>`
-  font-size: 1rem;
+  font-size: 0.825rem;
   color: ${({ $isActivated }) =>
     $isActivated ? colors.mainPink : colors.lightGrey};
   font-weight: ${({ $isActivated }) => ($isActivated ? 700 : 400)};
@@ -46,7 +46,6 @@ interface PersonalColorProps {
 export default function PersonalColorButton({
   buttonName,
   colors,
-  isWide = false,
   isActivated,
   onClick,
 }: PersonalColorProps) {

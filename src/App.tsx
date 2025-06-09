@@ -9,7 +9,6 @@ const App = () => {
   return (
     <LanguageProvider>
       {" "}
-      {/* ✅ 여기에 감싸기 */}
       <div key={location.key}>{content}</div>
     </LanguageProvider>
   );
