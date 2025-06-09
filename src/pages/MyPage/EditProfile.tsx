@@ -12,6 +12,7 @@ import PasswordInput from "../../components/SignUpForm/PasswordInput";
 import CountryInput from "../../components/SignUpForm/CountryInput";
 import GenderInput from "../../components/SignUpForm/GenderInput";
 import Button from "../../components/Button";
+import InputField from "../../components/InputField";
 
 const Wrap = styled.div`
   display: flex;
@@ -30,6 +31,16 @@ const ButtonWrapper = styled.div`
   display: flex;
   padding: 0 1rem;
   margin-top: 2rem;
+`;
+
+const FieldName = styled.div`
+  display: flex;
+  font-size: 1rem;
+`;
+
+const ButtonInputWrap = styled.div`
+  display: flex;
+  gap: 0.5rem;
 `;
 
 export default function EditProfile() {
@@ -159,20 +170,18 @@ export default function EditProfile() {
           setBirthText={setBirthText}
         />
 
-        <EmailInput
-          email={email}
-          setEmail={setEmail}
-          sendEmail={sendEmail}
-          setSendEmail={setSendEmail}
-          sendEmailText={sendEmailText}
-          setSendEmailText={setSendEmailText}
-          verifyCode={verifyCode}
-          setVerifyCode={setVerifyCode}
-          verifyCodeText={verifyCodeText}
-          setVerifyCodeText={setVerifyCodeText}
-          checkVerifyCode={checkVerifyCode}
-          setCheckVerifyCode={setCheckVerifyCode}
-        />
+        <FieldName>{t.signup.email} </FieldName>
+        <ButtonInputWrap>
+          <InputField
+            type="text"
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setSendEmailText(null);
+            }}
+            disabled={true}
+            value={memberInfo?.email}
+          />
+        </ButtonInputWrap>
 
         <PasswordInput
           password={password}

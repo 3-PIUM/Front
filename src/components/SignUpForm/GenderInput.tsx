@@ -31,7 +31,7 @@ const GenderOption = styled.div<{ $selected: boolean; $readOnly?: boolean }>`
   height: 3rem;
   border: 1px solid
     ${({ $selected, $readOnly }) => {
-      if ($readOnly && $selected) return colors.darkGrey;
+      if ($readOnly && $selected) return "none";
       if ($readOnly && !$selected) return colors.lightGrey;
       if (!$readOnly && $selected) return colors.mainPink;
       return colors.lightGrey;
@@ -41,8 +41,12 @@ const GenderOption = styled.div<{ $selected: boolean; $readOnly?: boolean }>`
   align-items: center;
   border-radius: 1.25rem;
   padding: 0 1rem;
-  background-color: ${colors.white};
-
+  background-color: ${({ $selected, $readOnly }) => {
+    if ($readOnly && $selected) return colors.lightGrey;
+    if ($readOnly && !$selected) return colors.white;
+    if (!$readOnly && $selected) return colors.white;
+    return colors.white;
+  }};
   ${({ $readOnly }) =>
     $readOnly &&
     `
@@ -51,7 +55,7 @@ const GenderOption = styled.div<{ $selected: boolean; $readOnly?: boolean }>`
     &:focus {
       box-shadow: none;
     }
-  `}
+  `};
 `;
 
 const GenderText = styled.div<{ $selected: boolean; $readOnly?: boolean }>`
