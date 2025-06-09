@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import TextHeader from "../components/TextHeader";
-import ImageUploadList from "../components/ImageUploadList";
+import TextHeader from "../../components/TextHeader";
+import ImageUploadList from "../../components/ImageUploadList";
 import { useNavigate, useLocation } from "react-router-dom";
-import TermsToggle from "../components/TermsToggle";
-import Header from "../components/Header";
+import TermsToggle from "../../components/TermsToggle";
+import Header from "../../components/Header";
 
 const PageWrapper = styled.div`
   display: flex;

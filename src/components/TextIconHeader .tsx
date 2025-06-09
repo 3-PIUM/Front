@@ -57,8 +57,8 @@ const SearchOverlay = styled.div`
 const SearchModal = styled.div`
   background-color: white;
   padding: 1rem;
-  border-radius: 8px;
-  margin: 1rem;
+  /* border-radius: 8px; */
+  /* margin: 1rem; */
   z-index: 1000;
 `;
 
@@ -68,11 +68,26 @@ const SearchInput = styled.input`
   font-size: 1rem;
   border: 1px solid #333;
   border-radius: 4px;
+
+  &:focus {
+    border-color: #f23477;
+    outline: none;
+  }
 `;
 
-export default function FullHeader({ pageName }: FullHeaderProps) {
+interface FullHeaderProps {
+  pageName: string;
+  productList: { id: number; name: string }[];
+}
+
+export default function FullHeader({ pageName, productList }: FullHeaderProps) {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredList = productList.filter((p) =>
+    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
@@ -90,6 +105,23 @@ export default function FullHeader({ pageName }: FullHeaderProps) {
           </IconWrapper>
         </RightIcons>
       </HeaderWrap>
+
+      {isSearchOpen && (
+        <SearchOverlay onClick={() => setIsSearchOpen(false)}>
+          <SearchModal onClick={(e) => e.stopPropagation()}>
+            <SearchInput
+              type="text"
+              placeholder="검색어를 입력하세요"
+              autoFocus
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {filteredList.map((item) => (
+              <div key={item.id}>{item.name}</div>
+            ))}
+          </SearchModal>
+        </SearchOverlay>
+      )}
     </>
   );
 }

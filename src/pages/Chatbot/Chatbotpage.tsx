@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { FiSend } from "react-icons/fi";
-import TextHeader from "../components/TextHeader";
-import profileImg from "../assets/images/surveyImage.png";
+import TextHeader from "../../components/TextHeader";
+import profileImg from "../../assets/images/surveyImage.png";
 
 const ChatPageContainer = styled.div`
   display: flex;

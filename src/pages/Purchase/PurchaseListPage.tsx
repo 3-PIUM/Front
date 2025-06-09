@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import TextHeader from "../components/TextHeader";
+import TextHeader from "../../components/TextHeader";
 
 const mockPurchases = JSON.parse(
   localStorage.getItem("purchaseHistory") || "[]"

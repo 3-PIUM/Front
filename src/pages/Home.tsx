@@ -423,10 +423,19 @@ export default function Home() {
     fetchMemberInfo();
   }, []);
 
+  const mockProducts = [
+    { id: 1, name: "선크림" },
+    { id: 2, name: "보습 크림" },
+    { id: 3, name: "클렌징 오일" },
+  ];
+
   return (
     <Wrapper>
       <Header />
-      <LogoHeader onStoreClick={() => setShowStoreModal(true)} />
+      <LogoHeader
+        onStoreClick={() => setShowStoreModal(true)}
+        productList={mockProducts}
+      />
       {memberInfo?.skinType == null ? (
         <InfoBox>
           <img src={surveyImage} width="60%" />

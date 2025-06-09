@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import TextHeader from "../components/TextHeader";
-import Button from "../components/Button";
+import TextHeader from "../../components/TextHeader";
+import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
 const PageWrapper = styled.div`

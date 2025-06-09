@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import QRCode from "react-qr-code";
-import TextHeader from "../components/TextHeader";
+import TextHeader from "../../components/TextHeader";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 

@@ -2,18 +2,20 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
-import ProductCard from "../components/ProductCard";
-import SkinTypeRankList from "../components/SkinTypeRankList";
-import ReviewSatisfactionCard from "../components/ReviewSatisfactionCard";
-import ReviewCard from "../components/ReviewCard";
-import Button from "../components/Button";
-import { useCartStore } from "../store/useCartStore";
-import FullHeader from "../components/TextIconHeader ";
-import IngredientWarningSummary from "../components/IngredientWarningSummary";
-import IngredientScoreSummary from "../components/IngredientScoreSummary";
-import StackedBarChart from "../components/StackedBarChart";
-import GroupedDonutChart from "../components/GroupedDonutChart";
-import ProductOptionSelector from "../components/ProductOptionSelector";
+
+import ProductCard from "../../components/ProductCard";
+import SkinTypeRankList from "../../components/SkinTypeRankList";
+import ReviewSatisfactionCard from "../../components/ReviewSatisfactionCard";
+import ReviewCard from "../../components/ReviewCard";
+import Button from "../../components/Button";
+import { useCartStore } from "../../store/useCartStore";
+import FullHeader from "../../components/TextIconHeader ";
+import IngredientWarningSummary from "../../components/IngredientWarningSummary";
+import IngredientScoreSummary from "../../components/IngredientScoreSummary";
+import StackedBarChart from "../../components/StackedBarChart";
+import ProductOptionSelector from "../../components/ProductOptionSelector";
+import { useLocale } from "../../context/LanguageContext";
+import SkinTypePrompt from "../../components/SkinTypePrompt";
 
 const PageWrapper = styled.div`
   height: 100vh;
@@ -25,7 +27,6 @@ const PageWrapper = styled.div`
     display: none;
   }
 `;
-import { useLocale } from "../context/LanguageContext";
 
 const HeaderBar = styled.div`
   position: fixed;
@@ -90,16 +91,6 @@ const ReviewButton = styled.div`
 const Label = styled.span`
   font-size: 1rem;
   color: #222;
-`;
-
-const UnderlinedPointButton = styled.button`
-  background: none;
-  border: none;
-  color: #e6005a;
-  text-decoration: underline;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0;
 `;
 
 export default function ProductDetail() {
@@ -178,18 +169,12 @@ export default function ProductDetail() {
     },
   ];
 
-  // const selected = dummyOptions.find((o) => o.id === selectedOption);
-
-  // if (!selected) {
-  //   alert("옵션을 선택해주세요!");
-  //   return;
-  // }
-
-  // addItem({
-  //   ...product,
-  //   option: selected.name,
-  //   availableOptions: dummyOptions.map((o) => o.name),
-  // });
+  const mockProducts = [
+    { id: 1, name: "피부 보습 크림" },
+    { id: 2, name: "자외선 차단제" },
+    { id: 3, name: "클렌징 워터" },
+    { id: 4, name: "비타민 세럼" },
+  ];
 
   const [realReviews, setRealReviews] = useState<any[]>([]);
   useEffect(() => {
@@ -217,7 +202,7 @@ export default function ProductDetail() {
   return (
     <PageWrapper>
       <HeaderBar>
-        <FullHeader pageName="" />
+        <FullHeader pageName="" productList={mockProducts} />
       </HeaderBar>
 
       <ProductCard
@@ -290,24 +275,13 @@ export default function ProductDetail() {
           <SkinTypeWrapper>
             {!isSkinRegistered ? (
               <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
-                <p
-                  style={{
-                    marginBottom: "0.5rem",
-                    fontSize: "1rem",
-                    color: "#666",
-                  }}
-                >
-                  피부 타입을 먼저 등록해주세요.
-                </p>
-                <UnderlinedPointButton
-                  onClick={() => {
+                <SkinTypePrompt
+                  onRegister={() => {
                     localStorage.setItem("skinRegistered", "true");
                     setIsSkinRegistered(true);
                     navigate("/mypage/skintype");
                   }}
-                >
-                  피부 등록하러 가기
-                </UnderlinedPointButton>
+                />
               </div>
             ) : (
               <>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
-import TextHeader from "../components/TextHeader";
+import TextHeader from "../../components/TextHeader";
 
 const PageWrapper = styled.div`
   padding: 4rem 1rem;

@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { useCartStore } from "../store/useCartStore";
-import TextHeader from "../components/TextHeader";
+import { useCartStore } from "../../store/useCartStore";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import OptionModal from "../components/OptionModal";
-import { useLocale } from "../context/LanguageContext";
+import OptionModal from "../../components/OptionModal";
+import { useLocale } from "../../context/LanguageContext";
+import TextHeader from "../../components/TextHeader";
 
 const PageWrapper = styled.div`
   display: flex;

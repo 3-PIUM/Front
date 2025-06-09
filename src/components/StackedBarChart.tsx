@@ -5,12 +5,15 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   margin-top: 0.5rem;
 `;
 
 const ChartGroupWrapper = styled.div`
   width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  padding: 1rem;
 `;
 
 const GroupTitle = styled.h3`

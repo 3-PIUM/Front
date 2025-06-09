@@ -1,10 +1,11 @@
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell } from "recharts";
 import styled from "styled-components";
-import colors from "../styles/colors";
 
 interface IngredientData {
   score: string;
-  count: number;
+  percent: number;
+  value: number;
+  color: string;
 }
 
 interface ScorePieChartProps {
@@ -12,69 +13,78 @@ interface ScorePieChartProps {
 }
 
 const ChartWrapper = styled.div`
-  width: 100%;
-  height: 300px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 `;
 
-const scoreColors = [
-  colors.mainPink, // 1~2점
-  "#f472b6", // 3~4점
-  "#facc15", // 5~6점
-  "#38bdf8", // 7~8점
-  "#a78bfa", // 9점
-];
+const LegendWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+`;
 
-export default function ScorePieChart({ data }: ScorePieChartProps) {
-  const sortedData = [...data].sort((a, b) => a.score.localeCompare(b.score));
+const LegendItem = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-  // 커스텀 라벨 렌더러
-  const renderCustomizedLabel = (props: any) => {
-    const RADIAN = Math.PI / 180;
-    const { cx, cy, midAngle, outerRadius, index, score } = props;
-    const radius = outerRadius + 12;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+const Dot = styled.div<{ color: string }>`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: ${({ color }) => color};
+  margin-right: 6px;
+`;
 
-    return (
-      <text
-        x={x}
-        y={y}
-        fill={scoreColors[index % scoreColors.length]}
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-        fontWeight="bold"
-        fontSize="14px"
-      >
-        {score}
-      </text>
-    );
-  };
+const ValueText = styled.span`
+  font-weight: 500;
+  color: #333;
+`;
+
+const ScorePieChart = ({ data }: ScorePieChartProps) => {
+  // 차트에 들어갈 데이터는 percent 기반
+  const chartData = data.map(({ score, percent, color }) => ({
+    name: score,
+    value: percent,
+    fill: color,
+  }));
 
   return (
     <ChartWrapper>
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie
-            data={sortedData}
-            dataKey="count"
-            nameKey="score"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-            label={renderCustomizedLabel}
-            labelLine={false}
-            startAngle={90}
-            endAngle={-270}
-          >
-            {sortedData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={scoreColors[index % scoreColors.length]}
-              />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
+      <PieChart width={180} height={180}>
+        <Pie
+          data={chartData}
+          dataKey="value"
+          innerRadius={40}
+          outerRadius={90}
+          startAngle={90}
+          endAngle={-270}
+          cornerRadius={5}
+          labelLine={false}
+          isAnimationActive={true}
+          animationDuration={1000}
+          animationEasing="ease-out"
+        >
+          {chartData.map((entry, idx) => (
+            <Cell key={`cell-${idx}`} fill={entry.fill} />
+          ))}
+        </Pie>
+      </PieChart>
+
+      <LegendWrapper>
+        {data.map((item, idx) => (
+          <LegendItem key={idx}>
+            <Dot color={item.color} />
+            <ValueText>
+              {item.score} - {item.value}개
+            </ValueText>
+          </LegendItem>
+        ))}
+      </LegendWrapper>
     </ChartWrapper>
   );
-}
+};
+
+export default ScorePieChart;
