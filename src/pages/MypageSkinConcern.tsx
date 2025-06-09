@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SelectButton from "../components/SelectButton";
+import SelectButton from "../components/SelectForm/SelectButton";
 import { useState } from "react";
 import Header from "../components/Header";
 import TextHeader from "../components/TextHeader";

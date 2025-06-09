@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SelectButton from "./../SelectButton";
+import SelectButton from "./../SelectForm/SelectButton";
 import { useState } from "react";
 
 const Wrapper = styled.div`

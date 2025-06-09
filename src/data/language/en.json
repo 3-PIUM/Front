@@ -155,8 +155,46 @@
     "personalTitle": "Personal Information",
     "editPersonal": "Edit Personal Information",
     "skinProfile": "My Skin Profile",
-    "skinType": "Skin Type",
-    "personalColor": "Personal Color",
+    "skinType": {
+      "pageTitle": "Skin Type",
+      "options": [
+        { "id": 1, "option": "Dry", "value": "건성" },
+        { "id": 2, "option": "Oily", "value": "지성" },
+        { "id": 3, "option": "Combination", "value": "복합성" },
+        { "id": 4, "option": "Sensitive", "value": "민감성" }
+      ],
+      "goTest": "Not sure? Start with a skin type diagnosis."
+    },
+    "personalColor": {
+      "pageTitle": "Personal Color",
+      "options": [
+        {
+          "id": 1,
+          "option": "Spring Warm",
+          "value": "봄_웜",
+          "colors": ["#FFD8A9", "#FFC0A9", "#FFE6CC"]
+        },
+        {
+          "id": 2,
+          "option": "Summer Cool",
+          "value": "여름_쿨",
+          "colors": ["#C3D5FF", "#E0B5DB", "#A4B8D1"]
+        },
+        {
+          "id": 3,
+          "option": "Autumn Warm",
+          "value": "가을_웜",
+          "colors": ["#CFA36E", "#A06045", "#E2C1A0"]
+        },
+        {
+          "id": 4,
+          "option": "Winter Cool",
+          "value": "겨울_쿨",
+          "colors": ["#C5CBE1", "#B4A4DD", "#333C57"]
+        }
+      ],
+      "goTest": "Not sure? Try a personal color analysis."
+    },
     "skinConcerns": "Skin Concerns",
     "purchase": "Purchase",
     "purchaseHistory": "Purchase History",
@@ -181,5 +219,6 @@
     "addCart": "Add to cart",
     "detail": "Product details",
     "analysisAndReview": "Ingredient analysis & Reviews"
-  }
+  },
+  "save": "Save"
 }

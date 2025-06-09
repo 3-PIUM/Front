@@ -28,6 +28,7 @@ import MypageSkinConcern from "./pages/MypageSkinConcern";
 import MbtiTest from "./pages/SkinMBTI/MbtiTest";
 import MbtiQuestion from "./pages/SkinMBTI/MbtiQuestion";
 import CategoryList from "./pages/Category/CategoryList";
+import EditProfile from "./pages/MyPage/EditProfile";
 
 const routes = [
   // DefaultLayout
@@ -57,6 +58,18 @@ const routes = [
     path: "/mbti",
     element: <MbtiTest />,
   },
+  {
+    path: "/mbti/question",
+    element: <MbtiQuestion />,
+  },
+  {
+    path: "/editprofile",
+    element: <EditProfile />,
+  },
+  // {
+  //   path: "/category/:categoryName/:subcategoryName",
+  //   element: <CategoryList />,
+  // },
 
   // MenuLayout
   {

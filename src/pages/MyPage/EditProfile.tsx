@@ -1,16 +1,17 @@
-import Button from "../../components/Button";
-import TextHeader from "../../components/TextHeader";
-import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../components/Header";
+import TextHeader from "../../components/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
+import axiosInstance from "../../api/axiosInstance";
+import styled from "styled-components";
 import Nickname from "../../components/SignUpForm/NicknameInput";
+import { useNavigate } from "react-router-dom";
 import Birth from "../../components/SignUpForm/BirthInput";
 import EmailInput from "../../components/SignUpForm/EmailInput";
 import PasswordInput from "../../components/SignUpForm/PasswordInput";
 import CountryInput from "../../components/SignUpForm/CountryInput";
 import GenderInput from "../../components/SignUpForm/GenderInput";
-import { useNavigate } from "react-router-dom";
+import Button from "../../components/Button";
 
 const Wrap = styled.div`
   display: flex;
@@ -31,8 +32,9 @@ const ButtonWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-export default function Signup() {
-  const { t, language } = useLocale();
+export default function EditProfile() {
+  const { t } = useLocale();
+  const [memberInfo, setMemberInfo] = useState();
 
   const [nickname, setNickname] = useState<string>("");
   const [nicknameVaildMessage, setNicknameVaildMessage] = useState<
@@ -97,94 +99,33 @@ export default function Signup() {
     isCountrySelected &&
     isGenderSelected;
 
-  // const handleSendEmail = async () => {
-  //   if (!email) {
-  //     setSendEmail(false);
-  //     setSendEmailText("이메일을 입력해주세요");
-  //     return;
-  //   }
-  //   try {
-  //     const emailResponse = await axios.post(
-  //       "http://localhost:8080/main/send",
-  //       {
-  //         email,
-  //       }
-  //     );
-  //     setSendEmail(true);
-  //     setSendEmailText("이메일을 확인해주세요");
-  //   } catch {
-  //     setSendEmail(false);
-  //     setSendEmailText("이메일 전송에 실패했습니다");
-  //   }
-  // };
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      try {
+        const response = await axiosInstance.get("/member");
+        const result = response.data.result;
+      } catch (error) {
+        console.log("회원정보 불러오는데 실패했습니다", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchCountries = async () => {
-  //     try {
-  //       const response = await fetch("https://restcountries.com/v3.1/all");
-  //       const data = await response.json();
+    fetchMemberInfo();
+  }, []);
 
-  //       const parsed = data.map((item: any) => {
-  //         let name: string;
-
-  //         switch (language) {
-  //           case "ko":
-  //           case "한국어":
-  //             name = item.translations?.kor?.official;
-  //             break;
-  //           case "jp":
-  //           case "日本語":
-  //             name = item.translations?.jpn?.official;
-  //             break;
-  //           default:
-  //             name = item.name?.official;
-  //         }
-
-  //         return {
-  //           name,
-  //           flag: item.flag,
-  //         };
-  //       });
-
-  //       setCountries(parsed);
-  //     } catch (error) {
-  //       console.error("국가 목록을 불러오는 데 실패했습니다.", error);
-  //     }
-  //   };
-
-  //   fetchCountries();
-  // }, [language]);
-
-  const handleSignup = async () => {
-    if (isFormValid) {
-      const signupData = {
-        nickname,
-        birth: formattedBirth,
-        email,
-        password,
-        gender,
-        area: country,
-        lang: language,
-      };
-
-      sessionStorage.setItem("signupData", JSON.stringify(signupData));
-      navigate("/about");
-    } else {
-      if (!isNicknameValid) setNicknameVaildMessage("닉네임을 확인해주세요");
-      else if (!isBirthValid) setBirthText("생년월일은 8자리를 입력해주세요");
-      else if (!isEmailVerified)
-        setVerifyCodeText("이메일 인증을 완료해주세요");
-      else if (!isPasswordMatch)
-        setPasswordText("비밀번호가 일치하지 않습니다");
-      else if (!isCountrySelected) setCountryText("국가를 선택해주세요");
-      else if (!isGenderSelected) setGenderText("성별을 선택해주세요");
-    }
+  const goSave = () => {
+    const savePersonalColor = async () => {
+      try {
+        await axiosInstance.patch("/member", {});
+      } catch (error) {
+        console.log("error:", error);
+      }
+    };
   };
 
   return (
     <Wrap>
       <Header />
-      <TextHeader pageName={t.signup.pageName} />
+      <TextHeader pageName={t.mypage.personalTitle} />
       <FormWrapper>
         <Nickname
           nickname={nickname}
@@ -241,7 +182,7 @@ export default function Signup() {
         />
       </FormWrapper>
       <ButtonWrapper>
-        <Button label={t.signup.signupBtn} onClick={handleSignup} />
+        <Button label={t.save} onClick={goSave} />
       </ButtonWrapper>
     </Wrap>
   );
