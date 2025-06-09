@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import SelectButton from "../components/SelectForm/SelectButton";
 import { useState } from "react";
-import Header from "../components/Header";
-import TextHeader from "../components/TextHeader";
+import Header from "../components/common/Header";
+import TextHeader from "../components/common/TextHeader";
 
 const Wrapper = styled.div`
   padding: 3rem 1rem 0 1rem;

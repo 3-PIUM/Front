@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import Header from "../../components/Header";
-import TextIconHeader from "../../components/TextIconHeader ";
+import Header from "../../components/common/Header";
+import TextIconHeader from "../../components/common/TextIconHeader ";
 import { useNavigate, useParams } from "react-router-dom";
 import categories from "../../data/categories.json";
 import colors from "../../styles/colors";
 import { useState } from "react";
 import { VscChevronDown } from "react-icons/vsc";
-import SortedModal from "../../components/SortedModal";
+import SortedModal from "../../components/model/SortedModal";
 import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`

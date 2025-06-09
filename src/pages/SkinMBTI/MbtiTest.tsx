@@ -1,4 +1,4 @@
-import TextHeader from "../../components/TextHeader";
+import TextHeader from "../../components/common/TextHeader";
 import styled from "styled-components";
 import mbtiCharacter from "../../assets/images/testImage.png";
 import { useEffect } from "react";

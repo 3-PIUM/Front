@@ -1,11 +1,11 @@
 import { GrLanguage } from "react-icons/gr";
 import colors from "../styles/colors";
 import styled from "styled-components";
-import Button from "../components/Button";
+import Button from "../components/common/Button";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
-import LanguageModal from "../components/LanguageModal";
+import Header from "../components/common/Header";
+import LanguageModal from "../components/model/LanguageModal";
 import { useLocale } from "../context/LanguageContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

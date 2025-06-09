@@ -3,11 +3,11 @@ import colors from "../styles/colors";
 import { useState, useEffect } from "react";
 import SelectButton from "../components/SelectForm/SelectButton";
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
-import TextHeader from "../components/TextHeader";
+import Header from "../components/common/Header";
+import TextHeader from "../components/common/TextHeader";
 import { useLocale } from "../context/LanguageContext";
 import axiosInstance from "../api/axiosInstance";
-import Button from "../components/Button";
+import Button from "../components/common/Button";
 
 const Wrapper = styled.div`
   display: flex;

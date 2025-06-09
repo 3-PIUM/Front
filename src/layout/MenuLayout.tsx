@@ -7,7 +7,7 @@ import { FaRegUser, FaUser } from "react-icons/fa6";
 import colors from "../styles/colors";
 import { LuScanLine } from "react-icons/lu";
 import { Link, useLocation } from "react-router-dom";
-import ChatBotButton from "../components/ChatBotButton";
+import ChatBotButton from "../components/chatbot/ChatBotButton";
 import { useLocale } from "../context/LanguageContext";
 
 const MenuWrap = styled.div`
