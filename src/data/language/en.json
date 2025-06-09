@@ -10,7 +10,7 @@
     "passwordPlaceholder": "password",
     "loginButton": "Login",
     "signupLink": "Sign up",
-    "error": "Please enter your email or password"
+    "error": "Please check your email or password"
   },
   "signup": {
     "pageName": "Sign up",
@@ -151,6 +151,7 @@
     "pageTitle": "My Page",
     "personalTitle": "Personal Information",
     "editPersonal": "Edit Personal Information",
+    "changePassword": "Change Password",
     "skinProfile": "My Skin Profile",
     "skinType": {
       "pageTitle": "Skin Type",

@@ -10,7 +10,7 @@
     "passwordPlaceholder": "비밀번호",
     "loginButton": "로그인하기",
     "signupLink": "회원가입",
-    "error": "이메일 또는 비밀번호를 입력해주세요"
+    "error": "이메일 또는 비밀번호를 확인해주세요"
   },
   "signup": {
     "pageName": "회원가입",
@@ -150,6 +150,7 @@
     "pageTitle": "마이페이지",
     "personalTitle": "개인정보",
     "editPersonal": "개인정보 수정",
+    "changePassword": "비밀번호 변경",
     "skinProfile": "나의 피부 정보",
     "skinType": {
       "pageTitle": "피부 타입",

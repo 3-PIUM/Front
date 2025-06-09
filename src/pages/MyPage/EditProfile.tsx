@@ -5,13 +5,14 @@ import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import styled from "styled-components";
 import Nickname from "../../components/SignUpForm/NicknameInput";
-import { useNavigate } from "react-router-dom";
 import Birth from "../../components/SignUpForm/BirthInput";
 import PasswordInput from "../../components/SignUpForm/PasswordInput";
 import CountryInput from "../../components/SignUpForm/CountryInput";
 import GenderInput from "../../components/SignUpForm/GenderInput";
-import Button from "../../components/Button";
+import Button from "../../components/common/Button";
 import InputField from "../../components/InputField";
+import colors from "../../styles/colors";
+import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
   display: flex;
@@ -27,9 +28,10 @@ const FormWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  display: flex;
-  padding: 0 1rem;
-  margin-top: 2rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 2rem 1rem;
 `;
 
 const FieldName = styled.div`
@@ -42,8 +44,44 @@ const ButtonInputWrap = styled.div`
   gap: 0.5rem;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: ${colors.white};
+  opacity: 1;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  width: 100%;
+  margin: 1rem;
+  padding: 3rem 1rem;
+  text-align: center;
+  border-radius: 1rem;
+`;
+
+const ModalButton = styled.button`
+  padding: 1rem;
+  font-size: 0.825rem;
+  background-color: ${colors.mainPink};
+  color: ${colors.white};
+  border: none;
+  border-radius: 3rem;
+`;
+
 export default function EditProfile() {
   const { t } = useLocale();
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   interface MemberInfo {
     area: string;
@@ -67,10 +105,6 @@ export default function EditProfile() {
   const [birthText, setBirthText] = useState<string>("");
 
   const [email, setEmail] = useState<string>("");
-
-  const [password, setPassword] = useState<string>("");
-  const [secondPassword, setSecondPassword] = useState<string>("");
-  const [passwordText, setPasswordText] = useState<string | null>(null);
 
   const [country, setCountry] = useState<string | null>(null);
   const [countryText, setCountryText] = useState<string | null>(null);
@@ -101,15 +135,10 @@ export default function EditProfile() {
 
   const isNicknameValid = nicknameVaild === true;
   const isBirthValid = birth.length === 8 && isValidDateString(birth);
-  const isPasswordMatch = password === secondPassword;
   const isCountrySelected = Boolean(country);
   const isGenderSelected = Boolean(gender);
   const isFormValid =
-    isNicknameValid &&
-    isBirthValid &&
-    isPasswordMatch &&
-    isCountrySelected &&
-    isGenderSelected;
+    isNicknameValid || isBirthValid || isCountrySelected || isGenderSelected;
 
   useEffect(() => {
     const fetchMemberInfo = async () => {
@@ -130,7 +159,11 @@ export default function EditProfile() {
     fetchMemberInfo();
   }, []);
 
-  console.log("memberInfo:", memberInfo);
+  const isChanged =
+    nickname !== memberInfo?.nickname ||
+    formattedBirth !== memberInfo?.birth ||
+    country !== memberInfo?.area ||
+    gender !== memberInfo?.gender;
 
   const goSave = () => {
     if (isFormValid) {
@@ -140,13 +173,13 @@ export default function EditProfile() {
             nickname,
             birth: formattedBirth,
             area: country,
-            password: password,
             lang: memberInfo?.language,
             profileImg: memberInfo?.profileImg,
             personalType: memberInfo?.personalType,
             skinType: memberInfo?.skinType,
           });
           console.log("정보 수정 완료");
+          setShowModal(true);
           !isFormValid;
         } catch (err) {
           console.log("정보를 수정하지 못했습니다", err);
@@ -156,67 +189,70 @@ export default function EditProfile() {
     } else {
       if (!isNicknameValid) setNicknameVaildMessage("닉네임을 확인해주세요");
       else if (!isBirthValid) setBirthText("생년월일은 8자리를 입력해주세요");
-      else if (!isPasswordMatch)
-        setPasswordText("비밀번호가 일치하지 않습니다");
       else if (!isCountrySelected) setCountryText("국가를 선택해주세요");
       else if (!isGenderSelected) setGenderText("성별을 선택해주세요");
     }
   };
 
   return (
-    <Wrap>
-      <Header />
-      <TextHeader pageName={t.mypage.personalTitle} />
-      <FormWrapper>
-        <Nickname
-          nickname={nickname}
-          setNickname={setNickname}
-          nicknameVaild={nicknameVaild}
-          setNicknameVaild={setNicknameVaild}
-          nicknameVaildMessage={nicknameVaildMessage}
-          setNicknameVaildMessage={setNicknameVaildMessage}
-          disabled={nickname == memberInfo?.nickname}
-        />
+    <>
+      <Wrap>
+        <Header />
+        <TextHeader pageName={t.mypage.personalTitle} />
+        <FormWrapper>
+          <Nickname
+            nickname={nickname}
+            setNickname={setNickname}
+            nicknameVaild={nicknameVaild}
+            setNicknameVaild={setNicknameVaild}
+            nicknameVaildMessage={nicknameVaildMessage}
+            setNicknameVaildMessage={setNicknameVaildMessage}
+            disabled={nickname == memberInfo?.nickname}
+          />
 
-        <Birth
-          birth={birth}
-          setBirth={setBirth}
-          birthText={birthText}
-          setBirthText={setBirthText}
-        />
+          <Birth
+            birth={birth}
+            setBirth={setBirth}
+            birthText={birthText}
+            setBirthText={setBirthText}
+          />
 
-        <FieldName>{t.signup.email} </FieldName>
-        <ButtonInputWrap>
-          <InputField type="text" disabled={true} value={memberInfo?.email} />
-        </ButtonInputWrap>
+          <FieldName>{t.signup.email} </FieldName>
+          <ButtonInputWrap>
+            <InputField type="text" disabled={true} value={memberInfo?.email} />
+          </ButtonInputWrap>
 
-        <PasswordInput
-          password={password}
-          setPassword={setPassword}
-          secondPassword={secondPassword}
-          setSecondPassword={setSecondPassword}
-          passwordText={passwordText}
-          setPasswordText={setPasswordText}
-        />
+          <CountryInput
+            country={country}
+            setCountry={setCountry}
+            countryText={countryText}
+            setCountryText={setCountryText}
+          />
 
-        <CountryInput
-          country={country}
-          setCountry={setCountry}
-          countryText={countryText}
-          setCountryText={setCountryText}
-        />
-
-        <GenderInput
-          gender={gender}
-          setGender={setGender}
-          genderText={genderText}
-          setGenderText={setGenderText}
-          readOnly={true}
-        />
-      </FormWrapper>
-      <ButtonWrapper>
-        <Button label={t.save} onClick={goSave} disabled={!isFormValid} />
-      </ButtonWrapper>
-    </Wrap>
+          <GenderInput
+            gender={gender}
+            setGender={setGender}
+            genderText={genderText}
+            setGenderText={setGenderText}
+            readOnly={true}
+          />
+        </FormWrapper>
+        <ButtonWrapper>
+          <Button
+            label={t.save}
+            onClick={goSave}
+            disabled={!(isFormValid && isChanged)}
+          />
+        </ButtonWrapper>
+      </Wrap>
+      {showModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>정보가 성공적으로 수정되었습니다</div>
+            <ModalButton onClick={() => navigate("/mypage")}>확인</ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </>
   );
 }

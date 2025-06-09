@@ -10,7 +10,7 @@
     "passwordPlaceholder": "パスワード",
     "loginButton": "ログイン",
     "signupLink": "会員登録",
-    "error": "メールアドレスまたはパスワードを入力してください"
+    "error": "メールアドレスまたはパスワードをご確認ください"
   },
   "signup": {
     "pageName": "会員登録",
@@ -157,6 +157,7 @@
     "pageTitle": "マイページ (",
     "personalTitle": "個人情報",
     "editPersonal": "個人情報を編集",
+    "changePassword": "パスワードを変更する",
     "skinProfile": "私の肌情報",
     "skinType": {
       "pageTitle": "肌タイプ",

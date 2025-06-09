@@ -2,7 +2,7 @@ import styled from "styled-components";
 import colors from "../styles/colors";
 import { useState, useEffect } from "react";
 import SelectButton from "../components/SelectForm/SelectButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/common/Header";
 import TextHeader from "../components/common/TextHeader";
 import { useLocale } from "../context/LanguageContext";
@@ -39,11 +39,47 @@ const ButtonWrapper = styled.div`
   padding: 2rem 1rem;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: ${colors.white};
+  opacity: 1;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  width: 100%;
+  margin: 1rem;
+  padding: 3rem 1rem;
+  text-align: center;
+  border-radius: 1rem;
+`;
+
+const ModalButton = styled.button`
+  padding: 1rem;
+  font-size: 0.825rem;
+  background-color: ${colors.mainPink};
+  color: ${colors.white};
+  border: none;
+  border-radius: 3rem;
+`;
+
 export default function SettingSkinType() {
   const { t } = useLocale();
   const [selected, setSelected] = useState<string>("");
   const [memberInfo, setMemberInfo] = useState<{ skinType?: string }>();
   const [isChanged, setIsChanged] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   interface SkinTypeOption {
     id: number;
@@ -75,7 +111,7 @@ export default function SettingSkinType() {
         await axiosInstance.patch("/member", {
           skinType: selected,
         });
-        console.log("저장에 성공했습니다");
+        setShowModal(true);
       } catch (error) {
         console.log("error", error);
       }
@@ -115,6 +151,14 @@ export default function SettingSkinType() {
       <ButtonWrapper onClick={goSave}>
         <Button label={t.save} disabled={!isChanged} />
       </ButtonWrapper>
+      {showModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>정보가 성공적으로 수정되었습니다</div>
+            <ModalButton onClick={() => navigate("/mypage")}>확인</ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </>
   );
 }

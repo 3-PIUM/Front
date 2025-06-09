@@ -153,6 +153,9 @@ export default function MyPage() {
             <div onClick={() => navigate("/editprofile")}>
               {t.mypage.editPersonal}
             </div>
+            <div onClick={() => navigate("/mypage/editpassword")}>
+              {t.mypage.changePassword}
+            </div>
           </SettingItem>
         </SettingBox>
         <SettingBox>
