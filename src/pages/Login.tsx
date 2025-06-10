@@ -102,14 +102,10 @@ export default function Login() {
   const [openModal, setOpenModal] = useState(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errorText, setErrorText] = useState<string>("");
   const [showError, setShowError] = useState<boolean>(false);
   const { language, setLanguage, languageCode, t } = useLocale();
   const navigate = useNavigate();
-
-  // const storedDataString = sessionStorage.getItem("signupData");
-  // if (!storedDataString) return;
-  // const storedData = JSON.parse(storedDataString);
-  // console.log(storedData);
 
   const openLanguageModal = () => {
     setOpenModal(true);
@@ -133,6 +129,8 @@ export default function Login() {
       navigate("/home");
     } catch (error) {
       console.log("로그인 실패", error);
+      setShowError(true);
+      setErrorText(t.login.error);
     }
   };
 
@@ -172,7 +170,7 @@ export default function Login() {
         <Link to="/signup">
           <SignUpWrap>{t.login.signupLink}</SignUpWrap>
         </Link>
-        {showError && <ErrorText>{t.login.error}</ErrorText>}
+        {showError && <ErrorText>{errorText}</ErrorText>}
       </Wrap>
       <ButtonWrap>
         <Button

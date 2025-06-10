@@ -3,6 +3,7 @@ import styled from "styled-components";
 import mbtiCharacter from "../../assets/images/testImage.png";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`
   display: flex;
@@ -27,6 +28,7 @@ const Wrapper = styled.div`
 const Title = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
+  text-align: center;
 `;
 
 const Character = styled.img`
@@ -46,6 +48,7 @@ const Button = styled.button`
 
 export default function MbtiTest() {
   const navigate = useNavigate();
+  const { t } = useLocale();
 
   useEffect(() => {
     const root = document.getElementById("root");
@@ -70,15 +73,15 @@ export default function MbtiTest() {
 
   return (
     <Wrap>
-      <TextHeader pageName="피부 MBTI 진단" bgColor="transparent" />
+      <TextHeader pageName={t.mbti.pageTitle} bgColor="transparent" />
       <Wrapper>
         <Title>
-          <div>나의 피부 MBTI</div>
-          <div>테스트하러 가기!</div>
+          <div>{t.mbti.title.prefix}</div>
+          <div>{t.mbti.title.suffix}</div>
         </Title>
         <Character src={mbtiCharacter} alt="mbti 캐릭터" />
         <Button onClick={() => navigate("/mbti/question")}>
-          테스트하러 가기
+          {t.mbti.goTestBtn}
         </Button>
       </Wrapper>
     </Wrap>

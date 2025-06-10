@@ -6,11 +6,15 @@ import { useState, useRef, useEffect } from "react";
 import ItemCard from "../components/product/ItemCard";
 import Header from "../components/common/Header";
 import StoreModal from "../components/model/StoreModal";
-import bannerImg from "../assets/images/mbtiBanner.png";
+import bannerKR from "../assets/images/bannerKR.png";
+import bannerJP from "../assets/images/bannerJP.png";
+import bannerEN from "../assets/images/bannerEN.png";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import surveyImage from "../assets/images/surveyImage.png";
 import { useLocale } from "../context/LanguageContext";
+import tabItems from "../data/tabItems.json";
+import hotItems from "../data/hotItems.json";
 
 const Wrapper = styled.div`
   display: flex;
@@ -180,8 +184,18 @@ const BannerImage = styled.img`
 
 const RecommandListWrapper = styled.div`
   display: flex;
-  margin-top: 0.5rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  width: 100%;
   gap: 0.5rem;
+  margin-top: 0.5rem;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export default function Home() {
@@ -189,170 +203,7 @@ export default function Home() {
   const [showStoreModal, setShowStoreModal] = useState(false);
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
-  const { t, setLanguage } = useLocale();
-
-  const tabs = [
-    { id: 1, label: "전체", items: [] },
-    {
-      id: 2,
-      label: "스킨케어",
-      items: [
-        {
-          id: 21,
-          name: "[하루특가/대용량150ml] 웰라쥬 리얼 히알루로닉 블루 100 앰플 75ml 1+1 기획",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/400/10/0000/0016/A00000016203553ko.jpg?l=ko",
-          discount: 38,
-          price: 28400,
-        },
-        {
-          id: 22,
-          name: "[6/1 하루특가] [1등세럼] 브링그린 징크테카 트러블세럼 50ml+25리필(+징크테카 S.O.S 스팟 젤)",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022651509ko.jpg?l=ko",
-          discount: 52,
-          price: 26800,
-        },
-        {
-          id: 23,
-          name: "[[6월올영픽]토리든 다이브인 저분자 히알루론산 세럼 50ml 리필 한정기획 (+50ml리필+선크림20ml+패드10매)",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022648706ko.jpg?l=ko",
-          discount: 34,
-          price: 23750,
-        },
-      ],
-    },
-    {
-      id: 3,
-      label: "클렌징",
-      items: [
-        {
-          id: 31,
-          name: "[스테디셀러특가/4년연속1위] 마녀공장 퓨어 클렌징오일 200mlX2 더블기획",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0020/A00000020744414ko.jpg?l=ko",
-          discount: 38,
-          price: 22800,
-        },
-        {
-          id: 32,
-          name: "[6/1 하루특가] 6월올영픽]바이오더마 센시비오 H2O 500ml 2입 기획",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022607007ko.jpg?l=ko",
-          discount: 31,
-          price: 28600,
-        },
-        {
-          id: 33,
-          name: "[천만돌파/1+1] 비플레인 녹두 약산성 클렌징폼 160ml+160ml 기획",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022260510ko.jpg?l=ko",
-          discount: 10,
-          price: 23190,
-        },
-      ],
-    },
-    {
-      id: 4,
-      label: "메이크업",
-      items: [
-        {
-          id: 41,
-          name: "[6월올영픽/1등쿠션] VDL 커버 스테인 퍼펙팅 쿠션 기획(+미니 프라이머 증정)",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018590325ko.png?l=ko",
-          discount: 26,
-          price: 25100,
-        },
-        {
-          id: 42,
-          name: "[6/1하루특가/한정기획] 연작 스킨 퍼펙팅 프로텍티브 베이스프렙 40ml 기획 (선베이스10ml+퍼프)",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0021/A00000021394311ko.jpg?l=ko",
-          discount: 21,
-          price: 35500,
-        },
-        {
-          id: 43,
-          name: "[스테디셀러특가/틴뚜링 증정기획] 롬앤 더 쥬시 래스팅 틴트 단품/기획",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0021/A00000021315357ko.jpg?l=ko",
-          discount: 31,
-          price: 8900,
-        },
-      ],
-    },
-    {
-      id: 5,
-      label: "선케어",
-      items: [
-        {
-          id: 51,
-          name: "[6월 올영픽][1+1+1] 라운드랩 자작나무 수분 선크림 40ml 트리플 기획",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022667504ko.jpg?l=ko",
-          discount: 14,
-          price: 25650,
-        },
-        {
-          id: 52,
-          name: "[스테디셀러특가][베이스착붙] 달바 핑크 톤업 선크림 듀오 기획 (50ml+50ml)",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018023782ko.jpg?l=ko",
-          discount: 35,
-          price: 32900,
-        },
-        {
-          id: 53,
-          name: "[6월 올영픽/스테디셀러특가/화잘먹]구달 맑은 어성초 진정 수분 선크림 50ml 1+1 기획 (+포캣 파우치)",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0021/A00000021955314ko.jpg?l=ko",
-          discount: 20,
-          price: 15900,
-        },
-      ],
-    },
-    {
-      id: 6,
-      label: "마스크팩",
-      items: [
-        {
-          id: 61,
-          name: "[휴대용케이스 증정] 메디힐 네모패드 100+100매 한정기획 (마데카소사이드, PDRN)",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022644572ko.jpg?l=ko",
-          discount: 28,
-          price: 28330,
-        },
-        {
-          id: 62,
-          name: "[아이돌물광/단독기획] 메디큐브 콜라겐 랩핑 마스크 75ml (+브러쉬 증정기획)",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0021/A00000021919307ko.jpg?l=ko",
-          discount: 25,
-          price: 18700,
-        },
-        {
-          id: 63,
-          name: "[31억장 돌파/한정판매] 메디힐 에센셜 마스크팩 10+1매 고기능 7종 택1",
-          url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022341444ko.jpg?l=ko",
-          discount: 51,
-          price: 9800,
-        },
-      ],
-    },
-  ];
-
-  const hotItems = [
-    {
-      id: 71,
-      name: "[[6월 올영픽/유트루PICK/1+1최초기획] 스킨푸드 캐롯 카로틴 카밍 워터 패드 60매 더블기획 (본품+본품)",
-      url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0022/A00000022493204ko.jpg?l=ko",
-      discount: 38,
-      price: 25830,
-    },
-    {
-      id: 72,
-      name: "[단독기획/대용량] 파티온 노스카나인 트러블 세럼 50ml 리필 기획(+리필40ml+크림10ml)",
-      url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0021/A00000021960903ko.jpg?l=ko",
-      discount: 40,
-      price: 32210,
-    },
-    {
-      id: 73,
-      name: "[6월 올영픽/더블한정기획 출시] 어노브 딥 데미지 헤어 트리트먼트 EX 320ml 더블/듀오 기획 5종 택1",
-      url: "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017142387ko.jpg?l=ko",
-      discount: 31,
-      price: 28900,
-    },
-  ];
+  const { t, setLanguage, language } = useLocale();
 
   const dummyStores = [
     {
@@ -381,9 +232,9 @@ export default function Home() {
     },
   ];
 
-  const selectedTab = tabs.find((tab) => tab.label === activeTab);
+  const selectedTab = tabItems.find((tab) => tab.label === activeTab);
 
-  const allItems = tabs
+  const allItems = tabItems
     .filter((tab) => tab.label !== "전체")
     .flatMap((tab) => tab.items);
 
@@ -470,7 +321,13 @@ export default function Home() {
 
       <BannerWrap>
         <BannerImage
-          src={bannerImg}
+          src={
+            language === "한국어"
+              ? bannerKR
+              : language == "English"
+              ? bannerEN
+              : bannerJP
+          }
           alt="mbti 배너"
           onClick={() => navigate("/mbti")}
         />
@@ -481,7 +338,7 @@ export default function Home() {
             <div>{memberInfo?.nickname ?? "null"}</div>님을 위한 추천 제품
           </RecommandTitle>
           <RecommandCategoryWrapper>
-            {tabs.map((item) => {
+            {tabItems.map((item) => {
               return (
                 <RecommandCategory
                   key={item.id}
@@ -510,15 +367,17 @@ export default function Home() {
         <RecommandBox>
           <RecommandTitle>지금 한국🇰🇷에서 가장 핫한 제품</RecommandTitle>
           <RecommandListWrapper>
-            {hotItems.map((hot) => (
-              <ItemCard
-                key={hot.id}
-                itemName={hot.name}
-                imageSource={hot.url}
-                discountRate={hot.discount}
-                price={hot.price}
-              />
-            ))}
+            {hotItems.map((category) =>
+              category.items.map((item) => (
+                <ItemCard
+                  key={item.id}
+                  itemName={item.name}
+                  imageSource={item.url}
+                  discountRate={item.discount}
+                  price={item.price}
+                />
+              ))
+            )}
           </RecommandListWrapper>
         </RecommandBox>
       </RecommandListWrap>

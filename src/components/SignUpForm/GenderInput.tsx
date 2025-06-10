@@ -25,22 +25,46 @@ const GenderButton = styled.div`
   justify-content: space-between;
 `;
 
-const GenderOption = styled.div<{ $selected: boolean }>`
+const GenderOption = styled.div<{ $selected: boolean; $readOnly?: boolean }>`
   display: flex;
   width: 10rem;
   height: 3rem;
   border: 1px solid
-    ${({ $selected }) => ($selected ? colors.mainPink : colors.lightGrey)};
+    ${({ $selected, $readOnly }) => {
+      if ($readOnly && $selected) return "none";
+      if ($readOnly && !$selected) return colors.lightGrey;
+      if (!$readOnly && $selected) return colors.mainPink;
+      return colors.lightGrey;
+    }};
   gap: 1rem;
   justify-content: center;
   align-items: center;
   border-radius: 1.25rem;
   padding: 0 1rem;
-  background-color: ${colors.white};
+  background-color: ${({ $selected, $readOnly }) => {
+    if ($readOnly && $selected) return colors.lightGrey;
+    if ($readOnly && !$selected) return colors.white;
+    if (!$readOnly && $selected) return colors.white;
+    return colors.white;
+  }};
+  ${({ $readOnly }) =>
+    $readOnly &&
+    `
+    pointer-events: none;    /* 클릭/포커스 자체를 막음 */
+
+    &:focus {
+      box-shadow: none;
+    }
+  `};
 `;
 
-const GenderText = styled.div<{ $selected: boolean }>`
-  color: ${({ $selected }) => ($selected ? colors.mainPink : colors.lightGrey)};
+const GenderText = styled.div<{ $selected: boolean; $readOnly?: boolean }>`
+  color: ${({ $selected, $readOnly }) => {
+    if ($readOnly && $selected) return colors.darkGrey;
+    if ($readOnly && !$selected) return colors.lightGrey;
+    if (!$readOnly && $selected) return colors.mainPink;
+    return colors.lightGrey;
+  }};
   font-size: 1rem;
   font-weight: ${({ $selected }) => ($selected ? 700 : 400)};
 `;
@@ -50,6 +74,7 @@ interface GenderProps {
   setGender: (value: "MALE" | "FEMALE" | null) => void;
   genderText: string | null;
   setGenderText: (value: string | null) => void;
+  readOnly?: boolean;
 }
 
 export default function GenderInput({
@@ -57,6 +82,7 @@ export default function GenderInput({
   setGender,
   genderText,
   setGenderText,
+  readOnly,
 }: GenderProps) {
   const { t } = useLocale();
 
@@ -68,29 +94,49 @@ export default function GenderInput({
           <GenderOption
             $selected={gender === "MALE"}
             onClick={() => {
+              if (readOnly) return;
               setGender("MALE");
               setGenderText(null);
             }}
+            $readOnly={readOnly}
           >
-            <GenderText $selected={gender === "MALE"}>
+            <GenderText $selected={gender === "MALE"} $readOnly={readOnly}>
               {t.signup.male}
             </GenderText>
             <IoMale
-              color={gender === "MALE" ? colors.mainPink : colors.lightGrey}
+              color={
+                readOnly
+                  ? gender === "MALE"
+                    ? colors.darkGrey
+                    : colors.lightGrey
+                  : gender === "MALE"
+                  ? colors.mainPink
+                  : colors.lightGrey
+              }
             />
           </GenderOption>
           <GenderOption
             $selected={gender === "FEMALE"}
             onClick={() => {
+              if (readOnly) return;
               setGender("FEMALE");
               setGenderText(null);
             }}
+            $readOnly={readOnly}
           >
-            <GenderText $selected={gender === "FEMALE"}>
+            <GenderText $selected={gender === "FEMALE"} $readOnly={readOnly}>
               {t.signup.female}
             </GenderText>
             <IoFemale
-              color={gender === "FEMALE" ? colors.mainPink : colors.lightGrey}
+              color={
+                readOnly
+                  ? gender === "FEMALE"
+                    ? colors.darkGrey
+                    : colors.lightGrey
+                  : gender === "FEMALE"
+                  ? colors.mainPink
+                  : colors.lightGrey
+              }
             />
           </GenderOption>
         </GenderButton>

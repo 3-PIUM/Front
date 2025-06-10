@@ -2,7 +2,7 @@
   "menuLayout": {
     "category": "カテゴリー",
     "report": "成分レポート",
-    "wishlist": "ウィッシュリスト",
+    "wishlist": "お気に入り",
     "mypage": "マイページ"
   },
   "login": {
@@ -10,7 +10,7 @@
     "passwordPlaceholder": "パスワード",
     "loginButton": "ログイン",
     "signupLink": "会員登録",
-    "error": "メールアドレスまたはパスワードを入力してください"
+    "error": "メールアドレスまたはパスワードをご確認ください"
   },
   "signup": {
     "pageName": "会員登録",
@@ -56,19 +56,16 @@
     "btn": "確認"
   },
   "survey": {
+    "skipBtn": "スキップ",
+    "nextBtn": "次へ",
+    "previousBtn": "前の質問",
     "survey1": {
-      "skipBtn": "スキップ",
       "title": "肌タイプについて教えてください！",
-      "btn": {
-        "type1": "乾燥肌",
-        "type2": "普通肌",
-        "type3": "脂性肌",
-        "type4": "混合肌",
-        "type5": "敏感肌",
-        "type6": "超乾燥肌",
-        "type7": "トラブル肌"
-      },
       "goTestTitle": "よく分からない方は？ 肌タイプ診断を受けてみましょう"
+    },
+    "survey3": {
+      "title": "Tell us about your personal color!",
+      "goTestTitle": "Not sure? Take a personal color test"
     }
   },
   "category": {
@@ -153,6 +150,14 @@
       "registerSkinType": "肌タイプを登録する"
     }
   },
+  "mbti": {
+    "pageTitle": "肌タイプMBTI診断",
+    "title": {
+      "prefix": "あなたの肌MBTIを",
+      "suffix": "チェックしよう！"
+    },
+    "goTestBtn": "診断してみる"
+  },
   "wishlist": {
     "pageTitle": "お気に入り"
   },
@@ -160,6 +165,7 @@
     "pageTitle": "マイページ (",
     "personalTitle": "個人情報",
     "editPersonal": "個人情報を編集",
+    "changePassword": "パスワードを変更する",
     "skinProfile": "私の肌情報",
     "skinType": {
       "pageTitle": "肌タイプ",

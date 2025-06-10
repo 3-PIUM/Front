@@ -33,22 +33,16 @@ const LanguageContext = createContext<LanguageContextType | undefined>(
 );
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // const [language, setLanguage] = useState<string>(() => {
-  //   const stored = localStorage.getItem("language");
-  //   return stored ? JSON.parse(stored) : "한국어";
-  // });
-
   const [language, setLanguage] = useState<string>(() => {
     try {
       const stored = localStorage.getItem("language");
       if (stored) {
-        const parsed = JSON.parse(stored);
         if (
-          parsed === "한국어" ||
-          parsed === "English" ||
-          parsed === "日本語"
+          stored === "한국어" ||
+          stored === "English" ||
+          stored === "日本語"
         ) {
-          return parsed;
+          return stored;
         }
       }
     } catch {}
@@ -59,7 +53,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const languageCode = languageCodeMap[language] || "KR";
 
   useEffect(() => {
-    localStorage.setItem("language", JSON.stringify(language));
+    localStorage.setItem("language", language);
   }, [language]);
 
   return (
