@@ -16,9 +16,9 @@ interface CartStore {
   items: CartItem[];
   addItem: (item: CartItem) => void;
   removeItem: (id: string, option?: string) => void;
-  increaseQuantity: (id: string) => void;
-  decreaseQuantity: (id: string) => void;
-  updateOption: (id: string, newOption: string) => void;
+  increaseQuantity: (id: string, option?: string) => void; // 수정됨
+  decreaseQuantity: (id: string, option?: string) => void;
+  updateOption: (id: string, prevOption: string, newOption: string) => void;
 }
 
 export const useCartStore = create<CartStore>((set) => ({
@@ -48,24 +48,29 @@ export const useCartStore = create<CartStore>((set) => ({
         (item) => !(item.id === id && item.option === option)
       ),
     })),
-  increaseQuantity: (id) =>
+  increaseQuantity: (id: string, option?: string) =>
     set((state) => ({
       items: state.items.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === id && item.option === option
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       ),
     })),
-  decreaseQuantity: (id) =>
+
+  decreaseQuantity: (id: string, option?: string) =>
     set((state) => ({
       items: state.items.map((item) =>
-        item.id === id
+        item.id === id && item.option === option
           ? { ...item, quantity: Math.max(item.quantity - 1, 1) }
           : item
       ),
     })),
-  updateOption: (id: string, newOption: string) =>
+  updateOption: (id: string, prevOption: string, newOption: string) =>
     set((state) => ({
       items: state.items.map((item) =>
-        item.id === id ? { ...item, option: newOption } : item
+        item.id === id && item.option === prevOption
+          ? { ...item, option: newOption }
+          : item
       ),
     })),
 }));
