@@ -349,6 +349,11 @@
       ]
     }
   },
+  "keywords": {
+    "product": "商品",
+    "budget": "予算",
+    "diagnosis": "診断"
+  },
   "storeModal": {
     "title": "近くの店舗を探す",
     "status": {

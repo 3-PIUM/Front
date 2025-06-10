@@ -342,6 +342,11 @@
       ]
     }
   },
+  "keywords": {
+    "product": "제품",
+    "budget": "예산",
+    "diagnosis": "피부진단"
+  },
   "storeModal": {
     "title": "내 주변 매장 찾기",
     "status": {

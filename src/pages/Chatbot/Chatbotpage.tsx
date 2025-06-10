@@ -118,6 +118,10 @@ export default function ChatbotPage() {
   const { t } = useLocale();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     setMessages([
       {
         sender: "bot",
@@ -128,16 +132,28 @@ export default function ChatbotPage() {
   }, [t]);
   const [input, setInput] = useState("");
   const today = new Date();
-  const dayLabel = t.chatbot.days?.[today.getDay()] ?? "";
+  const dayLabel = t.chatbot.response.days?.[today.getDay()] ?? "";
   const formattedDate = `${today.getFullYear()}.${String(
     today.getMonth() + 1
   ).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")} ${dayLabel}`;
 
   const botReply = (message: string): string => {
-    if (message.includes("제품")) return t.chatbot.product;
-    if (message.includes("예산")) return t.chatbot.budget;
-    if (message.includes("피부진단")) return t.chatbot.diagnosis;
-    return t.chatbot.default;
+    const lower = message.toLowerCase();
+
+    const productKeywords = t.chatbot.keywords.product;
+    const budgetKeywords = t.chatbot.keywords.budget;
+    const diagnosisKeywords = t.chatbot.keywords.diagnosis;
+
+    if (productKeywords.some((k: string) => lower.includes(k))) {
+      return t.chatbot.response.product;
+    }
+    if (budgetKeywords.some((k: string) => lower.includes(k))) {
+      return t.chatbot.response.budget;
+    }
+    if (diagnosisKeywords.some((k: string) => lower.includes(k))) {
+      return t.chatbot.response.diagnosis;
+    }
+    return t.chatbot.response.default;
   };
 
   const getTime = () => {

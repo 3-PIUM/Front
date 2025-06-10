@@ -344,6 +344,11 @@
       ]
     }
   },
+  "keywords": {
+    "product": "product",
+    "budget": "budget",
+    "diagnosis": "diagnosis"
+  },
   "storeModal": {
     "title": "Find Nearby Stores",
     "status": {
