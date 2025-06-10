@@ -29,6 +29,7 @@ import MbtiTest from "./pages/SkinMBTI/MbtiTest";
 import MbtiQuestion from "./pages/SkinMBTI/MbtiQuestion";
 import CategoryList from "./pages/Category/CategoryList";
 import EditProfile from "./pages/MyPage/EditProfile";
+import EditPassword from "./pages/MyPage/EditPassword";
 
 const routes = [
   // DefaultLayout
@@ -52,6 +53,10 @@ const routes = [
   {
     path: "/mypage/skinconcern",
     element: <MypageSkinConcern />,
+  },
+  {
+    path: "/mypage/editpassword",
+    element: <EditPassword />,
   },
 
   {

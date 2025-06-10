@@ -3,6 +3,7 @@ import colors from "../../styles/colors";
 import { FaHeart } from "react-icons/fa6";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance";
 
 const ItemWrap = styled.div`
   display: flex;
@@ -73,7 +74,13 @@ export default function ItemCard({
 
   const handleWish = () => {
     if (isWished === false) {
-      setIsWished(true);
+      const wishItem = async () => {
+        await axiosInstance.post("/wishlist", {
+          param: {
+            // itemId: id,
+          },
+        });
+      };
     } else {
       setIsWished(false);
     }

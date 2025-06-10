@@ -10,7 +10,7 @@
     "passwordPlaceholder": "password",
     "loginButton": "Login",
     "signupLink": "Sign up",
-    "error": "Please enter your email or password"
+    "error": "Please check your email or password"
   },
   "signup": {
     "pageName": "Sign up",
@@ -55,19 +55,16 @@
     "btn": "Confirm"
   },
   "survey": {
+    "skipBtn": "Skip",
+    "nextBtn": "Next",
+    "previousBtn": "Previous",
     "survey1": {
-      "skipBtn": "Skip",
       "title": "Tell us about your skin type!",
-      "btn": {
-        "type1": "Dry",
-        "type2": "Normal",
-        "type3": "Oily",
-        "type4": "Combination",
-        "type5": "Sensitive",
-        "type6": "Very Dry",
-        "type7": "Acne-prone"
-      },
       "goTestTitle": "Not sure? Take the skin type test"
+    },
+    "survey3": {
+      "title": "Tell us about your personal color!",
+      "goTestTitle": "Not sure? Take a personal color test"
     }
   },
   "category": {
@@ -146,6 +143,14 @@
       "registerSkinType": "Register your skin type"
     }
   },
+  "mbti": {
+    "pageTitle": "Skin MBTI Test",
+    "title": {
+      "prefix": "Find out your",
+      "suffix": "Skin MBTI type!"
+    },
+    "goTestBtn": "Take the Test"
+  },
   "wishlist": {
     "pageTitle": "Wishlist"
   },
@@ -154,6 +159,7 @@
     "pageTitle": "My Page",
     "personalTitle": "Personal Information",
     "editPersonal": "Edit Personal Information",
+    "changePassword": "Change Password",
     "skinProfile": "My Skin Profile",
     "skinType": {
       "pageTitle": "Skin Type",

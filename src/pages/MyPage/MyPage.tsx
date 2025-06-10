@@ -7,7 +7,7 @@ import Header from "../../components/common/Header";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/common/PageTitle";
 import axiosInstance from "../../api/axiosInstance";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useLocale } from "../../context/LanguageContext";
 
 const TopWrapper = styled.div`
@@ -45,6 +45,10 @@ const ImageEdit = styled.div`
   align-items: center;
   bottom: 0;
   right: 0;
+`;
+
+const ImgInput = styled.input`
+  display: none;
 `;
 
 const Nickname = styled.div`
@@ -98,6 +102,7 @@ const Line = styled.hr`
 export default function MyPage() {
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
+  const [profileImg, setProfileImg] = useState<File | null>(null);
   const { t } = useLocale();
 
   useEffect(() => {
@@ -126,6 +131,13 @@ export default function MyPage() {
     }
   };
 
+  const handleFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setProfileImg(file);
+  };
+
   return (
     <>
       <Header />
@@ -139,9 +151,15 @@ export default function MyPage() {
               <ProfileImage src={dafaultProfileImage} alt="프로필사진" />
             )}
           </ImageBox>
-          <ImageEdit>
+          <ImageEdit as="label" htmlFor="profileimg">
             <FiEdit2 fontSize={"1.125rem"} color={colors.white} />
           </ImageEdit>
+          <ImgInput
+            type="file"
+            accept="image/*"
+            id="profileimg"
+            onChange={handleFileSelect}
+          />
         </ImageSection>
         <Nickname>{memberInfo?.nickname ?? "null"}</Nickname>
       </TopWrapper>
@@ -152,6 +170,9 @@ export default function MyPage() {
           <SettingItem>
             <div onClick={() => navigate("/editprofile")}>
               {t.mypage.editPersonal}
+            </div>
+            <div onClick={() => navigate("/mypage/editpassword")}>
+              {t.mypage.changePassword}
             </div>
           </SettingItem>
         </SettingBox>

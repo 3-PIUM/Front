@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useLocale } from "../context/LanguageContext";
 import Button from "../components/common/Button";
 import axiosInstance from "../api/axiosInstance";
+import colors from "../styles/colors";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,11 +30,47 @@ const ButtonWrapper = styled.div`
   padding: 2rem 1rem;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: ${colors.white};
+  opacity: 1;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  width: 100%;
+  margin: 1rem;
+  padding: 3rem 1rem;
+  text-align: center;
+  border-radius: 1rem;
+`;
+
+const ModalButton = styled.button`
+  padding: 1rem;
+  font-size: 0.825rem;
+  background-color: ${colors.mainPink};
+  color: ${colors.white};
+  border: none;
+  border-radius: 3rem;
+`;
+
 export default function SettingPersonalColor() {
   const { t } = useLocale();
   const [memberInfo, setMemberInfo] = useState<MemberInfo>();
   const [selected, setSelected] = useState<string>("");
   const [isChanged, setIsChanged] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   interface personalProps {
     id: number;
@@ -61,6 +99,7 @@ export default function SettingPersonalColor() {
         await axiosInstance.patch("/member", {
           personalType: selected,
         });
+        setShowModal(true);
       } catch (error) {
         console.log("error:", error);
       }
@@ -92,6 +131,14 @@ export default function SettingPersonalColor() {
       <ButtonWrapper>
         <Button label={t.save} onClick={goSave} disabled={!isChanged} />
       </ButtonWrapper>
+      {showModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>정보가 성공적으로 수정되었습니다</div>
+            <ModalButton onClick={() => navigate("/mypage")}>확인</ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </>
   );
 }

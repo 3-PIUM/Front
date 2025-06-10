@@ -5,13 +5,14 @@ import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import styled from "styled-components";
 import Nickname from "../../components/SignUpForm/NicknameInput";
-import { useNavigate } from "react-router-dom";
 import Birth from "../../components/SignUpForm/BirthInput";
-import EmailInput from "../../components/SignUpForm/EmailInput";
 import PasswordInput from "../../components/SignUpForm/PasswordInput";
 import CountryInput from "../../components/SignUpForm/CountryInput";
 import GenderInput from "../../components/SignUpForm/GenderInput";
 import Button from "../../components/common/Button";
+import InputField from "../../components/InputField";
+import colors from "../../styles/colors";
+import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
   display: flex;
@@ -27,42 +28,89 @@ const FormWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 2rem 1rem;
+`;
+
+const FieldName = styled.div`
   display: flex;
-  padding: 0 1rem;
-  margin-top: 2rem;
+  font-size: 1rem;
+`;
+
+const ButtonInputWrap = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: ${colors.white};
+  opacity: 1;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  width: 100%;
+  margin: 1rem;
+  padding: 3rem 1rem;
+  text-align: center;
+  border-radius: 1rem;
+`;
+
+const ModalButton = styled.button`
+  padding: 1rem;
+  font-size: 0.825rem;
+  background-color: ${colors.mainPink};
+  color: ${colors.white};
+  border: none;
+  border-radius: 3rem;
 `;
 
 export default function EditProfile() {
   const { t } = useLocale();
-  const [memberInfo, setMemberInfo] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  interface MemberInfo {
+    area: string;
+    birth: string;
+    email: string;
+    gender: "MALE" | "FEMALE";
+    language: "EN" | "KR" | "JP";
+    nickname: string;
+    profileImg: string | null;
+    personalType: string | null;
+    skinType: string | null;
+  }
+
+  const [memberInfo, setMemberInfo] = useState<MemberInfo>();
 
   const [nickname, setNickname] = useState<string>("");
-  const [nicknameVaildMessage, setNicknameVaildMessage] = useState<
-    string | null
-  >(null);
-  const [nicknameVaild, setNicknameVaild] = useState<boolean | null>(null);
+  const [nicknameVaildMessage, setNicknameVaildMessage] = useState<string>("");
+  const [nicknameVaild, setNicknameVaild] = useState<boolean>(false);
 
   const [birth, setBirth] = useState<string>("");
   const [birthText, setBirthText] = useState<string>("");
 
   const [email, setEmail] = useState<string>("");
-  const [sendEmail, setSendEmail] = useState<boolean | null>(null);
-  const [sendEmailText, setSendEmailText] = useState<string | null>(null);
-  const [verifyCode, setVerifyCode] = useState<string>("");
-  const [checkVerifyCode, setCheckVerifyCode] = useState<boolean | null>(null);
-  const [verifyCodeText, setVerifyCodeText] = useState<string | null>(null);
-
-  const [password, setPassword] = useState<string>("");
-  const [secondPassword, setSecondPassword] = useState<string>("");
-  const [passwordText, setPasswordText] = useState<string | null>(null);
 
   const [country, setCountry] = useState<string | null>(null);
   const [countryText, setCountryText] = useState<string | null>(null);
 
   const [gender, setGender] = useState<"MALE" | "FEMALE" | null>(null);
   const [genderText, setGenderText] = useState<string | null>(null);
-
-  const navigate = useNavigate();
 
   function isValidDateString(dateStr: string): boolean {
     if (dateStr.length !== 8) return false;
@@ -87,23 +135,22 @@ export default function EditProfile() {
 
   const isNicknameValid = nicknameVaild === true;
   const isBirthValid = birth.length === 8 && isValidDateString(birth);
-  const isEmailVerified = checkVerifyCode === true;
-  const isPasswordMatch = password === secondPassword;
   const isCountrySelected = Boolean(country);
   const isGenderSelected = Boolean(gender);
   const isFormValid =
-    isNicknameValid &&
-    isBirthValid &&
-    isEmailVerified &&
-    isPasswordMatch &&
-    isCountrySelected &&
-    isGenderSelected;
+    isNicknameValid || isBirthValid || isCountrySelected || isGenderSelected;
 
   useEffect(() => {
     const fetchMemberInfo = async () => {
       try {
         const response = await axiosInstance.get("/member");
         const result = response.data.result;
+        setMemberInfo(result);
+        setNickname(result.nickname);
+        setBirth(result.birth.replaceAll("-", ""));
+        setEmail(result.email);
+        setGender(result.gender);
+        setCountry(result.area);
       } catch (error) {
         console.log("회원정보 불러오는데 실패했습니다", error);
       }
@@ -112,78 +159,100 @@ export default function EditProfile() {
     fetchMemberInfo();
   }, []);
 
+  const isChanged =
+    nickname !== memberInfo?.nickname ||
+    formattedBirth !== memberInfo?.birth ||
+    country !== memberInfo?.area ||
+    gender !== memberInfo?.gender;
+
   const goSave = () => {
-    const savePersonalColor = async () => {
-      try {
-        await axiosInstance.patch("/member", {});
-      } catch (error) {
-        console.log("error:", error);
-      }
-    };
+    if (isFormValid) {
+      const saveMemberInfo = async () => {
+        try {
+          await axiosInstance.patch("/member", {
+            nickname,
+            birth: formattedBirth,
+            area: country,
+            lang: memberInfo?.language,
+            profileImg: memberInfo?.profileImg,
+            personalType: memberInfo?.personalType,
+            skinType: memberInfo?.skinType,
+          });
+          console.log("정보 수정 완료");
+          setShowModal(true);
+          !isFormValid;
+        } catch (err) {
+          console.log("정보를 수정하지 못했습니다", err);
+        }
+      };
+      saveMemberInfo();
+    } else {
+      if (!isNicknameValid) setNicknameVaildMessage("닉네임을 확인해주세요");
+      else if (!isBirthValid) setBirthText("생년월일은 8자리를 입력해주세요");
+      else if (!isCountrySelected) setCountryText("국가를 선택해주세요");
+      else if (!isGenderSelected) setGenderText("성별을 선택해주세요");
+    }
   };
 
   return (
-    <Wrap>
-      <Header />
-      <TextHeader pageName={t.mypage.personalTitle} />
-      <FormWrapper>
-        <Nickname
-          nickname={nickname}
-          setNickname={setNickname}
-          nicknameVaild={nicknameVaild}
-          setNicknameVaild={setNicknameVaild}
-          nicknameVaildMessage={nicknameVaildMessage}
-          setNicknameVaildMessage={setNicknameVaildMessage}
-        />
+    <>
+      <Wrap>
+        <Header />
+        <TextHeader pageName={t.mypage.personalTitle} />
+        <FormWrapper>
+          <Nickname
+            nickname={nickname}
+            setNickname={setNickname}
+            nicknameVaild={nicknameVaild}
+            setNicknameVaild={setNicknameVaild}
+            nicknameVaildMessage={nicknameVaildMessage}
+            setNicknameVaildMessage={setNicknameVaildMessage}
+            disabled={nickname == memberInfo?.nickname}
+          />
 
-        <Birth
-          birth={birth}
-          setBirth={setBirth}
-          birthText={birthText}
-          setBirthText={setBirthText}
-        />
+          <Birth
+            birth={birth}
+            setBirth={setBirth}
+            birthText={birthText}
+            setBirthText={setBirthText}
+          />
 
-        <EmailInput
-          email={email}
-          setEmail={setEmail}
-          sendEmail={sendEmail}
-          setSendEmail={setSendEmail}
-          sendEmailText={sendEmailText}
-          setSendEmailText={setSendEmailText}
-          verifyCode={verifyCode}
-          setVerifyCode={setVerifyCode}
-          verifyCodeText={verifyCodeText}
-          setVerifyCodeText={setVerifyCodeText}
-          checkVerifyCode={checkVerifyCode}
-          setCheckVerifyCode={setCheckVerifyCode}
-        />
+          <FieldName>{t.signup.email} </FieldName>
+          <ButtonInputWrap>
+            <InputField type="text" disabled={true} value={memberInfo?.email} />
+          </ButtonInputWrap>
 
-        <PasswordInput
-          password={password}
-          setPassword={setPassword}
-          secondPassword={secondPassword}
-          setSecondPassword={setSecondPassword}
-          passwordText={passwordText}
-          setPasswordText={setPasswordText}
-        />
+          <CountryInput
+            country={country}
+            setCountry={setCountry}
+            countryText={countryText}
+            setCountryText={setCountryText}
+          />
 
-        <CountryInput
-          country={country}
-          setCountry={setCountry}
-          countryText={countryText}
-          setCountryText={setCountryText}
-        />
-
-        <GenderInput
-          gender={gender}
-          setGender={setGender}
-          genderText={genderText}
-          setGenderText={setGenderText}
-        />
-      </FormWrapper>
-      <ButtonWrapper>
-        <Button label={t.save} onClick={goSave} />
-      </ButtonWrapper>
-    </Wrap>
+          <GenderInput
+            gender={gender}
+            setGender={setGender}
+            genderText={genderText}
+            setGenderText={setGenderText}
+            readOnly={true}
+          />
+        </FormWrapper>
+        <ButtonWrapper>
+          <Button
+            label={t.save}
+            onClick={goSave}
+            disabled={!(isFormValid && isChanged)}
+          />
+        </ButtonWrapper>
+      </Wrap>
+      {showModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>정보가 성공적으로 수정되었습니다</div>
+            <ModalButton onClick={() => navigate("/mypage")}>확인</ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </>
   );
 }

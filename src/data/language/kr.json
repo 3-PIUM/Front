@@ -10,7 +10,7 @@
     "passwordPlaceholder": "비밀번호",
     "loginButton": "로그인하기",
     "signupLink": "회원가입",
-    "error": "이메일 또는 비밀번호를 입력해주세요"
+    "error": "이메일 또는 비밀번호를 확인해주세요"
   },
   "signup": {
     "pageName": "회원가입",
@@ -55,19 +55,16 @@
     "btn": "확인"
   },
   "survey": {
+    "skipBtn": "건너뛰기",
+    "nextBtn": "다음",
+    "previousBtn": "이전 질문",
     "survey1": {
-      "skipBtn": "건너뛰기",
       "title": "피부 타입에 대해 알려주세요!",
-      "btn": {
-        "type1": "건성",
-        "type2": "중성",
-        "type3": "지성",
-        "type4": "복합성",
-        "type5": "민감성",
-        "type6": "악건성",
-        "type7": "트러블성"
-      },
       "goTestTitle": "잘 모르겠다면? 피부 타입 진단을 받아보세요"
+    },
+    "survey3": {
+      "title": "퍼스널컬러에 대해 알려주세요!",
+      "goTestTitle": "잘 모르겠다면? 퍼스널 컬러 진단을 받아보세요"
     }
   },
   "category": {
@@ -146,6 +143,14 @@
       "registerSkinType": "피부 타입 등록하기"
     }
   },
+  "mbti": {
+    "pageTitle": "피부 MBTI 진단",
+    "title": {
+      "prefix": "나의 피부 MBI",
+      "suffix": "테스트하러 가기！"
+    },
+    "goTestBtn": "테스트하러 가기"
+  },
   "wishlist": {
     "pageTitle": "찜"
   },
@@ -153,6 +158,7 @@
     "pageTitle": "마이페이지",
     "personalTitle": "개인정보",
     "editPersonal": "개인정보 수정",
+    "changePassword": "비밀번호 변경",
     "skinProfile": "나의 피부 정보",
     "skinType": {
       "pageTitle": "피부 타입",

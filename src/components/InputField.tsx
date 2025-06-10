@@ -8,7 +8,9 @@ interface StyledInputProps {
   $disabled?: boolean;
 }
 
-const TextFieldWrap = styled.input<StyledInputProps>`
+const TextFieldWrap = styled.input.attrs<StyledInputProps>((props) => ({
+  disabled: props.$disabled,
+}))<StyledInputProps>`
   display: flex;
   width: ${({ width }) => width || "100%"};
   height: 3rem;

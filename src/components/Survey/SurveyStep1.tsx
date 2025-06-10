@@ -3,6 +3,7 @@ import SelectButton from "../SelectForm/SelectButton";
 import { Link } from "react-router-dom";
 import colors from "../../styles/colors";
 import { useState } from "react";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
   margin-top: 1rem;
@@ -32,46 +33,42 @@ const SkinTestWrapper = styled.div`
   justify-content: center;
 `;
 
-const Options = [
-  {
-    id: 1,
-    option: "건성",
-  },
-  {
-    id: 2,
-    option: "지성",
-  },
-  {
-    id: 3,
-    option: "복합성",
-  },
-  {
-    id: 4,
-    option: "민감성",
-  },
-];
+interface skinProps {
+  skinType: string | null;
+  setSkinType: (value: string) => void;
+}
 
-export default function SurveyStep1() {
-  const [selected, setSelected] = useState<string>();
+export default function SurveyStep1({ skinType, setSkinType }: skinProps) {
+  const [selected, setSelected] = useState<string>(skinType || "");
+  const { t } = useLocale();
+
+  interface SkinTypeOption {
+    id: number;
+    option: string;
+    value: string;
+  }
 
   return (
     <>
       <Wrapper>
-        <TitleWrapper>피부 타입에 대해 알려주세요!</TitleWrapper>
+        <TitleWrapper>{t.survey.survey1.title}</TitleWrapper>
         <AnswerWrapper>
-          {Options.map((item) => (
+          {t.mypage.skinType.options.map((item: SkinTypeOption) => (
             <SelectButton
               key={item.id}
               size="large"
               buttonName={item.option}
               isActivated={selected === item.option}
-              onClick={() => setSelected(item.option)}
+              onClick={() => {
+                setSelected(item.option);
+                setSkinType(item.value);
+              }}
             />
           ))}
         </AnswerWrapper>
         <SkinTestWrapper>
           <Link to="">
-            잘 모르겠다면? 피부 타입 진단으로 시작해보세요{" "}
+            {t.survey.survey1.goTestTitle}
             <SkinTestWrapper></SkinTestWrapper>
           </Link>
         </SkinTestWrapper>
