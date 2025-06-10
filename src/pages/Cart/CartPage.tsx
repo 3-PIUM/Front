@@ -218,17 +218,21 @@ const SubmitButton = styled.button`
 const CartPage = () => {
   const { items, removeItem, increaseQuantity, decreaseQuantity } =
     useCartStore();
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const getKey = (id: string, option?: string) => `${id}__${option ?? ""}`;
   const [showOptionFor, setShowOptionFor] = useState<string | null>(null);
-  // const [optionList, setOptionList] = useState<{ [key: string]: string[] }>({});
   const navigate = useNavigate();
   const { t } = useLocale();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  const getKey = (id: string, option?: string) => `${id}__${option ?? ""}`;
+
+  const mergedItems = Object.values(
+    items.reduce((acc, item) => {
+      const key = getKey(item.id, item.option);
+      if (!acc[key]) acc[key] = { ...item };
+      else acc[key].quantity += item.quantity;
+      return acc;
+    }, {} as { [key: string]: (typeof items)[0] })
+  );
 
   const toggleSelect = (id: string, option?: string) => {
     const key = getKey(id, option);
@@ -239,14 +243,14 @@ const CartPage = () => {
 
   const isSelected = (id: string, option?: string) =>
     selectedKeys.includes(getKey(id, option));
-  const allSelected = items.length > 0 && selectedKeys.length === items.length;
+
+  const allSelected =
+    mergedItems.length > 0 && selectedKeys.length === mergedItems.length;
 
   const toggleAll = () => {
-    if (allSelected) {
-      setSelectedKeys([]);
-    } else {
-      setSelectedKeys(items.map((item) => getKey(item.id, item.option)));
-    }
+    if (allSelected) setSelectedKeys([]);
+    else
+      setSelectedKeys(mergedItems.map((item) => getKey(item.id, item.option)));
   };
 
   const handleDeleteSelected = () => {
@@ -257,17 +261,9 @@ const CartPage = () => {
     setSelectedKeys([]);
   };
 
-  useEffect(() => {
-    setSelectedIds(items.map((item) => item.id));
-  }, [items]);
-
-  const totalPrice = items
+  const totalPrice = mergedItems
     .filter((item) => selectedKeys.includes(getKey(item.id, item.option)))
     .reduce((sum, item) => sum + item.originalPrice * item.quantity, 0);
-
-  const totalQuantity = items
-    .filter((item) => selectedKeys.includes(getKey(item.id, item.option)))
-    .reduce((sum, item) => sum + item.quantity, 0);
 
   const handleOptionChange = (
     id: string,
@@ -283,24 +279,16 @@ const CartPage = () => {
       <TextHeader pageName={t.cart.pageTitle} />
 
       <HeaderControlBar>
-        <SelectAll>
-          {t.cart.selected} ({selectedKeys.length}/{items.length})
+        <SelectAll onClick={toggleAll}>
+          {t.cart.selected} ({selectedKeys.length}/{mergedItems.length})
         </SelectAll>
-        <DeleteAll
-          onClick={() => {
-            if (!allSelected) {
-              toggleAll();
-            } else {
-              handleDeleteSelected();
-            }
-          }}
-        >
+        <DeleteAll onClick={allSelected ? handleDeleteSelected : toggleAll}>
           {allSelected ? t.cart.deleteAll : t.cart.selectAll}
         </DeleteAll>
       </HeaderControlBar>
 
-      {items.map((item) => (
-        <ProductCard key={item.id}>
+      {mergedItems.map((item) => (
+        <ProductCard key={getKey(item.id, item.option)}>
           <TopRow>
             <Checkbox
               type="checkbox"
@@ -333,9 +321,13 @@ const CartPage = () => {
                 {t.cart.changeOption}
               </OptionButton>
               <QuantityControl>
-                <Button onClick={() => decreaseQuantity(item.id)}>-</Button>
+                <Button onClick={() => decreaseQuantity(item.id, item.option)}>
+                  -
+                </Button>
                 <Count>{item.quantity}</Count>
-                <Button onClick={() => increaseQuantity(item.id)}>+</Button>
+                <Button onClick={() => increaseQuantity(item.id, item.option)}>
+                  +
+                </Button>
               </QuantityControl>
             </LeftRow>
             <RightColumn>
@@ -350,6 +342,7 @@ const CartPage = () => {
           </LowerInfo>
         </ProductCard>
       ))}
+
       <TotalAndButton>
         <TotalRow>
           <TotalLabel>{t.cart.totalAmount}</TotalLabel>
@@ -363,14 +356,14 @@ const CartPage = () => {
       <StickyBottom>
         <SubmitButton
           onClick={() => {
-            if (selectedIds.length === 0) {
+            if (selectedKeys.length === 0) {
               alert("선택된 상품이 없습니다.");
               return;
             }
             navigate("/qr", {
               state: {
-                selectedItems: selectedIds.map((id) =>
-                  items.find((item) => item.id === id)
+                selectedItems: mergedItems.filter((item) =>
+                  selectedKeys.includes(getKey(item.id, item.option))
                 ),
               },
             });
@@ -383,8 +376,9 @@ const CartPage = () => {
       {showOptionFor && (
         <OptionModal
           options={
-            items.find((item) => getKey(item.id, item.option) === showOptionFor)
-              ?.availableOptions || []
+            mergedItems.find(
+              (item) => getKey(item.id, item.option) === showOptionFor
+            )?.availableOptions || []
           }
           onSelect={(newOption) => {
             const [id, option] = showOptionFor.split("__");

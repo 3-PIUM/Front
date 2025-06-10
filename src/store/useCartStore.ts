@@ -16,8 +16,8 @@ interface CartStore {
   items: CartItem[];
   addItem: (item: CartItem) => void;
   removeItem: (id: string, option?: string) => void;
-  increaseQuantity: (id: string) => void;
-  decreaseQuantity: (id: string) => void;
+  increaseQuantity: (id: string, option?: string) => void; // 수정됨
+  decreaseQuantity: (id: string, option?: string) => void;
   updateOption: (id: string, prevOption: string, newOption: string) => void;
 }
 
