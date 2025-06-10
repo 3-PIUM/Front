@@ -17,6 +17,7 @@ interface ProductOptionSelectorProps {
 
 const Wrapper = styled.div`
   margin: 0 1rem 0.5rem;
+  position: relative;
 `;
 
 const SelectBox = styled.div`
@@ -33,10 +34,11 @@ const SelectBox = styled.div`
 `;
 
 const OptionList = styled.ul`
-  margin-top: 0.5rem;
+  position: absolute;
+  left: 0;
+  right: 0;
   border: 1px solid #ddd;
-  border-radius: 12px;
-  overflow: hidden;
+  border-radius: 5px;
 `;
 
 const OptionItem = styled.li`
@@ -117,9 +119,11 @@ export default function ProductOptionSelector({
               key={option.id}
               onClick={() => handleSelect(option.id)}
               style={{
-                backgroundColor: option.id === selected ? "#f0f0f0" : "#fff",
-                pointerEvents: option.id === selected ? "none" : "auto",
-                opacity: option.id === selected ? 0.6 : 1,
+                backgroundColor: option.id === selected ? "#ffe6f0" : "#fff",
+                pointerEvents: "auto",
+                opacity: 1,
+                borderRadius: option.id === selected ? "0px" : "0px",
+                fontWeight: option.id === selected ? "bold" : "normal",
               }}
             >
               <OptionImage src={option.imageUrl} alt={option.name} />
