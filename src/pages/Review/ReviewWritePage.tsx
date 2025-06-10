@@ -152,7 +152,7 @@ const ReviewWritePage = () => {
         <TextArea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="{t.review.reviewPlaceholder}"
+          placeholder={t.review.reviewPlaceholder}
         />
 
         <Label>{t.review.photoLabel}</Label>

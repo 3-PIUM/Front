@@ -9,6 +9,7 @@ import { LuScanLine } from "react-icons/lu";
 import { Link, useLocation } from "react-router-dom";
 import ChatBotButton from "../components/chatbot/ChatBotButton";
 import { useLocale } from "../context/LanguageContext";
+import ScrollToTopButton from "../components/common/ScrollToTopButton";
 
 const MenuWrap = styled.div`
   position: fixed;
@@ -122,7 +123,7 @@ export default function MenuLayout() {
   return (
     <>
       <Outlet />
-      <ChatBotButton />
+      {!location.pathname.includes("/product-detail") && <ChatBotButton />}
       <MenuWrap>
         <Menu>
           <MenuLeft>

@@ -12,9 +12,9 @@ const Wrapper = styled.div`
 
 const ChartGroupWrapper = styled.div`
   width: 100%;
-  background-color: #f3f3f3;
-  border-radius: 10px;
-  padding: 1rem;
+  /* background-color: #f3f3f3; */
+  /* border-radius: 10px; */
+  /* padding: 1rem; */
 `;
 
 const GroupTitle = styled.h3`

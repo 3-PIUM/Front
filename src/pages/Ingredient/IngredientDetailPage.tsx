@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PieChart, Pie, Cell } from "recharts";
+// import { PieChart, Pie, Cell } from "recharts";
 import { useState, useEffect } from "react";
 import TextHeader from "../../components/common/TextHeader";
 import ScorePieChart from "../../components/ingredient/ScorePieChart";

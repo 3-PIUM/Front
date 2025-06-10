@@ -1,5 +1,5 @@
 // src/pages/ProductDetail.tsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -16,9 +16,29 @@ import StackedBarChart from "../../components/ingredient/StackedBarChart";
 import ProductOptionSelector from "../../components/product/ProductOptionSelector";
 import { useLocale } from "../../context/LanguageContext";
 import SkinTypePrompt from "../../components/SkinTypePrompt";
+import ScrollToTopButton from "../../components/common/ScrollToTopButton";
 
 const PageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 100vh;
+`;
+
+const HeaderBar = styled.div`
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  z-index: 1000; // 다른 요소 위에 표시
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+
+  padding-right: 1.3rem;
+  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); */
+`;
+
+const ProductCardWrapper = styled.div`
+  flex: 1;
   overflow-y: scroll;
 
   scrollbar-width: none;
@@ -26,18 +46,6 @@ const PageWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const HeaderBar = styled.div`
-  position: fixed;
-  width: 100%;
-  z-index: 1000; // 다른 요소 위에 표시
-  background-color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 1.3rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 `;
 
 const TabMenu = styled.div`
@@ -74,7 +82,7 @@ const SkinTypeWrapper = styled.div`
 `;
 
 const ReviewWrapper = styled.div`
-  padding: 0 1rem 5rem;
+  padding: 0 1rem 8rem;
 `;
 
 const ReviewButton = styled.div`
@@ -105,6 +113,7 @@ export default function ProductDetail() {
     null
   );
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const pageWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -200,122 +209,132 @@ export default function ProductDetail() {
   if (!product) return null;
 
   return (
-    <PageWrapper>
-      <HeaderBar>
-        <FullHeader pageName="" productList={mockProducts} />
-      </HeaderBar>
-
-      <ProductCard
-        brand={product.brand}
-        title={product.name}
-        originalPrice={product.originalPrice}
-        currentPrice={
-          product.originalPrice && product.discountRate
-            ? Math.round(
-                product.originalPrice * (1 - product.discountRate / 100)
-              )
-            : 0
-        }
-        imageUrl={product.imageUrl}
-        stock={product.stock}
-      />
-
-      <ProductOptionSelector
-        options={dummyOptions}
-        onChange={setSelectedOption}
-      />
-
-      <div style={{ padding: "0 1rem" }}>
-        <Button
-          label={t.productDetail.addCart}
-          onClick={() => {
-            const selected = dummyOptions.find((o) => o.id === selectedOption);
-            if (!selected) {
-              alert(t.productDetail.selectOption);
-              return;
+    <>
+      <PageWrapper>
+        <HeaderBar>
+          <FullHeader pageName="" productList={mockProducts} />
+        </HeaderBar>
+        <ProductCardWrapper ref={pageWrapperRef}>
+          <ProductCard
+            brand={product.brand}
+            title={product.name}
+            originalPrice={product.originalPrice}
+            currentPrice={
+              product.originalPrice && product.discountRate
+                ? Math.round(
+                    product.originalPrice * (1 - product.discountRate / 100)
+                  )
+                : 0
             }
-
-            addItem({
-              ...product,
-              option: selected.name,
-              availableOptions: dummyOptions.map((opt) => opt.name),
-            });
-
-            navigate("/cart");
-          }}
-        />
-      </div>
-
-      <TabMenu>
-        <TabButton
-          active={selectedTab === "detail"}
-          onClick={() => setSelectedTab("detail")}
-        >
-          {t.productDetail.detail}
-        </TabButton>
-        <TabButton
-          active={selectedTab === "ingredient"}
-          onClick={() => setSelectedTab("ingredient")}
-        >
-          {t.productDetail.analysisAndReview}
-        </TabButton>
-      </TabMenu>
-
-      {selectedTab === "detail" && (
-        <div style={{ marginBottom: "3rem" }}>
-          <BannerImage
-            src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/html/crop/A000000214290/202505231611/crop0/www.themedicube.co.kr/web/upload/appfiles/ZaReJam3QiELznoZeGGkMG/f8a9f171c092ffb5025943539c750574.jpg"
-            alt="banner"
+            imageUrl={product.imageUrl}
+            stock={product.stock}
           />
-        </div>
-      )}
 
-      {selectedTab === "ingredient" && isSkinRegistered !== null && (
-        <>
-          <SkinTypeWrapper>
-            {!isSkinRegistered ? (
-              <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
-                <SkinTypePrompt
-                  onRegister={() => {
-                    localStorage.setItem("skinRegistered", "true");
-                    setIsSkinRegistered(true);
-                    navigate("/mypage/skintype");
-                  }}
-                />
-              </div>
-            ) : (
-              <>
-                <div style={{ marginTop: "0.5rem" }}>
-                  <IngredientScoreSummary safe={3} caution={1} harmful={1} />
-                  <IngredientWarningSummary />
-                  <StackedBarChart />
-                  {/* <GroupedDonutChart /> */}
-                </div>
-              </>
-            )}
-          </SkinTypeWrapper>
+          <ProductOptionSelector
+            options={dummyOptions}
+            onChange={setSelectedOption}
+          />
 
-          <SkinTypeWrapper>
-            <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
-            <SkinTypeRankList />
-          </SkinTypeWrapper>
+          <div style={{ padding: "0 1rem" }}>
+            <Button
+              label={t.productDetail.addCart}
+              onClick={() => {
+                const selected = dummyOptions.find(
+                  (o) => o.id === selectedOption
+                );
+                if (!selected) {
+                  alert(t.productDetail.selectOption);
+                  return;
+                }
 
-          <ReviewWrapper>
-            <SectionTitle>{t.productDetail.review}</SectionTitle>
-            <ReviewSatisfactionCard score={averageRating} />
-            {/* {aiReviews.map((text, idx) => (
+                addItem({
+                  ...product,
+                  option: selected.name,
+                  availableOptions: dummyOptions.map((opt) => opt.name),
+                });
+
+                navigate("/cart");
+              }}
+            />
+          </div>
+
+          <TabMenu>
+            <TabButton
+              active={selectedTab === "detail"}
+              onClick={() => setSelectedTab("detail")}
+            >
+              {t.productDetail.detail}
+            </TabButton>
+            <TabButton
+              active={selectedTab === "ingredient"}
+              onClick={() => setSelectedTab("ingredient")}
+            >
+              {t.productDetail.analysisAndReview}
+            </TabButton>
+          </TabMenu>
+
+          {selectedTab === "detail" && (
+            <div style={{ marginBottom: "3rem" }}>
+              <BannerImage
+                src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/html/crop/A000000214290/202505231611/crop0/www.themedicube.co.kr/web/upload/appfiles/ZaReJam3QiELznoZeGGkMG/f8a9f171c092ffb5025943539c750574.jpg"
+                alt="banner"
+              />
+            </div>
+          )}
+
+          {selectedTab === "ingredient" && isSkinRegistered !== null && (
+            <>
+              <SkinTypeWrapper>
+                {!isSkinRegistered ? (
+                  <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
+                    <SkinTypePrompt
+                      onRegister={() => {
+                        localStorage.setItem("skinRegistered", "true");
+                        setIsSkinRegistered(true);
+                        navigate("/mypage/skintype");
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ marginTop: "0.5rem" }}>
+                      <IngredientScoreSummary
+                        safe={3}
+                        caution={1}
+                        harmful={1}
+                      />
+                      <IngredientWarningSummary />
+                      <StackedBarChart />
+                      {/* <GroupedDonutChart /> */}
+                    </div>
+                  </>
+                )}
+              </SkinTypeWrapper>
+
+              <SkinTypeWrapper>
+                <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
+                <SkinTypeRankList />
+              </SkinTypeWrapper>
+
+              <ReviewWrapper>
+                <SectionTitle>{t.productDetail.review}</SectionTitle>
+                <ReviewSatisfactionCard score={averageRating} />
+                {/* {aiReviews.map((text, idx) => (
               <AIReviewCard key={idx} content={text} />
             ))} */}
 
-            {realReviews.map((r, idx) => (
-              <ReviewCard key={idx} {...r} />
-            ))}
-            <ReviewButton onClick={() => navigate("/review-write")}>
-              <Label>{t.productDetail.writeReview}</Label>
-            </ReviewButton>
-          </ReviewWrapper>
-        </>
-      )}
-    </PageWrapper>
+                {realReviews.map((r, idx) => (
+                  <ReviewCard key={idx} {...r} />
+                ))}
+                <ReviewButton onClick={() => navigate("/review-write")}>
+                  <Label>{t.productDetail.writeReview}</Label>
+                </ReviewButton>
+              </ReviewWrapper>
+            </>
+          )}
+          <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
+        </ProductCardWrapper>
+      </PageWrapper>
+    </>
   );
 }
