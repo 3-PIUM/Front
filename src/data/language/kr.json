@@ -211,10 +211,12 @@
   "cart": {
     "pageTitle": "장바구니",
     "selected": "선택",
-    "deleteAll": "전체 선택",
+    "deleteAll": "전체 삭제",
+    "selectAll": "전체 선택",
     "changeOption": "옵션 변경",
     "qrCode": "결제 QR 코드 생성하기",
-    "won": "원"
+    "won": "원",
+    "totalAmount": "총 금액"
   },
   "productDetail": {
     "stockQuantity": "재고 수량",

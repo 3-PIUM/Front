@@ -218,10 +218,12 @@
   "cart": {
     "pageTitle": "カート",
     "selected": "選択済み",
-    "deleteAll": "すべて選択",
+    "selectAll": "すべて選択",
+    "deleteAll": "すべて削除",
     "changeOption": "オプションを変更",
     "qrCode": "支払い用QRコードを生成",
-    "won": "￥"
+    "won": "￥",
+    "totalAmount": "合計金額"
   },
   "productDetail": {
     "stockQuantity": "在庫数",

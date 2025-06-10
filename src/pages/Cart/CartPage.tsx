@@ -179,6 +179,31 @@ const StickyBottom = styled.div`
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.05);
 `;
 
+const TotalAndButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+const TotalRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem 3rem;
+`;
+
+const TotalLabel = styled.span`
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+`;
+
+const TotalPrice = styled.span`
+  font-size: 18px;
+  font-weight: 700;
+  color: #e6005a;
+`;
+
 const SubmitButton = styled.button`
   width: 100%;
   background-color: #ff4081;
@@ -190,24 +215,12 @@ const SubmitButton = styled.button`
   border-radius: 8px;
 `;
 
-const TotalPriceWrapper = styled.div`
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #fff;
-  border-top: 1px solid #eee;
-  padding: 1rem;
-  font-size: 18px;
-  font-weight: bold;
-  color: #e6005a;
-  display: flex;
-  justify-content: flex-end;
-`;
-
 const CartPage = () => {
   const { items, removeItem, increaseQuantity, decreaseQuantity } =
     useCartStore();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const getKey = (id: string, option?: string) => `${id}__${option ?? ""}`;
   const [showOptionFor, setShowOptionFor] = useState<string | null>(null);
   // const [optionList, setOptionList] = useState<{ [key: string]: string[] }>({});
   const navigate = useNavigate();
@@ -217,22 +230,31 @@ const CartPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const toggleSelect = (id: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
+  const toggleSelect = (id: string, option?: string) => {
+    const key = getKey(id, option);
+    setSelectedKeys((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
 
-  const isSelected = (id: string) => selectedIds.includes(id);
-  const allSelected = selectedIds.length === items.length;
+  const isSelected = (id: string, option?: string) =>
+    selectedKeys.includes(getKey(id, option));
+  const allSelected = items.length > 0 && selectedKeys.length === items.length;
 
   const toggleAll = () => {
-    setSelectedIds(allSelected ? [] : items.map((item) => item.id));
+    if (allSelected) {
+      setSelectedKeys([]);
+    } else {
+      setSelectedKeys(items.map((item) => getKey(item.id, item.option)));
+    }
   };
 
   const handleDeleteSelected = () => {
-    selectedIds.forEach((id) => removeItem(id));
-    setSelectedIds([]);
+    selectedKeys.forEach((key) => {
+      const [id, option] = key.split("__");
+      removeItem(id, option || undefined);
+    });
+    setSelectedKeys([]);
   };
 
   useEffect(() => {
@@ -240,16 +262,19 @@ const CartPage = () => {
   }, [items]);
 
   const totalPrice = items
-    .filter((item) => selectedIds.includes(item.id))
-    .reduce(
-      (sum, item) =>
-        sum +
-        item.originalPrice * item.quantity * (1 - item.discountRate / 100),
-      0
-    );
+    .filter((item) => selectedKeys.includes(getKey(item.id, item.option)))
+    .reduce((sum, item) => sum + item.originalPrice * item.quantity, 0);
 
-  const handleOptionChange = (productId: string, newOption: string) => {
-    useCartStore.getState().updateOption(productId, newOption);
+  const totalQuantity = items
+    .filter((item) => selectedKeys.includes(getKey(item.id, item.option)))
+    .reduce((sum, item) => sum + item.quantity, 0);
+
+  const handleOptionChange = (
+    id: string,
+    prevOption: string,
+    newOption: string
+  ) => {
+    useCartStore.getState().updateOption(id, prevOption, newOption);
     setShowOptionFor(null);
   };
 
@@ -258,10 +283,20 @@ const CartPage = () => {
       <TextHeader pageName={t.cart.pageTitle} />
 
       <HeaderControlBar>
-        <SelectAll onClick={toggleAll}>
-          {t.cart.selected} ({selectedIds.length}/{items.length})
+        <SelectAll>
+          {t.cart.selected} ({selectedKeys.length}/{items.length})
         </SelectAll>
-        <DeleteAll onClick={handleDeleteSelected}>{t.cart.deleteAll}</DeleteAll>
+        <DeleteAll
+          onClick={() => {
+            if (!allSelected) {
+              toggleAll();
+            } else {
+              handleDeleteSelected();
+            }
+          }}
+        >
+          {allSelected ? t.cart.deleteAll : t.cart.selectAll}
+        </DeleteAll>
       </HeaderControlBar>
 
       {items.map((item) => (
@@ -269,8 +304,8 @@ const CartPage = () => {
           <TopRow>
             <Checkbox
               type="checkbox"
-              checked={isSelected(item.id)}
-              onChange={() => toggleSelect(item.id)}
+              checked={isSelected(item.id, item.option)}
+              onChange={() => toggleSelect(item.id, item.option)}
             />
             <Image src={item.imageUrl} alt={item.name} />
             <InfoArea>
@@ -292,7 +327,9 @@ const CartPage = () => {
 
           <LowerInfo>
             <LeftRow>
-              <OptionButton onClick={() => setShowOptionFor(item.id)}>
+              <OptionButton
+                onClick={() => setShowOptionFor(getKey(item.id, item.option))}
+              >
                 {t.cart.changeOption}
               </OptionButton>
               <QuantityControl>
@@ -313,8 +350,15 @@ const CartPage = () => {
           </LowerInfo>
         </ProductCard>
       ))}
-
-      <TotalPriceWrapper>총 {totalPrice.toLocaleString()}원</TotalPriceWrapper>
+      <TotalAndButton>
+        <TotalRow>
+          <TotalLabel>{t.cart.totalAmount}</TotalLabel>
+          <TotalPrice>
+            {totalPrice.toLocaleString()}
+            {t.cart.won}
+          </TotalPrice>
+        </TotalRow>
+      </TotalAndButton>
 
       <StickyBottom>
         <SubmitButton
@@ -339,10 +383,13 @@ const CartPage = () => {
       {showOptionFor && (
         <OptionModal
           options={
-            items.find((item) => item.id === showOptionFor)?.availableOptions ||
-            []
+            items.find((item) => getKey(item.id, item.option) === showOptionFor)
+              ?.availableOptions || []
           }
-          onSelect={(newOption) => handleOptionChange(showOptionFor, newOption)}
+          onSelect={(newOption) => {
+            const [id, option] = showOptionFor.split("__");
+            handleOptionChange(id, option, newOption);
+          }}
           onClose={() => setShowOptionFor(null)}
         />
       )}

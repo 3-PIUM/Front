@@ -212,10 +212,12 @@
   "cart": {
     "pageTitle": "Shopping Cart",
     "selected": "Selected",
+    "selectAll": "Select All",
     "deleteAll": "Delete All",
     "changeOption": "Change Option",
     "qrCode": "Generate Payment QR Code",
-    "won": "$"
+    "won": "$",
+    "totalAmount": "Total Amount"
   },
   "productDetail": {
     "stockQuantity": "Stock quantity",
