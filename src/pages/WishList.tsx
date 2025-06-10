@@ -30,7 +30,7 @@ export default function WishList() {
       try {
         const response = await axiosInstance.get("/wishlist/items");
         const list = response.data.result.wishListItemList;
-        console.log(list);
+        console.log("찜 목록을 불러왔습니다", list);
         setItemList(list);
       } catch (error) {
         console.log("찜 목록을 불러오지 못했습니다", error);

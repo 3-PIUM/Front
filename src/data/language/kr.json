@@ -165,8 +165,7 @@
       "options": [
         { "id": 1, "option": "건성", "value": "건성" },
         { "id": 2, "option": "지성", "value": "지성" },
-        { "id": 3, "option": "복합성", "value": "복합성" },
-        { "id": 4, "option": "민감성", "value": "민감성" }
+        { "id": 3, "option": "복합성", "value": "복합성" }
       ],
       "goTest": "잘 모르겠다면? 피부 타입 진단으로 시작해보세요"
     },

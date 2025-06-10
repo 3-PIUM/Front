@@ -172,8 +172,7 @@
       "options": [
         { "id": 1, "option": "乾燥肌", "value": "건성" },
         { "id": 2, "option": "脂性肌", "value": "지성" },
-        { "id": 3, "option": "混合肌", "value": "복합성" },
-        { "id": 4, "option": "敏感肌", "value": "민감성" }
+        { "id": 3, "option": "混合肌", "value": "복합성" }
       ],
       "goTest": "迷ったら、肌タイプ診断から始めましょう"
     },

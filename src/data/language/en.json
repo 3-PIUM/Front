@@ -166,8 +166,7 @@
       "options": [
         { "id": 1, "option": "Dry", "value": "건성" },
         { "id": 2, "option": "Oily", "value": "지성" },
-        { "id": 3, "option": "Combination", "value": "복합성" },
-        { "id": 4, "option": "Sensitive", "value": "민감성" }
+        { "id": 3, "option": "Combination", "value": "복합성" }
       ],
       "goTest": "Not sure? Start with a skin type diagnosis."
     },
