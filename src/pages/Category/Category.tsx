@@ -184,13 +184,10 @@ export default function Category() {
         <CategoryItemList>
           <ul>
             {t.category.categoryname.map(
-              (
-                item: { id: number; name: string; items: string[] },
-                index: number
-              ) => (
+              (item: { id: number; name: string; items: string[] }) => (
                 <>
                   <CategoryItem
-                    key={index}
+                    key={item.name}
                     $selected={clicked === item.name}
                     onClick={() => {
                       setClicked(item.name);
@@ -238,7 +235,7 @@ export default function Category() {
                     {subcategory}
                   </SubCategoryItem>
                 ))}
-                {index !== categories.length - 1 && <Divider />}
+                {index !== t.category.categoryname.length - 1 && <Divider />}
               </div>
             )
           )}

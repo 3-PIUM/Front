@@ -11,6 +11,7 @@
     "loginButton": "Login",
     "signupLink": "Sign up",
     "findpassword": "Forgot Password?",
+    "temporarypassword": "Get Temporary Password",
     "error": "Please check your email or password"
   },
   "signup": {
@@ -131,6 +132,11 @@
           "Fashion/Hobbies",
           "Health Supplies/Food"
         ]
+      },
+      {
+        "id": 7,
+        "name": "Vegan",
+        "items": []
       }
     ],
     "sorted": ["Recommended", "Lowest Price", "Discount"]
