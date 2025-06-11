@@ -9,6 +9,7 @@
     "emailPlaceholder": "メールアドレス",
     "passwordPlaceholder": "パスワード",
     "loginButton": "ログイン",
+    "findpassword": "パスワードをお忘れですか",
     "signupLink": "会員登録",
     "error": "メールアドレスまたはパスワードをご確認ください"
   },
