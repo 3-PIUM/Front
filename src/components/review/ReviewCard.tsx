@@ -12,12 +12,13 @@ interface ReviewCardProps {
   images: string[];
   likes: number;
   isMyReview: boolean;
+  surveyAnswers?: Record<string, string>;
 }
 
 const Card = styled.div`
   border: 1.5px solid #ff4081;
   border-radius: 16px;
-  padding: 16px;
+  padding: 0.8rem;
   margin-top: 0.8rem;
   background-color: #fff;
 `;
@@ -55,8 +56,8 @@ const BottomRow = styled.div`
 `;
 
 const ReviewImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   /* object-fit: cover; */
   border-radius: 6px;
 `;
@@ -129,6 +130,7 @@ const ReviewCard = ({
   images,
   likes,
   isMyReview,
+  surveyAnswers,
 }: ReviewCardProps) => {
   const [likeCount, setLikeCount] = useState<number>(likes);
   const [liked, setLiked] = useState<boolean>(false);
@@ -149,6 +151,7 @@ const ReviewCard = ({
     images,
     likes,
     isMyReview,
+    surveyAnswers,
   };
 
   return (
@@ -188,7 +191,7 @@ const ReviewCard = ({
                 <ActionText
                   onClick={() =>
                     navigate("/review-write", {
-                      state: { editReview: reviewData },
+                      state: { editReview: { ...reviewData, surveyAnswers } }, // ✅ 반드시 포함
                     })
                   }
                 >

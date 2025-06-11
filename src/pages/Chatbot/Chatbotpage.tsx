@@ -168,8 +168,19 @@ export default function ChatbotPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-    const userMessage = { sender: "user", text: input, time: getTime() };
-    const response = { sender: "bot", text: botReply(input), time: getTime() };
+
+    const userMessage: Message = {
+      sender: "user",
+      text: input,
+      time: getTime(),
+    };
+
+    const response: Message = {
+      sender: "bot",
+      text: botReply(input),
+      time: getTime(),
+    };
+
     setMessages((prev) => [...prev, userMessage, response]);
     setInput("");
   };
