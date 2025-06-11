@@ -372,5 +372,14 @@
   },
   "scroll": {
     "top": "ページ上部へ"
+  },
+  "ingredient": {
+    "tab": {
+      "sensitive": "敏感注意成分",
+      "mySkin": "私の肌に注意すべき成分"
+    },
+    "modalTitleSuffix": " 含有リスク成分",
+    "noRisks": "登録されたリスク成分はありません。",
+    "close": "閉じる"
   }
 }

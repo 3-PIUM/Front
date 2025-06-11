@@ -367,5 +367,14 @@
   },
   "scroll": {
     "top": "Top"
+  },
+  "ingredient": {
+    "tab": {
+      "sensitive": "Sensitive Ingredients",
+      "mySkin": "Ingredients to Avoid for My Skin"
+    },
+    "modalTitleSuffix": " - Potential Risk Ingredients",
+    "noRisks": "No registered risk ingredients.",
+    "close": "Close"
   }
 }

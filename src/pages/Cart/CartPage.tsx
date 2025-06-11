@@ -225,6 +225,10 @@ const CartPage = () => {
 
   const getKey = (id: string, option?: string) => `${id}__${option ?? ""}`;
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const mergedItems = Object.values(
     items.reduce((acc, item) => {
       const key = getKey(item.id, item.option);

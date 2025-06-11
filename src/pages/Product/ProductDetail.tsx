@@ -16,7 +16,6 @@ import IngredientScoreSummary from "../../components/ingredient/IngredientScoreS
 import StackedBarChart from "../../components/ingredient/StackedBarChart";
 import ProductOptionSelector from "../../components/product/ProductOptionSelector";
 import { useLocale } from "../../context/LanguageContext";
-import SkinTypePrompt from "../../components/SkinTypePrompt";
 import ScrollToTopButton from "../../components/common/ScrollToTopButton";
 
 const PageWrapper = styled.div`
@@ -337,30 +336,14 @@ export default function ProductDetail() {
           {selectedTab === "ingredient" && isSkinRegistered !== null && (
             <>
               <SkinTypeWrapper>
-                {!isSkinRegistered ? (
-                  <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
-                    <SkinTypePrompt
-                      onRegister={() => {
-                        localStorage.setItem("skinRegistered", "true");
-                        setIsSkinRegistered(true);
-                        navigate("/mypage/skintype");
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <>
-                    <div style={{ marginTop: "0.5rem" }}>
-                      <IngredientScoreSummary
-                        safe={3}
-                        caution={1}
-                        harmful={1}
-                      />
-                      <IngredientWarningSummary />
+                <>
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <IngredientScoreSummary safe={3} caution={1} harmful={1} />
+                    <IngredientWarningSummary />
 
-                      {/* <GroupedDonutChart /> */}
-                    </div>
-                  </>
-                )}
+                    {/* <GroupedDonutChart /> */}
+                  </div>
+                </>
               </SkinTypeWrapper>
 
               <SkinTypeWrapper>
