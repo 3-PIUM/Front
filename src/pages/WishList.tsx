@@ -5,7 +5,6 @@ import ItemCard from "../components/product/ItemCard";
 import { useLocale } from "../context/LanguageContext";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
-import wishlist from "../data/wishlist.json";
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,7 +28,7 @@ export default function WishList() {
     const fetchWishlistItem = async () => {
       try {
         const response = await axiosInstance.get("/wishlist/items");
-        const list = response.data.result.wishListItemList;
+        const list = response.data.result;
         console.log("찜 목록을 불러왔습니다", list);
         setItemList(list);
       } catch (error) {
@@ -40,12 +39,20 @@ export default function WishList() {
     fetchWishlistItem();
   }, []);
 
-  interface wishProps {
+  interface wishItem {
     itemId: number;
     itemName: string;
-    url: string;
+    mainImageUrl: string;
     originalPrice: number;
     salePrice: number;
+    discountRate: number;
+  }
+
+  interface wishProps {
+    wishListId: number;
+    memberId: number;
+    createdAt: string;
+    item: wishItem;
   }
 
   return (
@@ -55,24 +62,13 @@ export default function WishList() {
       <ItemWrapper>
         {itemList?.map((wish: wishProps) => (
           <ItemCard
-            key={wish.itemId}
-            itemName={wish.itemName}
-            imageSource={wish.url}
-            discountRate={
-              ((wish.originalPrice - wish.salePrice) / wish.originalPrice) * 100
-            }
-            price={wish.salePrice}
+            key={wish.item.itemId}
+            itemName={wish.item.itemName}
+            imageSource={wish.item.mainImageUrl}
+            discountRate={wish.item.discountRate}
+            price={wish.item.salePrice}
           />
         ))}
-        {/* {wishlist.map((item) => (
-          <ItemCard
-            key={item.id}
-            itemName={item.name}
-            imageSource={item.url}
-            discountRate={item.discount}
-            price={item.price}
-          />
-        ))} */}
       </ItemWrapper>
     </Wrapper>
   );
