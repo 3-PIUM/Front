@@ -121,20 +121,6 @@
       },
       {
         "id": 6,
-        "name": "Men's Care",
-        "items": [
-          "Skincare",
-          "Makeup",
-          "Shaving/Waxing",
-          "Body Care",
-          "Hair Care",
-          "Fragrance",
-          "Fashion/Hobbies",
-          "Health Supplies/Food"
-        ]
-      },
-      {
-        "id": 7,
         "name": "Vegan",
         "items": []
       }
