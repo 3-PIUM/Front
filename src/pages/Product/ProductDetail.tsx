@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { surveyAnswersToChartData } from "../../utils/surveyToChart";
+import { getTopSkinTypes } from "../../utils/getTopSkinTypes";
 
 import ProductCard from "../../components/product/ProductCard";
 import SkinTypeRankList from "../../components/product/SkinTypeRankList";
@@ -153,6 +154,15 @@ export default function ProductDetail() {
       localStorage.removeItem("scannedProduct");
     };
   }, []);
+
+  const [topSkinTypes, setTopSkinTypes] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (chartData.length > 0) {
+      const result = getTopSkinTypes(chartData);
+      setTopSkinTypes(result);
+    }
+  }, [chartData]);
 
   const dummyOptions = [
     {
@@ -348,7 +358,7 @@ export default function ProductDetail() {
 
               <SkinTypeWrapper>
                 <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
-                <SkinTypeRankList />
+                <SkinTypeRankList data={topSkinTypes} />
               </SkinTypeWrapper>
             </>
           )}

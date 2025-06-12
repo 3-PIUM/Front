@@ -19,10 +19,10 @@ const skinTypeData = [
   },
 ];
 
-const SkinTypeRankList = () => {
+const SkinTypeRankList = ({ data }: { data: any[] }) => {
   return (
     <div>
-      {skinTypeData.map((item) => (
+      {data.map((item) => (
         <SkinTypeCard
           key={item.rank}
           rank={item.rank}
