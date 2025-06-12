@@ -125,7 +125,18 @@
         "items": []
       }
     ],
-    "sorted": ["Recommended", "Lowest Price", "Discount"]
+    "sorted": ["Recommended", "Lowest Price", "Discount"],
+    "skinconcerns": {
+      "all": "All",
+      "미백": "Brightening",
+      "주름": "Wrinkle care",
+      "모공": "Pores",
+      "탄력": "Firmness",
+      "홍조": "Redness",
+      "각질": "Dead skin",
+      "트러블": "Trouble",
+      "기타": "Other"
+    }
   },
   "home": {
     "personalInfo": {
