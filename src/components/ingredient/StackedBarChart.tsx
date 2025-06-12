@@ -4,42 +4,48 @@ import { useLocale } from "../../context/LanguageContext";
 
 // ===== 스타일 =====
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // 2열 구성
   gap: 1rem;
   margin-top: 0.5rem;
+  padding: 0.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    /* grid-template-columns: repeat(2, 1fr);*/
+  }
 `;
 
 const ChartGroupWrapper = styled.div`
-  width: 100%;
+  /* width: 100%; */
   /* background-color: #f3f3f3; */
   /* border-radius: 10px; */
   /* padding: 1rem; */
 `;
 
 const GroupTitle = styled.h3`
-  font-size: 18px;
+  font-size: 13px;
   font-weight: bold;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
   color: #222;
 `;
 
 const ChartGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.3rem;
 `;
 
 const BarContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
 `;
 
 const Track = styled.div`
   width: 100%;
-  height: 11px;
+  height: 7px;
   background: #eee;
   border-radius: 6px;
   position: relative;
@@ -56,8 +62,8 @@ const Fill = styled.div<{ percent: number; color: string }>`
 `;
 
 const Circle = styled.div<{ left: number; color: string }>`
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   background: ${({ color }) => color};
   border-radius: 50%;
   position: absolute;
@@ -69,16 +75,16 @@ const Circle = styled.div<{ left: number; color: string }>`
 `;
 
 const Label = styled.div`
-  font-size: 12px;
+  font-size: 11px;
   /* text-align: right; */
-  width: 60px;
+  width: 90px;
 `;
 
 const Value = styled.div<{ color: string }>`
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   color: ${({ color }) => color};
-  width: 40px;
+  width: 50px;
   text-align: left;
 `;
 
@@ -121,7 +127,12 @@ const data = [
 ];
 
 // ===== 컴포넌트 =====
-const StackedBarChart: React.FC = () => {
+interface ChartDataItem {
+  category: string;
+  [key: string]: number | string;
+}
+
+const StackedBarChart: React.FC<{ data: ChartDataItem[] }> = ({ data }) => {
   const { t } = useLocale();
   return (
     <Wrapper>
