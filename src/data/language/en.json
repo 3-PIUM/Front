@@ -10,6 +10,8 @@
     "passwordPlaceholder": "password",
     "loginButton": "Login",
     "signupLink": "Sign up",
+    "findpassword": "Forgot Password?",
+    "temporarypassword": "Get Temporary Password",
     "error": "Please check your email or password"
   },
   "signup": {
@@ -119,20 +121,22 @@
       },
       {
         "id": 6,
-        "name": "Men's Care",
-        "items": [
-          "Skincare",
-          "Makeup",
-          "Shaving/Waxing",
-          "Body Care",
-          "Hair Care",
-          "Fragrance",
-          "Fashion/Hobbies",
-          "Health Supplies/Food"
-        ]
+        "name": "Vegan",
+        "items": []
       }
     ],
-    "sorted": ["Recommended", "Lowest Price", "Discount"]
+    "sorted": ["Recommended", "Lowest Price", "Discount"],
+    "skinconcerns": {
+      "all": "All",
+      "미백": "Brightening",
+      "주름": "Wrinkle care",
+      "모공": "Pores",
+      "탄력": "Firmness",
+      "홍조": "Redness",
+      "각질": "Dead skin",
+      "트러블": "Trouble",
+      "기타": "Other"
+    }
   },
   "home": {
     "personalInfo": {
@@ -166,8 +170,7 @@
       "options": [
         { "id": 1, "option": "Dry", "value": "건성" },
         { "id": 2, "option": "Oily", "value": "지성" },
-        { "id": 3, "option": "Combination", "value": "복합성" },
-        { "id": 4, "option": "Sensitive", "value": "민감성" }
+        { "id": 3, "option": "Combination", "value": "복합성" }
       ],
       "goTest": "Not sure? Start with a skin type diagnosis."
     },

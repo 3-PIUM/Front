@@ -3,13 +3,11 @@ import colors from "../styles/colors";
 import styled from "styled-components";
 import Button from "../components/common/Button";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Header from "../components/common/Header";
 import LanguageModal from "../components/model/LanguageModal";
 import { useLocale } from "../context/LanguageContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { removeItem } from "framer-motion";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -72,12 +70,14 @@ const InputPassword = styled.input<{ $passwordFocused: boolean }>`
   }
 `;
 
-const SignUpWrap = styled.div`
+const AccountActions = styled.div`
+  display: flex;
+  justify-content: center;
   font-size: 0.875rem;
   color: ${colors.mediumGrey};
   font-weight: 700;
-  text-align: center;
   margin-top: 1rem;
+  gap: 1rem;
 `;
 
 const ErrorText = styled.div`
@@ -167,9 +167,14 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </InputWrap>
-        <Link to="/signup">
-          <SignUpWrap>{t.login.signupLink}</SignUpWrap>
-        </Link>
+        <AccountActions>
+          <div onClick={() => navigate("/signup")}>{t.login.signupLink}</div>
+          <div>|</div>
+          <div onClick={() => navigate("/findpassword")}>
+            {t.login.findpassword}
+          </div>
+        </AccountActions>
+
         {showError && <ErrorText>{errorText}</ErrorText>}
       </Wrap>
       <ButtonWrap>

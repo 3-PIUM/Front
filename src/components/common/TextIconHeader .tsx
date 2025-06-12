@@ -78,7 +78,7 @@ const SearchInput = styled.input`
 
 interface FullHeaderProps {
   pageName: string;
-  productList: { id: number; name: string }[];
+  productList?: { id: number; name: string }[];
 }
 
 export default function FullHeader({ pageName, productList }: FullHeaderProps) {
@@ -86,7 +86,7 @@ export default function FullHeader({ pageName, productList }: FullHeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredList = productList.filter((p) =>
+  const filteredList = productList?.filter((p) =>
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const { t } = useLocale();
@@ -118,7 +118,7 @@ export default function FullHeader({ pageName, productList }: FullHeaderProps) {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            {filteredList.map((item) => (
+            {filteredList?.map((item) => (
               <div key={item.id}>{item.name}</div>
             ))}
           </SearchModal>

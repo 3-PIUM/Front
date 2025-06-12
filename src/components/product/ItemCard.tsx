@@ -20,6 +20,7 @@ const ImageWrap = styled.div`
 const ItemImage = styled.img`
   display: flex;
   width: 6.5rem;
+  height: 6.5rem;
   border-radius: 0.625rem;
 `;
 
@@ -28,6 +29,7 @@ const Heart = styled.div`
   position: absolute;
   bottom: 0.3rem;
   right: 0.3rem;
+  z-index: 1000;
 `;
 
 const ItemName = styled.div`
@@ -61,6 +63,7 @@ interface ItemProps {
   itemName: string;
   discountRate: number;
   price: number;
+  itemId: number;
 }
 
 export default function ItemCard({
@@ -68,21 +71,24 @@ export default function ItemCard({
   itemName,
   discountRate,
   price,
+  itemId,
 }: ItemProps) {
   const [isWished, setIsWished] = useState(false);
   const navigate = useNavigate();
 
-  const handleWish = () => {
-    if (isWished === false) {
-      const wishItem = async () => {
+  const handleWish = async () => {
+    if (!isWished) {
+      try {
         await axiosInstance.post("/wishlist", {
           param: {
-            // itemId: id,
+            itemId: itemId,
           },
         });
-      };
+        console.log("찜 추가가 됐습니다");
+      } catch {}
     } else {
-      setIsWished(false);
+      try {
+      } catch {}
     }
   };
 
@@ -101,22 +107,24 @@ export default function ItemCard({
   const formattedPrice = price.toLocaleString();
 
   return (
-    <ItemWrap onClick={handleClick}>
-      <ImageWrap>
-        <ItemImage src={imageSource} />
-        <Heart>
-          <FaHeart
-            fontSize={"1.4rem"}
-            color={isWished ? colors.mainPink : colors.mediumGrey}
-            onClick={handleWish}
-          />
-        </Heart>
-      </ImageWrap>
-      <ItemName>{itemName}</ItemName>
-      <PriceWrap>
-        <ItemDiscount>{discountRate}%</ItemDiscount>
-        <ItemPrice>{formattedPrice}원</ItemPrice>
-      </PriceWrap>
-    </ItemWrap>
+    <>
+      <ItemWrap onClick={handleClick}>
+        <ImageWrap>
+          <ItemImage src={imageSource} />
+          <Heart>
+            <FaHeart
+              fontSize={"1.4rem"}
+              color={isWished ? colors.mainPink : colors.mediumGrey}
+              onClick={handleWish}
+            />
+          </Heart>
+        </ImageWrap>
+        <ItemName>{itemName}</ItemName>
+        <PriceWrap>
+          <ItemDiscount>{discountRate}%</ItemDiscount>
+          <ItemPrice>{formattedPrice}원</ItemPrice>
+        </PriceWrap>
+      </ItemWrap>
+    </>
   );
 }
