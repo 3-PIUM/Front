@@ -73,13 +73,6 @@ const BannerImage = styled.img`
   display: block;
 `;
 
-const SectionTitle = styled.h3`
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 0.8rem;
-  color: #222;
-`;
-
 const SkinTypeWrapper = styled.div`
   padding: 0.5rem 1rem;
 `;
@@ -357,7 +350,6 @@ export default function ProductDetail() {
               </SkinTypeWrapper>
 
               <SkinTypeWrapper>
-                <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
                 <SkinTypeRankList data={topSkinTypes} />
               </SkinTypeWrapper>
             </>

@@ -1,30 +1,25 @@
 import SkinTypeCard from "./SkinTypeCard";
+import styled from "styled-components";
+import { useLocale } from "../../context/LanguageContext";
 
-const skinTypeData = [
-  {
-    rank: 1,
-    title: "복합성",
-    description: "수분 + 진정 + 약한 각질 제거 성분이 균형 있게 구성",
-  },
-  {
-    rank: 2,
-    title: "건성",
-    description: "보습 성분이 풍부해서 수분 공급에 효과적",
-  },
-  {
-    rank: 3,
-    title: "지성",
-    description:
-      "가볍고 수분 공급 중심의 성분이 많아 유분보다 수분 공급에 집중",
-  },
-];
+const SectionTitle = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  color: #222;
+`;
 
 const SkinTypeRankList = ({ data }: { data: any[] }) => {
+  const { t } = useLocale();
+
+  if (!data || data.length === 0) return null;
+
   return (
     <div>
+      <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
       {data.map((item) => (
         <SkinTypeCard
-          key={item.rank}
+          key={`${item.title}-${item.rank}`} // 혹시 title이 중복될 수 있으므로
           rank={item.rank}
           title={item.title}
           description={item.description}

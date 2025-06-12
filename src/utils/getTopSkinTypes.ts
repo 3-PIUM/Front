@@ -1,4 +1,5 @@
 // utils/getTopSkinTypes.ts
+
 const skinTypeDescriptions: Record<string, string> = {
   건성: "보습 성분이 풍부해서 수분 공급에 효과적",
   복합성: "수분 + 진정 + 약한 각질 제거 성분이 균형 있게 구성",
@@ -11,14 +12,31 @@ export const getTopSkinTypes = (chartData: any[]) => {
   );
   if (!skinTypeGroup) return [];
 
-  const sorted = Object.entries(skinTypeGroup)
-    .filter(([key]) => key !== "category")
-    .sort(([, a], [, b]) => (b as number) - (a as number));
+  const entries = Object.entries(skinTypeGroup).filter(
+    ([key]) => key !== "category"
+  ) as [string, number][];
 
-  return sorted.map(([type, value], idx) => ({
-    rank: idx + 1,
-    title: type,
-    description: skinTypeDescriptions[type] || "",
-    score: value,
-  }));
+  const sorted = [...entries].sort(([, a], [, b]) => b - a);
+
+  let rank = 1;
+  let prevScore: number | null = null;
+  let sameRankCount = 0;
+
+  return sorted.map(([type, score], idx) => {
+    if (score !== prevScore) {
+      rank = idx + 1;
+      sameRankCount = 1;
+    } else {
+      sameRankCount++;
+    }
+
+    prevScore = score;
+
+    return {
+      rank,
+      title: type,
+      description: skinTypeDescriptions[type] || "",
+      score,
+    };
+  });
 };
