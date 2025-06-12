@@ -7,6 +7,7 @@ import { useRef, useState, useEffect } from "react";
 import { VscChevronRight } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
+import React from "react";
 
 const Wrap = styled.div`
   display: flex;
@@ -94,7 +95,8 @@ const Divider = styled.hr`
 
 export default function Category() {
   const { t } = useLocale();
-  const [clicked, setClicked] = useState(t.category.categoryname[0].name);
+  const defaultCategory = t?.category?.categoryname?.[0]?.name ?? "";
+  const [clicked, setClicked] = useState(defaultCategory);
 
   const selected = t.category.categoryname.find(
     (c: { id: number; name: string; items: string[] }) => c.name === clicked
@@ -184,13 +186,9 @@ export default function Category() {
         <CategoryItemList>
           <ul>
             {t.category.categoryname.map(
-              (
-                item: { id: number; name: string; items: string[] },
-                index: number
-              ) => (
-                <>
+              (item: { id: number; name: string; items: string[] }) => (
+                <React.Fragment key={item.id}>
                   <CategoryItem
-                    key={index}
                     $selected={clicked === item.name}
                     onClick={() => {
                       setClicked(item.name);
@@ -199,7 +197,7 @@ export default function Category() {
                   >
                     {item.name}
                   </CategoryItem>
-                </>
+                </React.Fragment>
               )
             )}
           </ul>
@@ -238,7 +236,7 @@ export default function Category() {
                     {subcategory}
                   </SubCategoryItem>
                 ))}
-                {index !== categories.length - 1 && <Divider />}
+                {index !== t.category.categoryname.length - 1 && <Divider />}
               </div>
             )
           )}

@@ -104,6 +104,7 @@ export default function CategoryList() {
         <SortValue>{selectedSort}</SortValue>
         <VscChevronDown fontSize={"1.2rem"} />
       </SortOptions>
+      <div></div>
       {openModal && (
         <SortedModal
           closeModal={() => setOpenModal(false)}

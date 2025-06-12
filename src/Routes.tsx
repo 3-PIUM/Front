@@ -30,6 +30,7 @@ import MbtiQuestion from "./pages/SkinMBTI/MbtiQuestion";
 import CategoryList from "./pages/Category/CategoryList";
 import EditProfile from "./pages/MyPage/EditProfile";
 import EditPassword from "./pages/MyPage/EditPassword";
+import FindPassword from "./pages/FindPassword";
 
 const routes = [
   // DefaultLayout
@@ -71,12 +72,16 @@ const routes = [
     path: "/editprofile",
     element: <EditProfile />,
   },
-  // {
-  //   path: "/category/:categoryName/:subcategoryName",
-  //   element: <CategoryList />,
-  // },
+  {
+    path: "/findpassword",
+    element: <FindPassword />,
+  },
+  {
+    path: "/category/:categoryName/:subcategoryName",
+    element: <CategoryList />,
+  },
 
-  // MenuLayout
+  //MenuLayout
   {
     path: "/",
     element: <MenuLayout />,
