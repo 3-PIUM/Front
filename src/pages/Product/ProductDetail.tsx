@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
+import { surveyAnswersToChartData } from "../../utils/surveyToChart";
 
 import ProductCard from "../../components/product/ProductCard";
 import SkinTypeRankList from "../../components/product/SkinTypeRankList";
@@ -22,6 +23,7 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
+  padding-bottom: 5rem;
 `;
 
 const HeaderBar = styled.div`
@@ -50,7 +52,8 @@ const ProductCardWrapper = styled.div`
 
 const TabMenu = styled.div`
   display: flex;
-  justify-content: space-around;
+  /* justify-content: space-around; */
+  justify-content: center;
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
@@ -78,11 +81,11 @@ const SectionTitle = styled.h3`
 `;
 
 const SkinTypeWrapper = styled.div`
-  padding: 1rem;
+  padding: 0.5rem 1rem;
 `;
 
 const ReviewWrapper = styled.div`
-  padding: 0 1rem 8rem;
+  padding: 0 1rem;
 `;
 
 const ReviewButton = styled.div`
@@ -102,9 +105,9 @@ const Label = styled.span`
 `;
 
 export default function ProductDetail() {
-  const [selectedTab, setSelectedTab] = useState<"detail" | "ingredient">(
-    "detail"
-  );
+  const [selectedTab, setSelectedTab] = useState<
+    "detail" | "ingredient" | "review"
+  >("detail");
   const navigate = useNavigate();
   const location = useLocation();
   const { addItem } = useCartStore();
@@ -114,6 +117,7 @@ export default function ProductDetail() {
   );
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const pageWrapperRef = useRef<HTMLDivElement>(null);
+  const [chartData, setChartData] = useState<any[]>([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -200,6 +204,48 @@ export default function ProductDetail() {
     }
   }, [newReview]);
 
+  useEffect(() => {
+    const allAnswers = realReviews.map((r) => r.surveyAnswers).filter(Boolean);
+
+    const aggregate = allAnswers.reduce((acc, answers) => {
+      const data = surveyAnswersToChartData(answers);
+      data.forEach((d) => {
+        const existing = acc.find((item) => item.category === d.category);
+        if (existing) {
+          Object.keys(d).forEach((k) => {
+            if (k !== "category") {
+              existing[k] = (existing[k] || 0) + d[k];
+            }
+          });
+        } else {
+          acc.push({ ...d });
+        }
+      });
+      return acc;
+    }, []);
+
+    const convertToPercent = (data: any[]) => {
+      return data.map((group) => {
+        const total = Object.entries(group)
+          .filter(([k]) => k !== "category")
+          .reduce((sum, [_, value]) => sum + (value as number), 0);
+
+        const percentGroup: Record<string, number | string> = {
+          category: group.category,
+        };
+        Object.entries(group).forEach(([key, value]) => {
+          if (key !== "category") {
+            percentGroup[key] =
+              total === 0 ? 0 : Math.round(((value as number) / total) * 100);
+          }
+        });
+        return percentGroup;
+      });
+    };
+
+    setChartData(convertToPercent(aggregate));
+  }, [realReviews]);
+
   const averageRating =
     realReviews.length > 0
       ? realReviews.reduce((sum, review) => sum + review.rating, 0) /
@@ -271,6 +317,12 @@ export default function ProductDetail() {
             >
               {t.productDetail.analysisAndReview}
             </TabButton>
+            <TabButton
+              active={selectedTab === "review"}
+              onClick={() => setSelectedTab("review")}
+            >
+              {t.productDetail.review}
+            </TabButton>
           </TabMenu>
 
           {selectedTab === "detail" && (
@@ -304,7 +356,7 @@ export default function ProductDetail() {
                         harmful={1}
                       />
                       <IngredientWarningSummary />
-                      <StackedBarChart />
+
                       {/* <GroupedDonutChart /> */}
                     </div>
                   </>
@@ -315,20 +367,22 @@ export default function ProductDetail() {
                 <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
                 <SkinTypeRankList />
               </SkinTypeWrapper>
+            </>
+          )}
 
+          {selectedTab === "review" && (
+            <>
               <ReviewWrapper>
-                <SectionTitle>{t.productDetail.review}</SectionTitle>
-                <ReviewSatisfactionCard score={averageRating} />
-                {/* {aiReviews.map((text, idx) => (
-              <AIReviewCard key={idx} content={text} />
-            ))} */}
+                {/* <SectionTitle>{t.productDetail.review}</SectionTitle> */}
 
-                {realReviews.map((r, idx) => (
-                  <ReviewCard key={idx} {...r} />
-                ))}
+                <ReviewSatisfactionCard score={averageRating} />
+                <StackedBarChart data={chartData} />
                 <ReviewButton onClick={() => navigate("/review-write")}>
                   <Label>{t.productDetail.writeReview}</Label>
                 </ReviewButton>
+                {realReviews.map((r, idx) => (
+                  <ReviewCard key={idx} {...r} />
+                ))}
               </ReviewWrapper>
             </>
           )}

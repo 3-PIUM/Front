@@ -10,6 +10,7 @@ interface Review {
   images: string[];
   likes: number;
   isMyReview: boolean;
+  surveyAnswers?: Record<string, string>;
 }
 
 interface ReviewStore {
