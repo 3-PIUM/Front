@@ -105,24 +105,24 @@ const colorMap: Record<string, string> = {
   자극: "#f9cfdc",
 };
 
-const data = [
+const defaultChartData: ChartDataItem[] = [
   {
     category: "피부타입",
-    건성: 74,
-    복합성: 23,
-    지성: 3,
+    건성: 0,
+    복합성: 0,
+    지성: 0,
   },
   {
     category: "피부고민",
-    보습: 74,
-    진정: 12,
-    주름미백: 14,
+    보습: 0,
+    진정: 0,
+    주름미백: 0,
   },
   {
     category: "자극도",
-    순함: 87,
-    보통: 12,
-    자극: 1,
+    순함: 0,
+    보통: 0,
+    자극: 0,
   },
 ];
 
@@ -134,9 +134,12 @@ interface ChartDataItem {
 
 const StackedBarChart: React.FC<{ data: ChartDataItem[] }> = ({ data }) => {
   const { t } = useLocale();
+
+  const displayData = data.length > 0 ? data : defaultChartData;
+
   return (
     <Wrapper>
-      {data.map((group) => (
+      {displayData.map((group) => (
         <ChartGroupWrapper key={group.category}>
           <GroupTitle>
             <Highlight>{group.category}</Highlight> {t.productDetail.graph}

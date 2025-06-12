@@ -59,7 +59,7 @@ const IngredientBox = styled.div`
 
 const ingredientData = [
   {
-    score: "9",
+    score: "9~10",
     percent: 5,
     value: 1,
     color: "#a78bfa",
