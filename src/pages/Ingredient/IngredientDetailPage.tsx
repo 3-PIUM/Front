@@ -1,11 +1,13 @@
 import styled from "styled-components";
-// import { PieChart, Pie, Cell } from "recharts";
 import { useState, useEffect } from "react";
 import TextHeader from "../../components/common/TextHeader";
 import ScorePieChart from "../../components/ingredient/ScorePieChart";
 import ScoreBar from "../../components/ingredient/ScoreBar";
 import { useLocale } from "../../context/LanguageContext";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
+// 스타일
 const Container = styled.div`
   padding: 4rem 1rem;
 `;
@@ -20,7 +22,6 @@ const Description = styled.div`
   font-size: 0.9rem;
   line-height: 1.4;
   color: #111;
-
   p {
     margin-top: 0.2rem;
     font-size: 0.7rem;
@@ -49,7 +50,6 @@ const IngredientBox = styled.div`
   border-radius: 10px;
   padding: 1rem;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.04);
-
   p {
     margin-top: 0.3rem;
     font-size: 0.8rem;
@@ -57,87 +57,90 @@ const IngredientBox = styled.div`
   }
 `;
 
-const ingredientData = [
-  {
-    score: "9",
-    percent: 5,
-    value: 1,
-    color: "#a78bfa",
-    ingredients: [
-      {
-        name: "벤조페논-3",
-        description: "자외선 차단을 위한 성분이지만 피부 자극 가능성 있음.",
-      },
-      {
-        name: "에탄올",
-        description: "피부 건조 유발 가능성이 있는 알코올 성분.",
-      },
-    ],
-  },
-  {
-    score: "7~8",
-    percent: 20,
-    value: 2,
-    color: "#38bdf8",
-    ingredients: [
-      { name: "향료", description: "민감성 피부에 자극이 될 수 있음." },
-      {
-        name: "다이메티콘",
-        description: "호흡기 자극 가능성이 있는 실리콘 계열 성분.",
-      },
-    ],
-  },
-  {
-    score: "5~6",
-    percent: 30,
-    value: 5,
-    color: "#facc15",
-    ingredients: [
-      {
-        name: "페녹시에탄올",
-        description: "방부제로 사용되며 피부 자극 가능성 존재.",
-      },
-      {
-        name: "소듐라우레스설페이트",
-        description: "세정력이 강한 계면활성제로 피부 자극 가능성 있음.",
-      },
-    ],
-  },
-  {
-    score: "3~4",
-    percent: 25,
-    value: 3,
-    color: "#f472b6",
-    ingredients: [
-      {
-        name: "부틸렌글라이콜",
-        description: "피부에 안전하나 고농도 사용 시 주의 필요.",
-      },
-      {
-        name: "디소듐이디티에이",
-        description: "금속 이온을 안정화시키는 성분, 환경에 악영향 가능.",
-      },
-    ],
-  },
-  {
-    score: "1~2",
-    percent: 20,
-    value: 3,
-    color: "#ec4899",
-    ingredients: [{ name: "정제수", description: "가장 일반적인 기본 성분." }],
-  },
-];
+// 점수 구간별 색상
+const scoreColorMap: Record<number, string> = {
+  1: "#ec4899",
+  2: "#ec4899",
+  3: "#f472b6",
+  4: "#f472b6",
+  5: "#facc15",
+  6: "#facc15",
+  7: "#38bdf8",
+  8: "#38bdf8",
+  9: "#a78bfa",
+  10: "#a78bfa",
+};
 
+// 점수 구간 변환
+function getScoreRange(score: number): string {
+  if (score >= 9) return "9~10";
+  if (score >= 7) return "7~8";
+  if (score >= 5) return "5~6";
+  if (score >= 3) return "3~4";
+  return "1~2";
+}
+
+// 컴포넌트
 export default function IngredientDetailPage() {
+  const { t } = useLocale();
+  const location = useLocation();
+  const itemId = Number(new URLSearchParams(location.search).get("itemId"));
   const [openScore, setOpenScore] = useState<string | null>(null);
-  const totalPercent = ingredientData.reduce((sum, d) => sum + d.percent, 0);
-  const maxScoreSection = ingredientData.reduce((prev, curr) =>
-    prev.percent > curr.percent ? prev : curr
-  );
+  const [groupedData, setGroupedData] = useState<any[]>([]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const { t } = useLocale();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/item/${itemId}/score`
+        );
+        const rankingList = res.data.result.rankingList;
+
+        const grouped: Record<string, any> = {};
+        for (const item of rankingList) {
+          const score = item.ranking;
+          const range = getScoreRange(score);
+          if (!grouped[range]) {
+            grouped[range] = {
+              score: range,
+              percent: 0,
+              value: 0,
+              color: scoreColorMap[score],
+              ingredients: [],
+            };
+          }
+          grouped[range].value += 1;
+          grouped[range].ingredients.push({
+            name: item.name,
+            description: item.effect,
+          });
+        }
+
+        const total = rankingList.length;
+        const result = Object.values(grouped).map((group: any) => ({
+          ...group,
+          percent: Math.round((group.value / total) * 100),
+        }));
+
+        setGroupedData(result);
+      } catch (err) {
+        console.error("성분 스코어 불러오기 실패", err);
+      }
+    };
+
+    if (itemId) fetchData();
+  }, [itemId]);
+
+  const maxScoreSection =
+    groupedData.length > 0
+      ? groupedData.reduce((prev, curr) =>
+          prev.percent > curr.percent ? prev : curr
+        )
+      : null;
 
   return (
     <>
@@ -147,20 +150,24 @@ export default function IngredientDetailPage() {
         <Description>
           {t.ingredientDetail.summary1}{" "}
           <Highlight>
-            {maxScoreSection.score}
-            {t.ingredientDetail.scoreUnit}
+            {maxScoreSection
+              ? `${maxScoreSection.score}${t.ingredientDetail.scoreUnit}`
+              : "-"}
           </Highlight>
           {t.ingredientDetail.summary2}
           <br />
           {t.ingredientDetail.sub}
           <p>{t.ingredientDetail.warning}</p>
         </Description>
-        <Wrapper>
-          <ChartWrapper>
-            <ScorePieChart data={ingredientData} />
-          </ChartWrapper>
 
-          {[...ingredientData]
+        <Wrapper>
+          {groupedData.length > 0 && (
+            <ChartWrapper>
+              <ScorePieChart data={groupedData} />
+            </ChartWrapper>
+          )}
+
+          {groupedData
             .sort((a, b) => b.percent - a.percent)
             .map((item) => (
               <div key={item.score}>
@@ -176,7 +183,7 @@ export default function IngredientDetailPage() {
                   }
                 />
                 {openScore === item.score &&
-                  item.ingredients.map((ing, idx) => (
+                  item.ingredients.map((ing: any, idx: number) => (
                     <IngredientBox key={idx}>
                       <strong>{ing.name}</strong>
                       <p>{ing.description}</p>

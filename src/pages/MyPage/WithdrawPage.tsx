@@ -4,6 +4,7 @@ import TextHeader from "../../components/common/TextHeader";
 import Button from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
+import axios from "axios";
 
 const PageWrapper = styled.div`
   padding: 4rem 1.2rem 8rem;
@@ -127,11 +128,31 @@ export default function WithdrawalPage() {
     setShowModal(true);
   };
 
-  const confirmWithdrawal = () => {
-    setShowModal(false);
-    alert(t.withdrawal.alert.complete);
-    // 예: localStorage.clear();
-    navigate("/");
+  const confirmWithdrawal = async () => {
+    try {
+      const reason =
+        selectedReason === t.withdrawal.reasons.etc
+          ? customReason.trim()
+          : selectedReason;
+
+      const accessToken = sessionStorage.getItem("accessToken");
+
+      const response = await axios.delete("http://localhost:8080/member", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      console.log("탈퇴 성공", response.status);
+      alert(t.withdrawal.alert.complete);
+      sessionStorage.removeItem("accessToken");
+      navigate("/home");
+    } catch (error) {
+      console.error("탈퇴 실패", error);
+      alert(t.withdrawal.alert.fail || "탈퇴 요청 중 오류가 발생했습니다.");
+    } finally {
+      setShowModal(false);
+    }
   };
 
   return (

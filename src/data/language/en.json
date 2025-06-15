@@ -231,7 +231,7 @@
     },
     "addCart": "Add to cart",
     "detail": "Product details",
-    "analysisAndReview": "Ingredient analysis",
+    "ingredient": "Ingredient analysis",
     "selectProduct": "Please select a product",
     "won": "$",
     "scoreTitle": "Ingredient Score",
@@ -370,5 +370,14 @@
   },
   "scroll": {
     "top": "Top"
+  },
+  "ingredient": {
+    "tab": {
+      "sensitive": "Sensitive Ingredients",
+      "mySkin": "Ingredients to Avoid for My Skin"
+    },
+    "modalTitleSuffix": " - Potential Risk Ingredients",
+    "noRisks": "No registered risk ingredients.",
+    "close": "Close"
   }
 }

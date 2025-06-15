@@ -229,7 +229,7 @@
     },
     "addCart": "장바구니 담기",
     "detail": "상세페이지",
-    "analysisAndReview": "성분 분석",
+    "ingredient": "성분 분석",
     "selectProduct": "상품을 선택해주세요",
     "won": "원",
     "scoreTitle": "성분 스코어",
@@ -368,5 +368,14 @@
   },
   "scroll": {
     "top": "맨 위로"
+  },
+  "ingredient": {
+    "tab": {
+      "sensitive": "민감 주의 성분",
+      "mySkin": "나의 피부 주의 성분"
+    },
+    "modalTitleSuffix": " 포함 위험 성분",
+    "noRisks": "등록된 위험 성분이 없습니다.",
+    "close": "닫기"
   }
 }

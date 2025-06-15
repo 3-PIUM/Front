@@ -236,7 +236,7 @@
     },
     "addCart": "カートに入れる",
     "detail": "商品詳細ページ",
-    "analysisAndReview": "成分分析",
+    "ingredient": "成分分析",
     "selectProduct": "商品を選択してください",
     "won": "￥",
     "scoreTitle": "成分スコア",
@@ -375,5 +375,14 @@
   },
   "scroll": {
     "top": "ページ上部へ"
+  },
+  "ingredient": {
+    "tab": {
+      "sensitive": "敏感注意成分",
+      "mySkin": "私の肌に注意すべき成分"
+    },
+    "modalTitleSuffix": " 含有リスク成分",
+    "noRisks": "登録されたリスク成分はありません。",
+    "close": "閉じる"
   }
 }

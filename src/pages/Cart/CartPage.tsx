@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { useCartStore } from "../../store/useCartStore";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import OptionModal from "../../components/model/OptionModal";
 import { useLocale } from "../../context/LanguageContext";
 import TextHeader from "../../components/common/TextHeader";
+import axios from "axios";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -216,132 +216,313 @@ const SubmitButton = styled.button`
 `;
 
 const CartPage = () => {
-  const { items, removeItem, increaseQuantity, decreaseQuantity } =
-    useCartStore();
+  const [cartItems, setCartItems] = useState<any[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [showOptionFor, setShowOptionFor] = useState<string | null>(null);
   const navigate = useNavigate();
   const { t } = useLocale();
 
-  const getKey = (id: string, option?: string) => `${id}__${option ?? ""}`;
+  const getKey = (id: string) => `${id}`;
 
-  const mergedItems = Object.values(
-    items.reduce((acc, item) => {
-      const key = getKey(item.id, item.option);
-      if (!acc[key]) acc[key] = { ...item };
-      else acc[key].quantity += item.quantity;
-      return acc;
-    }, {} as { [key: string]: (typeof items)[0] })
-  );
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const fetchCartItems = async () => {
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        if (!token) {
+          console.error("❗토큰이 없습니다. 로그인 상태를 확인하세요.");
+          return;
+        }
+        console.log("🛠️ fetchCartItems 시작 - token:", token);
 
-  const toggleSelect = (id: string, option?: string) => {
-    const key = getKey(id, option);
+        const res = await axios.get("http://localhost:8080/cart/items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("✅ 서버 응답 전체:", res);
+        console.log("🧪 res.data.result.items:", res.data.result?.items);
+
+        const itemsFromServer = (res.data.result?.items || []).map(
+          (item: any) => ({
+            id: item.cartItemId,
+            name: item.itemName,
+            brand: "브랜드명",
+            imageUrl: item.mainImageUrl,
+            discountedPrice: item.salePrice,
+            discountRate: item.discountRate,
+            quantity: item.quantity,
+            option: item.optionInfo?.selectOption || "",
+            availableOptions: item.optionInfo?.options || [],
+          })
+        );
+        setCartItems(itemsFromServer);
+      } catch (err: any) {
+        console.error("🛒 장바구니 불러오기 실패 axios error:", err);
+        if (err.response) {
+          console.error("📦 err.response.data:", err.response.data);
+        } else {
+          console.error("⚠️ 응답 없음 또는 네트워크 에러:", err.message);
+        }
+      }
+    };
+    fetchCartItems();
+  }, []);
+
+  const toggleSelect = (id: string) => {
+    const key = getKey(id);
     setSelectedKeys((prev) =>
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
 
-  const isSelected = (id: string, option?: string) =>
-    selectedKeys.includes(getKey(id, option));
-
   const allSelected =
-    mergedItems.length > 0 && selectedKeys.length === mergedItems.length;
+    cartItems.length > 0 && selectedKeys.length === cartItems.length;
 
   const toggleAll = () => {
     if (allSelected) setSelectedKeys([]);
-    else
-      setSelectedKeys(mergedItems.map((item) => getKey(item.id, item.option)));
+    else setSelectedKeys(cartItems.map((item) => getKey(item.id)));
   };
 
-  const handleDeleteSelected = () => {
-    selectedKeys.forEach((key) => {
-      const [id, option] = key.split("__");
-      removeItem(id, option || undefined);
+  const handleDelete = async (id: string) => {
+    const token = sessionStorage.getItem("accessToken");
+    if (!token) return;
+    await axios.delete(`http://localhost:8080/cart/items/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    setSelectedKeys((prev) => prev.filter((key) => key !== getKey(id)));
+  };
+
+  const handleDeleteSelected = async () => {
+    const token = sessionStorage.getItem("accessToken");
+    if (!token) return;
+
+    for (const key of selectedKeys) {
+      await axios.delete(`http://localhost:8080/cart/items/${key}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    }
+
+    setCartItems((prev) =>
+      prev.filter((item) => !selectedKeys.includes(getKey(item.id)))
+    );
     setSelectedKeys([]);
   };
 
-  const totalPrice = mergedItems
-    .filter((item) => selectedKeys.includes(getKey(item.id, item.option)))
-    .reduce((sum, item) => sum + item.originalPrice * item.quantity, 0);
+  const handleIncrease = async (id: string) => {
+    const token = sessionStorage.getItem("accessToken");
+    if (!token) return;
+    await axios.patch(
+      `http://localhost:8080/cart/items/${id}/increase`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
 
-  const handleOptionChange = (
+  const handleDecrease = async (id: string) => {
+    const token = sessionStorage.getItem("accessToken");
+    if (!token) return;
+    await axios.patch(
+      `http://localhost:8080/cart/items/${id}/decrease`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
+  };
+
+  const handleOptionChange = async (
     id: string,
     prevOption: string,
     newOption: string
   ) => {
-    useCartStore.getState().updateOption(id, prevOption, newOption);
+    const token = sessionStorage.getItem("accessToken");
+    if (!token) return;
+    await axios.patch(
+      `http://localhost:8080/cart/items/${id}/updateOption`,
+      { changeOption: newOption },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    setCartItems((prev) =>
+      prev.map((item) =>
+        getKey(item.id) === id ? { ...item, option: newOption } : item
+      )
+    );
     setShowOptionFor(null);
+  };
+
+  const totalPrice = cartItems
+    .filter((item) => selectedKeys.includes(getKey(item.id)))
+    .reduce((sum, item) => {
+      const price =
+        typeof item.discountedPrice === "number" ? item.discountedPrice : 0;
+      const qty = typeof item.quantity === "number" ? item.quantity : 0;
+      return sum + price * qty;
+    }, 0);
+
+  const handleSubmit = async () => {
+    if (selectedKeys.length === 0) {
+      alert("선택된 상품이 없습니다.");
+      return;
+    }
+    try {
+      const token = sessionStorage.getItem("accessToken");
+      if (!token) return;
+      // QR 생성 응답 이후
+      const res = await axios.post(
+        "http://localhost:8080/cart/qr",
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const qrUrls: string[] = res.data.result;
+
+      const selectedItems = cartItems.filter((item) =>
+        selectedKeys.includes(getKey(item.id))
+      );
+      const purchaseHistory = JSON.parse(
+        localStorage.getItem("purchaseHistory") || "[]"
+      );
+      const newRecord = {
+        date: new Date().toISOString().slice(0, 10),
+        imgUrlList: selectedItems.map((item, i) => qrUrls[i] || item.imageUrl),
+      };
+      localStorage.setItem(
+        "purchaseHistory",
+        JSON.stringify([newRecord, ...purchaseHistory])
+      );
+
+      // 페이지 이동
+      navigate("/qr", {
+        state: {
+          qrUrls,
+          selectedItems,
+        },
+      });
+    } catch (err) {
+      console.error("QR 생성 실패", err);
+    }
   };
 
   return (
     <PageWrapper>
       <TextHeader pageName={t.cart.pageTitle} />
-
       <HeaderControlBar>
         <SelectAll onClick={toggleAll}>
-          {t.cart.selected} ({selectedKeys.length}/{mergedItems.length})
+          {t.cart.selected} ({selectedKeys.length}/{cartItems.length})
         </SelectAll>
         <DeleteAll onClick={allSelected ? handleDeleteSelected : toggleAll}>
           {allSelected ? t.cart.deleteAll : t.cart.selectAll}
         </DeleteAll>
       </HeaderControlBar>
 
-      {mergedItems.map((item) => (
-        <ProductCard key={getKey(item.id, item.option)}>
-          <TopRow>
-            <Checkbox
-              type="checkbox"
-              checked={isSelected(item.id, item.option)}
-              onChange={() => toggleSelect(item.id, item.option)}
-            />
-            <Image src={item.imageUrl} alt={item.name} />
-            <InfoArea>
-              <UpperInfo>
-                <TitleBlock>
-                  <Title>{item.name}</Title>
-                  <DeleteButton
-                    onClick={() => removeItem(item.id, item.option)}
-                  >
-                    ✕
-                  </DeleteButton>
-                </TitleBlock>
-                <Brand>
-                  [{item.brand}] {item.option}
-                </Brand>
-              </UpperInfo>
-            </InfoArea>
-          </TopRow>
+      {cartItems.map(
+        (item) => (
+          console.log(
+            "🧪 할인율 확인:",
+            item.id,
+            item.name,
+            "할인율:",
+            item.discountRate,
+            "타입:",
+            typeof item.discountRate
+          ),
+          (
+            <ProductCard key={getKey(item.id)}>
+              <TopRow>
+                <Checkbox
+                  type="checkbox"
+                  checked={selectedKeys.includes(getKey(item.id))}
+                  onChange={() => toggleSelect(item.id)}
+                />
+                <Image src={item.imageUrl} alt={item.name} />
+                <InfoArea>
+                  <UpperInfo>
+                    <TitleBlock>
+                      <Title>{item.name}</Title>
+                      <DeleteButton onClick={() => handleDelete(item.id)}>
+                        ✕
+                      </DeleteButton>
+                    </TitleBlock>
+                    <Brand>
+                      [{item.brand}] {item.option}
+                    </Brand>
+                  </UpperInfo>
+                </InfoArea>
+              </TopRow>
 
-          <LowerInfo>
-            <LeftRow>
-              <OptionButton
-                onClick={() => setShowOptionFor(getKey(item.id, item.option))}
-              >
-                {t.cart.changeOption}
-              </OptionButton>
-              <QuantityControl>
-                <Button onClick={() => decreaseQuantity(item.id, item.option)}>
-                  -
-                </Button>
-                <Count>{item.quantity}</Count>
-                <Button onClick={() => increaseQuantity(item.id, item.option)}>
-                  +
-                </Button>
-              </QuantityControl>
-            </LeftRow>
-            <RightColumn>
-              <PriceBox>
-                <Discount>{item.discountRate}%</Discount>
-                <Price>
-                  {item.originalPrice.toLocaleString()}
-                  {t.cart.won}
-                </Price>
-              </PriceBox>
-            </RightColumn>
-          </LowerInfo>
-        </ProductCard>
-      ))}
+              <LowerInfo>
+                <LeftRow>
+                  <OptionButton
+                    onClick={() => {
+                      const hasOptions =
+                        item.availableOptions &&
+                        item.availableOptions.length > 0;
+                      if (hasOptions) setShowOptionFor(getKey(item.id));
+                    }}
+                    style={{
+                      backgroundColor:
+                        item.availableOptions &&
+                        item.availableOptions.length > 0
+                          ? "#fff"
+                          : "#f0f0f0",
+                      cursor:
+                        item.availableOptions &&
+                        item.availableOptions.length > 0
+                          ? "pointer"
+                          : "not-allowed",
+                      color:
+                        item.availableOptions &&
+                        item.availableOptions.length > 0
+                          ? "inherit"
+                          : "#aaa",
+                    }}
+                  >
+                    {t.cart.changeOption}
+                  </OptionButton>
+                  <QuantityControl>
+                    <Button
+                      onClick={() => handleDecrease(item.id)}
+                      disabled={item.quantity <= 1}
+                      style={{
+                        color: item.quantity <= 1 ? "#ccc" : "inherit",
+                        cursor: item.quantity <= 1 ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      -
+                    </Button>
+                    <Count>{item.quantity}</Count>
+                    <Button onClick={() => handleIncrease(item.id)}>+</Button>
+                  </QuantityControl>
+                </LeftRow>
+                <RightColumn>
+                  <PriceBox>
+                    <Discount>{item.discountRate}%</Discount>
+                    <Price>
+                      {item.discountedPrice.toLocaleString()}
+                      {t.cart.won}
+                    </Price>
+                  </PriceBox>
+                </RightColumn>
+              </LowerInfo>
+            </ProductCard>
+          )
+        )
+      )}
 
       <TotalAndButton>
         <TotalRow>
@@ -354,35 +535,22 @@ const CartPage = () => {
       </TotalAndButton>
 
       <StickyBottom>
-        <SubmitButton
-          onClick={() => {
-            if (selectedKeys.length === 0) {
-              alert("선택된 상품이 없습니다.");
-              return;
-            }
-            navigate("/qr", {
-              state: {
-                selectedItems: mergedItems.filter((item) =>
-                  selectedKeys.includes(getKey(item.id, item.option))
-                ),
-              },
-            });
-          }}
-        >
-          {t.cart.qrCode}
-        </SubmitButton>
+        <SubmitButton onClick={handleSubmit}>{t.cart.qrCode}</SubmitButton>
       </StickyBottom>
 
       {showOptionFor && (
         <OptionModal
           options={
-            mergedItems.find(
-              (item) => getKey(item.id, item.option) === showOptionFor
-            )?.availableOptions || []
+            cartItems.find((item) => getKey(item.id) === showOptionFor)
+              ?.availableOptions || []
           }
-          onSelect={(newOption) => {
-            const [id, option] = showOptionFor.split("__");
-            handleOptionChange(id, option, newOption);
+          onSelect={async (newOption) => {
+            const id = showOptionFor;
+            if (id) {
+              const prevOption =
+                cartItems.find((item) => item.id === id)?.option || "";
+              await handleOptionChange(id, prevOption, newOption);
+            }
           }}
           onClose={() => setShowOptionFor(null)}
         />

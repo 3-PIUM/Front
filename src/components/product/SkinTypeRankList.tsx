@@ -1,34 +1,70 @@
+import { useEffect, useState } from "react";
 import SkinTypeCard from "./SkinTypeCard";
+import styled from "styled-components";
+import { useLocale } from "../../context/LanguageContext";
+import axios from "axios";
 
-const skinTypeData = [
-  {
-    rank: 1,
-    title: "복합성",
-    description: "수분 + 진정 + 약한 각질 제거 성분이 균형 있게 구성",
-  },
-  {
-    rank: 2,
-    title: "건성",
-    description: "보습 성분이 풍부해서 수분 공급에 효과적",
-  },
-  {
-    rank: 3,
-    title: "지성",
-    description:
-      "가볍고 수분 공급 중심의 성분이 많아 유분보다 수분 공급에 집중",
-  },
-];
+const SectionTitle = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  color: #222;
+`;
 
-const SkinTypeRankList = () => {
+const EmptyMessage = styled.p`
+  font-size: 14px;
+  color: #666;
+  margin: 1rem 0;
+`;
+
+interface AiSummary {
+  id: number;
+  ranking: number;
+  title: string;
+  content: string;
+}
+
+interface Props {
+  itemId: number;
+}
+
+const SkinTypeRankList = ({ itemId }: Props) => {
+  const { t } = useLocale();
+  const [data, setData] = useState<AiSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/item/${itemId}/ai-summary`
+        );
+        setData(res.data.result.aiSummaryList);
+      } catch (err) {
+        console.error("AI 요약 불러오기 실패", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (itemId) fetchSummary();
+  }, [itemId]);
+
+  if (loading) return null;
+
+  if (!data || data.length === 0) {
+    return <EmptyMessage>{t.productDetail.noSkinTypeReview}</EmptyMessage>;
+  }
+
   return (
     <div>
-      {skinTypeData.map((item) => (
+      <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
+      {data.map((item) => (
         <SkinTypeCard
-          key={item.rank}
-          rank={item.rank}
+          key={`${item.title}-${item.ranking}`}
+          rank={item.ranking}
           title={item.title}
-          description={item.description}
-          isTop={item.rank === 1}
+          description={item.content}
+          isTop={item.ranking === 1}
         />
       ))}
     </div>

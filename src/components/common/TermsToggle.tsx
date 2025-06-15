@@ -5,6 +5,7 @@ import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
   width: 100%;
+  /* border: 1px dashed red; // 어디까지가 Wrapper인지 확인 */
 `;
 
 const Header = styled.div`
@@ -12,6 +13,9 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  padding: 1rem 0;
+  background-color: white;
+  /* border: 1px solid blue; // Header가 어디까지인지 확인 */
 `;
 
 const Label = styled.h4`
@@ -39,9 +43,14 @@ const TermsToggle = () => {
 
   return (
     <Wrapper>
-      <Header onClick={() => setOpen((prev) => !prev)}>
+      <Header
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((prev) => !prev);
+        }}
+      >
         <Label>{t.reviewGuide.title}</Label>
-        {open ? <IoIosArrowUp size={22} /> : <IoIosArrowDown size={22} />}
+        {open ? <IoIosArrowUp size={22} /> : <IoIosArrowDown size={30} />}
       </Header>
 
       {open && (

@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
+import SkinTypePrompt from "../SkinTypePrompt";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 // 스타일 정의
 const Wrapper = styled.div`
@@ -95,74 +98,135 @@ interface Ingredient {
   name: string;
   risks: string[];
 }
-
-export default function IngredientWarningSummary() {
+interface IngredientWarningSummaryProps {
+  itemId: number;
+}
+export default function IngredientWarningSummary({
+  itemId,
+}: IngredientWarningSummaryProps) {
   const { t } = useLocale();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedIngredient, setSelectedIngredient] =
     useState<Ingredient | null>(null);
+  const [activeTab, setActiveTab] = useState<"sensitive" | "mySkin">(
+    "sensitive"
+  );
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [isSkinRegistered, setIsSkinRegistered] = useState<boolean>(true);
 
-  const [activeTab, setActiveTab] = useState<
-    "민감 주의 성분" | "나의 피부 주의 성분"
-  >("민감 주의 성분");
+  // 사용자 피부 정보 조회
+  useEffect(() => {
+    const fetchUserSkin = async () => {
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        const res = await axios.get("http://localhost:8080/member", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const skinType = res.data.result.skinType;
+        if (!skinType) {
+          setIsSkinRegistered(false);
+        }
+      } catch (err) {
+        console.error("사용자 피부 정보 조회 실패", err);
+        setIsSkinRegistered(false);
+      }
+    };
+    if (activeTab === "mySkin") fetchUserSkin();
+  }, [activeTab]);
 
-  const tabDataMap: Record<
-    "민감 주의 성분" | "나의 피부 주의 성분",
-    Ingredient[]
-  > = {
-    "민감 주의 성분": [
-      { name: "호르몬 교란 가능성", risks: ["성분 A", "성분 B"] },
-      { name: "알레르기", risks: ["성분 A", "성분 B"] },
-      { name: "민감성", risks: ["성분 A", "성분 B"] },
-      { name: "과민성", risks: ["성분 A", "성분 B"] },
-      { name: "유당 불내증", risks: ["성분 A", "성분 B"] },
-      { name: "모공 막힘", risks: ["성분 A", "성분 B"] },
-    ],
-    "나의 피부 주의 성분": [
-      { name: "자극 유발", risks: ["성분 A", "성분 B"] },
-      { name: "여드름 유발", risks: ["성분 A", "성분 B"] },
-      { name: "색소침착 가능성", risks: ["성분 A", "성분 B"] },
-    ],
-  };
+  // 성분 API 호출
+  useEffect(() => {
+    const fetchIngredients = async () => {
+      if (!itemId) return;
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/item/${itemId}/caution`
+        );
+        const data = res.data.result.cautionIngredients;
 
-  const ingredients = tabDataMap[activeTab];
+        if (activeTab === "sensitive") {
+          // 모든 성분을 하나로 묶고 중복 제거
+          const flat: Ingredient[] = data.map((d: any) => ({
+            name: d.ingredientName,
+            risks: d.cautionSkinType,
+          }));
+          setIngredients(flat);
+        } else if (activeTab === "mySkin") {
+          const res2 = await axios.get("http://localhost:8080/member");
+          const mySkin = res2.data.result.skinType;
+
+          if (!mySkin) return;
+
+          const filtered = data
+            .filter((d: any) => d.cautionSkinType.includes(mySkin))
+            .map((d: any) => ({
+              name: d.ingredientName,
+              risks: d.cautionSkinType,
+            }));
+
+          setIngredients(filtered);
+        }
+      } catch (err) {
+        console.error("주의 성분 불러오기 실패", err);
+      }
+    };
+    fetchIngredients();
+  }, [itemId, activeTab]);
 
   return (
     <Wrapper>
       <Header>
         <Tabs>
-          {(["나의 피부 주의 성분", "민감 주의 성분"] as const).map((tab) => (
+          {(["mySkin", "sensitive"] as const).map((key) => (
             <Tab
-              key={tab}
-              active={activeTab === tab}
-              onClick={() => setActiveTab(tab)}
+              key={key}
+              active={activeTab === key}
+              onClick={() => setActiveTab(key)}
             >
-              {tab}
+              {t.ingredient.tab[key]}
             </Tab>
           ))}
         </Tabs>
       </Header>
 
-      <TagContainer>
-        {ingredients.map((item, idx) => (
-          <Tag key={idx} onClick={() => setSelectedIngredient(item)}>
-            {item.name}
-          </Tag>
-        ))}
-      </TagContainer>
+      {activeTab === "mySkin" && !isSkinRegistered ? (
+        <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
+          <SkinTypePrompt
+            onRegister={() => {
+              localStorage.setItem("skinRegistered", "true");
+              navigate("/mypage/skintype");
+            }}
+          />
+        </div>
+      ) : (
+        <TagContainer>
+          {ingredients.map((item, idx) => (
+            <Tag key={idx} onClick={() => setSelectedIngredient(item)}>
+              {item.name}
+            </Tag>
+          ))}
+        </TagContainer>
+      )}
 
       {selectedIngredient && (
         <ModalBackground onClick={() => setSelectedIngredient(null)}>
           <ModalBox onClick={(e) => e.stopPropagation()}>
-            <ModalTitle>{selectedIngredient.name} 포함 위험 성분</ModalTitle>
+            <ModalTitle>
+              {selectedIngredient.name}
+              {t.ingredient.modalTitleSuffix}
+            </ModalTitle>
             {selectedIngredient.risks.length > 0 ? (
               selectedIngredient.risks.map((risk, i) => (
                 <RiskItem key={i}>- {risk}</RiskItem>
               ))
             ) : (
-              <RiskItem>등록된 위험 성분이 없습니다.</RiskItem>
+              <RiskItem>{t.ingredient.noRisks}</RiskItem>
             )}
             <ModalClose onClick={() => setSelectedIngredient(null)}>
-              닫기
+              {t.ingredient.close}
             </ModalClose>
           </ModalBox>
         </ModalBackground>
