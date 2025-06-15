@@ -7,7 +7,9 @@ interface ProductOption {
   id: string;
   imageUrl: string;
   name: string;
-  price: number;
+  originalPrice: number;
+  discountedPrice: number;
+  discountRate: number;
 }
 
 interface ProductOptionSelectorProps {
@@ -120,9 +122,6 @@ export default function ProductOptionSelector({
               onClick={() => handleSelect(option.id)}
               style={{
                 backgroundColor: option.id === selected ? "#ffe6f0" : "#fff",
-                pointerEvents: "auto",
-                opacity: 1,
-                borderRadius: option.id === selected ? "0px" : "0px",
                 fontWeight: option.id === selected ? "bold" : "normal",
               }}
             >
@@ -131,8 +130,21 @@ export default function ProductOptionSelector({
                 <OptionName>{option.name}</OptionName>
               </OptionInfo>
               <Price>
-                {option.price.toLocaleString()}
-                {t.productDetail.won}
+                {option.discountRate > 0 && (
+                  <>
+                    <span style={{ color: "#ff4081", marginRight: "6px" }}>
+                      {option.discountRate}%
+                    </span>
+                    {option.discountedPrice.toLocaleString()}
+                    {t.productDetail.won}
+                  </>
+                )}
+                {option.discountRate === 0 && (
+                  <>
+                    {option.discountedPrice.toLocaleString()}
+                    {t.productDetail.won}
+                  </>
+                )}
               </Price>
             </OptionItem>
           ))}

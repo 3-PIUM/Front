@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
 import SkinTypePrompt from "../SkinTypePrompt";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 // 스타일 정의
 const Wrapper = styled.div`
@@ -97,35 +98,83 @@ interface Ingredient {
   name: string;
   risks: string[];
 }
-
-export default function IngredientWarningSummary() {
+interface IngredientWarningSummaryProps {
+  itemId: number;
+}
+export default function IngredientWarningSummary({
+  itemId,
+}: IngredientWarningSummaryProps) {
   const { t } = useLocale();
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedIngredient, setSelectedIngredient] =
     useState<Ingredient | null>(null);
-
   const [activeTab, setActiveTab] = useState<"sensitive" | "mySkin">(
     "sensitive"
   );
-  const isSkinRegistered = localStorage.getItem("skinRegistered") === "true";
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [isSkinRegistered, setIsSkinRegistered] = useState<boolean>(true);
 
-  const tabDataMap: Record<"sensitive" | "mySkin", Ingredient[]> = {
-    sensitive: [
-      { name: "호르몬 교란 가능성", risks: ["성분 A", "성분 B"] },
-      { name: "알레르기", risks: ["성분 A", "성분 B"] },
-      { name: "민감성", risks: ["성분 A", "성분 B"] },
-      { name: "과민성", risks: ["성분 A", "성분 B"] },
-      { name: "유당 불내증", risks: ["성분 A", "성분 B"] },
-      { name: "모공 막힘", risks: ["성분 A", "성분 B"] },
-    ],
-    mySkin: [
-      { name: "자극 유발", risks: ["성분 A", "성분 B"] },
-      { name: "여드름 유발", risks: ["성분 A", "성분 B"] },
-      { name: "색소침착 가능성", risks: ["성분 A", "성분 B"] },
-    ],
-  };
+  // 사용자 피부 정보 조회
+  useEffect(() => {
+    const fetchUserSkin = async () => {
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        const res = await axios.get("http://localhost:8080/member", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const skinType = res.data.result.skinType;
+        if (!skinType) {
+          setIsSkinRegistered(false);
+        }
+      } catch (err) {
+        console.error("사용자 피부 정보 조회 실패", err);
+        setIsSkinRegistered(false);
+      }
+    };
+    if (activeTab === "mySkin") fetchUserSkin();
+  }, [activeTab]);
 
-  const ingredients = tabDataMap[activeTab];
+  // 성분 API 호출
+  useEffect(() => {
+    const fetchIngredients = async () => {
+      if (!itemId) return;
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/item/${itemId}/caution`
+        );
+        const data = res.data.result.cautionIngredients;
+
+        if (activeTab === "sensitive") {
+          // 모든 성분을 하나로 묶고 중복 제거
+          const flat: Ingredient[] = data.map((d: any) => ({
+            name: d.ingredientName,
+            risks: d.cautionSkinType,
+          }));
+          setIngredients(flat);
+        } else if (activeTab === "mySkin") {
+          const res2 = await axios.get("http://localhost:8080/member");
+          const mySkin = res2.data.result.skinType;
+
+          if (!mySkin) return;
+
+          const filtered = data
+            .filter((d: any) => d.cautionSkinType.includes(mySkin))
+            .map((d: any) => ({
+              name: d.ingredientName,
+              risks: d.cautionSkinType,
+            }));
+
+          setIngredients(filtered);
+        }
+      } catch (err) {
+        console.error("주의 성분 불러오기 실패", err);
+      }
+    };
+    fetchIngredients();
+  }, [itemId, activeTab]);
 
   return (
     <Wrapper>
@@ -143,7 +192,6 @@ export default function IngredientWarningSummary() {
         </Tabs>
       </Header>
 
-      {/* 👇 조건 분기: "mySkin" 탭이고 isSkinRegistered가 false이면 SkinTypePrompt 표시 */}
       {activeTab === "mySkin" && !isSkinRegistered ? (
         <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
           <SkinTypePrompt

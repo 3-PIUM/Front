@@ -62,8 +62,8 @@ const Fill = styled.div<{ percent: number; color: string }>`
 `;
 
 const Circle = styled.div<{ left: number; color: string }>`
-  width: 13px;
-  height: 13px;
+  width: 11px;
+  height: 11px;
   background: ${({ color }) => color};
   border-radius: 50%;
   position: absolute;
@@ -93,38 +93,11 @@ const Highlight = styled.span`
 `;
 
 // ===== 데이터 =====
-const colorMap: Record<string, string> = {
-  건성: "#F23477",
-  복합성: "#F884A8",
-  지성: "#f9cfdc",
-  보습: "#F23477",
-  진정: "#F884A8",
-  주름미백: "#f9cfdc",
-  순함: "#F23477",
-  보통: "#F884A8",
-  자극: "#f9cfdc",
+const getColorByPercent = (percent: number) => {
+  if (percent >= 60) return "#F23477";
+  else if (percent >= 30) return "#F884A8";
+  else return "#f9cfdc";
 };
-
-const defaultChartData: ChartDataItem[] = [
-  {
-    category: "피부타입",
-    건성: 0,
-    복합성: 0,
-    지성: 0,
-  },
-  {
-    category: "피부고민",
-    보습: 0,
-    진정: 0,
-    주름미백: 0,
-  },
-  {
-    category: "자극도",
-    순함: 0,
-    보통: 0,
-    자극: 0,
-  },
-];
 
 // ===== 컴포넌트 =====
 interface ChartDataItem {
@@ -132,14 +105,42 @@ interface ChartDataItem {
   [key: string]: number | string;
 }
 
-const StackedBarChart: React.FC<{ data: ChartDataItem[] }> = ({ data }) => {
+const StackedBarChart: React.FC<{ itemId: number }> = ({ itemId }) => {
   const { t } = useLocale();
 
-  const displayData = data.length > 0 ? data : defaultChartData;
+  const [chartData, setChartData] = React.useState<ChartDataItem[]>([]);
+
+  React.useEffect(() => {
+    const fetchGraph = async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/item/${itemId}/graph`);
+        const json = await res.json();
+        const list = json.result.graphList as {
+          name: string;
+          optionName: string;
+          percentage: number;
+        }[];
+
+        const grouped: Record<string, Record<string, number>> = {};
+        list.forEach(({ name, optionName, percentage }) => {
+          if (!grouped[name]) grouped[name] = {};
+          grouped[name][optionName] = percentage;
+        });
+
+        const result: ChartDataItem[] = Object.entries(grouped).map(
+          ([category, values]) => ({ category, ...values })
+        );
+        setChartData(result);
+      } catch (err) {
+        console.error("그래프 불러오기 실패", err);
+      }
+    };
+    fetchGraph();
+  }, [itemId]);
 
   return (
     <Wrapper>
-      {displayData.map((group) => (
+      {chartData.map((group) => (
         <ChartGroupWrapper key={group.category}>
           <GroupTitle>
             <Highlight>{group.category}</Highlight> {t.productDetail.graph}
@@ -151,10 +152,18 @@ const StackedBarChart: React.FC<{ data: ChartDataItem[] }> = ({ data }) => {
                 <BarContainer key={label}>
                   <Label>{label}</Label>
                   <Track>
-                    <Fill percent={percent as number} color={colorMap[label]} />
-                    <Circle left={percent as number} color={colorMap[label]} />
+                    <Fill
+                      percent={percent as number}
+                      color={getColorByPercent(percent as number)}
+                    />
+                    <Circle
+                      left={percent as number}
+                      color={getColorByPercent(percent as number)}
+                    />
                   </Track>
-                  <Value color={colorMap[label]}>{percent}%</Value>
+                  <Value color={getColorByPercent(percent as number)}>
+                    {percent}%
+                  </Value>
                 </BarContainer>
               ))}
           </ChartGroup>

@@ -1,16 +1,14 @@
-// src/pages/ProductDetail.tsx
+// src/pages/Product/ProductDetail.tsx
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
-import { surveyAnswersToChartData } from "../../utils/surveyToChart";
-import { getTopSkinTypes } from "../../utils/getTopSkinTypes";
+import axios from "axios";
 
 import ProductCard from "../../components/product/ProductCard";
 import SkinTypeRankList from "../../components/product/SkinTypeRankList";
 import ReviewSatisfactionCard from "../../components/review/ReviewSatisfactionCard";
 import ReviewCard from "../../components/review/ReviewCard";
 import Button from "../../components/common/Button";
-import { useCartStore } from "../../store/useCartStore";
 import FullHeader from "../../components/common/TextIconHeader ";
 import IngredientWarningSummary from "../../components/ingredient/IngredientWarningSummary";
 import IngredientScoreSummary from "../../components/ingredient/IngredientScoreSummary";
@@ -30,19 +28,16 @@ const HeaderBar = styled.div`
   position: relative;
   flex-shrink: 0;
   width: 100%;
-  z-index: 1000; // 다른 요소 위에 표시
+  z-index: 1000;
   background-color: #fff;
   display: flex;
   justify-content: space-between;
-
   padding-right: 1.3rem;
-  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); */
 `;
 
 const ProductCardWrapper = styled.div`
   flex: 1;
   overflow-y: scroll;
-
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
@@ -52,7 +47,6 @@ const ProductCardWrapper = styled.div`
 
 const TabMenu = styled.div`
   display: flex;
-  /* justify-content: space-around; */
   justify-content: center;
 `;
 
@@ -103,93 +97,108 @@ export default function ProductDetail() {
   >("detail");
   const navigate = useNavigate();
   const location = useLocation();
-  const { addItem } = useCartStore();
   const newReview = location.state?.newReview;
   const [isSkinRegistered, setIsSkinRegistered] = useState<boolean | null>(
     null
   );
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const pageWrapperRef = useRef<HTMLDivElement>(null);
-  const [chartData, setChartData] = useState<any[]>([]);
+  const [product, setProduct] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const itemId = new URLSearchParams(location.search).get("itemId");
+  const { t } = useLocale();
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (!itemId) {
+        setError("상품 ID가 유효하지 않습니다.");
+        setLoading(false);
+        return;
+      }
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        const res = await axios.get(
+          `http://localhost:8080/item/${itemId}/info`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const data = res.data.result;
+        setProduct({
+          id: data.id,
+          name: data.itemName,
+          brand: "브랜드명",
+          imageUrl: {
+            mainImage: data.itemImages.mainImage,
+            detailImages: data.itemImages.detailImages,
+          },
+          originalPrice: data.originalPrice,
+          discountedPrice: data.salePrice,
+          discountRate: data.discountRate,
+          stock: 4,
+          options: data.options || [],
+          veganType: data.veganType,
+        });
+      } catch (err: any) {
+        if (err.response?.status === 500) {
+          console.error(
+            "\u{1F6A8} 서버 내부 에러 발생. enum 또는 데이터 오류일 수 있음."
+          );
+        }
+        setError("상품 정보를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [itemId]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     const value = localStorage.getItem("skinRegistered");
-    console.log("skinRegistered:", value);
     setIsSkinRegistered(value === "true");
-  }, []);
-  const { t } = useLocale();
-
-  const product = location.state?.product ||
-    JSON.parse(localStorage.getItem("scannedProduct") || "null") || {
-      id: "mock-id",
-      name: "샘플 상품입니다",
-      brand: "테스트브랜드",
-      imageUrl:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021429012ko.jpg?qt=80",
-      originalPrice: 12900,
-      discountRate: 20,
-      stock: 4,
-    };
-
-  useEffect(() => {
-    if (!product) {
-      alert("잘못된 접근입니다.");
-      navigate("/");
-    }
-  }, [product, navigate]);
-
-  useEffect(() => {
-    return () => {
-      localStorage.removeItem("scannedProduct");
-    };
+    return () => localStorage.removeItem("scannedProduct");
   }, []);
 
-  const [topSkinTypes, setTopSkinTypes] = useState<any[]>([]);
-
   useEffect(() => {
-    if (chartData.length > 0) {
-      const result = getTopSkinTypes(chartData);
-      setTopSkinTypes(result);
-    }
-  }, [chartData]);
+    const fetchReviews = async () => {
+      if (!itemId) return;
+      try {
+        const token = sessionStorage.getItem("accessToken");
+        const res = await axios.get(`http://localhost:8080/review/${itemId}`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        const reviews = res.data.result.reviews;
+        const myMemberId = Number(localStorage.getItem("memberId"));
 
-  const dummyOptions = [
-    {
-      id: "a00",
-      imageUrl:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018590325ko.png?l=ko",
-      name: "[기획] A00(+리필+모공브러쉬)",
-      // sub: "예약 06.13부터 순차 배송시작",
-      price: 27880,
-    },
-    {
-      id: "a01",
-      imageUrl:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018590325ko.png?l=ko",
-      name: "[기획] A01(+리필+모공브러쉬)",
-      // sub: "예약 06.13부터 순차 배송시작",
-      price: 27880,
-    },
-    {
-      id: "a02",
-      imageUrl:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0018/A00000018590325ko.png?l=ko",
-      name: "[기획] A02(+리필+모공브러쉬)",
-      // sub: "예약 06.13부터 순차 배송시작",
-      price: 27880,
-    },
-  ];
+        const mappedReviews = reviews.map((r: any) => ({
+          reviewId: r.reviewId,
+          username: r.memberId,
+          memberId: r.memberId,
+          date: new Date(r.updatedAt).toLocaleDateString(),
+          rating: r.rating,
+          content: r.content,
+          images: r.reviewImages,
+          likes: r.recommend || 0,
+          liked: r.isRecommended || false,
+          surveyAnswers: r.options?.reduce(
+            (acc: Record<string, string>, cur: any) => {
+              acc[cur.name] = cur.selectOption;
+              return acc;
+            },
+            {}
+          ),
+          isMyReview: myMemberId === r.memberId,
+        }));
 
-  const mockProducts = [
-    { id: 1, name: "피부 보습 크림" },
-    { id: 2, name: "자외선 차단제" },
-    { id: 3, name: "클렌징 워터" },
-    { id: 4, name: "비타민 세럼" },
-  ];
+        setRealReviews(mappedReviews);
+      } catch (err) {
+        console.error("리뷰 불러오기 실패", err);
+      }
+    };
+    fetchReviews();
+  }, [itemId]);
 
   const [realReviews, setRealReviews] = useState<any[]>([]);
   useEffect(() => {
@@ -200,180 +209,133 @@ export default function ProductDetail() {
             review.content === newReview.content &&
             review.username === newReview.username
         );
-        if (!isDuplicate) return [...prev, newReview];
-        return prev;
+        return isDuplicate ? prev : [...prev, newReview];
       });
     }
   }, [newReview]);
 
-  useEffect(() => {
-    const allAnswers = realReviews.map((r) => r.surveyAnswers).filter(Boolean);
+  const averageRating = realReviews.length
+    ? realReviews.reduce((sum, review) => sum + review.rating, 0) /
+      realReviews.length
+    : 0;
 
-    const aggregate = allAnswers.reduce((acc, answers) => {
-      const data = surveyAnswersToChartData(answers);
-      data.forEach((d) => {
-        const existing = acc.find((item) => item.category === d.category);
-        if (existing) {
-          Object.keys(d).forEach((k) => {
-            if (k !== "category") {
-              existing[k] = (existing[k] || 0) + d[k];
-            }
-          });
-        } else {
-          acc.push({ ...d });
+  const handleAddToCart = async () => {
+    const selected = product.options
+      .map((opt: string, idx: number) => ({ id: `option-${idx}`, name: opt }))
+      .find((o) => o.id === selectedOption);
+
+    if (!selected) {
+      alert(t.productDetail.selectOption);
+      return;
+    }
+
+    const token = sessionStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      await axios.post(
+        `http://localhost:8080/cart/items/${Number(product.id)}`,
+        {
+          quantity: 1,
+          option: selected.name,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-      });
-      return acc;
-    }, []);
+      );
+      navigate("/cart");
+    } catch (err: any) {
+      console.error("장바구니 추가 실패", err);
+      alert(err.response?.data?.message || "장바구니에 추가할 수 없습니다.");
+    }
+  };
 
-    const convertToPercent = (data: any[]) => {
-      return data.map((group) => {
-        const total = Object.entries(group)
-          .filter(([k]) => k !== "category")
-          .reduce((sum, [_, value]) => sum + (value as number), 0);
-
-        const percentGroup: Record<string, number | string> = {
-          category: group.category,
-        };
-        Object.entries(group).forEach(([key, value]) => {
-          if (key !== "category") {
-            percentGroup[key] =
-              total === 0 ? 0 : Math.round(((value as number) / total) * 100);
-          }
-        });
-        return percentGroup;
-      });
-    };
-
-    setChartData(convertToPercent(aggregate));
-  }, [realReviews]);
-
-  const averageRating =
-    realReviews.length > 0
-      ? realReviews.reduce((sum, review) => sum + review.rating, 0) /
-        realReviews.length
-      : 0;
-
+  if (loading)
+    return (
+      <div style={{ padding: "2rem", textAlign: "center" }}>로딩 중...</div>
+    );
+  if (error)
+    return (
+      <div style={{ padding: "2rem", color: "red", textAlign: "center" }}>
+        {error}
+      </div>
+    );
   if (!product) return null;
 
   return (
-    <>
-      <PageWrapper>
-        <HeaderBar>
-          <FullHeader pageName="" productList={mockProducts} />
-        </HeaderBar>
-        <ProductCardWrapper ref={pageWrapperRef}>
-          <ProductCard
-            brand={product.brand}
-            title={product.name}
-            originalPrice={product.originalPrice}
-            currentPrice={
-              product.originalPrice && product.discountRate
-                ? Math.round(
-                    product.originalPrice * (1 - product.discountRate / 100)
-                  )
-                : 0
-            }
-            imageUrl={product.imageUrl}
-            stock={product.stock}
-          />
-
-          <ProductOptionSelector
-            options={dummyOptions}
-            onChange={setSelectedOption}
-          />
-
-          <div style={{ padding: "0 1rem" }}>
-            <Button
-              label={t.productDetail.addCart}
-              onClick={() => {
-                const selected = dummyOptions.find(
-                  (o) => o.id === selectedOption
-                );
-                if (!selected) {
-                  alert(t.productDetail.selectOption);
-                  return;
-                }
-
-                addItem({
-                  ...product,
-                  option: selected.name,
-                  availableOptions: dummyOptions.map((opt) => opt.name),
-                });
-
-                navigate("/cart");
-              }}
-            />
+    <PageWrapper>
+      <HeaderBar>
+        <FullHeader pageName="" productList={[]} />
+      </HeaderBar>
+      <ProductCardWrapper ref={pageWrapperRef}>
+        <ProductCard {...product} imageUrl={product.imageUrl.mainImage} />
+        <ProductOptionSelector
+          options={product.options.map((opt: string, idx: number) => ({
+            id: `option-${idx}`,
+            imageUrl: product.imageUrl.mainImage,
+            name: `${opt}`,
+            discountedPrice: product.discountedPrice,
+            discountRate: product.discountRate,
+          }))}
+          onChange={setSelectedOption}
+        />
+        <div style={{ padding: "0 1rem" }}>
+          <Button label={t.productDetail.addCart} onClick={handleAddToCart} />
+        </div>
+        <TabMenu>
+          {(["detail", "ingredient", "review"] as const).map((tab) => (
+            <TabButton
+              key={tab}
+              active={selectedTab === tab}
+              onClick={() => setSelectedTab(tab)}
+            >
+              {t.productDetail[tab]}
+            </TabButton>
+          ))}
+        </TabMenu>
+        {selectedTab === "detail" && product.imageUrl.detailImages && (
+          <div style={{ marginBottom: "3rem" }}>
+            {product.imageUrl.detailImages.map((url: string, idx: number) => (
+              <BannerImage key={idx} src={url} alt={`detail-banner-${idx}`} />
+            ))}
           </div>
-
-          <TabMenu>
-            <TabButton
-              active={selectedTab === "detail"}
-              onClick={() => setSelectedTab("detail")}
+        )}
+        {selectedTab === "ingredient" && isSkinRegistered !== null && (
+          <>
+            <SkinTypeWrapper>
+              <IngredientScoreSummary itemId={Number(itemId)} />
+              <IngredientWarningSummary itemId={Number(itemId)} />
+            </SkinTypeWrapper>
+            <SkinTypeWrapper>
+              <SkinTypeRankList itemId={Number(itemId)} />
+            </SkinTypeWrapper>
+          </>
+        )}
+        {selectedTab === "review" && (
+          <ReviewWrapper>
+            <ReviewSatisfactionCard score={averageRating} />
+            <StackedBarChart itemId={Number(itemId)} />
+            <ReviewButton
+              onClick={() => navigate(`/review-write?itemId=${itemId}`)}
             >
-              {t.productDetail.detail}
-            </TabButton>
-            <TabButton
-              active={selectedTab === "ingredient"}
-              onClick={() => setSelectedTab("ingredient")}
-            >
-              {t.productDetail.analysisAndReview}
-            </TabButton>
-            <TabButton
-              active={selectedTab === "review"}
-              onClick={() => setSelectedTab("review")}
-            >
-              {t.productDetail.review}
-            </TabButton>
-          </TabMenu>
-
-          {selectedTab === "detail" && (
-            <div style={{ marginBottom: "3rem" }}>
-              <BannerImage
-                src="https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/html/crop/A000000214290/202505231611/crop0/www.themedicube.co.kr/web/upload/appfiles/ZaReJam3QiELznoZeGGkMG/f8a9f171c092ffb5025943539c750574.jpg"
-                alt="banner"
-              />
-            </div>
-          )}
-
-          {selectedTab === "ingredient" && isSkinRegistered !== null && (
-            <>
-              <SkinTypeWrapper>
-                <>
-                  <div style={{ marginTop: "0.5rem" }}>
-                    <IngredientScoreSummary safe={3} caution={1} harmful={1} />
-                    <IngredientWarningSummary />
-
-                    {/* <GroupedDonutChart /> */}
-                  </div>
-                </>
-              </SkinTypeWrapper>
-
-              <SkinTypeWrapper>
-                <SkinTypeRankList data={topSkinTypes} />
-              </SkinTypeWrapper>
-            </>
-          )}
-
-          {selectedTab === "review" && (
-            <>
-              <ReviewWrapper>
-                {/* <SectionTitle>{t.productDetail.review}</SectionTitle> */}
-
-                <ReviewSatisfactionCard score={averageRating} />
-                <StackedBarChart data={chartData} />
-                <ReviewButton onClick={() => navigate("/review-write")}>
-                  <Label>{t.productDetail.writeReview}</Label>
-                </ReviewButton>
-                {realReviews.map((r, idx) => (
-                  <ReviewCard key={idx} {...r} />
-                ))}
-              </ReviewWrapper>
-            </>
-          )}
-          <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
-        </ProductCardWrapper>
-      </PageWrapper>
-    </>
+              <Label>{t.productDetail.writeReview}</Label>
+            </ReviewButton>
+            {realReviews.length === 0 ? (
+              <div style={{ padding: "1rem", color: "#999" }}>
+                등록된 리뷰가 없습니다.
+              </div>
+            ) : (
+              realReviews.map((r, idx) => (
+                <ReviewCard key={idx} {...r} itemId={product?.id} />
+              ))
+            )}
+          </ReviewWrapper>
+        )}
+        <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
+      </ProductCardWrapper>
+    </PageWrapper>
   );
 }

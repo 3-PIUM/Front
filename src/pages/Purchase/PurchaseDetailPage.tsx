@@ -1,7 +1,27 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
+
+interface PurchaseDetailUser {
+  nickname: string;
+  profileImg: string;
+  email: string;
+  birth: string;
+  gender: string;
+  skinType: string;
+  personalType: string;
+  mbtiCode: string;
+  area: string;
+  language: string;
+}
+
+interface PurchaseDetailResponse {
+  detailInfoList: PurchaseDetailUser[];
+  totalPrice: number;
+}
 
 const PageWrapper = styled.div`
   padding: 4rem 1rem;
@@ -105,24 +125,50 @@ const Option = styled.span`
 
 export default function PurchaseDetailPage() {
   const { state } = useLocation();
-  const { purchase } = state;
+  const purchase = state?.purchase;
   const { t } = useLocale();
 
-  const formattedDate = purchase.date.replace(/-/g, ".");
+  const formattedDate = purchase?.date?.replace(/-/g, ".") || "";
 
-  const total = purchase.items.reduce(
-    (acc: number, item: any) =>
-      acc + item.originalPrice * (1 - item.discountRate / 100),
-    0
+  const total = (purchase?.items || []).reduce((acc: number, item: any) => {
+    const rawPrice = item.originalPrice ?? item.price ?? 0;
+    const discountRate = item.discountRate ?? 0;
+    const quantity = item.quantity ?? 1;
+    const price = rawPrice * (1 - discountRate / 100);
+    return acc + price * quantity;
+  }, 0);
+
+  const [detailData, setDetailData] = useState<PurchaseDetailResponse | null>(
+    null
   );
+
+  useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        const res = await axios.get("/purchase-history/detail", {
+          params: { date: purchase.date },
+        });
+        setDetailData(res.data.result);
+      } catch (err) {
+        console.error("상세 구매내역 불러오기 실패", err);
+      }
+    };
+
+    fetchDetail();
+  }, [purchase.date]);
 
   return (
     <>
       <TextHeader pageName={t.order.detaiTitle} />
       <PageWrapper>
         <DateText>{formattedDate}</DateText>
+        {detailData?.detailInfoList.length ? (
+          <div style={{ marginBottom: "1rem", color: "#555" }}>
+            구매자: {detailData.detailInfoList[0].nickname}
+          </div>
+        ) : null}
 
-        {purchase.items.map((item: any, idx: number) => (
+        {(purchase?.items || []).map((item: any, idx: number) => (
           <ProductWrapper key={idx}>
             <ProductBox>
               <Image src={item.imageUrl} />

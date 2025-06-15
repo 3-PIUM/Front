@@ -7,6 +7,7 @@ import TermsToggle from "../../components/common/TermsToggle";
 import Header from "../../components/common/Header";
 import { useLocale } from "../../context/LanguageContext";
 import ReviewSurveySelector from "../../components/review/ReviewSurveySelector";
+import axios from "axios";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ const Divider = styled.div`
   width: 100%;
   height: 1px;
   background-color: #e0e0e0;
-  margin: 0.5rem 0 1rem;
+  margin-top: 0.5rem;
 `;
 
 const StarRow = styled.div`
@@ -91,15 +92,10 @@ const ReviewWritePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useLocale();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    console.log("편집 중 리뷰의 설문 응답:", editingReview?.surveyAnswers);
-  }, []);
 
   const editingReview = location.state?.editReview;
+  const itemId = new URLSearchParams(location.search).get("itemId");
+  // const reviewId = editingReview?.reviewId;
 
   const [rating, setRating] = useState(editingReview?.rating || 0);
   const [text, setText] = useState(editingReview?.content || "");
@@ -108,22 +104,134 @@ const ReviewWritePage = () => {
       ? [...editingReview.images, undefined, undefined, undefined].slice(0, 4)
       : [undefined, undefined, undefined, undefined]
   );
+  const [imageFiles, setImageFiles] = useState<(File | null)[]>([
+    null,
+    null,
+    null,
+    null,
+  ]);
+  const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>(
+    editingReview?.surveyAnswers || {}
+  );
 
-  const handleSubmit = () => {
-    if (rating && text) {
-      const review = {
-        username: "나**",
-        date: new Date().toISOString().split("T")[0],
-        rating,
-        content: text,
-        images: images.filter(Boolean) as string[],
-        likes: editingReview?.likes || 0,
-        isMyReview: true,
-        surveyAnswers,
-      };
-      navigate("/product-detail", { state: { newReview: review } });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  interface Question {
+    id: string;
+    title: string;
+    options: string[];
+  }
+
+  const [surveyQuestions, setSurveyQuestions] = useState<Question[]>([]);
+
+  useEffect(() => {
+    if (!itemId) return;
+    const fetchSurvey = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/review/${itemId}/option`
+        );
+        const list: any[] = res.data.result.reviewOptionList;
+        console.log("✅ 백엔드로부터 받아온 질문 수:", list.length);
+        console.log("📦 질문 내용:", list);
+        setSurveyQuestions(
+          list.map((q) => ({
+            id: q.name,
+            title: q.name,
+            options: q.options,
+          }))
+        );
+      } catch (err) {
+        console.error("설문 질문 불러오기 실패", err);
+      }
+    };
+    fetchSurvey();
+  }, [itemId]);
+
+  const handleSubmit = async () => {
+    if (!itemId) return alert("itemId가 없습니다");
+    if (!text.trim()) return alert("리뷰 내용을 입력해주세요.");
+    if (!rating) return alert("별점을 선택해주세요.");
+
+    const formData = new FormData();
+    const data = {
+      content: text,
+      rating,
+      options: surveyQuestions
+        .filter((q) => surveyAnswers[q.id]) // 선택된 질문만
+        .map((q) => ({
+          name: q.id,
+          selectOption: surveyAnswers[q.id],
+        })),
+    };
+    formData.append("data", JSON.stringify(data));
+
+    try {
+      const debugData = formData.get("data");
+      if (debugData) {
+        const parsed = JSON.parse(debugData as string);
+        console.log("🔍 JSON.parse(data) =", parsed);
+      }
+    } catch (err) {
+      console.error("❌ JSON parse error", err);
+    }
+
+    const hasFile = imageFiles.some((file) => file instanceof File);
+    if (!hasFile) {
+      formData.append("images", new Blob([], { type: "image/jpeg" }));
     } else {
-      alert(t.review.alert);
+      imageFiles.forEach((file) => {
+        if (file instanceof File) {
+          formData.append("images", file);
+        }
+      });
+    }
+
+    try {
+      console.log("📤 formData 전송 준비 완료");
+      for (const pair of formData.entries()) {
+        console.log("🧾 formData entry:", pair[0], pair[1]);
+      }
+
+      const token = sessionStorage.getItem("accessToken");
+      const url = editingReview
+        ? `http://localhost:8080/review/${editingReview.reviewId}/edit`
+        : `http://localhost:8080/review/${itemId}/create`;
+
+      const res = await axios({
+        method: editingReview ? "patch" : "post",
+        url,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+      });
+
+      const result = res.data.result;
+      navigate(`/product-detail?itemId=${itemId}`, {
+        state: {
+          newReview: {
+            reviewId: result.reviewId,
+            username: result.memberId,
+            date: new Date(result.updatedAt).toLocaleDateString(),
+            rating: result.rating,
+            content: result.content,
+            images: result.reviewImages,
+            likes: result.recommend || 0,
+            isMyReview: true,
+          },
+        },
+      });
+    } catch (err) {
+      console.error(editingReview ? "리뷰 수정 실패" : "리뷰 등록 실패", err);
+      alert(
+        editingReview
+          ? "리뷰 수정 중 문제가 발생했습니다."
+          : "리뷰 등록 중 문제가 발생했습니다."
+      );
     }
   };
 
@@ -133,6 +241,10 @@ const ReviewWritePage = () => {
       const newImages = [...images];
       newImages[index] = reader.result as string;
       setImages(newImages);
+
+      const newFiles = [...imageFiles];
+      newFiles[index] = file;
+      setImageFiles(newFiles);
     };
     reader.readAsDataURL(file);
   };
@@ -141,11 +253,11 @@ const ReviewWritePage = () => {
     const newImages = [...images];
     newImages[index] = undefined;
     setImages(newImages);
-  };
 
-  const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>(
-    editingReview?.surveyAnswers || {}
-  );
+    const newFiles = [...imageFiles];
+    newFiles[index] = null;
+    setImageFiles(newFiles);
+  };
 
   return (
     <PageWrapper>
@@ -167,29 +279,10 @@ const ReviewWritePage = () => {
           onChange={(e) => setText(e.target.value)}
           placeholder={t.review.reviewPlaceholder}
         />
+
         <SurveySection>
           <ReviewSurveySelector
-            questions={[
-              {
-                id: "skinType",
-                title: "어떤 피부타입에 사용하면 좋은가요?",
-                options: ["건성에 좋아요", "복합성에 좋아요", "지성에 좋아요"],
-              },
-              {
-                id: "skinConcern",
-                title: "어떤 피부고민에 좋은가요?",
-                options: [
-                  "보습에 좋아요",
-                  "진정에 좋아요",
-                  "주름/미백에 좋아요",
-                ],
-              },
-              {
-                id: "sensitivity",
-                title: "피부에 닿는 자극의 정도가 어때요?",
-                options: ["자극없이 순해요", "보통이에요", "자극이 느껴져요"],
-              },
-            ]}
+            questions={surveyQuestions}
             onChange={setSurveyAnswers}
             initialAnswers={editingReview?.surveyAnswers || {}}
           />
@@ -207,7 +300,9 @@ const ReviewWritePage = () => {
       </ContentWrapper>
 
       <StickyFooter>
-        <SubmitButton onClick={handleSubmit}>{t.review.submit}</SubmitButton>
+        <SubmitButton onClick={handleSubmit}>
+          {editingReview ? "수정하기" : t.review.submit}
+        </SubmitButton>
       </StickyFooter>
     </PageWrapper>
   );

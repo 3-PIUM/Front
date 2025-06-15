@@ -231,7 +231,7 @@
     },
     "addCart": "Add to cart",
     "detail": "Product details",
-    "analysisAndReview": "Ingredient analysis",
+    "ingredient": "Ingredient analysis",
     "selectProduct": "Please select a product",
     "won": "$",
     "scoreTitle": "Ingredient Score",

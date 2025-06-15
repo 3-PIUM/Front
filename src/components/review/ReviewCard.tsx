@@ -1,18 +1,22 @@
 import styled from "styled-components";
 import StarRating from "../product/StarRating";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface ReviewCardProps {
+  reviewId: number;
   username: string;
+  memberId: number;
   date: string;
   rating: number;
   content: string;
   images: string[];
   likes: number;
-  isMyReview: boolean;
+  liked: boolean;
   surveyAnswers?: Record<string, string>;
+  itemId: number;
 }
 
 const Card = styled.div`
@@ -58,7 +62,6 @@ const BottomRow = styled.div`
 const ReviewImage = styled.img`
   width: 70px;
   height: 70px;
-  /* object-fit: cover; */
   border-radius: 6px;
 `;
 
@@ -89,6 +92,7 @@ const LikeIcon = styled.span<{ $liked?: boolean }>`
   color: ${({ $liked }) => ($liked ? "#e6005a" : "#999")};
   font-weight: normal;
 `;
+
 const UsernameText = styled.span`
   font-size: 1.2rem;
   font-weight: bold;
@@ -123,36 +127,111 @@ const ModalImage = styled.img`
 `;
 
 const ReviewCard = ({
+  reviewId,
   username,
+  memberId,
   date,
   rating,
   content,
   images,
   likes,
-  isMyReview,
+  liked: initialLiked,
   surveyAnswers,
+  itemId,
 }: ReviewCardProps) => {
   const [likeCount, setLikeCount] = useState<number>(likes);
-  const [liked, setLiked] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null); // ⭐ 모달용
-
+  const [liked, setLiked] = useState<boolean>(initialLiked);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleLike = () => {
-    setLikeCount((prev) => (liked ? prev - 1 : prev + 1));
-    setLiked((prev) => !prev);
+  let myMemberId: number | null = null;
+  try {
+    const token = sessionStorage.getItem("accessToken");
+    if (token) {
+      const payloadBase64 = token.split(".")[1];
+      const payload = JSON.parse(atob(payloadBase64));
+      myMemberId = payload.memberId ?? null;
+    }
+  } catch (e) {
+    console.error("토큰 디코딩 실패:", e);
+  }
+  console.log("🧾 myMemberId:", myMemberId);
+  console.log("🧾 review memberId:", memberId);
+  const isMyReview = Number(memberId) === Number(myMemberId);
+  console.log(
+    "✅ isMyReview:",
+    isMyReview,
+    "👉 memberId:",
+    memberId,
+    "👉 myMemberId:",
+    myMemberId
+  );
+
+  const handleDelete = async () => {
+    if (!window.confirm("리뷰를 삭제하시겠습니까?")) return;
+    try {
+      const token = sessionStorage.getItem("accessToken");
+      await axios.delete(`http://localhost:8080/review/${reviewId}/remove`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert("삭제되었습니다.");
+      window.location.reload();
+    } catch (err) {
+      console.error("리뷰 삭제 실패", err);
+    }
+  };
+
+  const handleLike = async () => {
+    const token = sessionStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    const newLiked = !liked;
+    const type = newLiked ? "increase" : "decrease";
+
+    try {
+      const res = await axios.patch(
+        `http://localhost:8080/review/recommend/${reviewId}/${type}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (res.data.isSuccess) {
+        setLiked(newLiked);
+        setLikeCount((prev) => (newLiked ? prev + 1 : prev - 1));
+      } else {
+        alert("서버 응답 오류: 추천 상태 변경 실패");
+      }
+    } catch (err: any) {
+      console.error("리뷰 추천 실패", err.response?.data ?? err);
+      alert("리뷰 추천 처리 중 오류가 발생했습니다.");
+    }
   };
 
   const reviewData = {
+    reviewId,
     username,
+    memberId,
     date,
     rating,
     content,
     images,
     likes,
-    isMyReview,
     surveyAnswers,
+    itemId,
   };
+
+  console.log("📝 Rendering review:", {
+    reviewId,
+    username,
+    memberId,
+    isMyReview: memberId === myMemberId,
+  });
 
   return (
     <>
@@ -177,7 +256,7 @@ const ReviewCard = ({
                   key={idx}
                   src={img}
                   alt={`review-${idx}`}
-                  onClick={() => setSelectedImage(img)} // ⭐ 이미지 클릭 시
+                  onClick={() => setSelectedImage(img)}
                 />
               ))}
             </ImageGrid>
@@ -188,15 +267,19 @@ const ReviewCard = ({
           <ActionRowWrapper>
             <ActionRow>
               {isMyReview ? (
-                <ActionText
-                  onClick={() =>
-                    navigate("/review-write", {
-                      state: { editReview: { ...reviewData, surveyAnswers } }, // ✅ 반드시 포함
-                    })
-                  }
-                >
-                  수정
-                </ActionText>
+                <>
+                  <ActionText
+                    onClick={() =>
+                      navigate(`/review-write?itemId=${reviewData.itemId}`, {
+                        state: { editReview: reviewData },
+                      })
+                    }
+                  >
+                    수정
+                  </ActionText>
+                  <span style={{ margin: "0 6px" }}>|</span>
+                  <ActionText onClick={handleDelete}>삭제</ActionText>
+                </>
               ) : (
                 <ActionText onClick={() => alert("신고가 접수되었습니다.")}>
                   신고
@@ -207,7 +290,6 @@ const ReviewCard = ({
         </BottomRow>
       </Card>
 
-      {/* ⭐ 모달 구현 */}
       {selectedImage && (
         <ModalBackdrop onClick={() => setSelectedImage(null)}>
           <ModalImage src={selectedImage} />

@@ -10,7 +10,6 @@ const CardWrapper = styled.div`
 const ImageWrapper = styled.div`
   position: relative;
   display: flex;
-  /* margin-top: 2.8rem; */
 `;
 
 const ProductImage = styled.img`
@@ -47,19 +46,16 @@ const Discount = styled.div`
   font-weight: bold;
 `;
 
+const OriginalPrice = styled.div`
+  font-size: 14px;
+  text-decoration: line-through;
+  color: #999;
+`;
+
 const Price = styled.div`
   font-size: 16px;
   font-weight: bold;
 `;
-
-interface ProductCardProps {
-  brand: string;
-  title: string;
-  originalPrice: number;
-  currentPrice: number;
-  imageUrl: string;
-  stock: number;
-}
 
 const InfoRow = styled.div`
   display: flex;
@@ -75,18 +71,25 @@ const Stock = styled.div`
   margin-top: 0.5rem;
 `;
 
+interface ProductCardProps {
+  brand: string;
+  name: string;
+  originalPrice: number;
+  discountedPrice: number;
+  discountRate: number;
+  imageUrl: string;
+  stock: number;
+}
+
 const ProductCard = ({
   brand,
-  title,
+  name,
   originalPrice,
-  currentPrice,
+  discountedPrice,
+  discountRate,
   imageUrl,
   stock,
 }: ProductCardProps) => {
-  const discountRate = Math.round(
-    ((originalPrice - currentPrice) / originalPrice) * 100
-  );
-
   const { t } = useLocale();
 
   return (
@@ -96,7 +99,7 @@ const ProductCard = ({
       </ImageWrapper>
       <InfoWrapper>
         <Brand>{brand}</Brand>
-        <Title>{title}</Title>
+        <Title>{name}</Title>
         <InfoRow>
           <Stock>
             {t.productDetail.stockQuantity} {stock}
@@ -105,11 +108,27 @@ const ProductCard = ({
               : t.productDetail.quantityNumber.more}
           </Stock>
           <PriceWrapper>
-            <Discount>{discountRate}%</Discount>
-            <Price>
-              {currentPrice.toLocaleString()}
-              {t.productDetail.won}
-            </Price>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-end",
+              }}
+            >
+              <OriginalPrice>
+                {originalPrice.toLocaleString()}
+                {t.productDetail.won}
+              </OriginalPrice>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "6px" }}
+              >
+                <Discount>{discountRate}%</Discount>
+                <Price>
+                  {discountedPrice.toLocaleString()}
+                  {t.productDetail.won}
+                </Price>
+              </div>
+            </div>
           </PriceWrapper>
         </InfoRow>
       </InfoWrapper>

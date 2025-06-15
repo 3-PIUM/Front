@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
+import axios from "axios";
 
 const PageWrapper = styled.div`
   width: 100%;
@@ -49,40 +50,32 @@ const ScanPage = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reader = useRef(new BrowserMultiFormatReader());
-  const scanCooldownRef = useRef(false); // 쿨다운 중인지 여부
+  const scanCooldownRef = useRef(false);
   const { t } = useLocale();
 
-  const dummyDatabase: Record<string, any> = {
-    "8809695670114": {
-      id: "p001",
-      name: "쿨앤 더 주시 래스팅 틴트",
-      brand: "올리브영단독",
-      imageUrl:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021429012ko.jpg?qt=80",
-      originalPrice: 12900,
-      discountRate: 23,
-    },
-    "880000000001": {
-      id: "p002",
-      name: "쿨앤 더 주시 래스팅 틴트",
-      brand: "아누아",
-      imageUrl:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0021/A00000021429012ko.jpg?qt=80",
-      originalPrice: 12900,
-      discountRate: 23,
-    },
-  };
-
-  const handleDetectedProduct = (barcode: string) => {
+  const handleDetectedBarcode = async (itemId: string) => {
     if (scanCooldownRef.current) return;
+    scanCooldownRef.current = true;
 
-    const product = dummyDatabase[barcode];
-    if (product) {
-      scanCooldownRef.current = true;
+    try {
+      const res = await axios.get(`http://localhost:8080/item/${itemId}/info`, {
+        headers: { Accept: "application/json" },
+        withCredentials: true,
+      });
+
+      const product = res.data.result;
       localStorage.setItem("scannedProduct", JSON.stringify(product));
-      navigate("/product-detail");
-
-      // 쿨다운 해제 (1.5초 후)
+      navigate(`/product-detail?itemId=${itemId}`);
+    } catch (err: any) {
+      if (err.response) {
+        console.warn(
+          `서버 응답 오류 ${err.response.status}:`,
+          err.response.data
+        );
+      } else {
+        console.error("네트워크/파싱 오류:", err.message);
+      }
+    } finally {
       setTimeout(() => {
         scanCooldownRef.current = false;
       }, 1000);
@@ -118,7 +111,7 @@ const ScanPage = () => {
       try {
         const result = await reader.current.decodeFromCanvas(canvas);
         if (result) {
-          handleDetectedProduct(result.getText());
+          handleDetectedBarcode(result.getText());
         }
       } catch {
         // Not found → 무시
