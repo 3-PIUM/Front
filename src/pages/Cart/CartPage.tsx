@@ -361,7 +361,7 @@ const CartPage = () => {
     );
     setCartItems((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, option: newOption } : item
+        getKey(item.id) === id ? { ...item, option: newOption } : item
       )
     );
     setShowOptionFor(null);

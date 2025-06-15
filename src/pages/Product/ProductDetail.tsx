@@ -101,7 +101,10 @@ export default function ProductDetail() {
   const [isSkinRegistered, setIsSkinRegistered] = useState<boolean | null>(
     null
   );
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
+  const [selectedOptionName, setSelectedOptionName] = useState<string | null>(
+    null
+  );
   const pageWrapperRef = useRef<HTMLDivElement>(null);
   const [product, setProduct] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -220,11 +223,7 @@ export default function ProductDetail() {
     : 0;
 
   const handleAddToCart = async () => {
-    const selected = product.options
-      .map((opt: string, idx: number) => ({ id: `option-${idx}`, name: opt }))
-      .find((o) => o.id === selectedOption);
-
-    if (!selected) {
+    if (!selectedOptionName) {
       alert(t.productDetail.selectOption);
       return;
     }
@@ -240,7 +239,7 @@ export default function ProductDetail() {
         `http://localhost:8080/cart/items/${Number(product.id)}`,
         {
           quantity: 1,
-          option: selected.name,
+          itemOption: selectedOptionName,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -280,7 +279,10 @@ export default function ProductDetail() {
             discountedPrice: product.discountedPrice,
             discountRate: product.discountRate,
           }))}
-          onChange={setSelectedOption}
+          onChange={(id: string, name: string) => {
+            setSelectedOptionId(id);
+            setSelectedOptionName(name); // name 저장
+          }}
         />
         <div style={{ padding: "0 1rem" }}>
           <Button label={t.productDetail.addCart} onClick={handleAddToCart} />

@@ -14,7 +14,7 @@ interface ProductOption {
 
 interface ProductOptionSelectorProps {
   options: ProductOption[];
-  onChange: (id: string) => void;
+  onChange: (id: string, name: string) => void;
 }
 
 const Wrapper = styled.div`
@@ -93,9 +93,12 @@ export default function ProductOptionSelector({
 
   const toggle = () => setOpen((prev) => !prev);
   const handleSelect = (id: string) => {
-    setSelected(id);
-    onChange(id);
-    setOpen(false);
+    const option = options.find((opt) => opt.id === id);
+    if (option) {
+      setSelected(id);
+      onChange(id, option.name);
+      setOpen(false);
+    }
   };
 
   const selectedOption = options.find((item) => item.id === selected);
