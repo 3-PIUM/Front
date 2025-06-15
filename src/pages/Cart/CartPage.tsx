@@ -260,7 +260,6 @@ const CartPage = () => {
       } catch (err: any) {
         console.error("🛒 장바구니 불러오기 실패 axios error:", err);
         if (err.response) {
-          console.error("🔴 서버 응답 코드:", err.response.status);
           console.error("📦 err.response.data:", err.response.data);
         } else {
           console.error("⚠️ 응답 없음 또는 네트워크 에러:", err.message);
@@ -469,12 +468,43 @@ const CartPage = () => {
               <LowerInfo>
                 <LeftRow>
                   <OptionButton
-                    onClick={() => setShowOptionFor(getKey(item.id))}
+                    onClick={() => {
+                      const hasOptions =
+                        item.availableOptions &&
+                        item.availableOptions.length > 0;
+                      if (hasOptions) setShowOptionFor(getKey(item.id));
+                    }}
+                    style={{
+                      backgroundColor:
+                        item.availableOptions &&
+                        item.availableOptions.length > 0
+                          ? "#fff"
+                          : "#f0f0f0",
+                      cursor:
+                        item.availableOptions &&
+                        item.availableOptions.length > 0
+                          ? "pointer"
+                          : "not-allowed",
+                      color:
+                        item.availableOptions &&
+                        item.availableOptions.length > 0
+                          ? "inherit"
+                          : "#aaa",
+                    }}
                   >
                     {t.cart.changeOption}
                   </OptionButton>
                   <QuantityControl>
-                    <Button onClick={() => handleDecrease(item.id)}>-</Button>
+                    <Button
+                      onClick={() => handleDecrease(item.id)}
+                      disabled={item.quantity <= 1}
+                      style={{
+                        color: item.quantity <= 1 ? "#ccc" : "inherit",
+                        cursor: item.quantity <= 1 ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      -
+                    </Button>
                     <Count>{item.quantity}</Count>
                     <Button onClick={() => handleIncrease(item.id)}>+</Button>
                   </QuantityControl>

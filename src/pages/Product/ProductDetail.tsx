@@ -173,7 +173,7 @@ export default function ProductDetail() {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
         const reviews = res.data.result.reviews;
-        const myMemberId = Number(localStorage.getItem("memberId"));
+        const currentMemberId = res.data.result.currentMemberId; // assume backend returns this
 
         const mappedReviews = reviews.map((r: any) => ({
           reviewId: r.reviewId,
@@ -192,7 +192,7 @@ export default function ProductDetail() {
             },
             {}
           ),
-          isMyReview: myMemberId === r.memberId,
+          isMyReview: currentMemberId === r.memberId,
         }));
 
         setRealReviews(mappedReviews);
@@ -223,7 +223,7 @@ export default function ProductDetail() {
     : 0;
 
   const handleAddToCart = async () => {
-    if (!selectedOptionName) {
+    if (product.options.length > 0 && !selectedOptionName) {
       alert(t.productDetail.selectOption);
       return;
     }
@@ -239,7 +239,8 @@ export default function ProductDetail() {
         `http://localhost:8080/cart/items/${Number(product.id)}`,
         {
           quantity: 1,
-          itemOption: selectedOptionName,
+          itemOption:
+            product.options.length > 0 ? selectedOptionName : undefined,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -271,19 +272,36 @@ export default function ProductDetail() {
       </HeaderBar>
       <ProductCardWrapper ref={pageWrapperRef}>
         <ProductCard {...product} imageUrl={product.imageUrl.mainImage} />
-        <ProductOptionSelector
-          options={product.options.map((opt: string, idx: number) => ({
-            id: `option-${idx}`,
-            imageUrl: product.imageUrl.mainImage,
-            name: `${opt}`,
-            discountedPrice: product.discountedPrice,
-            discountRate: product.discountRate,
-          }))}
-          onChange={(id: string, name: string) => {
-            setSelectedOptionId(id);
-            setSelectedOptionName(name); // name 저장
-          }}
-        />
+        {/* Option name display (e.g., [브랜드명] 옵션1) */}
+        {product.options.length > 0 &&
+          selectedOptionName &&
+          selectedOptionName !== "default" &&
+          selectedOptionName.trim() !== "" && (
+            <div
+              style={{
+                // padding: "0 1rem",
+                // marginTop: "0.5rem",
+                fontWeight: 500,
+              }}
+            >
+              {/* {[`[${product.brand}] ${selectedOptionName}`]} */}
+            </div>
+          )}
+        {product.options.length > 0 && (
+          <ProductOptionSelector
+            options={product.options.map((opt: string, idx: number) => ({
+              id: `option-${idx}`,
+              imageUrl: product.imageUrl.mainImage,
+              name: `${opt}`,
+              discountedPrice: product.discountedPrice,
+              discountRate: product.discountRate,
+            }))}
+            onChange={(id: string, name: string) => {
+              setSelectedOptionId(id);
+              setSelectedOptionName(name); // name 저장
+            }}
+          />
+        )}
         <div style={{ padding: "0 1rem" }}>
           <Button label={t.productDetail.addCart} onClick={handleAddToCart} />
         </div>
@@ -320,11 +338,58 @@ export default function ProductDetail() {
           <ReviewWrapper>
             <ReviewSatisfactionCard score={averageRating} />
             <StackedBarChart itemId={Number(itemId)} />
-            <ReviewButton
-              onClick={() => navigate(`/review-write?itemId=${itemId}`)}
-            >
-              <Label>{t.productDetail.writeReview}</Label>
-            </ReviewButton>
+            {(() => {
+              const token = sessionStorage.getItem("accessToken");
+              let currentMemberId: number | null = null;
+              if (token) {
+                try {
+                  const payloadBase64 = token.split(".")[1];
+                  const payload = JSON.parse(atob(payloadBase64));
+                  currentMemberId = payload.memberId ?? null;
+                } catch (e) {
+                  console.error("토큰 디코딩 실패:", e);
+                }
+              }
+
+              const hasWrittenReview = realReviews.some(
+                (r) => Number(r.memberId) === Number(currentMemberId)
+              );
+
+              console.log("✅ currentMemberId:", currentMemberId);
+              console.log(
+                "✅ review memberId list:",
+                realReviews.map((r) => r.memberId)
+              );
+              console.log("✅ hasWrittenReview:", hasWrittenReview);
+
+              if (hasWrittenReview) {
+                return (
+                  <ReviewButton
+                    style={{
+                      backgroundColor: "#eee",
+                      color: "#aaa",
+                      cursor: "not-allowed",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <Label>{t.productDetail.writeReview}</Label>
+                  </ReviewButton>
+                );
+              }
+
+              return (
+                <ReviewButton
+                  onClick={() => navigate(`/review-write?itemId=${itemId}`)}
+                  style={{
+                    backgroundColor: "#f8f8f8",
+                    color: "#222",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Label>{t.productDetail.writeReview}</Label>
+                </ReviewButton>
+              );
+            })()}
             {realReviews.length === 0 ? (
               <div style={{ padding: "1rem", color: "#999" }}>
                 등록된 리뷰가 없습니다.

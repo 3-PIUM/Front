@@ -141,7 +141,6 @@ export default function WithdrawalPage() {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        data: { reason },
       });
 
       console.log("탈퇴 성공", response.status);

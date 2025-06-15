@@ -31,6 +31,8 @@ import CategoryList from "./pages/Category/CategoryList";
 import EditProfile from "./pages/MyPage/EditProfile";
 import EditPassword from "./pages/MyPage/EditPassword";
 import FindPassword from "./pages/FindPassword";
+import PostMachinePage from "./pages/Purchase/QRPOSPage";
+import PaymentCompletePage from "./pages/Purchase/PaymentCompletePage";
 
 const routes = [
   // DefaultLayout
@@ -43,6 +45,8 @@ const routes = [
   { path: "/mypage/language", element: <SettingLanguange /> },
   { path: "/ingredient-detail", element: <IngredientDetail /> },
   { path: "/chatbot", element: <ChatbotPage /> },
+  { path: "/pos", element: <PostMachinePage /> },
+  { path: "payment-complete", element: <PaymentCompletePage /> },
   {
     path: "/mypage/personalcolor",
     element: <MypagePersonalColor />,
