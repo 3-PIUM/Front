@@ -179,25 +179,25 @@
         {
           "id": 1,
           "option": "봄 웜",
-          "value": "봄_웜",
+          "value": "봄웜",
           "colors": ["#FFD8A9", "#FFC0A9", "#FFE6CC"]
         },
         {
           "id": 2,
           "option": "여름 쿨",
-          "value": "여름_쿨",
+          "value": "여름쿨",
           "colors": ["#C3D5FF", "#E0B5DB", "#A4B8D1"]
         },
         {
           "id": 3,
           "option": "가을 웜",
-          "value": "가을_웜",
+          "value": "가을웜",
           "colors": ["#CFA36E", "#A06045", "#E2C1A0"]
         },
         {
           "id": 4,
           "option": "겨울 쿨",
-          "value": "겨울_쿨",
+          "value": "겨울쿨",
           "colors": ["#C5CBE1", "#B4A4DD", "#333C57"]
         }
       ],
