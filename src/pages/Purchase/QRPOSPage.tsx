@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const PageWrapper = styled.div`
   position: fixed;
@@ -47,6 +49,14 @@ const Description = styled.p`
   text-align: center;
   line-height: 1.4;
 `;
+const ItemName = styled.span`
+  max-width: 16rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: bottom;
+`;
 
 const ItemList = styled.div`
   flex: 1;
@@ -93,29 +103,6 @@ const PayButton = styled.button`
   margin-top: 1rem;
 `;
 
-// QRPOSPage에서 사용할 더미 데이터 예시
-export const dummyPOSData = [
-  {
-    id: 1,
-    name: "[정정보송] 차앤박(CNP) 더마 쉴드 선스틱 SPF50+ 18g",
-    quantity: 2,
-    discountedPrice: 14900,
-  },
-  {
-    id: 2,
-    name: "[울영특가] 메디큐브 부스터 프로 쿠로미 에디션",
-    quantity: 1,
-    discountedPrice: 339000,
-  },
-  {
-    id: 3,
-    name: "[한정수량] 닥터지 레드 블레미쉬 수딩크림 70ml",
-    quantity: 3,
-    discountedPrice: 19800,
-  },
-];
-
-// 총 수량과 총 금액 계산 함수
 export const calculatePOSTotal = (
   items: any[]
 ): { totalQuantity: number; totalPrice: number } => {
@@ -132,7 +119,47 @@ export const calculatePOSTotal = (
 const QRPOSPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const selectedItems = location.state?.selectedItems || dummyPOSData;
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
+  const cartItemIds = location.state?.cartItemIds;
+  const memberId = JSON.parse(sessionStorage.getItem("memberId") || "2");
+  const query = new URLSearchParams(location.search);
+  const cartItemIdsFromQuery = query.get("cartItemIds");
+  const tokenFromQuery = query.get("token");
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
+      if (!token || !cartItemIdsFromQuery) return;
+
+      try {
+        const res = await axios.get(`http://localhost:8080/cart/items`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const items = res.data.result?.items || [];
+        const selected = items
+          .filter((item: any) =>
+            cartItemIdsFromQuery.split(",").includes(String(item.cartItemId))
+          )
+          .map((item: any) => ({
+            id: item.cartItemId,
+            name: item.itemName,
+            quantity: item.quantity,
+            discountedPrice: item.salePrice,
+          }));
+        setSelectedItems(selected);
+      } catch (err) {
+        console.error("❗장바구니 항목 불러오기 실패", err);
+      }
+    };
+
+    if (!location.state?.selectedItems && cartItemIdsFromQuery) {
+      fetchCartItems();
+    } else if (location.state?.selectedItems) {
+      setSelectedItems(location.state.selectedItems);
+    }
+  }, [location.state, cartItemIdsFromQuery, tokenFromQuery]);
 
   const totalQuantity = selectedItems.reduce(
     (sum: number, item: any) => sum + item.quantity,
@@ -143,17 +170,39 @@ const QRPOSPage = () => {
     0
   );
 
+  const handlePay = async () => {
+    try {
+      const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
+      const idsToUse = cartItemIds || cartItemIdsFromQuery;
+      if (!token || !idsToUse) return;
+
+      await axios.post(
+        `http://localhost:8080/cart/pay/${memberId}?cartItemIds=${idsToUse}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      navigate("/payment-complete");
+    } catch (err) {
+      console.error("💥 결제 실패:", err);
+      alert("결제 중 문제가 발생했습니다.");
+    }
+  };
+
   return (
     <PageWrapper>
       <LeftPanel>
         <h2 style={{ color: "#222", fontWeight: "bold" }}>
-          상품의 QR코드를 스캔해주세요
+          장바구니 상품이 불러와졌습니다.
         </h2>
         <QRImage />
         <Description>
-          QR코드를 스캔하면 상품이 오른쪽 목록에 추가됩니다.
+          아래의 주문 내역을 확인해 주세요.
           <br />
-          결제 버튼을 눌러 결제를 진행하세요.
+          문제가 없다면 아래 버튼을 눌러 결제를 완료해 주세요.
         </Description>
       </LeftPanel>
 
@@ -161,12 +210,9 @@ const QRPOSPage = () => {
         <ItemList>
           {selectedItems.map((item: any, idx: number) => (
             <ItemRow key={idx}>
+              <ItemName>{item.name}</ItemName>
               <span>
-                {item.name} X {item.quantity}개
-              </span>
-
-              <span></span>
-              <span>
+                {item.quantity}개 X&nbsp;
                 {(item.quantity * item.discountedPrice).toLocaleString()}원
               </span>
             </ItemRow>
@@ -182,9 +228,7 @@ const QRPOSPage = () => {
             <span>총 결제 금액</span>
             <span>{totalPrice.toLocaleString()}원</span>
           </TotalLine>
-          <PayButton onClick={() => navigate("/payment-complete")}>
-            결제하기
-          </PayButton>
+          <PayButton onClick={handlePay}>결제하기</PayButton>
         </TotalArea>
       </RightPanel>
     </PageWrapper>

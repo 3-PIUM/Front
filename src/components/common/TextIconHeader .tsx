@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { VscChevronLeft } from "react-icons/vsc";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
 
@@ -15,7 +16,6 @@ const HeaderWrap = styled.div`
   justify-content: space-between;
   background-color: ${colors.white};
   padding: 0 1rem;
-  box-sizing: border-box;
 `;
 
 const LeftIcon = styled.div`
@@ -41,10 +41,6 @@ const IconWrapper = styled.div`
   cursor: pointer;
 `;
 
-interface FullHeaderProps {
-  pageName: string;
-}
-
 const SearchOverlay = styled.div`
   position: fixed;
   top: 44px;
@@ -58,9 +54,9 @@ const SearchOverlay = styled.div`
 const SearchModal = styled.div`
   background-color: white;
   padding: 1rem;
-  /* border-radius: 8px; */
-  /* margin: 1rem; */
   z-index: 1000;
+  max-height: 80vh;
+  overflow-y: auto;
 `;
 
 const SearchInput = styled.input`
@@ -69,6 +65,7 @@ const SearchInput = styled.input`
   font-size: 1rem;
   border: 1px solid #333;
   border-radius: 4px;
+  margin-bottom: 1rem;
 
   &:focus {
     border-color: #f23477;
@@ -76,20 +73,59 @@ const SearchInput = styled.input`
   }
 `;
 
+const SearchResultItem = styled.div`
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  cursor: pointer;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 interface FullHeaderProps {
   pageName: string;
-  productList?: { id: number; name: string }[];
 }
 
-export default function FullHeader({ pageName, productList }: FullHeaderProps) {
+interface SearchResult {
+  id: number;
+  itemName: string;
+  itemImage: string;
+  originalPrice: number;
+  salePrice: number;
+  discountRate: number;
+}
+
+export default function FullHeader({ pageName }: FullHeaderProps) {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredList = productList?.filter((p) =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const { t } = useLocale();
+
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (!searchTerm) {
+        setSearchResults([]);
+        return;
+      }
+
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/item/search/list/${encodeURIComponent(
+            searchTerm
+          )}?page=0`
+        );
+        setSearchResults(res.data.result.itemSearchInfoDTOs || []);
+      } catch (err) {
+        console.error("검색 실패", err);
+      }
+    };
+
+    const delay = setTimeout(fetchSearchResults, 300); // 디바운싱
+    return () => clearTimeout(delay);
+  }, [searchTerm]);
 
   return (
     <>
@@ -118,8 +154,13 @@ export default function FullHeader({ pageName, productList }: FullHeaderProps) {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            {filteredList?.map((item) => (
-              <div key={item.id}>{item.name}</div>
+            {searchResults.map((item) => (
+              <SearchResultItem
+                key={item.id}
+                onClick={() => navigate(`/product-detail/${item.id}`)}
+              >
+                {item.itemName}
+              </SearchResultItem>
             ))}
           </SearchModal>
         </SearchOverlay>

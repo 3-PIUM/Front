@@ -157,10 +157,11 @@ const ReviewWritePage = () => {
 
     const formData = new FormData();
     const data = {
+      ...(editingReview?.reviewId && { reviewId: editingReview.reviewId }),
       content: text,
       rating,
       options: surveyQuestions
-        .filter((q) => surveyAnswers[q.id]) // 선택된 질문만
+        .filter((q) => surveyAnswers[q.id])
         .map((q) => ({
           name: q.id,
           selectOption: surveyAnswers[q.id],
@@ -179,15 +180,14 @@ const ReviewWritePage = () => {
     }
 
     const hasFile = imageFiles.some((file) => file instanceof File);
-    if (!hasFile) {
-      formData.append("images", new Blob([], { type: "image/jpeg" }));
-    } else {
+    if (hasFile) {
       imageFiles.forEach((file) => {
         if (file instanceof File) {
           formData.append("images", file);
         }
       });
     }
+    // else → images append 하지 말기!
 
     try {
       console.log("📤 formData 전송 준비 완료");

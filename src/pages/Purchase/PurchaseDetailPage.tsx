@@ -5,21 +5,18 @@ import { useLocation } from "react-router-dom";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 
-interface PurchaseDetailUser {
-  nickname: string;
-  profileImg: string;
-  email: string;
-  birth: string;
-  gender: string;
-  skinType: string;
-  personalType: string;
-  mbtiCode: string;
-  area: string;
-  language: string;
+interface PurchaseDetailItem {
+  itemId: number;
+  itemName: string;
+  imgUrl: string;
+  price: number;
+  quantity: number;
+  itemOption: string;
+  discountRate: number;
 }
 
 interface PurchaseDetailResponse {
-  detailInfoList: PurchaseDetailUser[];
+  detailInfoList: PurchaseDetailItem[];
   totalPrice: number;
 }
 
@@ -39,12 +36,15 @@ const ProductWrapper = styled.div`
 
 const ProductBox = styled.div`
   display: flex;
-  margin-top: 0.6rem;
+  margin-top: 1rem;
+  align-items: flex-start;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
 `;
 
 const Image = styled.img`
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 8px;
   object-fit: cover;
   flex-shrink: 0;
@@ -55,6 +55,8 @@ const InfoWrapper = styled.div`
   flex-direction: column;
   flex: 1;
   margin-left: 1rem;
+  min-width: 0;
+  overflow: hidden;
 `;
 
 const Name = styled.p`
@@ -62,6 +64,10 @@ const Name = styled.p`
   font-weight: 500;
   color: #222;
   line-height: 1.4;
+  word-break: break-word;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Quantity = styled.span`
@@ -75,10 +81,9 @@ const PriceBox = styled.div`
   flex-direction: row;
   align-items: flex-end;
   white-space: nowrap;
-  align-self: flex-end;
-  /* margin-top: 0.5rem; */
+  margin-top: 0.3rem;
   gap: 0.25rem;
-  margin-left: 14rem;
+  justify-content: flex-end;
 `;
 
 const Price = styled.span`
@@ -130,14 +135,6 @@ export default function PurchaseDetailPage() {
 
   const formattedDate = purchase?.date?.replace(/-/g, ".") || "";
 
-  const total = (purchase?.items || []).reduce((acc: number, item: any) => {
-    const rawPrice = item.originalPrice ?? item.price ?? 0;
-    const discountRate = item.discountRate ?? 0;
-    const quantity = item.quantity ?? 1;
-    const price = rawPrice * (1 - discountRate / 100);
-    return acc + price * quantity;
-  }, 0);
-
   const [detailData, setDetailData] = useState<PurchaseDetailResponse | null>(
     null
   );
@@ -145,9 +142,16 @@ export default function PurchaseDetailPage() {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const res = await axios.get("/purchase-history/detail", {
-          params: { date: purchase.date },
-        });
+        const token = sessionStorage.getItem("accessToken");
+        const res = await axios.get(
+          "http://localhost:8080/purchase-history/detail",
+          {
+            params: { date: purchase.date },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setDetailData(res.data.result);
       } catch (err) {
         console.error("상세 구매내역 불러오기 실패", err);
@@ -162,41 +166,38 @@ export default function PurchaseDetailPage() {
       <TextHeader pageName={t.order.detaiTitle} />
       <PageWrapper>
         <DateText>{formattedDate}</DateText>
-        {detailData?.detailInfoList.length ? (
-          <div style={{ marginBottom: "1rem", color: "#555" }}>
-            구매자: {detailData.detailInfoList[0].nickname}
-          </div>
-        ) : null}
 
-        {(purchase?.items || []).map((item: any, idx: number) => (
+        {(detailData?.detailInfoList || []).map((item, idx) => (
           <ProductWrapper key={idx}>
             <ProductBox>
-              <Image src={item.imageUrl} />
+              <Image src={item.imgUrl} />
               <InfoWrapper>
-                <Name>{item.name}</Name>
-                {item.option && <Option>{item.option}</Option>}
+                <Name>{item.itemName}</Name>
+                {item.itemOption && item.itemOption !== "default" && (
+                  <Option>{item.itemOption}</Option>
+                )}
                 <Quantity>
                   {item.quantity || 1}{" "}
                   {item.quantity === 1
                     ? t.order.quantityNumber.one
                     : t.order.quantityNumber.more}
                 </Quantity>
+                <PriceBox>
+                  <Discount>{item.discountRate}%</Discount>
+                  <Price>
+                    {(item.price || 0).toLocaleString()}
+                    {t.order.won}
+                  </Price>
+                </PriceBox>
               </InfoWrapper>
             </ProductBox>
-            <PriceBox>
-              <Discount>{item.discountRate}%</Discount>
-              <Price>
-                {item.originalPrice.toLocaleString()}
-                {t.order.won}
-              </Price>
-            </PriceBox>
           </ProductWrapper>
         ))}
 
         <TotalWrapper>
           <TotalLabel>{t.order.totalAmount}</TotalLabel>
           <TotalPrice>
-            {Math.round(total).toLocaleString()}
+            {(detailData?.totalPrice || 0).toLocaleString()}
             {t.order.won}
           </TotalPrice>
         </TotalWrapper>

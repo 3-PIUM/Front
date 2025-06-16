@@ -3,8 +3,9 @@ import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import colors from "../../styles/colors";
 import { HiLocationMarker } from "react-icons/hi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
+import axios from "axios";
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -16,6 +17,7 @@ const HeaderWrap = styled.div`
   background-color: ${colors.white};
   padding: 0 1rem;
   box-sizing: border-box;
+  z-index: 100;
 `;
 
 const LogoWrap = styled.div`
@@ -29,6 +31,7 @@ const RightIcons = styled.div`
 
 const IconWrapper = styled.div`
   font-size: 1.2rem;
+  cursor: pointer;
 `;
 
 const SearchOverlay = styled.div`
@@ -43,8 +46,10 @@ const SearchOverlay = styled.div`
 
 const SearchModal = styled.div`
   background-color: white;
-  padding: 1rem;
+  padding-top: 2.8rem;
   z-index: 100;
+  max-height: 80vh;
+  overflow-y: auto;
 `;
 
 const SearchInput = styled.input`
@@ -61,28 +66,56 @@ const SearchInput = styled.input`
 `;
 
 const ResultItem = styled.div`
-  margin-top: 0.5rem;
+  margin: 0.5rem 1rem;
   font-size: 0.9rem;
   color: #333;
+  cursor: pointer;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
+
+interface SearchResult {
+  id: number;
+  itemName: string;
+}
 
 interface LogoHeaderProps {
   onStoreClick?: () => void; // 모달 제어 함수
-  productList: { id: number; name: string }[];
 }
 
-export default function LogoHeader({
-  onStoreClick,
-  productList,
-}: LogoHeaderProps) {
+export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
   const navigate = useNavigate();
+  const { t } = useLocale();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
-  const filteredList = productList.filter((p) =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  const { t } = useLocale();
+  useEffect(() => {
+    const fetchSearch = async () => {
+      if (!searchTerm) {
+        setSearchResults([]);
+        return;
+      }
+
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/item/search/list/${encodeURIComponent(
+            searchTerm
+          )}?page=0`
+        );
+        setSearchResults(res.data.result.itemSearchInfoDTOs || []);
+      } catch (err) {
+        console.error("검색 실패", err);
+      }
+    };
+
+    const delay = setTimeout(fetchSearch, 300); // debounce
+    return () => clearTimeout(delay);
+  }, [searchTerm]);
 
   return (
     <>
@@ -111,8 +144,16 @@ export default function LogoHeader({
               autoFocus
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            {filteredList.map((item) => (
-              <ResultItem key={item.id}>{item.name}</ResultItem>
+            {searchResults.map((item) => (
+              <ResultItem
+                key={item.id}
+                onClick={() => {
+                  navigate(`/product-detail/${item.id}`);
+                  setIsSearchOpen(false);
+                }}
+              >
+                {item.itemName}
+              </ResultItem>
             ))}
           </SearchModal>
         </SearchOverlay>
