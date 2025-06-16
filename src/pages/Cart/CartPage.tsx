@@ -247,7 +247,7 @@ const CartPage = () => {
           (item: any) => ({
             id: item.cartItemId,
             name: item.itemName,
-            brand: "브랜드명",
+            brand: item.brand,
             imageUrl: item.mainImageUrl,
             discountedPrice: item.salePrice,
             discountRate: item.discountRate,
@@ -380,20 +380,25 @@ const CartPage = () => {
       alert("선택된 상품이 없습니다.");
       return;
     }
+
     try {
       const token = sessionStorage.getItem("accessToken");
       if (!token) return;
-      // QR 생성 응답 이후
-      const res = await axios.post(
-        "http://localhost:8080/cart/qr",
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const qrUrls: string[] = res.data.result;
 
+      const cartItemIds = selectedKeys.join(",");
+      const res = await axios.post(
+        `http://localhost:8080/cart/qr?cartItemIds=${cartItemIds}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const qrUrls: string[] = res.data.result;
       const selectedItems = cartItems.filter((item) =>
         selectedKeys.includes(getKey(item.id))
       );
+
       const purchaseHistory = JSON.parse(
         localStorage.getItem("purchaseHistory") || "[]"
       );
@@ -406,11 +411,12 @@ const CartPage = () => {
         JSON.stringify([newRecord, ...purchaseHistory])
       );
 
-      // 페이지 이동
+      // 🚀 QR 페이지로 이동
       navigate("/qr", {
         state: {
           qrUrls,
           selectedItems,
+          cartItemIds, // 전달
         },
       });
     } catch (err) {
@@ -459,7 +465,10 @@ const CartPage = () => {
                       </DeleteButton>
                     </TitleBlock>
                     <Brand>
-                      [{item.brand}] {item.option}
+                      [{item.brand}]
+                      {item.option && item.option !== "default"
+                        ? ` ${item.option}`
+                        : ""}
                     </Brand>
                   </UpperInfo>
                 </InfoArea>

@@ -112,6 +112,8 @@ export default function ProductDetail() {
   const itemId = new URLSearchParams(location.search).get("itemId");
   const { t } = useLocale();
 
+  const [showAllReviews, setShowAllReviews] = useState(false);
+
   useEffect(() => {
     const fetchProduct = async () => {
       if (!itemId) {
@@ -131,7 +133,7 @@ export default function ProductDetail() {
         setProduct({
           id: data.id,
           name: data.itemName,
-          brand: "브랜드명",
+          brand: data.brand,
           imageUrl: {
             mainImage: data.itemImages.mainImage,
             detailImages: data.itemImages.detailImages,
@@ -391,13 +393,51 @@ export default function ProductDetail() {
               );
             })()}
             {realReviews.length === 0 ? (
-              <div style={{ padding: "1rem", color: "#999" }}>
+              <div
+                style={{
+                  padding: "1rem",
+                  color: "#999",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+              >
                 등록된 리뷰가 없습니다.
               </div>
             ) : (
-              realReviews.map((r, idx) => (
-                <ReviewCard key={idx} {...r} itemId={product?.id} />
-              ))
+              <>
+                {(showAllReviews ? realReviews : realReviews.slice(0, 2)).map(
+                  (r, idx) => (
+                    <ReviewCard key={idx} {...r} itemId={product?.id} />
+                  )
+                )}
+                {realReviews.length > 2 && (
+                  <div
+                    style={{
+                      marginTop: "1rem",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <button
+                      onClick={() => setShowAllReviews(!showAllReviews)}
+                      style={{
+                        width: "100%",
+                        border: "1px solid #ccc",
+                        borderRadius: "8px",
+                        padding: "0.75rem 1.5rem",
+                        background: "#fff",
+                        color: "#444",
+                        fontWeight: "500",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {showAllReviews ? "리뷰 접기 ▲" : "리뷰 더보기 ▼"}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </ReviewWrapper>
         )}

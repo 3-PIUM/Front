@@ -50,8 +50,22 @@ const QRCodePage = () => {
     localStorage.setItem("purchaseHistory", JSON.stringify(updated));
   }, [selectedCartItems, navigate]);
 
-  const qrValue = "https://example.com/pay";
+  const cartItemIds = selectedCartItems?.map((item: any) => item.id).join(",");
+  // const ip = "192.168.0.123";
+  // const accessToken = sessionStorage.getItem("accessToken");
+  const qrValue = `http://172.28.127.154:5173/pos?cartItemIds=${cartItemIds}`;
   const { t } = useLocale();
+
+  useEffect(() => {
+    const handleQRScan = () => {
+      if (cartItemIds) {
+        // navigate(`/pos?cartItemIds=${cartItemIds}`);
+      }
+    };
+    // For simulation, add click listener to the whole page
+    window.addEventListener("click", handleQRScan);
+    return () => window.removeEventListener("click", handleQRScan);
+  }, [cartItemIds, navigate]);
 
   return (
     <PageWrapper>

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 import cardMachine from "../../assets/card/card_machine.png"; // 경로는 실제 위치에 맞게 조정
 
 const PageWrapper = styled.div`
@@ -106,8 +108,48 @@ const TotalRow = styled.div`
 
 const PaymentCompletePage = () => {
   const [showApproved, setShowApproved] = useState(false);
-  const totalPrice = 12000;
-  const totalQty = 8;
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const cartItemIds = query.get("cartItemIds");
+  const tokenFromQuery = query.get("token");
+
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
+    if (!token || !cartItemIds) return;
+
+    axios
+      .get("http://localhost:8080/cart/items", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        const allItems = res.data.result?.items || [];
+        const filtered = allItems.filter((item: any) =>
+          cartItemIds.split(",").includes(String(item.cartItemId))
+        );
+        setSelectedItems(
+          filtered.map((item: any) => ({
+            id: item.cartItemId,
+            name: item.itemName,
+            quantity: item.quantity,
+            discountedPrice: item.salePrice,
+          }))
+        );
+      })
+      .catch((err) => {
+        console.error("결제 정보 조회 실패:", err);
+      });
+  }, [cartItemIds, tokenFromQuery]);
+
+  const totalQty = selectedItems.reduce(
+    (sum: number, item: any) => sum + item.quantity,
+    0
+  );
+  const totalPrice = selectedItems.reduce(
+    (sum: number, item: any) => sum + item.quantity * item.discountedPrice,
+    0
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {

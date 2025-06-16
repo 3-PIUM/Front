@@ -7,6 +7,7 @@ import axios from "axios";
 
 interface Purchase {
   date: string;
+  timestamp: string;
   imgUrlList: string[];
 }
 
@@ -32,6 +33,16 @@ const DateText = styled.h4`
 const ImageList = styled.div`
   display: flex;
   gap: 0.5rem;
+  overflow-x: auto;
+  max-width: 100%;
+  padding-bottom: 0.5rem;
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+  }
 `;
 
 const ProductImage = styled.img`
@@ -39,6 +50,7 @@ const ProductImage = styled.img`
   height: 90px;
   border-radius: 8px;
   object-fit: cover;
+  flex-shrink: 0;
 `;
 
 const DetailButton = styled.div`
@@ -62,10 +74,16 @@ export default function PurchaseListPage() {
         });
         console.log("서버 응답:", res.data);
         const rawList = res.data.result.dateInfoList;
-        const formatted = rawList.map((entry: any) => ({
-          date: entry.date,
-          imgUrlList: entry.imgUrlList ?? [], // 안전하게 처리
-        }));
+        const formatted = rawList.map((entry: any) => {
+          const uniqueImages = [
+            ...new Set(entry.historys?.map((h: any) => h.imgUrl) ?? []),
+          ];
+          return {
+            date: entry.date,
+            timestamp: entry.timestamp,
+            imgUrlList: uniqueImages,
+          };
+        });
         setPurchases(formatted);
       } catch (err) {
         console.error("구매내역 불러오기 실패", err);
@@ -83,9 +101,17 @@ export default function PurchaseListPage() {
           <div>{t.order.noHistory || "구매내역이 없습니다."}</div>
         ) : (
           purchases.map((purchase, idx) => (
-            <PurchaseItem key={idx}>
+            <PurchaseItem key={purchase.timestamp || idx}>
               <TopList>
-                <DateText>{purchase.date.replace(/-/g, ".")}</DateText>
+                <DateText>
+                  {purchase.date.replace(/-/g, ".")}{" "}
+                  {purchase.timestamp
+                    ? new Date(purchase.timestamp).toLocaleTimeString("ko-KR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : ""}
+                </DateText>
                 <DetailButton
                   onClick={() =>
                     navigate("/purchase-detail", { state: { purchase } })
@@ -96,7 +122,7 @@ export default function PurchaseListPage() {
               </TopList>
 
               <ImageList>
-                {(purchase.imgUrlList || []).map((url, i) => (
+                {[...new Set(purchase.imgUrlList || [])].map((url, i) => (
                   <ProductImage key={i} src={url} />
                 ))}
               </ImageList>
