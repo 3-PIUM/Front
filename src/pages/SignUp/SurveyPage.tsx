@@ -101,8 +101,8 @@ export default function WelcomePage() {
       sessionStorage.removeItem("language");
       sessionStorage.removeItem("skinType");
       sessionStorage.removeItem("personalColor");
-    } catch {
-      console.log("실패");
+    } catch (error) {
+      console.log("실패", error);
     }
   };
 

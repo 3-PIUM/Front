@@ -102,22 +102,22 @@ const Line = styled.hr`
 export default function MyPage() {
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
-  const [profileImg, setProfileImg] = useState<File | null>(null);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
   const { t } = useLocale();
 
-  useEffect(() => {
-    const fetchMemberInfo = async () => {
-      try {
-        const response = await axiosInstance.get("/member");
-        const result = response.data.result;
-        setMemberInfo(result);
-      } catch (error) {
-        console.log("사용자 정보 불러오는데 실패했습니다", error);
-      }
-    };
+  const fetchMemberInfo = async () => {
+    try {
+      const response = await axiosInstance.get("/member");
+      const result = response.data.result;
+      setMemberInfo(result);
+    } catch (error) {
+      console.log("사용자 정보 불러오는데 실패했습니다", error);
+    }
+  };
 
+  useEffect(() => {
     fetchMemberInfo();
-  }, []);
+  }, [profileImage]);
 
   console.log("mypage:", memberInfo);
 
@@ -132,10 +132,26 @@ export default function MyPage() {
   };
 
   const handleFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
+    const formData = new FormData();
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setProfileImg(file);
+    formData.append("profileImage", file);
+    console.log(file);
+
+    try {
+      await axiosInstance.patch("/member/image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setProfileImage(file);
+      await fetchMemberInfo();
+    } catch (err) {
+      console.log("프로필사진 에러:", err);
+    }
+    setProfileImage(profileImage);
   };
 
   return (
@@ -145,11 +161,14 @@ export default function MyPage() {
       <TopWrapper>
         <ImageSection>
           <ImageBox>
-            {memberInfo?.profileImg == null ? (
-              <ProfileImage src={dafaultProfileImage} alt="기본 프로필사진" />
-            ) : (
-              <ProfileImage src={dafaultProfileImage} alt="프로필사진" />
-            )}
+            <ProfileImage
+              src={
+                profileImage
+                  ? URL.createObjectURL(profileImage)
+                  : memberInfo?.profileImg ?? dafaultProfileImage
+              }
+              alt="프로필사진"
+            />
           </ImageBox>
           <ImageEdit as="label" htmlFor="profileimg">
             <FiEdit2 fontSize={"1.125rem"} color={colors.white} />

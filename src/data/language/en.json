@@ -76,47 +76,55 @@
         "id": 1,
         "name": "Skincare",
         "items": [
-          "Skin/Toner",
-          "Essence/Serum/Ampoule",
-          "Cream",
-          "Lotion",
-          "Mist/Oil",
-          "Skincare Set",
-          "Skincare Device"
+          { "label": "Skin/Toner", "value": "스킨-토너" },
+          { "label": "Essence/Serum/Ampoule", "value": "에센스-세럼-앰플" },
+          { "label": "Cream", "value": "크림" },
+          { "label": "Lotion", "value": "로션" },
+          { "label": "Mist/Oil", "value": "미스트-오일" },
+          { "label": "Skincare Set", "value": "스킨케어세트" }
         ]
       },
       {
         "id": 2,
         "name": "Mask Pack",
-        "items": ["Sheet Mask", "Pads", "Facial Pack", "Nose Pack", "Patches"]
+        "items": [
+          { "label": "Sheet Mask", "value": "시트팩" },
+          { "label": "Pad", "value": "패드" },
+          { "label": "Facial Pack", "value": "페이셜팩" },
+          { "label": "Nose Pack", "value": "코팩" },
+          { "label": "Patch", "value": "패치" }
+        ]
       },
       {
         "id": 3,
         "name": "Makeup",
-        "items": ["Lip Makeup", "Base Makeup", "Eye Makeup"]
+        "items": [
+          { "label": "Lip Makeup", "value": "립메이크업" },
+          { "label": "Base Makeup", "value": "베이스메이크업" },
+          { "label": "Eye Makeup", "value": "아이메이크업" }
+        ]
       },
       {
         "id": 4,
         "name": "Cleansing",
         "items": [
-          "Cleansing Foam/Gel",
-          "Oil/Balm",
-          "Water/Milk",
-          "Peeling & Scrub",
-          "Tissues/Pads",
-          "Lip & Eye Remover",
-          "Cleansing Device"
+          { "label": "Foam/Gel", "value": "클렌징폼-젤" },
+          { "label": "Oil/Balm", "value": "오일-밤" },
+          { "label": "Water/Milk", "value": "워터-밀크" },
+          { "label": "Peeling & Scrub", "value": "필링&스크럽" },
+          { "label": "Tissue/Pad", "value": "티슈-패드" },
+          { "label": "Lip & Eye Remover", "value": "립&아이리무버" }
         ]
       },
       {
         "id": 5,
         "name": "Sun Care",
         "items": [
-          "Sun Cream",
-          "Sun Stick",
-          "Sun Cushion",
-          "Sun Spray/Patch",
-          "Tanning/After Sun"
+          { "label": "Sunscreen", "value": "선크림" },
+          { "label": "Sun Stick", "value": "선스틱" },
+          { "label": "Sun Cushion", "value": "선쿠션" },
+          { "label": "Sun Spray/Patch", "value": "선스프레이-선패치" },
+          { "label": "Tanning/After Sun", "value": "태닝-애프터" }
         ]
       },
       {
@@ -125,7 +133,29 @@
         "items": []
       }
     ],
-    "sorted": ["Recommended", "Lowest Price", "Discount"],
+    "options": [
+      { "id": 0, "name": "All" },
+      { "id": 1, "name": "Blemish" },
+      { "id": 2, "name": "Brightening" },
+      { "id": 3, "name": "Wrinkle" },
+      { "id": 4, "name": "Pore" },
+      { "id": 5, "name": "Elasticity" },
+      { "id": 6, "name": "Redness" },
+      { "id": 7, "name": "Dead skin" },
+      { "id": 8, "name": "Trouble" },
+      { "id": 9, "name": "Blackhead" },
+      { "id": 10, "name": "Excess sebum" },
+      { "id": 11, "name": "Sensitive" },
+      { "id": 12, "name": "Atopy" },
+      { "id": 13, "name": "Dark circle" }
+    ],
+    "optionBtnOpen": "Show more",
+    "optionBtnClose": "Show less",
+    "sorted": {
+      "recommended": "Recommended",
+      "lowPrice": "Lowest Price",
+      "highDiscount": "Highest Discount"
+    },
     "skinconcerns": {
       "all": "All",
       "미백": "Brightening",
@@ -139,13 +169,47 @@
     }
   },
   "home": {
+    "skinTypeTitle": "Your skin type",
+    "skinMBTI": "Skin MBTI",
     "personalInfo": {
       "subtitle": {
         "prefix": "Register your skin type now.",
         "suffix": "Get personalized product recommendations!"
       },
       "registerSkinType": "Register your skin type"
-    }
+    },
+    "recommended": [
+      {
+        "id": 1,
+        "name": "All",
+        "value": "전체"
+      },
+      {
+        "id": 2,
+        "name": "Skincare",
+        "value": "스킨케어"
+      },
+      {
+        "id": 3,
+        "name": "Cleansing",
+        "value": "클렌징"
+      },
+      {
+        "id": 4,
+        "name": "Makeup",
+        "value": "메이크업"
+      },
+      {
+        "id": 5,
+        "name": "Sun Care",
+        "value": "선케어"
+      },
+      {
+        "id": 6,
+        "name": "Sheet Mask",
+        "value": "마스크팩"
+      }
+    ]
   },
   "mbti": {
     "pageTitle": "Skin MBTI Test",
@@ -180,25 +244,25 @@
         {
           "id": 1,
           "option": "Spring Warm",
-          "value": "봄_웜",
+          "value": "봄웜톤",
           "colors": ["#FFD8A9", "#FFC0A9", "#FFE6CC"]
         },
         {
           "id": 2,
           "option": "Summer Cool",
-          "value": "여름_쿨",
+          "value": "여름쿨톤",
           "colors": ["#C3D5FF", "#E0B5DB", "#A4B8D1"]
         },
         {
           "id": 3,
           "option": "Autumn Warm",
-          "value": "가을_웜",
+          "value": "가을웜톤",
           "colors": ["#CFA36E", "#A06045", "#E2C1A0"]
         },
         {
           "id": 4,
           "option": "Winter Cool",
-          "value": "겨울_쿨",
+          "value": "겨울쿨톤",
           "colors": ["#C5CBE1", "#B4A4DD", "#333C57"]
         }
       ],

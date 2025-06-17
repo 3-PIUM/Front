@@ -94,7 +94,7 @@ export default function EmailInput({
       return;
     }
     try {
-      const response = await axios.post("http://localhost:8080/mail/send", {
+      await axios.post("http://localhost:8080/mail/send", {
         email,
       });
       setSendEmail(true);

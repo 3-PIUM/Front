@@ -29,7 +29,7 @@ const Heart = styled.div`
   position: absolute;
   bottom: 0.3rem;
   right: 0.3rem;
-  z-index: 1000;
+  z-index: 50;
 `;
 
 const ItemName = styled.div`
@@ -76,19 +76,26 @@ export default function ItemCard({
   const [isWished, setIsWished] = useState(false);
   const navigate = useNavigate();
 
-  const handleWish = async () => {
+  const handleWish = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+    console.log("클릭됨");
+
     if (!isWished) {
       try {
-        await axiosInstance.post("/wishlist", {
-          param: {
-            itemId: itemId,
-          },
-        });
-        console.log("찜 추가가 됐습니다");
-      } catch {}
+        const response = await axiosInstance.post(`/wishlist/${itemId}`);
+        setIsWished(true);
+        console.log("찜 추가가 됐습니다", response.data);
+      } catch {
+        console.error("찜 추가에 실패했습니다");
+      }
     } else {
       try {
-      } catch {}
+        await axiosInstance.delete(`/wishlist/${itemId}`);
+        console.log("찜 취소가 됐습니다");
+        setIsWished(true);
+      } catch {
+        console.error("찜 취소에 실패했습니다");
+      }
     }
   };
 
