@@ -132,7 +132,11 @@
         "items": []
       }
     ],
-    "sorted": ["おすすめ順", "価格が安い順", "割引順"],
+    "sorted": {
+      "recommended": "おすすめ順",
+      "lowPrice": "価格が安い順",
+      "highDiscount": "割引率が高い順"
+    },
     "skinconcerns": {
       "all": "すべて",
       "미백": "美白",

@@ -125,7 +125,11 @@
         "items": []
       }
     ],
-    "sorted": ["Recommended", "Lowest Price", "Discount"],
+    "sorted": {
+      "recommended": "Recommended",
+      "lowPrice": "Lowest Price",
+      "highDiscount": "Highest Discount"
+    },
     "skinconcerns": {
       "all": "All",
       "미백": "Brightening",

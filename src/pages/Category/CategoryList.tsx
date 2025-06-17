@@ -18,6 +18,7 @@ const Wrap = styled.div`
 const SubCategoryList = styled.div`
   overflow-x: auto;
   width: 100%;
+  font-size: 0.875rem;
 
   // 스크롤바 안 보이게
   -ms-overflow-style: none;
