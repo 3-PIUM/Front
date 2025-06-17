@@ -143,6 +143,8 @@
     }
   },
   "home": {
+    "skinTypeTitle": "피부 타입",
+    "skinMBTI": "피부 MBTI",
     "personalInfo": {
       "subtitle": {
         "prefix": "지금 피부 타입을 등록하고",

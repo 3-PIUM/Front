@@ -150,6 +150,8 @@
     }
   },
   "home": {
+    "skinTypeTitle": "肌タイプ",
+    "skinMBTI": "肌MBTI",
     "personalInfo": {
       "subtitle": {
         "prefix": "今すぐ肌タイプを登録して、",

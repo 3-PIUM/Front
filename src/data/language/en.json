@@ -143,6 +143,8 @@
     }
   },
   "home": {
+    "skinTypeTitle": "Your skin type",
+    "skinMBTI": "Skin MBTI",
     "personalInfo": {
       "subtitle": {
         "prefix": "Register your skin type now.",
