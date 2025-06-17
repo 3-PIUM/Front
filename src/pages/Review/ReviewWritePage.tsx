@@ -95,7 +95,6 @@ const ReviewWritePage = () => {
 
   const editingReview = location.state?.editReview;
   const itemId = new URLSearchParams(location.search).get("itemId");
-  // const reviewId = editingReview?.reviewId;
 
   const [rating, setRating] = useState(editingReview?.rating || 0);
   const [text, setText] = useState(editingReview?.content || "");
@@ -134,8 +133,6 @@ const ReviewWritePage = () => {
           `http://localhost:8080/review/${itemId}/option`
         );
         const list: any[] = res.data.result.reviewOptionList;
-        console.log("✅ 백엔드로부터 받아온 질문 수:", list.length);
-        console.log("📦 질문 내용:", list);
         setSurveyQuestions(
           list.map((q) => ({
             id: q.name,
@@ -150,88 +147,91 @@ const ReviewWritePage = () => {
     fetchSurvey();
   }, [itemId]);
 
-  const handleSubmit = async () => {
-    if (!itemId) return alert("itemId가 없습니다");
-    if (!text.trim()) return alert("리뷰 내용을 입력해주세요.");
-    if (!rating) return alert("별점을 선택해주세요.");
-
+  const buildFormData = () => {
     const formData = new FormData();
-    const data = {
-      ...(editingReview?.reviewId && { reviewId: editingReview.reviewId }),
+
+    // Build reviewImages for edit, otherwise ignore
+    const reviewImages = images
+      .map((img, idx) => {
+        if (!img) return null;
+        if (editingReview?.images?.includes(img)) {
+          return { type: "exist", url: img };
+        }
+        if (imageFiles[idx]) {
+          return { type: "new" };
+        }
+        return null;
+      })
+      .filter((item): item is { type: string; url?: string } => item !== null);
+
+    const payload: any = {
       content: text,
       rating,
-      options: surveyQuestions
+      selectOptions: surveyQuestions
         .filter((q) => surveyAnswers[q.id])
         .map((q) => ({
           name: q.id,
           selectOption: surveyAnswers[q.id],
         })),
+      ...(editingReview && { reviewImages }),
     };
-    formData.append("data", JSON.stringify(data));
 
-    try {
-      const debugData = formData.get("data");
-      if (debugData) {
-        const parsed = JSON.parse(debugData as string);
-        console.log("🔍 JSON.parse(data) =", parsed);
+    // Use correct key for data/editData
+    const key = editingReview ? "editData" : "data";
+    formData.append(key, JSON.stringify(payload));
+
+    // For edit, use newImages; for register, use images
+    imageFiles.forEach((file) => {
+      if (file instanceof File) {
+        const formKey = editingReview ? "newImages" : "images";
+        formData.append(formKey, file);
       }
-    } catch (err) {
-      console.error("❌ JSON parse error", err);
-    }
+    });
+    return formData;
+  };
 
-    const hasFile = imageFiles.some((file) => file instanceof File);
-    if (hasFile) {
-      imageFiles.forEach((file) => {
-        if (file instanceof File) {
-          formData.append("images", file);
+  const handleReviewEdit = async () => {
+    const token = sessionStorage.getItem("accessToken");
+    const reviewId = editingReview?.reviewId;
+    if (!reviewId) return alert("리뷰 ID가 없습니다.");
+    try {
+      const res = await axios.patch(
+        `http://localhost:8080/review/${reviewId}/edit`,
+        buildFormData(),
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
         }
-      });
-    }
-    // else → images append 하지 말기!
-
-    try {
-      console.log("📤 formData 전송 준비 완료");
-      for (const pair of formData.entries()) {
-        console.log("🧾 formData entry:", pair[0], pair[1]);
-      }
-
-      const token = sessionStorage.getItem("accessToken");
-      const url = editingReview
-        ? `http://localhost:8080/review/${editingReview.reviewId}/edit`
-        : `http://localhost:8080/review/${itemId}/create`;
-
-      const res = await axios({
-        method: editingReview ? "patch" : "post",
-        url,
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-          ...(token && { Authorization: `Bearer ${token}` }),
-        },
-      });
-
+      );
       const result = res.data.result;
       navigate(`/product-detail?itemId=${itemId}`, {
-        state: {
-          newReview: {
-            reviewId: result.reviewId,
-            username: result.memberId,
-            date: new Date(result.updatedAt).toLocaleDateString(),
-            rating: result.rating,
-            content: result.content,
-            images: result.reviewImages,
-            likes: result.recommend || 0,
-            isMyReview: true,
-          },
-        },
+        state: { newReview: { ...result, isMyReview: true } },
       });
     } catch (err) {
-      console.error(editingReview ? "리뷰 수정 실패" : "리뷰 등록 실패", err);
-      alert(
-        editingReview
-          ? "리뷰 수정 중 문제가 발생했습니다."
-          : "리뷰 등록 중 문제가 발생했습니다."
+      console.error("리뷰 수정 실패", err);
+      alert("리뷰 수정 중 문제가 발생했습니다.");
+    }
+  };
+
+  const handleReviewRegister = async () => {
+    const token = sessionStorage.getItem("accessToken");
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/review/${itemId}/create`,
+        buildFormData(),
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+        }
       );
+      navigate(`/product-detail?itemId=${itemId}`);
+    } catch (err) {
+      console.error("리뷰 등록 실패", err);
+      alert("리뷰 등록 중 문제가 발생했습니다.");
     }
   };
 
@@ -257,6 +257,17 @@ const ReviewWritePage = () => {
     const newFiles = [...imageFiles];
     newFiles[index] = null;
     setImageFiles(newFiles);
+  };
+
+  const handleSubmit = () => {
+    if (!itemId) return alert("itemId가 없습니다");
+    if (!text.trim()) return alert("리뷰 내용을 입력해주세요.");
+    if (!rating) return alert("별점을 선택해주세요.");
+    if (editingReview) {
+      handleReviewEdit();
+    } else {
+      handleReviewRegister();
+    }
   };
 
   return (

@@ -13,8 +13,8 @@ interface ReviewCardProps {
   rating: number;
   content: string;
   images: string[];
-  likes: number;
-  liked: boolean;
+  recommend: number; // 'likes' -> 'recommend'
+  isRecommend: boolean; // 'liked' -> 'isRecommend'
   surveyAnswers?: Record<string, string>;
   itemId: number;
 }
@@ -39,6 +39,7 @@ const DateText = styled.span`
   color: #999;
   font-weight: 600;
   font-size: 0.8rem;
+  letter-spacing: 0.5px;
 `;
 
 const Content = styled.p`
@@ -134,15 +135,20 @@ const ReviewCard = ({
   rating,
   content,
   images,
-  likes,
-  liked: initialLiked,
+  recommend,
+  isRecommend,
   surveyAnswers,
   itemId,
 }: ReviewCardProps) => {
-  const [likeCount, setLikeCount] = useState<number>(likes);
-  const [liked, setLiked] = useState<boolean>(initialLiked);
+  const [likeCount, setLikeCount] = useState<number>(recommend);
+  const [liked, setLiked] = useState<boolean>(isRecommend);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setLiked(isRecommend);
+    setLikeCount(recommend);
+  }, [isRecommend, recommend]);
 
   let myMemberId: number | null = null;
   try {
@@ -155,17 +161,8 @@ const ReviewCard = ({
   } catch (e) {
     console.error("토큰 디코딩 실패:", e);
   }
-  console.log("🧾 myMemberId:", myMemberId);
-  console.log("🧾 review memberId:", memberId);
+
   const isMyReview = Number(memberId) === Number(myMemberId);
-  console.log(
-    "✅ isMyReview:",
-    isMyReview,
-    "👉 memberId:",
-    memberId,
-    "👉 myMemberId:",
-    myMemberId
-  );
 
   const handleDelete = async () => {
     if (!window.confirm("리뷰를 삭제하시겠습니까?")) return;
@@ -178,39 +175,49 @@ const ReviewCard = ({
       });
       alert("삭제되었습니다.");
       window.location.reload();
-    } catch (err) {
+    } catch (err: any) {
       console.error("리뷰 삭제 실패", err);
+      if (err.response?.data?.message) {
+        alert(`삭제 실패: ${err.response.data.message}`);
+      } else {
+        alert("리뷰 삭제 중 오류가 발생했습니다.");
+      }
     }
   };
 
-  const handleLike = async () => {
+  const handleLike = async (ri: Number) => {
     const token = sessionStorage.getItem("accessToken");
     if (!token) {
       alert("로그인이 필요합니다.");
       return;
     }
 
-    const newLiked = !liked;
-    const type = newLiked ? "increase" : "decrease";
-
     try {
       const res = await axios.patch(
-        `http://localhost:8080/review/recommend/${reviewId}/${type}`,
+        `http://localhost:8080/review/recommend/${ri}`,
         {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+
       if (res.data.isSuccess) {
-        setLiked(newLiked);
-        setLikeCount((prev) => (newLiked ? prev + 1 : prev - 1));
+        const newLikeCount = liked ? likeCount - 1 : likeCount + 1;
+        setLikeCount(newLikeCount);
+        setLiked(!liked);
       } else {
-        alert("서버 응답 오류: 추천 상태 변경 실패");
+        alert(res.data.message || "추천 처리에 실패했습니다.");
       }
     } catch (err: any) {
-      console.error("리뷰 추천 실패", err.response?.data ?? err);
-      alert("리뷰 추천 처리 중 오류가 발생했습니다.");
+      console.error("추천 실패:", err);
+      alert("추천 처리 중 오류가 발생했습니다.");
     }
+  };
+
+  const formatDate = (rawDate: string) => {
+    const dateObj = new Date(rawDate);
+    const y = dateObj.getFullYear();
+    const m = dateObj.getMonth() + 1;
+    const d = dateObj.getDate();
+    return `${y}.${m}.${d}`; // 끝에 마침표 없음
   };
 
   const reviewData = {
@@ -221,17 +228,11 @@ const ReviewCard = ({
     rating,
     content,
     images,
-    likes,
+    recommend,
+    isRecommend,
     surveyAnswers,
     itemId,
   };
-
-  console.log("📝 Rendering review:", {
-    reviewId,
-    username,
-    memberId,
-    isMyReview: memberId === myMemberId,
-  });
 
   return (
     <>
@@ -239,9 +240,9 @@ const ReviewCard = ({
         <UsernameText>{username}</UsernameText>
         <TopRow>
           <StarRating rating={rating} />
-          <DateText>{date}</DateText>
+          <DateText>{formatDate(date)}</DateText>
           {!isMyReview && (
-            <LikeIcon onClick={handleLike} $liked={liked}>
+            <LikeIcon onClick={() => handleLike(reviewId)} $liked={liked}>
               <AiOutlineLike />
               <LikeCountText>{likeCount}</LikeCountText>
             </LikeIcon>
@@ -253,7 +254,7 @@ const ReviewCard = ({
             <ImageGrid>
               {images.map((img, idx) => (
                 <ReviewImage
-                  key={idx}
+                  key={img}
                   src={img}
                   alt={`review-${idx}`}
                   onClick={() => setSelectedImage(img)}
