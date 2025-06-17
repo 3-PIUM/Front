@@ -2,7 +2,6 @@
 import { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 
 import ProductCard from "../../components/product/ProductCard";
 import SkinTypeRankList from "../../components/product/SkinTypeRankList";
@@ -16,6 +15,7 @@ import StackedBarChart from "../../components/ingredient/StackedBarChart";
 import ProductOptionSelector from "../../components/product/ProductOptionSelector";
 import { useLocale } from "../../context/LanguageContext";
 import ScrollToTopButton from "../../components/common/ScrollToTopButton";
+import axiosInstance from "../../api/axiosInstance";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -123,7 +123,7 @@ export default function ProductDetail() {
       }
       try {
         const token = sessionStorage.getItem("accessToken");
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           `http://localhost:8080/item/${itemId}/info`,
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -171,9 +171,12 @@ export default function ProductDetail() {
       if (!itemId) return;
       try {
         const token = sessionStorage.getItem("accessToken");
-        const res = await axios.get(`http://localhost:8080/review/${itemId}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
+        const res = await axiosInstance.get(
+          `http://localhost:8080/review/${itemId}`,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
         const reviews = res.data.result.reviews;
         const currentMemberId = res.data.result.currentMemberId; // assume backend returns this
 
@@ -185,8 +188,8 @@ export default function ProductDetail() {
           rating: r.rating,
           content: r.content,
           images: r.reviewImages,
-          likes: r.recommend || 0,
-          liked: r.isRecommended || false,
+          recommend: r.recommend || 0,
+          isRecommend: r.isRecommend || false,
           surveyAnswers: r.options?.reduce(
             (acc: Record<string, string>, cur: any) => {
               acc[cur.name] = cur.selectOption;
@@ -237,7 +240,7 @@ export default function ProductDetail() {
     }
 
     try {
-      await axios.post(
+      await axiosInstance.post(
         `http://localhost:8080/cart/items/${Number(product.id)}`,
         {
           quantity: 1,
@@ -251,6 +254,7 @@ export default function ProductDetail() {
       navigate("/cart");
     } catch (err: any) {
       console.error("장바구니 추가 실패", err);
+      console.log(product);
       alert(err.response?.data?.message || "장바구니에 추가할 수 없습니다.");
     }
   };
@@ -407,11 +411,12 @@ export default function ProductDetail() {
               </div>
             ) : (
               <>
-                {(showAllReviews ? realReviews : realReviews.slice(0, 2)).map(
-                  (r, idx) => (
-                    <ReviewCard key={idx} {...r} itemId={product?.id} />
-                  )
-                )}
+                {(showAllReviews
+                  ? [...realReviews].reverse()
+                  : [...realReviews].slice(0, 2).reverse()
+                ).map((r) => (
+                  <ReviewCard key={r.reviewId} {...r} itemId={product?.id} />
+                ))}
                 {realReviews.length > 2 && (
                   <div
                     style={{
