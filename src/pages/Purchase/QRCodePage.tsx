@@ -73,7 +73,8 @@ const QRCodePage = () => {
       <QRBox>
         <QRCode value={qrValue} size={200} />
       </QRBox>
-      <InfoText>{t.qrPage.instruction}</InfoText>
+      <InfoText>{t.qrPage.instruction[0]}</InfoText>
+      <InfoText>{t.qrPage.instruction[1]}</InfoText>
     </PageWrapper>
   );
 };

@@ -185,7 +185,7 @@ const QRPOSPage = () => {
           },
         }
       );
-      navigate("/payment-complete");
+      navigate("/payment-complete", { state: { selectedItems } });
     } catch (err) {
       console.error("💥 결제 실패:", err);
       alert("결제 중 문제가 발생했습니다.");

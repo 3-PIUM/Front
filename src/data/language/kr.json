@@ -280,7 +280,10 @@
   },
   "qrPage": {
     "title": "QR 코드",
-    "instruction": "해당 QR 코드를 카운터에 보여주시면\n빠르게 결제 도와드리겠습니다"
+    "instruction": [
+      "해당 QR 코드를 카운터에 보여주세요.",
+      "직원에게 보여주시면 빠르게 결제가 진행됩니다."
+    ]
   },
   "withdrawal": {
     "pageTitle": "회원 탈퇴",

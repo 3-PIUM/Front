@@ -14,6 +14,7 @@ const ChatPageContainer = styled.div`
 const DateText = styled.div`
   text-align: center;
   font-size: 0.875rem;
+  margin-bottom: 0.3rem;
   color: #666;
 `;
 
@@ -100,11 +101,17 @@ const SuggestionButtons = styled.div`
 const SuggestionButton = styled.button`
   background-color: #ffe4ec;
   border: none;
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
   color: #111;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 600;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  align-items: center;
+  justify-content: center;
 `;
 
 interface Message {
@@ -116,6 +123,91 @@ interface Message {
 export default function ChatbotPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const { t } = useLocale();
+
+  const [mode, setMode] = useState<"default" | "compare" | "recommend">(
+    "default"
+  );
+
+  const dummyCartItems = [
+    {
+      id: 1,
+      name: "물앤더 쥬시 래스팅 틴트",
+      brand: "톤앤",
+      price: "18,000원",
+      image:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
+      checked: true,
+    },
+    {
+      id: 2,
+      name: "쿨앤 더 쥬시 래스팅 틴트",
+      brand: "톤앤",
+      price: "18,000원",
+      image:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
+      checked: false,
+    },
+    {
+      id: 3,
+      name: "쿨앤 더 쥬시 래스팅 틴트",
+      brand: "톤앤",
+      price: "18,000원",
+      image:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
+      checked: false,
+    },
+    {
+      id: 4,
+      name: "쿨앤 더 쥬시 래스팅 틴트",
+      brand: "톤앤",
+      price: "18,000원",
+      image:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
+      checked: false,
+    },
+  ];
+
+  const dummyWishItems = [
+    {
+      id: 5,
+      name: "선샤인 글로우 틴트",
+      brand: "톤앤",
+      price: "18,000원",
+      image:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
+      checked: false,
+    },
+    {
+      id: 6,
+      name: "레드벨벳 틴트",
+      brand: "톤앤",
+      price: "18,000원",
+      image:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
+      checked: false,
+    },
+    {
+      id: 7,
+      name: "모브베리 글로시 립",
+      brand: "톤앤",
+      price: "18,000원",
+      image:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
+      checked: false,
+    },
+    {
+      id: 8,
+      name: "코랄핑크 워터틴트",
+      brand: "톤앤",
+      price: "18,000원",
+      image:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
+      checked: false,
+    },
+  ];
+  const [selectedCompareItems, setSelectedCompareItems] = useState<number[]>(
+    []
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -140,9 +232,9 @@ export default function ChatbotPage() {
   const botReply = (message: string): string => {
     const lower = message.toLowerCase();
 
-    const productKeywords = t.chatbot.keywords.product;
-    const budgetKeywords = t.chatbot.keywords.budget;
-    const diagnosisKeywords = t.chatbot.keywords.diagnosis;
+    const productKeywords = t.chatbot?.keywords?.product || [];
+    const budgetKeywords = t.chatbot?.keywords?.budget || [];
+    const diagnosisKeywords = t.chatbot?.keywords?.diagnosis || [];
 
     if (productKeywords.some((k: string) => lower.includes(k))) {
       return t.chatbot.response.product;
@@ -207,15 +299,251 @@ export default function ChatbotPage() {
           </MessageRow>
         ))}
 
-        {messages.length === 1 && (
-          <SuggestionButtons>
-            <SuggestionButton onClick={() => setInput(t.chatbot.product)}>
-              {t.chatbot.product}
-            </SuggestionButton>
-            <SuggestionButton onClick={() => setInput(t.chatbot.budget)}>
-              {t.chatbot.budget}
-            </SuggestionButton>
-          </SuggestionButtons>
+        {mode === "default" && messages.length === 1 && (
+          <div
+            style={{
+              display: "flex",
+              gap: "1rem",
+              margin: "1rem 0",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              onClick={() => {
+                setMode("recommend");
+                setMessages((prev) => [
+                  ...prev,
+                  {
+                    sender: "bot",
+                    text: `원하시는 제품을 추천해드릴게요!
+피부 타입이나 고민, 원하는 제품 타입을 알려주세요 😊`,
+                    time: getTime(),
+                  },
+                ]);
+              }}
+              style={{
+                border: "1px solid #eee",
+                borderRadius: "12px",
+                padding: "1rem",
+                backgroundColor: "#fff0f5",
+                cursor: "pointer",
+                flex: 1,
+                textAlign: "center",
+                fontWeight: 600,
+                fontSize: "14px",
+              }}
+            >
+              추천 받기
+            </div>
+            <div
+              onClick={() => {
+                setMode("compare");
+                setMessages((prev) => [
+                  ...prev,
+                  {
+                    sender: "bot",
+                    text: "피부비교 챗봇",
+                    time: getTime(),
+                  },
+                ]);
+              }}
+              style={{
+                border: "1px solid #eee",
+                borderRadius: "12px",
+                padding: "1rem",
+                backgroundColor: "#fff0f5",
+                cursor: "pointer",
+                flex: 1,
+                textAlign: "center",
+                fontWeight: 600,
+                fontSize: "14px",
+              }}
+            >
+              상품 비교하기
+            </div>
+          </div>
+        )}
+
+        {mode === "compare" && (
+          <>
+            <div
+              style={{
+                backgroundColor: "#f2f2f2",
+                padding: "1rem",
+                marginBottom: "1rem",
+                borderRadius: "12px",
+                fontSize: "14px",
+                lineHeight: "1.6",
+              }}
+            >
+              안녕하세요, 피움 챗봇입니다 💕 <br />
+              장바구니와 찜 목록의 상품을 간편하게 비교해보세요.
+              <br />
+              항목: 가격, 성분, 비건 여부, 브랜드, 리뷰
+            </div>
+            <div
+              style={{
+                background: "#f6f6f6",
+                padding: "1rem",
+                borderRadius: "12px",
+                marginTop: "1rem",
+                maxHeight: "300px",
+                overflowY: "auto",
+                scrollbarWidth: "none", // for Firefox
+                msOverflowStyle: "none", // for IE/Edge
+              }}
+            >
+              <style>
+                {`
+                  div::-webkit-scrollbar {
+                    display: none;
+                  }
+                `}
+              </style>
+              <div style={{ fontWeight: 700, marginBottom: "0.5rem" }}>
+                장바구니 목록
+              </div>
+              {dummyCartItems.map((item, index) => (
+                <div
+                  style={{
+                    borderBottom:
+                      index !== dummyCartItems.length - 1
+                        ? "1px solid #ddd"
+                        : "none",
+                  }}
+                >
+                  <div
+                    key={item.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "0.7rem",
+                      padding: "0.5rem 0",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedCompareItems.includes(item.id)}
+                      onChange={() => {
+                        setSelectedCompareItems((prev) =>
+                          prev.includes(item.id)
+                            ? prev.filter((i) => i !== item.id)
+                            : [...prev, item.id]
+                        );
+                      }}
+                    />
+                    <img
+                      src={item.image}
+                      alt="item"
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "8px",
+                        objectFit: "cover",
+                        backgroundColor: "#eee",
+                      }}
+                    />
+                    <div style={{ fontSize: "14px" }}>
+                      <div style={{ fontWeight: 600 }}>{item.name}</div>
+                      <div
+                        style={{
+                          color: "#444",
+                          fontSize: "13px",
+                          marginTop: "2px",
+                        }}
+                      >
+                        {item.brand}
+                      </div>
+                      <div style={{ color: "#000", marginTop: "4px" }}>
+                        {item.price}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div
+              style={{
+                background: "#f6f6f6",
+                padding: "1rem",
+                borderRadius: "12px",
+                marginTop: "1rem",
+                maxHeight: "300px",
+                overflowY: "auto",
+                scrollbarWidth: "none", // for Firefox
+                msOverflowStyle: "none", // for IE/Edge
+              }}
+            >
+              <style>
+                {`
+                  div::-webkit-scrollbar {
+                    display: none;
+                  }
+                `}
+              </style>
+              <div style={{ fontWeight: 700, marginBottom: "0.5rem" }}>
+                찜 목록
+              </div>
+              {dummyWishItems.map((item, index) => (
+                <div
+                  style={{
+                    borderBottom:
+                      index !== dummyWishItems.length - 1
+                        ? "1px solid #ddd"
+                        : "none",
+                  }}
+                >
+                  <div
+                    key={item.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "0.7rem",
+                      padding: "0.4rem 0",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedCompareItems.includes(item.id)}
+                      onChange={() => {
+                        setSelectedCompareItems((prev) =>
+                          prev.includes(item.id)
+                            ? prev.filter((i) => i !== item.id)
+                            : [...prev, item.id]
+                        );
+                      }}
+                    />
+                    <img
+                      src={item.image}
+                      alt="item"
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "8px",
+                        objectFit: "cover",
+                        backgroundColor: "#eee",
+                      }}
+                    />
+                    <div style={{ fontSize: "14px" }}>
+                      <div style={{ fontWeight: 600 }}>{item.name}</div>
+                      <div
+                        style={{
+                          color: "#444",
+                          fontSize: "13px",
+                          marginTop: "2px",
+                        }}
+                      >
+                        {item.brand}
+                      </div>
+                      <div style={{ color: "#000", marginTop: "4px" }}>
+                        {item.price}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </ChatContent>
 
@@ -226,7 +554,7 @@ export default function ChatbotPage() {
           onChange={(e) => setInput(e.target.value)}
           placeholder="메시지를 입력하세요"
         />
-        <SendButton type="submit">
+        <SendButton type="submit" onClick={handleSubmit}>
           <FiSend />
         </SendButton>
       </InputContainer>

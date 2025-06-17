@@ -107,40 +107,10 @@ const TotalRow = styled.div`
 `;
 
 const PaymentCompletePage = () => {
-  const [showApproved, setShowApproved] = useState(false);
   const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const cartItemIds = query.get("cartItemIds");
-  const tokenFromQuery = query.get("token");
-
-  const [selectedItems, setSelectedItems] = useState<any[]>([]);
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
-    if (!token || !cartItemIds) return;
-
-    axios
-      .get("http://localhost:8080/cart/items", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        const allItems = res.data.result?.items || [];
-        const filtered = allItems.filter((item: any) =>
-          cartItemIds.split(",").includes(String(item.cartItemId))
-        );
-        setSelectedItems(
-          filtered.map((item: any) => ({
-            id: item.cartItemId,
-            name: item.itemName,
-            quantity: item.quantity,
-            discountedPrice: item.salePrice,
-          }))
-        );
-      })
-      .catch((err) => {
-        console.error("결제 정보 조회 실패:", err);
-      });
-  }, [cartItemIds, tokenFromQuery]);
+  const [selectedItems, setSelectedItems] = useState<any[]>(
+    location.state?.selectedItems || []
+  );
 
   const totalQty = selectedItems.reduce(
     (sum: number, item: any) => sum + item.quantity,
@@ -157,6 +127,8 @@ const PaymentCompletePage = () => {
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  const [showApproved, setShowApproved] = useState(false);
 
   return (
     <PageWrapper>
