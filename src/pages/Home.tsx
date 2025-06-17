@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import LogoHeader from "../components/common/LogoHeader";
 import colors from "../styles/colors";
-import OilySkin from "../assets/images/SkinType/oily.png";
+import Oily from "../assets/images/SkinType/oily.png";
+import Combination from "../assets/images/SkinType/combination.png";
+import Dry from "../assets/images/SkinType/dry.png";
 import { useState, useRef, useEffect } from "react";
 import ItemCard from "../components/product/ItemCard";
 import Header from "../components/common/Header";
@@ -15,6 +17,8 @@ import surveyImage from "../assets/images/surveyImage.png";
 import { useLocale } from "../context/LanguageContext";
 import tabItems from "../data/tabItems.json";
 import hotItems from "../data/hotItems.json";
+import skinType from "../data/language/skinType";
+import PersonalRecommended from "../components/PersonalRecommended";
 
 const Wrapper = styled.div`
   display: flex;
@@ -44,7 +48,6 @@ const InfoBoxBtn = styled.button`
   border-radius: 1rem;
   color: ${colors.white};
   font-size: 1rem;
-  /* font-weight: 700; */
 `;
 
 const InfoSubTitle = styled.div`
@@ -52,10 +55,18 @@ const InfoSubTitle = styled.div`
   flex-direction: column;
 `;
 
-const PersonalInfo = styled.div`
+const PersonalInfo = styled.div<{ skinType: string }>`
   display: flex;
   flex-direction: row;
-  background-color: #f0e8ba;
+  background-color: ${({ skinType }) =>
+    skinType === "지성"
+      ? "#FFF6D8"
+      : skinType === "건성"
+      ? "#FCEBDD"
+      : skinType === "복합성"
+      ? "#F4F7E8"
+      : "#ffffff"};
+
   margin-top: 1rem;
   padding: 1rem 1.5rem;
   justify-content: space-between;
@@ -82,6 +93,8 @@ const SkinType = styled.div`
 
 const Highlight = styled.div`
   color: ${colors.mainPink};
+  font-weight: 700;
+  font-size: 1.25rem;
 `;
 
 const RecommendInfo = styled.div`
@@ -240,7 +253,7 @@ export default function Home() {
 
   // 배열 섞는 함수
   function shuffleArray<T>(array: T[]): T[] {
-    const shuffled = [...array]; // 원본 배열 복사
+    const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -267,12 +280,33 @@ export default function Home() {
         if (result.language === "EN") setLanguage("English");
         if (result.language === "JP") setLanguage("日本語");
         if (result.language === "KR") setLanguage("한국어");
+        setMemberInfo(result);
       } catch (error) {
         console.error("회원 정보 불러오기 실패:", error);
       }
     };
     fetchMemberInfo();
   }, []);
+
+  console.log(memberInfo);
+
+  const skinTypeImg = (type: string) => {
+    switch (type) {
+      case "복합성":
+        return Combination;
+      case "건성":
+        return Dry;
+      case "지성":
+        return Oily;
+    }
+  };
+
+  const getLocalizedSkinType = (
+    originalType: string,
+    language: string
+  ): string => {
+    return skinType[originalType]?.[language] ?? "";
+  };
 
   const mockProducts = [
     { id: 1, name: "선크림" },
@@ -299,22 +333,28 @@ export default function Home() {
           </InfoBoxBtn>
         </InfoBox>
       ) : (
-        <PersonalInfo>
+        <PersonalInfo skinType={memberInfo?.skinType}>
           <TextInfo>
             <UserSkin>
-              <div>{memberInfo?.nickname ?? "null"}님은</div>
+              <div>{t.home.skinTypeTitle}</div>
               <SkinType>
-                <Highlight>{memberInfo?.skinType ?? "null"} 피부</Highlight>{" "}
-                입니다
+                <Highlight>
+                  {getLocalizedSkinType(memberInfo?.skinType, language)}
+                </Highlight>
               </SkinType>
             </UserSkin>
             <RecommendInfo>
-              <RecommendTitle>추천 성분</RecommendTitle>
-              <Ingredients>히알루론산, 글리세린</Ingredients>
+              <RecommendTitle>{t.home.skinMBTI}</RecommendTitle>
+              <Ingredients>
+                {memberInfo?.mbtiCode === "" ? "-" : memberInfo?.mbtiCode}
+              </Ingredients>
             </RecommendInfo>
           </TextInfo>
           <CharacterBox>
-            <CharacterImg src={OilySkin} alt="지성 피부" />
+            <CharacterImg
+              src={skinTypeImg(memberInfo?.skinType)}
+              alt={`${memberInfo.skinType} 피부`}
+            />
           </CharacterBox>
         </PersonalInfo>
       )}
@@ -333,7 +373,7 @@ export default function Home() {
         />
       </BannerWrap>
       <RecommandListWrap>
-        <RecommandBox>
+        {/* <RecommandBox>
           <RecommandTitle>
             <div>{memberInfo?.nickname ?? "null"}</div>님을 위한 추천 제품
           </RecommandTitle>
@@ -363,7 +403,8 @@ export default function Home() {
               />
             ))}
           </PersonalRecommandList>
-        </RecommandBox>
+        </RecommandBox> */}
+        <PersonalRecommended />
         <RecommandBox>
           <RecommandTitle>지금 한국🇰🇷에서 가장 핫한 제품</RecommandTitle>
           <RecommandListWrapper>

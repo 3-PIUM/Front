@@ -70,7 +70,7 @@ function ModalContent({
     <Wrapper onClick={closeModal}>
       <ModalBox onClick={(e) => e.stopPropagation()}>
         <SortedBox>
-          {t.category.sorted.map((sort: string) => (
+          {(Object.values(t.category.sorted) as string[]).map((sort) => (
             <Sorted
               key={sort}
               $selected={selectedSort === sort}

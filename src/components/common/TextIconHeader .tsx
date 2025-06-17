@@ -8,7 +8,7 @@ import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
 
 const HeaderWrap = styled.div`
-  position: relative;
+  position: fixed;
   width: 100%;
   height: 44px;
   display: flex;
@@ -16,6 +16,7 @@ const HeaderWrap = styled.div`
   justify-content: space-between;
   background-color: ${colors.white};
   padding: 0 1rem;
+  z-index: 999;
 `;
 
 const LeftIcon = styled.div`
@@ -34,7 +35,7 @@ const Title = styled.h1`
 const RightIcons = styled.div`
   display: flex;
   gap: 1rem;
-  margin-right: -0.9rem;
+  /* margin-right: -0.9rem; */
 `;
 
 const IconWrapper = styled.div`

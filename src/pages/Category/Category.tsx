@@ -172,9 +172,7 @@ export default function Category() {
     categoryName: string,
     subcategoryName: string
   ) => {
-    const encodedCategory = encodeURIComponent(categoryName);
-    const encodedSubCategory = encodeURIComponent(subcategoryName);
-    navigate(`/category/${encodedCategory}/${encodedSubCategory}`);
+    navigate(`/category/${categoryName}/${subcategoryName}`);
   };
 
   return (
@@ -186,14 +184,11 @@ export default function Category() {
         <CategoryItemList>
           <ul>
             {t.category.categoryname.map(
-              (item: { id: number; name: string; items: string[] }) => (
+              (item: { id: number; name: string; value?: string }) => (
                 <React.Fragment key={item.id}>
                   <CategoryItem
                     $selected={clicked === item.name}
-                    onClick={() => {
-                      setClicked(item.name);
-                      handleCategoryClick(item.name);
-                    }}
+                    onClick={() => handleCategoryClick(item.name)}
                   >
                     {item.name}
                   </CategoryItem>
@@ -205,7 +200,11 @@ export default function Category() {
         <SubCategoryItemList>
           {t.category.categoryname.map(
             (
-              item: { id: number; name: string; items: string[] },
+              item: {
+                id: number;
+                name: string;
+                items: { label: string; value: string }[];
+              },
               index: number
             ) => (
               <div
@@ -224,16 +223,12 @@ export default function Category() {
                 </Label>
                 {item.items.map((subcategory) => (
                   <SubCategoryItem
-                    key={subcategory}
-                    onClick={() => {
-                      handleSubCategoryClick(item.name, subcategory);
-                      refMap.current[item.name]?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                    }}
+                    key={subcategory.value}
+                    onClick={() =>
+                      handleSubCategoryClick(item.name, subcategory.value)
+                    }
                   >
-                    {subcategory}
+                    {subcategory.label}
                   </SubCategoryItem>
                 ))}
                 {index !== t.category.categoryname.length - 1 && <Divider />}
