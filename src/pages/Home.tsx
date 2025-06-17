@@ -18,6 +18,7 @@ import { useLocale } from "../context/LanguageContext";
 import tabItems from "../data/tabItems.json";
 import hotItems from "../data/hotItems.json";
 import skinType from "../data/language/skinType";
+import PersonalRecommended from "../components/PersonalRecommended";
 
 const Wrapper = styled.div`
   display: flex;
@@ -372,7 +373,7 @@ export default function Home() {
         />
       </BannerWrap>
       <RecommandListWrap>
-        <RecommandBox>
+        {/* <RecommandBox>
           <RecommandTitle>
             <div>{memberInfo?.nickname ?? "null"}</div>님을 위한 추천 제품
           </RecommandTitle>
@@ -402,7 +403,8 @@ export default function Home() {
               />
             ))}
           </PersonalRecommandList>
-        </RecommandBox>
+        </RecommandBox> */}
+        <PersonalRecommended />
         <RecommandBox>
           <RecommandTitle>지금 한국🇰🇷에서 가장 핫한 제품</RecommandTitle>
           <RecommandListWrapper>

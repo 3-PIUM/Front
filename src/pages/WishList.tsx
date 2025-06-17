@@ -53,6 +53,12 @@ export default function WishList() {
     memberId: number;
     createdAt: string;
     item: wishItem;
+    mainImageUrl: string;
+    discountRate: number;
+    salePrice: number;
+    originalPrice: number;
+    itemName: string;
+    itemId: number;
   }
 
   return (
@@ -67,6 +73,7 @@ export default function WishList() {
             imageSource={wish.item.mainImageUrl}
             discountRate={wish.item.discountRate}
             price={wish.item.salePrice}
+            itemId={wish.item.itemId}
           />
         ))}
       </ItemWrapper>

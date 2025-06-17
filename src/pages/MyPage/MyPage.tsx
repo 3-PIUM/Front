@@ -117,7 +117,7 @@ export default function MyPage() {
 
   useEffect(() => {
     fetchMemberInfo();
-  }, [memberInfo]);
+  }, [profileImage]);
 
   console.log("mypage:", memberInfo);
 
