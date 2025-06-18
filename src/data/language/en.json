@@ -294,8 +294,8 @@
       "more": "pieces"
     },
     "addCart": "Add to cart",
-    "detail": "Product details",
-    "ingredient": "Ingredient analysis",
+    "detail": "Details",
+    "ingredient": "Analysis",
     "selectProduct": "Please select a product",
     "won": "$",
     "scoreTitle": "Ingredient Score",
@@ -306,7 +306,11 @@
     "review": "Review",
     "writeReview": "Write Review",
     "satisfaction": "Product Satisfaction",
-    "selectOption": "Please select an option"
+    "selectOption": "Please select an option",
+    "reviewButton": {
+      "fold": "Hide Reviews ▲",
+      "expand": "Show More ▼"
+    }
   },
   "save": "Save",
   "review": {
@@ -346,7 +350,10 @@
   },
   "qrPage": {
     "title": "QR Code",
-    "instruction": "Please show this QR code at the counter\nfor quick checkout"
+    "instruction": [
+      "Please show this QR code at the counter",
+      "for quick checkout"
+    ]
   },
   "withdrawal": {
     "pageTitle": "Withdraw",
@@ -391,8 +398,8 @@
     "placeholder": "Enter your message",
     "welcome": "Hello, this is the Pium chatbot 💕 \nWhat would you like to know? \nI'm here to help you 😊",
     "suggestions": {
-      "product": "Product Recommendation",
-      "budget": "Budget Recommendation"
+      "recommend": "Recommendation",
+      "compare": "Comparison"
     },
     "botName": "Pium Chatbot",
     "response": {
@@ -409,7 +416,21 @@
         "Friday",
         "Saturday"
       ]
-    }
+    },
+    "recommendText": [
+      "I’ll recommend some products for you!",
+      "Let me know your skin type, concerns, or product preferences 😊"
+    ],
+    "compareText": "Comparison Chatbot",
+    "compareIntro": [
+      "Hello, this is the Pium chatbot 💕",
+      "You can easily compare items in your cart and wishlist.",
+      "Criteria: Price, Ingredients, Vegan, Brand, Reviews"
+    ]
+  },
+  "compare": {
+    "cartList": "Cart Items",
+    "wishlist": "Wishlist"
   },
   "keywords": {
     "product": "product",
@@ -437,11 +458,34 @@
   },
   "ingredient": {
     "tab": {
-      "sensitive": "Sensitive Ingredients",
-      "mySkin": "Ingredients to Avoid for My Skin"
+      "sensitive": "Sensitive",
+      "mySkin": "Avoid"
     },
     "modalTitleSuffix": " - Potential Risk Ingredients",
     "noRisks": "No registered risk ingredients.",
-    "close": "Close"
+    "close": "Close",
+    "safeLabel": "Safe",
+    "cautionLabel": "Caution",
+    "harmfulLabel": "Harmful"
+  },
+  "pos": {
+    "title": "Your cart items have been loaded.",
+    "description": [
+      "Please review the order details below.",
+      "If everything looks good, click the button below to complete your payment."
+    ],
+    "quantityNumber": {
+      "one": "piece",
+      "more": "pieces"
+    },
+    "won": "$",
+    "totalQuantity": "Total Quantity",
+    "totalPrice": "Total Payment",
+    "payButton": "Pay Now"
+  },
+  "paymentComplete": {
+    "approved": "Payment approved.",
+    "insertCard": "Please insert your card into the reader.",
+    "storeName": "Olive Young Myeongdong"
   }
 }

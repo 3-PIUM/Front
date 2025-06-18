@@ -16,23 +16,13 @@ import ProductOptionSelector from "../../components/product/ProductOptionSelecto
 import { useLocale } from "../../context/LanguageContext";
 import ScrollToTopButton from "../../components/common/ScrollToTopButton";
 import axiosInstance from "../../api/axiosInstance";
+import Header from "../../components/common/Header";
 
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
   padding-bottom: 5rem;
-`;
-
-const HeaderBar = styled.div`
-  position: relative;
-  flex-shrink: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: #fff;
-  display: flex;
-  justify-content: space-between;
-  padding-right: 1.3rem;
 `;
 
 const ProductCardWrapper = styled.div`
@@ -122,13 +112,7 @@ export default function ProductDetail() {
         return;
       }
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const res = await axiosInstance.get(
-          `http://localhost:8080/item/${itemId}/info`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await axiosInstance.get(`/item/${itemId}/info`);
         const data = res.data.result;
         setProduct({
           id: data.id,
@@ -170,13 +154,7 @@ export default function ProductDetail() {
     const fetchReviews = async () => {
       if (!itemId) return;
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const res = await axiosInstance.get(
-          `http://localhost:8080/review/${itemId}`,
-          {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-          }
-        );
+        const res = await axiosInstance.get(`/review/${itemId}`);
         const reviews = res.data.result.reviews;
         const currentMemberId = res.data.result.currentMemberId; // assume backend returns this
 
@@ -233,24 +211,11 @@ export default function ProductDetail() {
       return;
     }
 
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
-
     try {
-      await axiosInstance.post(
-        `http://localhost:8080/cart/items/${Number(product.id)}`,
-        {
-          quantity: 1,
-          itemOption:
-            product.options.length > 0 ? selectedOptionName : undefined,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axiosInstance.post(`/cart/items/${Number(product.id)}`, {
+        quantity: 1,
+        itemOption: product.options.length > 0 ? selectedOptionName : undefined,
+      });
       navigate("/cart");
     } catch (err: any) {
       console.error("장바구니 추가 실패", err);
@@ -273,9 +238,8 @@ export default function ProductDetail() {
 
   return (
     <PageWrapper>
-      <HeaderBar>
-        <FullHeader pageName="" productList={[]} />
-      </HeaderBar>
+      <Header />
+      <FullHeader pageName="" />
       <ProductCardWrapper ref={pageWrapperRef}>
         <ProductCard {...product} imageUrl={product.imageUrl.mainImage} />
         {/* Option name display (e.g., [브랜드명] 옵션1) */}
@@ -438,7 +402,9 @@ export default function ProductDetail() {
                         cursor: "pointer",
                       }}
                     >
-                      {showAllReviews ? "리뷰 접기 ▲" : "리뷰 더보기 ▼"}
+                      {showAllReviews
+                        ? t.productDetail.reviewButton.fold
+                        : t.productDetail.reviewButton.expand}
                     </button>
                   </div>
                 )}

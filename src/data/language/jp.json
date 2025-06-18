@@ -308,7 +308,11 @@
     "review": "レビュー",
     "writeReview": "レビューを書く",
     "satisfaction": "製品満足度",
-    "selectOption": "オプションを選択してください"
+    "selectOption": "オプションを選択してください",
+    "reviewButton": {
+      "fold": "レビューをたたむ ▲",
+      "expand": "もっと見る ▼"
+    }
   },
   "save": "保存する",
   "review": {
@@ -393,8 +397,8 @@
     "placeholder": "メッセージを入力してください",
     "welcome": "こんにちは、ピウムチャットボットです 💕 \nご質問はありますか？ \n迅速にお答えします 😊",
     "suggestions": {
-      "product": "製品のおすすめ",
-      "budget": "予算のおすすめ"
+      "recommend": "おすすめ",
+      "compare": "比較"
     },
     "botName": "ピウムチャットボット",
     "response": {
@@ -411,7 +415,21 @@
         "金曜日",
         "土曜日"
       ]
-    }
+    },
+    "recommendText": [
+      "おすすめの商品をご紹介します！",
+      "肌タイプやお悩み、希望する商品タイプを教えてください 😊"
+    ],
+    "compareText": "比較チャットボット",
+    "compareIntro": [
+      "こんにちは、ピウムチャットボットです 💕",
+      "カートとウィッシュリストの商品を簡単に比較できます。",
+      "比較項目：価格、成分、ヴィーガン、ブランド、レビュー"
+    ]
+  },
+  "compare": {
+    "cartList": "カートの商品",
+    "wishlist": "ウィッシュリスト"
   },
   "keywords": {
     "product": "商品",
@@ -444,6 +462,29 @@
     },
     "modalTitleSuffix": " 含有リスク成分",
     "noRisks": "登録されたリスク成分はありません。",
-    "close": "閉じる"
+    "close": "閉じる",
+    "safeLabel": "安全成分",
+    "cautionLabel": "注意成分",
+    "harmfulLabel": "危険成分"
+  },
+  "pos": {
+    "title": "カートの商品が読み込まれました。",
+    "description": [
+      "以下の注文内容をご確認ください。",
+      "問題がなければ、下のボタンを押して決済を完了してください。"
+    ],
+    "quantityNumber": {
+      "one": "個",
+      "more": "個"
+    },
+    "won": "￥",
+    "totalQuantity": "合計数量",
+    "totalPrice": "合計金額",
+    "payButton": "決済する"
+  },
+  "paymentComplete": {
+    "approved": "承認されました。",
+    "insertCard": "カードリーダーにカードを挿入してください。",
+    "storeName": "オリーブヤング明洞店"
   }
 }

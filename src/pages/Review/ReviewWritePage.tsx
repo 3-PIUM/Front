@@ -7,7 +7,7 @@ import TermsToggle from "../../components/common/TermsToggle";
 import Header from "../../components/common/Header";
 import { useLocale } from "../../context/LanguageContext";
 import ReviewSurveySelector from "../../components/review/ReviewSurveySelector";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -129,9 +129,7 @@ const ReviewWritePage = () => {
     if (!itemId) return;
     const fetchSurvey = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8080/review/${itemId}/option`
-        );
+        const res = await axiosInstance.get(`/review/${itemId}/option`);
         const list: any[] = res.data.result.reviewOptionList;
         setSurveyQuestions(
           list.map((q) => ({
@@ -195,8 +193,8 @@ const ReviewWritePage = () => {
     const reviewId = editingReview?.reviewId;
     if (!reviewId) return alert("리뷰 ID가 없습니다.");
     try {
-      const res = await axios.patch(
-        `http://localhost:8080/review/${reviewId}/edit`,
+      const res = await axiosInstance.patch(
+        `/review/${reviewId}/edit`,
         buildFormData(),
         {
           headers: {
@@ -218,16 +216,12 @@ const ReviewWritePage = () => {
   const handleReviewRegister = async () => {
     const token = sessionStorage.getItem("accessToken");
     try {
-      const res = await axios.post(
-        `http://localhost:8080/review/${itemId}/create`,
-        buildFormData(),
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            ...(token && { Authorization: `Bearer ${token}` }),
-          },
-        }
-      );
+      await axiosInstance.post(`/review/${itemId}/create`, buildFormData(), {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+      });
       navigate(`/product-detail?itemId=${itemId}`);
     } catch (err) {
       console.error("리뷰 등록 실패", err);

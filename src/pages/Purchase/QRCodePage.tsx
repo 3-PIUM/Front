@@ -4,6 +4,7 @@ import TextHeader from "../../components/common/TextHeader";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useLocale } from "../../context/LanguageContext";
+import Header from "../../components/common/Header";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -69,6 +70,7 @@ const QRCodePage = () => {
 
   return (
     <PageWrapper>
+      <Header />
       <TextHeader pageName={t.qrPage.title} />
       <QRBox>
         <QRCode value={qrValue} size={200} />

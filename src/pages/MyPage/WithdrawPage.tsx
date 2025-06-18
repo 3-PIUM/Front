@@ -4,7 +4,8 @@ import TextHeader from "../../components/common/TextHeader";
 import Button from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
-import axios from "axios";
+import Header from "../../components/common/Header";
+import axiosInstance from "../../api/axiosInstance";
 
 const PageWrapper = styled.div`
   padding: 4rem 1.2rem 8rem;
@@ -135,13 +136,7 @@ export default function WithdrawalPage() {
           ? customReason.trim()
           : selectedReason;
 
-      const accessToken = sessionStorage.getItem("accessToken");
-
-      const response = await axios.delete("http://localhost:8080/member", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await axiosInstance.delete("/member");
 
       console.log("탈퇴 성공", response.status);
       alert(t.withdrawal.alert.complete);
@@ -157,6 +152,7 @@ export default function WithdrawalPage() {
 
   return (
     <>
+      <Header />
       <TextHeader pageName={t.withdrawal.pageTitle} />
       <PageWrapper>
         <Question>{t.withdrawal.question}</Question>

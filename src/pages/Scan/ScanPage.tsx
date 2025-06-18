@@ -3,11 +3,12 @@ import { useEffect, useRef } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
-import axios from "axios";
+import Header from "../../components/common/Header";
+import axiosInstance from "../../api/axiosInstance";
 
 const PageWrapper = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 90vh;
   background-color: black;
   position: relative;
   overflow: hidden;
@@ -58,8 +59,10 @@ const ScanPage = () => {
     scanCooldownRef.current = true;
 
     try {
-      const res = await axios.get(`http://localhost:8080/item/${itemId}/info`, {
-        headers: { Accept: "application/json" },
+      const res = await axiosInstance.get(`/item/${itemId}/info`, {
+        headers: {
+          Accept: "application/json",
+        },
         withCredentials: true,
       });
 
@@ -154,6 +157,7 @@ const ScanPage = () => {
 
   return (
     <PageWrapper>
+      <Header />
       <InstructionText>{t.scan.alignBarcode}</InstructionText>
       <Video ref={videoRef} autoPlay muted playsInline />
       <canvas ref={canvasRef} style={{ display: "none" }} />

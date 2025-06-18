@@ -4,6 +4,7 @@ import { FiSend } from "react-icons/fi";
 import TextHeader from "../../components/common/TextHeader";
 import profileImg from "../../assets/images/surveyImage.png";
 import { useLocale } from "../../context/LanguageContext";
+import Header from "../../components/common/Header";
 
 const ChatPageContainer = styled.div`
   display: flex;
@@ -90,28 +91,6 @@ const SendButton = styled.button`
   color: #f43f5e;
   font-size: 1.5rem;
   cursor: pointer;
-`;
-
-const SuggestionButtons = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-`;
-
-const SuggestionButton = styled.button`
-  background-color: #ffe4ec;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 16px;
-  color: #111;
-  font-size: 0.7rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-  align-items: center;
-  justify-content: center;
 `;
 
 interface Message {
@@ -279,6 +258,7 @@ export default function ChatbotPage() {
 
   return (
     <ChatPageContainer>
+      <Header />
       <TextHeader pageName={t.chatbot.pageTitle} />
       <ChatContent>
         <DateText>{formattedDate}</DateText>
@@ -315,8 +295,7 @@ export default function ChatbotPage() {
                   ...prev,
                   {
                     sender: "bot",
-                    text: `원하시는 제품을 추천해드릴게요!
-피부 타입이나 고민, 원하는 제품 타입을 알려주세요 😊`,
+                    text: `${t.chatbot.recommendText[0]}\n${t.chatbot.recommendText[1]}`,
                     time: getTime(),
                   },
                 ]);
@@ -333,7 +312,7 @@ export default function ChatbotPage() {
                 fontSize: "14px",
               }}
             >
-              추천 받기
+              {t.chatbot.suggestions.recommend}
             </div>
             <div
               onClick={() => {
@@ -342,7 +321,7 @@ export default function ChatbotPage() {
                   ...prev,
                   {
                     sender: "bot",
-                    text: "피부비교 챗봇",
+                    text: t.chatbot.compareText,
                     time: getTime(),
                   },
                 ]);
@@ -359,7 +338,7 @@ export default function ChatbotPage() {
                 fontSize: "14px",
               }}
             >
-              상품 비교하기
+              {t.chatbot.suggestions.compare}
             </div>
           </div>
         )}
@@ -376,10 +355,11 @@ export default function ChatbotPage() {
                 lineHeight: "1.6",
               }}
             >
-              안녕하세요, 피움 챗봇입니다 💕 <br />
-              장바구니와 찜 목록의 상품을 간편하게 비교해보세요.
+              {t.chatbot.compareIntro[0]}
               <br />
-              항목: 가격, 성분, 비건 여부, 브랜드, 리뷰
+              {t.chatbot.compareIntro[1]}
+              <br />
+              {t.chatbot.compareIntro[2]}
             </div>
             <div
               style={{
@@ -401,7 +381,7 @@ export default function ChatbotPage() {
                 `}
               </style>
               <div style={{ fontWeight: 700, marginBottom: "0.5rem" }}>
-                장바구니 목록
+                {t.compare.cartList}
               </div>
               {dummyCartItems.map((item, index) => (
                 <div
@@ -482,7 +462,7 @@ export default function ChatbotPage() {
                 `}
               </style>
               <div style={{ fontWeight: 700, marginBottom: "0.5rem" }}>
-                찜 목록
+                {t.compare.wishlist}
               </div>
               {dummyWishItems.map((item, index) => (
                 <div
@@ -552,7 +532,7 @@ export default function ChatbotPage() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="메시지를 입력하세요"
+          placeholder={t.chatbot.placeholder}
         />
         <SendButton type="submit" onClick={handleSubmit}>
           <FiSend />

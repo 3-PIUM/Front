@@ -1,7 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { useLocale } from "../../context/LanguageContext";
+import axiosInstance from "../../api/axiosInstance";
 
 const PageWrapper = styled.div`
   position: fixed;
@@ -125,6 +126,7 @@ const QRPOSPage = () => {
   const query = new URLSearchParams(location.search);
   const cartItemIdsFromQuery = query.get("cartItemIds");
   const tokenFromQuery = query.get("token");
+  const { t } = useLocale();
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -132,11 +134,7 @@ const QRPOSPage = () => {
       if (!token || !cartItemIdsFromQuery) return;
 
       try {
-        const res = await axios.get(`http://localhost:8080/cart/items`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axiosInstance.get(`/cart/items`);
         const items = res.data.result?.items || [];
         const selected = items
           .filter((item: any) =>
@@ -176,14 +174,9 @@ const QRPOSPage = () => {
       const idsToUse = cartItemIds || cartItemIdsFromQuery;
       if (!token || !idsToUse) return;
 
-      await axios.post(
-        `http://localhost:8080/cart/pay/${memberId}?cartItemIds=${idsToUse}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      await axiosInstance.post(
+        `/cart/pay/${memberId}?cartItemIds=${idsToUse}`,
+        {}
       );
       navigate("/payment-complete", { state: { selectedItems } });
     } catch (err) {
@@ -195,14 +188,12 @@ const QRPOSPage = () => {
   return (
     <PageWrapper>
       <LeftPanel>
-        <h2 style={{ color: "#222", fontWeight: "bold" }}>
-          장바구니 상품이 불러와졌습니다.
-        </h2>
+        <h2 style={{ color: "#222", fontWeight: "bold" }}>{t.pos.title}</h2>
         <QRImage />
         <Description>
-          아래의 주문 내역을 확인해 주세요.
+          {t.pos.description[0]}
           <br />
-          문제가 없다면 아래 버튼을 눌러 결제를 완료해 주세요.
+          {t.pos.description[1]}
         </Description>
       </LeftPanel>
 
@@ -212,8 +203,13 @@ const QRPOSPage = () => {
             <ItemRow key={idx}>
               <ItemName>{item.name}</ItemName>
               <span>
-                {item.quantity}개 X&nbsp;
-                {(item.quantity * item.discountedPrice).toLocaleString()}원
+                {item.quantity || 1}{" "}
+                {item.quantity === 1
+                  ? t.order.quantityNumber.one
+                  : t.order.quantityNumber.more}
+                X&nbsp;
+                {(item.quantity * item.discountedPrice).toLocaleString()}
+                {t.pos.won}
               </span>
             </ItemRow>
           ))}
@@ -221,14 +217,22 @@ const QRPOSPage = () => {
 
         <TotalArea>
           <TotalLine>
-            <span>총 수량</span>
-            <span>{totalQuantity}개</span>
+            <span>{t.pos.totalQuantity}</span>
+            <span>
+              {totalQuantity}
+              {totalQuantity === 1
+                ? t.pos.quantityNumber.one
+                : t.pos.quantityNumber.more}{" "}
+            </span>
           </TotalLine>
           <TotalLine>
-            <span>총 결제 금액</span>
-            <span>{totalPrice.toLocaleString()}원</span>
+            <span>{t.pos.totalPrice}</span>
+            <span>
+              {totalPrice.toLocaleString()}
+              {t.pos.won}
+            </span>
           </TotalLine>
-          <PayButton onClick={handlePay}>결제하기</PayButton>
+          <PayButton onClick={handlePay}>{t.pos.payButton}</PayButton>
         </TotalArea>
       </RightPanel>
     </PageWrapper>
