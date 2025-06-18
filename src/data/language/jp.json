@@ -68,7 +68,11 @@
     "survey3": {
       "title": "Tell us about your personal color!",
       "goTestTitle": "Not sure? Take a personal color test"
-    }
+    },
+    "skinTypeTestTitle": "肌タイプ診断",
+    "loading": "読み込み中...",
+    "skinTypeResult": "肌タイプの結果",
+    "goBackSurvey": "アンケートに戻る"
   },
   "category": {
     "pageTitle": "カテゴリ",

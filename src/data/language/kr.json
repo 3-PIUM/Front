@@ -67,7 +67,11 @@
     "survey3": {
       "title": "퍼스널컬러에 대해 알려주세요!",
       "goTestTitle": "잘 모르겠다면? 퍼스널 컬러 진단을 받아보세요"
-    }
+    },
+    "skinTypeTestTitle": "피부 타입 진단",
+    "loadong": "로딩 중...",
+    "skinTypeResult": "피부 타입 결과",
+    "goBackSurvey": "설문조사로 돌아가기"
   },
   "category": {
     "pageTitle": "카테고리",

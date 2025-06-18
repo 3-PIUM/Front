@@ -33,6 +33,8 @@ import EditPassword from "./pages/MyPage/EditPassword";
 import FindPassword from "./pages/FindPassword";
 import PostMachinePage from "./pages/Purchase/QRPOSPage";
 import PaymentCompletePage from "./pages/Purchase/PaymentCompletePage";
+import SkinTest from "./pages/SignUp/SkinTest";
+import SkinTypeResult from "./pages/SignUp/SkinTypeResult";
 
 const routes = [
   // DefaultLayout
@@ -83,6 +85,14 @@ const routes = [
   {
     path: "/category/:categoryName/:subcategoryName",
     element: <CategoryList />,
+  },
+  {
+    path: "/skintest",
+    element: <SkinTest />,
+  },
+  {
+    path: "/skinresult",
+    element: <SkinTypeResult />,
   },
 
   //MenuLayout

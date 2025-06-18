@@ -373,37 +373,6 @@ export default function Home() {
         />
       </BannerWrap>
       <RecommandListWrap>
-        {/* <RecommandBox>
-          <RecommandTitle>
-            <div>{memberInfo?.nickname ?? "null"}</div>님을 위한 추천 제품
-          </RecommandTitle>
-          <RecommandCategoryWrapper>
-            {tabItems.map((item) => {
-              return (
-                <RecommandCategory
-                  key={item.id}
-                  onClick={() => {
-                    setActiveTab(item.label);
-                  }}
-                  $isActive={activeTab === item.label}
-                >
-                  {item.label}
-                </RecommandCategory>
-              );
-            })}
-          </RecommandCategoryWrapper>
-          <PersonalRecommandList $isScroll={activeTab === "전체"} ref={listRef}>
-            {showAllItems.map((product) => (
-              <ItemCard
-                key={product.id}
-                itemName={product.name}
-                imageSource={product.url}
-                price={product.price}
-                discountRate={product.discount}
-              />
-            ))}
-          </PersonalRecommandList>
-        </RecommandBox> */}
         <PersonalRecommended />
         <RecommandBox>
           <RecommandTitle>지금 한국🇰🇷에서 가장 핫한 제품</RecommandTitle>
@@ -412,6 +381,7 @@ export default function Home() {
               category.items.map((item) => (
                 <ItemCard
                   key={item.id}
+                  itemId={item.id}
                   itemName={item.name}
                   imageSource={item.url}
                   discountRate={item.discount}
