@@ -67,7 +67,11 @@
     "survey3": {
       "title": "Tell us about your personal color!",
       "goTestTitle": "Not sure? Take a personal color test"
-    }
+    },
+    "skinTypeTestTitle": "Skin Type Test",
+    "loading": "Loading...",
+    "skinTypeResult": "Skin Type Result",
+    "goBackSurvey": "Back to Survey"
   },
   "category": {
     "pageTitle": "Category",

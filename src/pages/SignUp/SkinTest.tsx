@@ -125,7 +125,7 @@ export default function SkinTest() {
   return (
     <Wrapper>
       <Header />
-      <TextHeader pageName="피부 타입 테스트" />
+      <TextHeader pageName={t.survey.skinTypeTestTitle} />
       <ContentWrapper>
         {currentQuestion ? (
           <Content key={currentQuestion.id}>
@@ -167,7 +167,7 @@ export default function SkinTest() {
           </Content>
         ) : (
           <Content>
-            <LoadingText>로딩 중...</LoadingText>
+            <LoadingText>{t.survey.loading}</LoadingText>
           </Content>
         )}
       </ContentWrapper>

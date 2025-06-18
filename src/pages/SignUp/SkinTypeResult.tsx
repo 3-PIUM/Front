@@ -5,6 +5,7 @@ import Oily from "../../assets/images/SkinType/oily.png";
 import Combination from "../../assets/images/SkinType/combination.png";
 import Dry from "../../assets/images/SkinType/dry.png";
 import Button from "../../components/common/Button";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
   display: flex;
@@ -58,17 +59,42 @@ const ButtonWrapper = styled.div`
 export default function SkinTypeResult() {
   const location = useLocation();
   const result = location.state?.result;
+  const { t } = useLocale();
 
   const lang = localStorage.getItem("language");
   const navigate = useNavigate();
 
   console.log(result); // "건성", "지성" 등
 
+  type Language = "한국어" | "English" | "日本語";
+  type SkinType = "건성" | "지성" | "복합성";
+
+  const skinTypeTranslations: Record<SkinType, Record<Language, string>> = {
+    건성: {
+      한국어: "건성",
+      English: "Dry",
+      日本語: "乾燥肌",
+    },
+    지성: {
+      한국어: "지성",
+      English: "Oily",
+      日本語: "脂性肌",
+    },
+    복합성: {
+      한국어: "복합성",
+      English: "Combination",
+      日本語: "混合肌",
+    },
+  };
+
+  const translatedResult =
+    skinTypeTranslations[result as SkinType]?.[lang as Language] || result;
+
   return (
     <>
       <Wrapper>
         <header />
-        <HeaderText>피부 타입 결과</HeaderText>
+        <HeaderText>{t.survey.skinTypeResult}</HeaderText>
         <ImgWrapper>
           {result === "건성" ? (
             <ResultImg src={Dry} alt="건성 피부" />
@@ -83,7 +109,7 @@ export default function SkinTypeResult() {
             <ResultText>
               당신의 피부 타입은&nbsp;
               <span style={{ fontWeight: 700, color: colors.mainPink }}>
-                {result}
+                {translatedResult}
               </span>
               입니다!
             </ResultText>
@@ -91,14 +117,14 @@ export default function SkinTypeResult() {
             <ResultText>
               Your skin type is&nbsp;
               <div style={{ fontWeight: 700, color: colors.mainPink }}>
-                {result}
+                {translatedResult}
               </div>
             </ResultText>
           ) : (
             <ResultText>
               あなたの肌タイプは
               <div style={{ fontWeight: 700, color: colors.mainPink }}>
-                {result}
+                {translatedResult}
               </div>
               です
             </ResultText>
@@ -106,7 +132,10 @@ export default function SkinTypeResult() {
         </TextWrapper>
       </Wrapper>
       <ButtonWrapper>
-        <Button label="설문지로 돌아가기" onClick={() => navigate("/survey")} />
+        <Button
+          label={t.survey.goBackSurvey}
+          onClick={() => navigate("/survey")}
+        />
       </ButtonWrapper>
     </>
   );
