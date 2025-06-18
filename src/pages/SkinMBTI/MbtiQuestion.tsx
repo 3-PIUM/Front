@@ -5,6 +5,7 @@ import axiosInstance from "../../api/axiosInstance";
 import { useState } from "react";
 import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 const Wrap = styled.div`
   display: flex;
@@ -21,94 +22,85 @@ const Wrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 4rem;
   padding: 0 1rem;
   align-items: center;
-  margin: 8rem 0;
+  margin-top: 8rem;
 `;
 
-const TestCategory = styled.div`
+const TypeText = styled.div`
   display: flex;
-  width: fit-content;
-  font-size: 0.8rem;
-  border: 1px solid;
+  color: ${colors.white};
+  background-color: ${colors.mainPink};
+  padding: 0.5rem 1rem;
   border-radius: 1rem;
-  font-weight: 700;
-  background-color: #a6ff83;
-  padding: 0.5rem;
-  justify-content: center;
 `;
 
-const TestWrapper = styled.div`
+const ContentWrap = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  margin: 4rem 0;
+  border-radius: 1rem;
+  padding: 5rem 1rem;
+  margin-top: 2rem;
 `;
 
-const Question = styled.div`
+const QTitle = styled.div`
   display: flex;
+  font-size: 1.4rem;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  font-weight: 700;
-  font-size: 1.5rem;
   padding: 0 1rem;
 `;
 
-const Answer = styled.div<{ isox: boolean }>`
+const AWrap = styled.div`
   display: flex;
-  width: 100%;
-  flex-direction: ${({ isox }) => (isox ? "row" : "column")};
-  gap: 1rem;
-  align-items: center;
-  padding: 1rem;
+  flex-direction: column;
+  margin-top: 4rem;
+  gap: 3rem;
 `;
 
-const AnswerBtn = styled.button`
+const ATitle = styled.div`
   display: flex;
-  background-color: ${colors.white};
-  border: none;
+  background-color: ${colors.white}70;
+  color: ${colors.mainPink};
   border-radius: 1rem;
-  font-size: 1rem;
-  padding: 1rem 1rem;
-  width: 100%;
   justify-content: center;
+  padding: 0.8rem 1rem;
+  text-align: center;
 `;
+
+interface Question {
+  id: number;
+  question: string;
+  type: string;
+  optionO: {
+    text: string;
+    value: string;
+    nextQuestionId: number;
+    result: boolean;
+  };
+  optionX: {
+    text: string;
+    value: string;
+    nextQuestionId: number;
+    result: boolean;
+  };
+}
 
 export default function MbtiQuestion() {
   const { t } = useLocale();
-  //전체 질문
-  const [questionsList, setQuestionsList] = useState<
-    {
-      type: string;
-      questions: {
-        map(arg0: (q: Question) => void): unknown;
-        question: string;
-        nextQuestionId: number | null;
-        isResult: boolean;
-        value: string;
-      };
-    }[]
-  >([]);
-  //현재 인덱스
-  const [currentQuestionId, setCurrentQuestionId] = useState<number>(16);
-
-  interface Question {
-    id: number;
-    question: string;
-    optionO: {
-      text: string;
-      value: string;
-      nextQuestionId: number;
-      result: boolean;
-    };
-    optionX: {
-      text: string;
-      value: string;
-      nextQuestionId: number;
-      result: boolean;
-    };
-  }
+  const [currentQuestionId, setCurrentQuestionId] = useState<number>(16); // 초기 질문 ID
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
+  const [currentTypeIndex, setCurrentTypeIndex] = useState(0);
+  const [skinType, setSkinType] = useState<string | null>(null);
+  const [moisture, setMoisture] = useState<string | null>(null);
+  const [reactivity, setReactivity] = useState<string | null>(null);
+  const [pigment, setPigment] = useState<string | null>(null);
+  const [questionMap, setQuestionMap] = useState<Map<string, Question[]>>(
+    new Map()
+  );
+  const navigate = useNavigate();
+  const [typeOrder, setTypeOrder] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchMBTIQuestions = async () => {
@@ -118,12 +110,45 @@ export default function MbtiQuestion() {
             lang: localStorage.getItem("language"),
           },
         });
-        const data = response.data.result;
-        setQuestionsList(data);
-      } catch (error) {
-        console.log("mbti 질문 가져오는데 실패했습니다", error);
+
+        const raw = response.data.result;
+
+        const map = new Map<string, Question[]>();
+        const detectedTypes: string[] = [];
+
+        raw.forEach((category: any) => {
+          const typedQuestions = category.questions.map((q: any) => ({
+            ...q,
+            type: category.type,
+          }));
+          map.set(category.type, typedQuestions);
+          detectedTypes.push(category.type);
+        });
+
+        setQuestionMap(map);
+        setTypeOrder(detectedTypes); // 실제 받은 질문 순서대로 typeOrder 설정
+
+        // 초기 질문 설정
+        const firstType = typeOrder[0];
+        const firstQuestion = map.get(firstType)?.[0];
+        if (firstQuestion) {
+          setCurrentQuestionId(firstQuestion.id);
+        }
+      } catch (err) {
+        console.error("질문 불러오기 실패", err);
       }
     };
+
+    const fetchMemberInfo = async () => {
+      try {
+        const response = await axiosInstance.get("/member");
+        const result = response.data.result;
+      } catch (error) {
+        console.error("회원 정보 불러오기 실패:", error);
+      }
+    };
+
+    fetchMemberInfo();
     fetchMBTIQuestions();
 
     const root = document.getElementById("root");
@@ -146,65 +171,109 @@ export default function MbtiQuestion() {
     };
   }, []);
 
-  // const handleAnswerClick = (ans: string) => {
-  //   if (ans.isResult === true) {
-  //   }
-  //   setCurrentIndex(ans.nextQuestionId - 1);
-  // };
-  console.log("questionsList", questionsList);
+  useEffect(() => {
+    const allQuestions = Array.from(questionMap.values()).flat();
+    const q = allQuestions.find((q) => q.id === currentQuestionId);
+    setCurrentQuestion(q || null);
+  }, [currentQuestionId, questionMap]);
 
+  const handleAnswerClick = (
+    value: string,
+    nextId: number,
+    isResult: boolean,
+    type: string
+  ) => {
+    if (isResult) {
+      // 타입 저장만 함
+      if (type === "SKINTYPE") setSkinType(value);
+      if (type === "PIGMENT") setPigment(value);
+      if (type === "MOISTURE") setMoisture(value);
+      if (type === "REACTIVITY") setReactivity(value);
+
+      // 이동은 useEffect에서 처리 → 여기선 return만
+      return;
+    } else {
+      setCurrentQuestionId(nextId);
+    }
+  };
+
+  console.log("questionMap", questionMap);
+  console.log(skinType, pigment, moisture, reactivity);
+
+  useEffect(() => {
+    if (!typeOrder.length || questionMap.size === 0) return;
+
+    const answerMap: Record<string, string | null> = {
+      SKINTYPE: skinType,
+      PIGMENT: pigment,
+      MOISTURE: moisture,
+      REACTIVITY: reactivity,
+    };
+
+    const answers = typeOrder.map((type) => answerMap[type]);
+    const answeredCount = answers.filter(Boolean).length;
+
+    // 아직 답변 안 한 타입이 있다면
+    if (answeredCount < typeOrder.length) {
+      const nextType = typeOrder[answeredCount];
+      const nextQuestion = questionMap.get(nextType)?.[0];
+      if (nextQuestion) {
+        setCurrentTypeIndex(answeredCount);
+        setCurrentQuestionId(nextQuestion.id);
+      }
+    }
+
+    // 모든 답변을 완료했다면 결과 페이지로 이동
+    if (answeredCount === typeOrder.length) {
+      navigate("/mbti/result", {
+        state: {
+          skinType,
+          pigment,
+          moisture,
+          reactivity,
+        },
+      });
+    }
+  }, [skinType, pigment, moisture, reactivity, questionMap, typeOrder]);
   return (
     <Wrap>
       <TextHeader pageName={t.mbti.pageTitle} bgColor="transparent" />
       <Wrapper>
-        {questionsList.map((category) => {
-          return (
-            <>
-              <div>{category.type}</div>
-              {category.questions.map((q: Question) => {
-                return (
-                  <>
-                    <div>{q.question}</div>
-                    <div>
-                      <div onClick={() => {}}>{q.optionO.text}</div>
-                      <div onClick={() => {}}>{q.optionX.text}</div>
-                    </div>
-                  </>
-                );
-              })}
-            </>
-          );
-        })}
-      </Wrapper>
-      {/* <Wrapper>
-        <TestCategory>색소 VS 구조</TestCategory>
-        {currentQuestion ? (
-          <TestWrapper>
-            <Question>{currentQuestion.content}</Question>
-            {(() => {
-              const isox = currentQuestion.answers.every(
-                (a) => a.answer === "O" || a.answer === "X"
-              );
-              return (
-                <Answer isox={isox}>
-                  {currentQuestion.answers.map((ans, idx) => {
-                    return (
-                      <AnswerBtn
-                        key={idx}
-                        onClick={() => handleAnswerClick(ans)}
-                      >
-                        {ans.answer}
-                      </AnswerBtn>
-                    );
-                  })}
-                </Answer>
-              );
-            })()}
-          </TestWrapper>
-        ) : (
-          <div>완료</div>
+        {currentQuestion && (
+          <>
+            <TypeText>{currentQuestion.type}</TypeText>
+            <ContentWrap>
+              <QTitle>{currentQuestion.question}</QTitle>
+              <AWrap>
+                <ATitle
+                  onClick={() =>
+                    handleAnswerClick(
+                      currentQuestion.optionO.value,
+                      currentQuestion.optionO.nextQuestionId,
+                      currentQuestion.optionO.result,
+                      currentQuestion.type
+                    )
+                  }
+                >
+                  {currentQuestion.optionO.text}
+                </ATitle>
+                <ATitle
+                  onClick={() =>
+                    handleAnswerClick(
+                      currentQuestion.optionX.value,
+                      currentQuestion.optionX.nextQuestionId,
+                      currentQuestion.optionX.result,
+                      currentQuestion.type
+                    )
+                  }
+                >
+                  {currentQuestion.optionX.text}
+                </ATitle>
+              </AWrap>
+            </ContentWrap>
+          </>
         )}
-      </Wrapper> */}
+      </Wrapper>
     </Wrap>
   );
 }
