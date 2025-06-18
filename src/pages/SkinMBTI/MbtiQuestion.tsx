@@ -77,6 +77,7 @@ const AnswerBtn = styled.button`
 
 export default function MbtiQuestion() {
   const { t } = useLocale();
+  //전체 질문
   const [questionsList, setQuestionsList] = useState<
     {
       id: number;
@@ -88,55 +89,23 @@ export default function MbtiQuestion() {
       }[];
     }[]
   >([]);
-
-  const [pigmentQuestions, setPigmentQuestions] = useState<
-    {
-      id: number;
-      content: string;
-      answers: {
-        answer: string;
-        nextQuestionId: number | null;
-        isResult: boolean;
-      }[];
-    }[]
-  >([]);
-
-  const [moistureQuestions, setMoistureQuestions] = useState<
-    {
-      id: number;
-      content: string;
-      answers: {
-        answer: string;
-        nextQuestionId: number | null;
-        isResult: boolean;
-      }[];
-    }[]
-  >([]);
-
+  //현재 인덱스
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const currentQuestion = pigmentQuestions[currentIndex];
 
   useEffect(() => {
     const fetchMBTIQuestions = async () => {
       try {
         const response = await axiosInstance.get("/mbti/questions", {
           params: {
-            axis: "PIGMENT",
             lang: localStorage.getItem("language"),
           },
         });
-        const questions = response.data.result.questions;
-        console.log("성공", questions);
-        setPigmentQuestions(questions);
-        setQuestionsList(questions);
+        const data = response.data.result;
+        setQuestionsList(data);
       } catch (error) {
         console.log("mbti 질문 가져오는데 실패했습니다", error);
       }
     };
-
-    console.log(localStorage.getItem("language"));
-
     fetchMBTIQuestions();
 
     const root = document.getElementById("root");
@@ -159,16 +128,18 @@ export default function MbtiQuestion() {
     };
   }, []);
 
-  const handleAnswerClick = (ans: string) => {
-    if (ans.isResult === true) {
-    }
-    setCurrentIndex(ans.nextQuestionId - 1);
-  };
+  // const handleAnswerClick = (ans: string) => {
+  //   if (ans.isResult === true) {
+  //   }
+  //   setCurrentIndex(ans.nextQuestionId - 1);
+  // };
+  console.log("questionsList", questionsList);
 
   return (
     <Wrap>
       <TextHeader pageName={t.mbti.pageTitle} bgColor="transparent" />
-      <Wrapper>
+      <div>{}</div>
+      {/* <Wrapper>
         <TestCategory>색소 VS 구조</TestCategory>
         {currentQuestion ? (
           <TestWrapper>
@@ -196,7 +167,7 @@ export default function MbtiQuestion() {
         ) : (
           <div>완료</div>
         )}
-      </Wrapper>
+      </Wrapper> */}
     </Wrap>
   );
 }
