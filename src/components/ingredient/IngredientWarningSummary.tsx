@@ -4,7 +4,7 @@ import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
 import SkinTypePrompt from "../SkinTypePrompt";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 // 스타일 정의
 const Wrapper = styled.div`
@@ -121,13 +121,9 @@ export default function IngredientWarningSummary({
   useEffect(() => {
     const fetchUserSkin = async () => {
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const res = await axios.get("http://localhost:8080/member", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axiosInstance.get("/member");
         const skinType = res.data.result.skinType;
+        console.log("📌 [fetchUserSkin] 추출된 skinType:", skinType);
         if (!skinType) {
           setIsSkinRegistered(false);
         }
@@ -144,9 +140,7 @@ export default function IngredientWarningSummary({
     const fetchIngredients = async () => {
       if (!itemId) return;
       try {
-        const res = await axios.get(
-          `http://localhost:8080/item/${itemId}/caution`
-        );
+        const res = await axiosInstance.get(`/item/${itemId}/caution`);
         const data = res.data.result.cautionIngredients;
 
         if (activeTab === "sensitive") {
@@ -157,7 +151,7 @@ export default function IngredientWarningSummary({
           }));
           setIngredients(flat);
         } else if (activeTab === "mySkin") {
-          const res2 = await axios.get("http://localhost:8080/member");
+          const res2 = await axiosInstance.get("/member");
           const mySkin = res2.data.result.skinType;
 
           if (!mySkin) return;

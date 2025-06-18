@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 const Wrapper = styled.div`
   /* padding: 1rem; */
@@ -70,9 +70,7 @@ export default function IngredientScoreSummary({
   useEffect(() => {
     const fetchScoreCounts = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8080/item/${itemId}/score/count`
-        );
+        const res = await axiosInstance.get(`/item/${itemId}/score/count`);
         const result = res.data.result;
         setScores({
           safe: result.safeCount,
