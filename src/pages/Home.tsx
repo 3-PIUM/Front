@@ -346,7 +346,9 @@ export default function Home() {
             <RecommendInfo>
               <RecommendTitle>{t.home.skinMBTI}</RecommendTitle>
               <Ingredients>
-                {memberInfo?.mbtiCode === "" ? "-" : memberInfo?.mbtiCode}
+                {memberInfo?.mbtiCode === ""
+                  ? "-"
+                  : memberInfo?.mbtiCode.replaceAll(",", "")}
               </Ingredients>
             </RecommendInfo>
           </TextInfo>
