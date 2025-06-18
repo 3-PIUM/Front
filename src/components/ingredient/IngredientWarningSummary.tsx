@@ -21,10 +21,12 @@ const Header = styled.div`
 
 const Tabs = styled.div`
   display: flex;
-  gap: 1rem;
+  width: 100%;
 `;
 
 const Tab = styled.div<{ active: boolean }>`
+  flex: 1;
+  text-align: center;
   font-weight: bold;
   font-size: 15px;
   color: ${({ active }) => (active ? colors.mainPink : "#aaa")};

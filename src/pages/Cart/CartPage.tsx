@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import OptionModal from "../../components/model/OptionModal";
 import { useLocale } from "../../context/LanguageContext";
 import TextHeader from "../../components/common/TextHeader";
-import axios from "axios";
+import Header from "../../components/common/Header";
+import axiosInstance from "../../api/axiosInstance";
 
 const PageWrapper = styled.div`
   display: flex;
@@ -228,20 +229,7 @@ const CartPage = () => {
     window.scrollTo(0, 0);
     const fetchCartItems = async () => {
       try {
-        const token = sessionStorage.getItem("accessToken");
-        if (!token) {
-          console.error("❗토큰이 없습니다. 로그인 상태를 확인하세요.");
-          return;
-        }
-        console.log("🛠️ fetchCartItems 시작 - token:", token);
-
-        const res = await axios.get("http://localhost:8080/cart/items", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("✅ 서버 응답 전체:", res);
-        console.log("🧪 res.data.result.items:", res.data.result?.items);
+        const res = await axiosInstance.get("/cart/items", {});
 
         const itemsFromServer = (res.data.result?.items || []).map(
           (item: any) => ({
@@ -285,23 +273,14 @@ const CartPage = () => {
   };
 
   const handleDelete = async (id: string) => {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) return;
-    await axios.delete(`http://localhost:8080/cart/items/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await axiosInstance.delete(`/cart/items/${id}`, {});
     setCartItems((prev) => prev.filter((item) => item.id !== id));
     setSelectedKeys((prev) => prev.filter((key) => key !== getKey(id)));
   };
 
   const handleDeleteSelected = async () => {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) return;
-
     for (const key of selectedKeys) {
-      await axios.delete(`http://localhost:8080/cart/items/${key}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axiosInstance.delete(`/cart/items/${key}`, {});
     }
 
     setCartItems((prev) =>
@@ -311,15 +290,7 @@ const CartPage = () => {
   };
 
   const handleIncrease = async (id: string) => {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) return;
-    await axios.patch(
-      `http://localhost:8080/cart/items/${id}/increase`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    await axiosInstance.patch(`/cart/items/${id}/increase`, {});
     setCartItems((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
@@ -328,15 +299,7 @@ const CartPage = () => {
   };
 
   const handleDecrease = async (id: string) => {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) return;
-    await axios.patch(
-      `http://localhost:8080/cart/items/${id}/decrease`,
-      {},
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    await axiosInstance.patch(`/cart/items/${id}/decrease`, {});
     setCartItems((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, quantity: item.quantity - 1 } : item
@@ -349,15 +312,9 @@ const CartPage = () => {
     prevOption: string,
     newOption: string
   ) => {
-    const token = sessionStorage.getItem("accessToken");
-    if (!token) return;
-    await axios.patch(
-      `http://localhost:8080/cart/items/${id}/updateOption`,
-      { changeOption: newOption },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    await axiosInstance.patch(`/cart/items/${id}/updateOption`, {
+      changeOption: newOption,
+    });
     setCartItems((prev) =>
       prev.map((item) =>
         getKey(item.id) === id ? { ...item, option: newOption } : item
@@ -382,16 +339,10 @@ const CartPage = () => {
     }
 
     try {
-      const token = sessionStorage.getItem("accessToken");
-      if (!token) return;
-
       const cartItemIds = selectedKeys.join(",");
-      const res = await axios.post(
-        `http://localhost:8080/cart/qr?cartItemIds=${cartItemIds}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+      const res = await axiosInstance.post(
+        `/cart/qr?cartItemIds=${cartItemIds}`,
+        {}
       );
 
       const qrUrls: string[] = res.data.result;
@@ -426,6 +377,7 @@ const CartPage = () => {
 
   return (
     <PageWrapper>
+      <Header />
       <TextHeader pageName={t.cart.pageTitle} />
       <HeaderControlBar>
         <SelectAll onClick={toggleAll}>

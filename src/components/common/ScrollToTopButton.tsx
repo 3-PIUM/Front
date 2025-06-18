@@ -2,13 +2,9 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 
-interface TopButtonProps {
-  visible: boolean;
-}
-
-const TopButton = styled.button<TopButtonProps>`
+const TopButton = styled.button<{ $visible: boolean }>`
   position: fixed;
-  bottom: 5rem; /* ← 여기 3rem → 6rem으로 변경 */
+  bottom: 5rem;
   right: 1rem;
   padding: 0.7rem 1rem;
   background-color: #ff4081;
@@ -20,12 +16,12 @@ const TopButton = styled.button<TopButtonProps>`
   font-size: 14px;
   z-index: 1000;
   transition: opacity 0.3s;
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
-  pointer-events: ${({ visible }) => (visible ? "auto" : "none")};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+  pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
 `;
 
 interface Props {
-  scrollTargetRef: React.RefObject<HTMLDivElement>;
+  scrollTargetRef: React.RefObject<HTMLDivElement | null>;
 }
 export default function ScrollToTopButton({ scrollTargetRef }: Props) {
   const scrollToTop = () => {
@@ -47,7 +43,7 @@ export default function ScrollToTopButton({ scrollTargetRef }: Props) {
 
   // 일단 조건 없이 항상 보이게
   return (
-    <TopButton onClick={scrollToTop} visible={true}>
+    <TopButton onClick={scrollToTop} $visible={true}>
       ↑ {t.scroll.top}
     </TopButton>
   );

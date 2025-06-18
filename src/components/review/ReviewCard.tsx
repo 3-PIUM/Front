@@ -3,7 +3,7 @@ import StarRating from "../product/StarRating";
 import { useState, useEffect } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 interface ReviewCardProps {
   reviewId: number;
@@ -167,12 +167,7 @@ const ReviewCard = ({
   const handleDelete = async () => {
     if (!window.confirm("리뷰를 삭제하시겠습니까?")) return;
     try {
-      const token = sessionStorage.getItem("accessToken");
-      await axios.delete(`http://localhost:8080/review/${reviewId}/remove`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axiosInstance.delete(`/review/${reviewId}/remove`);
       alert("삭제되었습니다.");
       window.location.reload();
     } catch (err: any) {
@@ -193,11 +188,7 @@ const ReviewCard = ({
     }
 
     try {
-      const res = await axios.patch(
-        `http://localhost:8080/review/recommend/${ri}`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await axiosInstance.patch(`/review/recommend/${ri}`, {});
 
       if (res.data.isSuccess) {
         const newLikeCount = liked ? likeCount - 1 : likeCount + 1;

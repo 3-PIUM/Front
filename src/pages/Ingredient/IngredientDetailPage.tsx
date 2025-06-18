@@ -4,8 +4,9 @@ import TextHeader from "../../components/common/TextHeader";
 import ScorePieChart from "../../components/ingredient/ScorePieChart";
 import ScoreBar from "../../components/ingredient/ScoreBar";
 import { useLocale } from "../../context/LanguageContext";
-import axios from "axios";
 import { useLocation } from "react-router-dom";
+import Header from "../../components/common/Header";
+import axiosInstance from "../../api/axiosInstance";
 
 // 스타일
 const Container = styled.div`
@@ -95,9 +96,7 @@ export default function IngredientDetailPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8080/item/${itemId}/score`
-        );
+        const res = await axiosInstance.get(`/item/${itemId}/score`);
         const rankingList = res.data.result.rankingList;
 
         const grouped: Record<string, any> = {};
@@ -144,6 +143,7 @@ export default function IngredientDetailPage() {
 
   return (
     <>
+      <Header />
       <TextHeader pageName={t.ingredientDetail.ingredientDetail} />
       <Container>
         <Title>{t.ingredientDetail.title}</Title>
