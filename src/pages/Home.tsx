@@ -373,7 +373,7 @@ export default function Home() {
         />
       </BannerWrap>
       <RecommandListWrap>
-        <PersonalRecommended />
+        <PersonalRecommended nickname={memberInfo?.nickname} />
         <RecommandBox>
           <RecommandTitle>지금 한국🇰🇷에서 가장 핫한 제품</RecommandTitle>
           <RecommandListWrapper>
