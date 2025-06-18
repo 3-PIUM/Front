@@ -69,16 +69,6 @@ export default function PersonalRecommended({
   const [activeTab, setActiveTab] = useState("전체");
   const [items, setItems] = useState<any[]>([]); // 아이템 상태를 별도로 관리
 
-  // // 배열 섞는 함수
-  // function shuffleArray<T>(array: T[]): T[] {
-  //   const shuffled = [...array];
-  //   for (let i = shuffled.length - 1; i > 0; i--) {
-  //     const j = Math.floor(Math.random() * (i + 1));
-  //     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  //   }
-  //   return shuffled;
-  // }
-
   useEffect(() => {
     const fetchMember = async () => {
       try {
@@ -156,6 +146,7 @@ export default function PersonalRecommended({
                 : 0
             }
             itemId={product.id}
+            wishStatus={product.wishStatus}
           />
         ))}
       </PersonalRecommandList>
