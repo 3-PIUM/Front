@@ -123,7 +123,7 @@ export default function PersonalRecommended({
               <RecommandCategory
                 key={item.id}
                 onClick={() => handleActiveTabValue(item.value)}
-                $isActive={activeTab === item.name}
+                $isActive={activeTab === item.value}
               >
                 {item.name}
               </RecommandCategory>
