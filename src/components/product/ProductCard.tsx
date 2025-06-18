@@ -13,6 +13,7 @@ const ImageWrapper = styled.div`
 `;
 
 const ProductImage = styled.img`
+  padding-top: 2.8rem;
   width: 100%;
 `;
 

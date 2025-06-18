@@ -102,15 +102,15 @@ export default function IngredientScoreSummary({
       <ScoreBox>
         <ScoreCard bgColor="#e6f8e6" borderColor="#34c759">
           <Score color="#34c759">{scores.safe}</Score>
-          <Label color="#34c759">안전 성분</Label>
+          <Label color="#34c759">{t.ingredient.safeLabel}</Label>
         </ScoreCard>
         <ScoreCard bgColor="#fff9e6" borderColor="#f9c846">
           <Score color="#f9c846">{scores.caution}</Score>
-          <Label color="#f9c846">주의 성분</Label>
+          <Label color="#f9c846">{t.ingredient.cautionLabel}</Label>
         </ScoreCard>
         <ScoreCard bgColor="#ffe6e6" borderColor="#ff3b30">
           <Score color="#ff3b30">{scores.harmful}</Score>
-          <Label color="#ff3b30">위험 성분</Label>
+          <Label color="#ff3b30">{t.ingredient.harmfulLabel}</Label>
         </ScoreCard>
       </ScoreBox>
     </Wrapper>

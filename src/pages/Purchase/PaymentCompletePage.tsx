@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
-import cardMachine from "../../assets/card/card_machine.png"; // 경로는 실제 위치에 맞게 조정
+import cardMachine from "../../assets/card/card_machine.png";
+import { useLocale } from "../../context/LanguageContext";
 
 const PageWrapper = styled.div`
   position: fixed;
@@ -65,25 +65,10 @@ const BrandInfo = styled.div`
   line-height: 1.2;
 `;
 
-const UserInfo = styled.div`
-  color: #d32f2f;
-  font-size: 16px;
-  margin-bottom: 1.2rem;
-  line-height: 1.2;
-`;
-
 const PointSection = styled.div`
   border-bottom: 2px solid #ddd;
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
-`;
-
-const PointRow = styled.div`
-  font-weight: 600;
-  font-size: 18px;
-  margin-bottom: 0.4rem;
-  display: flex;
-  justify-content: space-between;
 `;
 
 const PaymentSection = styled.div`
@@ -107,40 +92,9 @@ const TotalRow = styled.div`
 `;
 
 const PaymentCompletePage = () => {
-  const [showApproved, setShowApproved] = useState(false);
   const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const cartItemIds = query.get("cartItemIds");
-  const tokenFromQuery = query.get("token");
-
-  const [selectedItems, setSelectedItems] = useState<any[]>([]);
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
-    if (!token || !cartItemIds) return;
-
-    axios
-      .get("http://localhost:8080/cart/items", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        const allItems = res.data.result?.items || [];
-        const filtered = allItems.filter((item: any) =>
-          cartItemIds.split(",").includes(String(item.cartItemId))
-        );
-        setSelectedItems(
-          filtered.map((item: any) => ({
-            id: item.cartItemId,
-            name: item.itemName,
-            quantity: item.quantity,
-            discountedPrice: item.salePrice,
-          }))
-        );
-      })
-      .catch((err) => {
-        console.error("결제 정보 조회 실패:", err);
-      });
-  }, [cartItemIds, tokenFromQuery]);
+  const { t } = useLocale();
+  const [selectedItems] = useState<any[]>(location.state?.selectedItems || []);
 
   const totalQty = selectedItems.reduce(
     (sum: number, item: any) => sum + item.quantity,
@@ -158,44 +112,50 @@ const PaymentCompletePage = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const [showApproved, setShowApproved] = useState(false);
+
   return (
     <PageWrapper>
       <LeftSide>
-        {showApproved ? (
-          <>
-            <MessageBox>승인이 완료 되었습니다. 카드를 가져가세요</MessageBox>
-            <CardImage src={cardMachine} alt="카드리더기" />
-            <CompleteText>승인이 완료 되었습니다.</CompleteText>
-          </>
-        ) : (
-          <>
-            <MessageBox>카드를 카드리더기에 꽂아주세요</MessageBox>
-            <CardImage src={cardMachine} alt="카드리더기" />
-          </>
+        <MessageBox>
+          {showApproved
+            ? t.paymentComplete.approved
+            : t.paymentComplete.insertCard}
+        </MessageBox>
+        <CardImage src={cardMachine} alt="카드리더기" />
+        {showApproved && (
+          <CompleteText>{t.paymentComplete.approved}</CompleteText>
         )}
       </LeftSide>
 
       <RightSide>
-        <BrandInfo>올리브영 명동점</BrandInfo>
+        <BrandInfo>{t.paymentComplete.storeName}</BrandInfo>
 
         <PointSection></PointSection>
 
         <PaymentSection>
           <DetailRow>
-            <span>결제 금액</span>
-            <span>{totalPrice.toLocaleString()}원</span>
+            <span>{t.pos.totalQuantity}</span>
+            <span>
+              {totalQty || 1}{" "}
+              {totalQty === 1
+                ? t.pos.quantityNumber.one
+                : t.pos.quantityNumber.more}
+            </span>
           </DetailRow>
           <DetailRow>
-            <span>수량</span>
-            <span>{totalQty}개</span>
-          </DetailRow>
-          <DetailRow>
-            <span>총 결제 금액</span>
-            <span>{totalPrice.toLocaleString()}원</span>
+            <span>{t.pos.totalPrice}</span>
+            <span>
+              {totalPrice.toLocaleString()}
+              {t.pos.won}
+            </span>
           </DetailRow>
           <TotalRow>
-            <span>결제 금액</span>
-            <span>{totalPrice.toLocaleString()}원</span>
+            <span>{t.pos.payButton}</span>
+            <span>
+              {totalPrice.toLocaleString()}
+              {t.pos.won}
+            </span>
           </TotalRow>
         </PaymentSection>
       </RightSide>

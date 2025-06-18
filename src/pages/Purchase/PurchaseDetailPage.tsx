@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
+import Header from "../../components/common/Header";
+import axiosInstance from "../../api/axiosInstance";
 
 interface PurchaseDetailItem {
   itemId: number;
@@ -142,16 +143,9 @@ export default function PurchaseDetailPage() {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const res = await axios.get(
-          "http://localhost:8080/purchase-history/detail",
-          {
-            params: { date: purchase.date },
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await axiosInstance.get("/purchase-history/detail", {
+          params: { date: purchase.date },
+        });
         setDetailData(res.data.result);
       } catch (err) {
         console.error("상세 구매내역 불러오기 실패", err);
@@ -163,13 +157,21 @@ export default function PurchaseDetailPage() {
 
   return (
     <>
+      <Header />
       <TextHeader pageName={t.order.detaiTitle} />
       <PageWrapper>
         <DateText>{formattedDate}</DateText>
 
         {(detailData?.detailInfoList || []).map((item, idx) => (
           <ProductWrapper key={idx}>
-            <ProductBox>
+            <ProductBox
+              style={{
+                borderBottom:
+                  idx !== (detailData?.detailInfoList?.length ?? 0) - 1
+                    ? "1px solid #eee"
+                    : "none",
+              }}
+            >
               <Image src={item.imgUrl} />
               <InfoWrapper>
                 <Name>{item.itemName}</Name>

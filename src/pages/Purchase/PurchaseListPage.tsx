@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
-import axios from "axios";
+import Header from "../../components/common/Header";
+import axiosInstance from "../../api/axiosInstance";
 
 interface Purchase {
   date: string;
@@ -68,10 +69,7 @@ export default function PurchaseListPage() {
   useEffect(() => {
     const fetchPurchaseHistory = async () => {
       try {
-        const token = sessionStorage.getItem("accessToken");
-        const res = await axios.get("http://localhost:8080/purchase-history", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axiosInstance.get("/purchase-history", {});
         console.log("서버 응답:", res.data);
         const rawList = res.data.result.dateInfoList;
         const formatted = rawList.map((entry: any) => {
@@ -95,6 +93,7 @@ export default function PurchaseListPage() {
 
   return (
     <>
+      <Header />
       <TextHeader pageName={t.order.history} />
       <Wrapper>
         {purchases.length === 0 ? (

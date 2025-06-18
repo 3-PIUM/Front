@@ -350,7 +350,11 @@
     "review": "리뷰",
     "writeReview": "리뷰 작성",
     "satisfaction": "제품 만족도",
-    "selectOption": "옵션을 선택해주세요"
+    "selectOption": "옵션을 선택해주세요",
+    "reviewButton": {
+      "fold": "리뷰 접기 ▲",
+      "expand": "리뷰 더보기 ▼"
+    }
   },
   "save": "저장하기",
   "review": {
@@ -390,7 +394,10 @@
   },
   "qrPage": {
     "title": "QR 코드",
-    "instruction": "해당 QR 코드를 카운터에 보여주시면\n빠르게 결제 도와드리겠습니다"
+    "instruction": [
+      "해당 QR 코드를 카운터에 보여주세요.",
+      "직원에게 보여주시면 빠르게 결제가 진행됩니다."
+    ]
   },
   "withdrawal": {
     "pageTitle": "회원 탈퇴",
@@ -435,8 +442,8 @@
     "placeholder": "메시지를 입력하세요",
     "welcome": "안녕하세요, 피움 챗봇입니다 💕 \n무엇이 궁금하신가요? \n빠르게 답변 도와드릴게요 😊",
     "suggestions": {
-      "product": "제품 추천",
-      "budget": "예산 추천"
+      "recommend": "추천 받기",
+      "compare": "상품 비교하기"
     },
     "botName": "피움 챗봇",
     "response": {
@@ -453,7 +460,21 @@
         "금요일",
         "토요일"
       ]
-    }
+    },
+    "recommendText": [
+      "원하시는 제품을 추천해드릴게요!",
+      "피부 타입이나 고민, 원하는 제품 타입을 알려주세요 😊"
+    ],
+    "compareText": "비교 챗봇",
+    "compareIntro": [
+      "안녕하세요, 피움 챗봇입니다 💕",
+      "장바구니와 찜 목록의 상품을 간편하게 비교해보세요.",
+      "항목: 가격, 성분, 비건 여부, 브랜드, 리뷰"
+    ]
+  },
+  "compare": {
+    "cartList": "장바구니 목록",
+    "wishlist": "찜 목록"
   },
   "keywords": {
     "product": "제품",
@@ -486,6 +507,29 @@
     },
     "modalTitleSuffix": " 포함 위험 성분",
     "noRisks": "등록된 위험 성분이 없습니다.",
-    "close": "닫기"
+    "close": "닫기",
+    "safeLabel": "안전 성분",
+    "cautionLabel": "주의 성분",
+    "harmfulLabel": "위험 성분"
+  },
+  "pos": {
+    "title": "장바구니 상품이 불러와졌습니다.",
+    "description": [
+      "아래의 주문 내역을 확인해 주세요.",
+      "문제가 없다면 아래 버튼을 눌러 결제를 완료해 주세요."
+    ],
+    "quantityNumber": {
+      "one": "개",
+      "more": "개"
+    },
+    "totalQuantity": "총 수량",
+    "totalPrice": "총 결제 금액",
+    "payButton": "결제하기",
+    "won": "원"
+  },
+  "paymentComplete": {
+    "approved": "승인이 완료 되었습니다.",
+    "insertCard": "카드를 카드리더기에 꽂아주세요",
+    "storeName": "올리브영 명동점"
   }
 }
