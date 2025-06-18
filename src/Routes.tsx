@@ -35,6 +35,7 @@ import PostMachinePage from "./pages/Purchase/QRPOSPage";
 import PaymentCompletePage from "./pages/Purchase/PaymentCompletePage";
 import SkinTest from "./pages/SignUp/SkinTest";
 import SkinTypeResult from "./pages/SignUp/SkinTypeResult";
+import MbtiResult from "./pages/SkinMBTI/MbtiResult";
 
 const routes = [
   // DefaultLayout
@@ -73,6 +74,10 @@ const routes = [
   {
     path: "/mbti/question",
     element: <MbtiQuestion />,
+  },
+  {
+    path: "/mbti/result",
+    element: <MbtiResult />,
   },
   {
     path: "/editprofile",
