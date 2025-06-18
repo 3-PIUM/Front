@@ -80,17 +80,35 @@ export default function MbtiQuestion() {
   //전체 질문
   const [questionsList, setQuestionsList] = useState<
     {
-      id: number;
-      content: string;
-      answers: {
-        answer: string;
+      type: string;
+      questions: {
+        map(arg0: (q: Question) => void): unknown;
+        question: string;
         nextQuestionId: number | null;
         isResult: boolean;
-      }[];
+        value: string;
+      };
     }[]
   >([]);
   //현재 인덱스
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentQuestionId, setCurrentQuestionId] = useState<number>(16);
+
+  interface Question {
+    id: number;
+    question: string;
+    optionO: {
+      text: string;
+      value: string;
+      nextQuestionId: number;
+      result: boolean;
+    };
+    optionX: {
+      text: string;
+      value: string;
+      nextQuestionId: number;
+      result: boolean;
+    };
+  }
 
   useEffect(() => {
     const fetchMBTIQuestions = async () => {
@@ -138,7 +156,26 @@ export default function MbtiQuestion() {
   return (
     <Wrap>
       <TextHeader pageName={t.mbti.pageTitle} bgColor="transparent" />
-      <div>{}</div>
+      <Wrapper>
+        {questionsList.map((category) => {
+          return (
+            <>
+              <div>{category.type}</div>
+              {category.questions.map((q: Question) => {
+                return (
+                  <>
+                    <div>{q.question}</div>
+                    <div>
+                      <div onClick={() => {}}>{q.optionO.text}</div>
+                      <div onClick={() => {}}>{q.optionX.text}</div>
+                    </div>
+                  </>
+                );
+              })}
+            </>
+          );
+        })}
+      </Wrapper>
       {/* <Wrapper>
         <TestCategory>색소 VS 구조</TestCategory>
         {currentQuestion ? (

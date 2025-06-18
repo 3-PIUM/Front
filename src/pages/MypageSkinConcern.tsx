@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import SelectButton from "../components/SelectForm/SelectButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/common/Header";
 import TextHeader from "../components/common/TextHeader";
+import { useLocale } from "../context/LanguageContext";
+import axiosInstance from "../api/axiosInstance";
+import colors from "../styles/colors";
+import Button from "../components/common/Button";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   padding: 3rem 1rem 0 1rem;
@@ -17,71 +22,108 @@ const AnswerWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-const Options = [
-  {
-    id: 1,
-    name: "잡티",
-  },
-  {
-    id: 2,
-    name: "미백",
-  },
-  {
-    id: 3,
-    name: "주름",
-  },
-  {
-    id: 4,
-    name: "모공",
-  },
-  {
-    id: 5,
-    name: "탄력",
-  },
-  {
-    id: 6,
-    name: "홍조",
-  },
-  {
-    id: 7,
-    name: "각질",
-  },
-  {
-    id: 8,
-    name: "트러블",
-  },
-  {
-    id: 9,
-    name: "블랙헤드",
-  },
-  {
-    id: 10,
-    name: "피지과다",
-  },
-  {
-    id: 11,
-    name: "민감성",
-  },
-  {
-    id: 12,
-    name: "아토피",
-  },
-  {
-    id: 13,
-    name: "다크서클",
-  },
-];
+const ButtonWrapper = styled.div`
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  padding: 2rem 1rem;
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: ${colors.white};
+  opacity: 1;
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  width: 100%;
+  margin: 1rem;
+  padding: 3rem 1rem;
+  text-align: center;
+  border-radius: 1rem;
+`;
+
+const ModalButton = styled.button`
+  padding: 1rem;
+  font-size: 0.825rem;
+  background-color: ${colors.mainPink};
+  color: ${colors.white};
+  border: none;
+  border-radius: 3rem;
+`;
 
 export default function SettingSkinConcern() {
-  const [selected, setSelected] = useState<String[]>(["탄력", "블랙헤드"]);
+  const { t } = useLocale();
+  const [selected, setSelected] = useState<Number[]>([]);
+  const [memberInfo, setMemberInfo] = useState<any>(null);
+  const [isChanged, setIsChanged] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleSelection = (name: string) => {
-    if (selected?.includes(name)) {
-      setSelected(selected.filter((item) => item !== name));
+  useEffect(() => {
+    const fetchMemberInfo = async () => {
+      const response = await axiosInstance.get("/member");
+      const result = response.data.result;
+      setMemberInfo(result);
+      setSelected(result.skinIssue);
+    };
+    fetchMemberInfo();
+  }, []);
+
+  const goSave = () => {
+    const saveSkinConcern = async () => {
+      try {
+        await axiosInstance.patch("/member", {
+          skinIssue: selected,
+        });
+        setShowModal(true);
+      } catch (error) {
+        console.log("error:", error);
+      }
+    };
+    saveSkinConcern();
+    setIsChanged(false);
+  };
+
+  useEffect(() => {
+    if (!memberInfo) return;
+    const original = memberInfo.skinIssue ?? [];
+    const changed = selected;
+
+    const isSame =
+      original.length === changed.length &&
+      original.every((val: number) => changed.includes(val));
+
+    setIsChanged(!isSame);
+    console.log(selected);
+  }, [selected, memberInfo]);
+
+  console.log(memberInfo);
+
+  const toggleSelection = (id: number) => {
+    if (selected?.includes(id)) {
+      setSelected(selected.filter((item) => item !== id));
     } else {
-      setSelected([...selected, name]);
+      setSelected([...selected, id]);
     }
   };
+
+  interface ItemProps {
+    id: number;
+    name: string;
+    value: string;
+  }
 
   return (
     <>
@@ -89,16 +131,28 @@ export default function SettingSkinConcern() {
       <TextHeader pageName="피부 고민" />
       <Wrapper>
         <AnswerWrapper>
-          {Options.map((item) => (
+          {t.mypage.skinConcernsItem.map((item: ItemProps) => (
             <SelectButton
+              key={item.id}
               buttonName={item.name}
               size="small"
-              isActivated={selected.includes(item.name)}
-              onClick={() => toggleSelection(item.name)}
+              isActivated={selected.includes(item.id)}
+              onClick={() => toggleSelection(item.id)}
             />
           ))}
         </AnswerWrapper>
       </Wrapper>
+      <ButtonWrapper>
+        <Button label={t.save} onClick={goSave} disabled={!isChanged} />
+      </ButtonWrapper>
+      {showModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <div>정보가 성공적으로 수정되었습니다</div>
+            <ModalButton onClick={() => navigate("/mypage")}>확인</ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </>
   );
 }

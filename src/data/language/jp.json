@@ -65,6 +65,9 @@
       "title": "肌タイプについて教えてください！",
       "goTestTitle": "よく分からない方は？ 肌タイプ診断を受けてみましょう"
     },
+    "survey2": {
+      "title": "お肌の悩みはありますか？"
+    },
     "survey3": {
       "title": "Tell us about your personal color!",
       "goTestTitle": "Not sure? Take a personal color test"
@@ -276,6 +279,21 @@
       "goTest": "よくわからない方は、パーソナルカラー診断を受けてみましょう"
     },
     "skinConcerns": "肌の悩み",
+    "skinConcernsItem": [
+      { "id": 1, "name": "シミ", "value": "잡티" },
+      { "id": 2, "name": "美白", "value": "미백" },
+      { "id": 3, "name": "シワ", "value": "주름" },
+      { "id": 4, "name": "毛穴", "value": "모공" },
+      { "id": 5, "name": "ハリ", "value": "탄력" },
+      { "id": 6, "name": "赤み", "value": "홍조" },
+      { "id": 7, "name": "角質", "value": "각질" },
+      { "id": 8, "name": "トラブル", "value": "트러블" },
+      { "id": 9, "name": "ブラックヘッド", "value": "블랙헤드" },
+      { "id": 10, "name": "皮脂過多", "value": "피지과다" },
+      { "id": 11, "name": "敏感肌", "value": "민감성" },
+      { "id": 12, "name": "アトピー", "value": "아토피" },
+      { "id": 13, "name": "クマ", "value": "다크서클" }
+    ],
     "purchase": "購入",
     "purchaseHistory": "購入履歴",
     "language": "言語",
