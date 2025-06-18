@@ -38,7 +38,13 @@ const Title = styled.div<{ isTop: boolean }>`
 const Description = styled.p`
   font-size: 14px;
   color: #444;
-  margin-top: 0.2rem;
+  margin-top: 0.4rem;
+  line-height: 1.5;
+  word-break: keep-all;
+  white-space: normal;
+  max-width: 240px;
+  margin-left: 1.3rem;
+  /* text-align: right; */
 `;
 
 const SkinTypeCard = ({
