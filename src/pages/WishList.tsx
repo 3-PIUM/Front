@@ -23,6 +23,8 @@ const ItemWrapper = styled.div`
 export default function WishList() {
   const { t } = useLocale();
   const [itemList, setItemList] = useState<wishProps[]>();
+  // 찜 목록을 새로고침할 때 사용
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   useEffect(() => {
     const fetchWishlistItem = async () => {
@@ -37,7 +39,7 @@ export default function WishList() {
     };
 
     fetchWishlistItem();
-  }, []);
+  }, [refreshTrigger]);
 
   interface wishItem {
     itemId: number;
@@ -46,6 +48,7 @@ export default function WishList() {
     originalPrice: number;
     salePrice: number;
     discountRate: number;
+    wishStatus: boolean;
   }
 
   interface wishProps {
@@ -61,6 +64,10 @@ export default function WishList() {
     itemId: number;
   }
 
+  const handleWishChange = () => {
+    setRefreshTrigger((prev) => !prev); // useEffect 다시 실행
+  };
+
   return (
     <Wrapper>
       <Header />
@@ -74,6 +81,8 @@ export default function WishList() {
             discountRate={wish.item.discountRate}
             price={wish.item.salePrice}
             itemId={wish.item.itemId}
+            wishStatus={wish.item.wishStatus}
+            onWishChange={handleWishChange}
           />
         ))}
       </ItemWrapper>

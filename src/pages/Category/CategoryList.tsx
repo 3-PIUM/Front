@@ -8,8 +8,8 @@ import { VscChevronDown } from "react-icons/vsc";
 import SortedModal from "../../components/model/SortedModal";
 import { useLocale } from "../../context/LanguageContext";
 import SelectMenu from "./SelectMenu";
-import axios from "axios";
 import ItemCard from "../../components/product/ItemCard";
+import axiosInstance from "../../api/axiosInstance";
 
 const Wrap = styled.div`
   display: flex;
@@ -121,14 +121,11 @@ export default function CategoryList() {
 
   const fetchSubcategory = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/item/list/${Subcategory}`,
-        {
-          params: {
-            page: pages,
-          },
-        }
-      );
+      const response = await axiosInstance.get(`item/list/${Subcategory}`, {
+        params: {
+          page: pages,
+        },
+      });
       const data = response.data.result;
       const item = data.itemSearchInfoDTOs;
       setItems(item);

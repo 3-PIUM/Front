@@ -64,6 +64,8 @@ interface ItemProps {
   discountRate: number;
   price: number;
   itemId: number;
+  wishStatus: boolean;
+  onWishChange?: () => void;
 }
 
 export default function ItemCard({
@@ -72,13 +74,14 @@ export default function ItemCard({
   discountRate,
   price,
   itemId,
+  wishStatus,
+  onWishChange,
 }: ItemProps) {
-  const [isWished, setIsWished] = useState(false);
+  const [isWished, setIsWished] = useState(wishStatus ?? false);
   const navigate = useNavigate();
 
   const handleWish = async (event: React.MouseEvent) => {
     event.stopPropagation();
-    console.log("클릭됨");
 
     if (!isWished) {
       try {
@@ -92,7 +95,8 @@ export default function ItemCard({
       try {
         await axiosInstance.delete(`/wishlist/${itemId}`);
         console.log("찜 취소가 됐습니다");
-        setIsWished(true);
+        setIsWished(false);
+        onWishChange?.();
       } catch {
         console.error("찜 취소에 실패했습니다");
       }

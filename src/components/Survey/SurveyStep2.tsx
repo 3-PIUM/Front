@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import SelectButton from "./../SelectForm/SelectButton";
 import { useState } from "react";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
   margin-top: 1rem;
@@ -21,83 +22,44 @@ const AnswerWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-const Options = [
-  {
-    id: 1,
-    name: "잡티",
-  },
-  {
-    id: 2,
-    name: "미백",
-  },
-  {
-    id: 3,
-    name: "주름",
-  },
-  {
-    id: 4,
-    name: "모공",
-  },
-  {
-    id: 5,
-    name: "탄력",
-  },
-  {
-    id: 6,
-    name: "홍조",
-  },
-  {
-    id: 7,
-    name: "각질",
-  },
-  {
-    id: 8,
-    name: "트러블",
-  },
-  {
-    id: 9,
-    name: "블렉헤드",
-  },
-  {
-    id: 10,
-    name: "피지과다",
-  },
-  {
-    id: 11,
-    name: "민감성",
-  },
-  {
-    id: 12,
-    name: "아토피",
-  },
-  {
-    id: 13,
-    name: "다크서클",
-  },
-];
+interface issueProps {
+  skinIssue: string[] | null;
+  setSkinIssue: (value: string[]) => void;
+}
 
-export default function SurveyStep1() {
-  const [selected, setSelected] = useState<String[]>([]);
+export default function SurveyStep2({ skinIssue, setSkinIssue }: issueProps) {
+  const { t } = useLocale();
+  const [selected, setSelected] = useState<number[]>([]);
 
-  const toggleSelection = (name: string) => {
-    if (selected?.includes(name)) {
-      setSelected(selected.filter((item) => item !== name));
+  const toggleSelection = (id: number) => {
+    if (selected.includes(id)) {
+      const newSelected = selected.filter((item) => item !== id);
+      setSelected(newSelected);
+      setSkinIssue(newSelected.map(String));
     } else {
-      setSelected([...selected, name]);
+      const newSelected = [...selected, id];
+      setSelected(newSelected);
+      setSkinIssue(newSelected.map(String));
     }
   };
+
+  interface ConcernProps {
+    value: string;
+    name: string;
+    id: number;
+  }
 
   return (
     <>
       <Wrapper>
-        <TitleWrapper>피부 고민이 있으신가요?</TitleWrapper>
+        <TitleWrapper>{t.survey.survey2.title}</TitleWrapper>
         <AnswerWrapper>
-          {Options.map((item) => (
+          {t.mypage.skinConcernsItem.map((item: ConcernProps) => (
             <SelectButton
               buttonName={item.name}
               size="small"
-              isActivated={selected.includes(item.name)}
-              onClick={() => toggleSelection(item.name)}
+              isActivated={selected.includes(item.id)}
+              onClick={() => toggleSelection(item.id)}
             />
           ))}
         </AnswerWrapper>
