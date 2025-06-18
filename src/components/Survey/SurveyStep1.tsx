@@ -67,10 +67,7 @@ export default function SurveyStep1({ skinType, setSkinType }: skinProps) {
           ))}
         </AnswerWrapper>
         <SkinTestWrapper>
-          <Link to="">
-            {t.survey.survey1.goTestTitle}
-            <SkinTestWrapper></SkinTestWrapper>
-          </Link>
+          <Link to="/skintest">{t.survey.survey1.goTestTitle}</Link>
         </SkinTestWrapper>
       </Wrapper>
     </>

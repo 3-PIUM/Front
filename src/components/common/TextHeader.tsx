@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const HeaderWrap = styled.div<{ bgColor?: string }>`
   position: fixed;
   width: 100%;
-  height: 2rem;
   padding: 0 1rem;
   display: flex;
   align-items: center;
