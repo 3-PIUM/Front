@@ -74,7 +74,7 @@ export default function WelcomePage() {
   const [step, setStep] = useState(1);
   const [skinType, setSkinType] = useState<string | null>(null);
   const [personalColor, setPersonalColor] = useState<string | null>(null);
-  const [concern, setConcern] = useState<string[] | null>(null);
+  const [skinIssue, setSkinIssue] = useState<string[] | null>(null);
   const navigate = useNavigate();
   const { t } = useLocale();
 
@@ -93,6 +93,7 @@ export default function WelcomePage() {
         language: storedData.lang,
         skinType: skinType,
         personalType: personalColor,
+        skinIssue: skinIssue,
       });
       console.log("성공");
       console.log(response);
@@ -123,6 +124,7 @@ export default function WelcomePage() {
 
   console.log(skinType);
   console.log(personalColor);
+  console.log(skinIssue);
 
   return (
     <>
@@ -142,7 +144,7 @@ export default function WelcomePage() {
               <SurveyStep1 skinType={skinType} setSkinType={setSkinType} />
             </SlidePage>
             <SlidePage>
-              <SurveyStep2 />
+              <SurveyStep2 skinIssue={skinIssue} setSkinIssue={setSkinIssue} />
             </SlidePage>
             <SlidePage>
               <SurveyStep3
