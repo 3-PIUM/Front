@@ -87,23 +87,17 @@ export default function SettingSkinType() {
     value: string;
   }
 
-  useEffect(() => {
-    const fetchMemberInfo = async () => {
-      const response = await axiosInstance.get("/member");
-      const result = response.data.result;
-      setMemberInfo(result);
-      setSelected(result.skinType);
-    };
-    fetchMemberInfo();
-  }, []);
+  const skinType = JSON.parse(
+    sessionStorage.getItem("memberInfo") || "{}"
+  ).skinType;
+
+  console.log(skinType);
 
   useEffect(() => {
-    if (memberInfo?.skinType) {
-      setSelected(memberInfo.skinType);
+    if (skinType) {
+      setSelected(skinType);
     }
   }, [memberInfo]);
-
-  console.log(memberInfo?.skinType);
 
   const goSave = () => {
     const editSkinType = async () => {
@@ -112,6 +106,7 @@ export default function SettingSkinType() {
           skinType: selected,
         });
         setShowModal(true);
+        sessionStorage.setItem("memberInfo", JSON.stringify(skinType));
       } catch (error) {
         console.log("error", error);
       }

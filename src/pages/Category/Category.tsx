@@ -6,6 +6,7 @@ import { VscChevronRight } from "react-icons/vsc";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import React from "react";
+import { FaLeaf } from "react-icons/fa";
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -17,15 +18,32 @@ const HeaderWrap = styled.div`
   z-index: 100;
 `;
 
-const PageName = styled.div<{ $isSelected: boolean }>`
+const TopWrapper = styled.div<{ $isSelected: boolean }>`
+  display: flex;
+  width: 50%;
+  line-height: 3.5rem;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   color: ${({ $isSelected }) =>
     $isSelected ? colors.mainPink : colors.lightGrey};
   border-bottom: ${({ $isSelected }) =>
     $isSelected ? "1px solid #F23477" : "none"};
-  font-size: 1.25rem;
+`;
+
+const IconWrapper = styled.div<{ selected: boolean }>`
+  display: flex;
+  align-items: center;
+  svg {
+    color: ${({ selected }) => (selected ? "#6DBE45" : colors.lightGrey)};
+  }
+`;
+
+const PageName = styled.div`
+  font-size: 1.1rem;
   font-weight: 700;
   line-height: 3.5rem;
-  width: 50%;
   text-align: center;
 `;
 
@@ -211,22 +229,25 @@ export default function Category() {
     <Wrap>
       <Header />
       <HeaderWrap>
-        <PageName
+        <TopWrapper
           $isSelected={topClicked === "카테고리"}
           onClick={() => {
             setTopClicked("카테고리");
           }}
         >
-          {t.category.pageTitle}
-        </PageName>
-        <PageName
+          <PageName>{t.category.pageTitle}</PageName>
+        </TopWrapper>
+        <TopWrapper
           $isSelected={topClicked === "비건 카테고리"}
           onClick={() => {
             setTopClicked("비건 카테고리");
           }}
         >
-          {t.category.veganTitle}
-        </PageName>
+          <IconWrapper selected={isVegan}>
+            <FaLeaf />
+          </IconWrapper>
+          <PageName>{t.category.veganTitle}</PageName>
+        </TopWrapper>
       </HeaderWrap>
       <Line />
       <CategoryWrapper>

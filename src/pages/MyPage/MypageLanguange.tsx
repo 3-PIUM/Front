@@ -3,7 +3,6 @@ import TextHeader from "../../components/common/TextHeader";
 import Header from "../../components/common/Header";
 import colors from "../../styles/colors";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -51,39 +50,21 @@ const Line = styled.hr`
 export default function SettingLanguange() {
   const { t, language, setLanguage } = useLocale();
   const [clickedLanguage, setClickedLanguage] = useState(language);
-  const navigate = useNavigate();
-  const [memberInfo, setMemberInfo] = useState<any>(null);
 
   useEffect(() => {
     const root = document.getElementById("root");
     const originalBg = root?.style.backgroundColor;
 
-    if (root) root.style.backgroundColor = "#f5f5f5"; // 원하는 색상으로 설정
-
-    const fetchMemberData = async () => {
-      try {
-        const response = await axiosInstance.get("/member");
-        const result = response.data.result;
-        setMemberInfo(result);
-      } catch (error) {
-        console.log("정보 불러오는데 실패하였습니다", error);
-      }
-    };
-
-    fetchMemberData();
+    if (root) root.style.backgroundColor = "#f5f5f5";
 
     return () => {
-      if (root) root.style.backgroundColor = originalBg || ""; // 원상복구
+      if (root) root.style.backgroundColor = originalBg || "";
     };
   }, []);
-
-  console.log(memberInfo);
 
   const handleChangeLanguage = (lang: string) => {
     setLanguage(lang);
     setClickedLanguage(lang);
-    console.log("토큰 확인", sessionStorage.getItem("accessToken"));
-
     const editMemberInfo = async () => {
       try {
         await axiosInstance.patch("/member", {

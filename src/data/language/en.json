@@ -78,7 +78,7 @@
   },
   "category": {
     "pageTitle": "Category",
-    "veganTitle": "VeganCategory",
+    "veganTitle": "Vegan",
     "categoryname": [
       {
         "id": 1,
@@ -220,7 +220,12 @@
       "prefix": "Find out your",
       "suffix": "Skin MBTI type!"
     },
-    "goTestBtn": "Take the Test"
+    "goTestBtn": "Take the Test",
+    "mbtiResult": "MBTI Result",
+    "feature": "Feature",
+    "tip": "Tip",
+    "resultTitle": "What is my skin MBTI?",
+    "goHome": "Go back to home"
   },
   "wishlist": {
     "pageTitle": "Wishlist"

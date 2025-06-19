@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import colors from "../../styles/colors";
+import { useLocale } from "../../context/LanguageContext";
 
 interface MBTIDescriptionProps {
   typeKey: string;
@@ -41,6 +42,10 @@ const Top = styled.div`
   flex-direction: column;
   font-size: 0.9rem;
   line-height: 1.2rem;
+  background-color: ${colors.white};
+  border-radius: 1rem;
+  padding: 1rem;
+  gap: 0.5rem;
 `;
 
 const Bottom = styled.div`
@@ -48,6 +53,16 @@ const Bottom = styled.div`
   flex-direction: column;
   font-size: 0.9rem;
   line-height: 1.2rem;
+  background-color: ${colors.white};
+  border-radius: 1rem;
+  padding: 1rem;
+  gap: 0.5rem;
+`;
+
+const ContentTitle = styled.div`
+  display: flex;
+  font-weight: 700;
+  font-size: 1rem;
 `;
 
 const SubTitle = styled.div`
@@ -62,6 +77,8 @@ export default function MBTIDescription({
   features,
   tips,
 }: MBTIDescriptionProps) {
+  const { t } = useLocale();
+
   return (
     <>
       <DescriptionItem>
@@ -72,7 +89,7 @@ export default function MBTIDescription({
         <DescriptionText>
           <FeatureAndTips>
             <Top>
-              <div>특징</div>
+              <ContentTitle>{t.mbti.feature}</ContentTitle>
               {features.map((item) => {
                 return (
                   <>
@@ -82,7 +99,7 @@ export default function MBTIDescription({
               })}
             </Top>
             <Bottom>
-              <div>팁</div>
+              <ContentTitle>{t.mbti.tip}</ContentTitle>
               {tips.map((tip) => {
                 return (
                   <>
