@@ -62,17 +62,12 @@ const IngredientBox = styled.div`
 `;
 
 // 점수 구간별 색상
-const scoreColorMap: Record<number, string> = {
-  1: "#ec4899",
-  2: "#ec4899",
-  3: "#f472b6",
-  4: "#f472b6",
-  5: "#facc15",
-  6: "#facc15",
-  7: "#38bdf8",
-  8: "#38bdf8",
-  9: "#a78bfa",
-  10: "#a78bfa",
+const scoreColorMap: Record<string, string> = {
+  "1~2": "#ec4899",
+  "3~4": "#f472b6",
+  "5~6": "#facc15",
+  "7~8": "#38bdf8",
+  "9~10": "#a78bfa",
 };
 
 // 점수 구간 변환
@@ -111,7 +106,7 @@ export default function IngredientDetailPage() {
               score: range,
               percent: 0,
               value: 0,
-              color: scoreColorMap[score],
+              color: scoreColorMap[range],
               ingredients: [],
             };
           }

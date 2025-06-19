@@ -504,5 +504,9 @@
     "approved": "承認されました。",
     "insertCard": "カードリーダーにカードを挿入してください。",
     "storeName": "オリーブヤング明洞店"
+  },
+  "skinModel": {
+    "detailedReview": "AI 詳細レビュー要約",
+    "close": "閉じる"
   }
 }
