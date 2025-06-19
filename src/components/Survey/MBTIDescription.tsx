@@ -76,7 +76,7 @@ export default function MBTIDescription({
               {features.map((item) => {
                 return (
                   <>
-                    <li>{item}</li>
+                    <li key={item}>{item}</li>
                   </>
                 );
               })}
@@ -86,7 +86,7 @@ export default function MBTIDescription({
               {tips.map((tip) => {
                 return (
                   <>
-                    <li>{tip}</li>
+                    <li key={tip}>{tip}</li>
                   </>
                 );
               })}

@@ -3,18 +3,9 @@ import TextHeader from "../../components/common/TextHeader";
 import { styled } from "styled-components";
 import { useEffect, useState, useMemo } from "react";
 import axiosInstance from "../../api/axiosInstance";
-import MBTIResultKO from "../../../public/data/MBTILanguage/KoMBTI.json";
-import MBTIResultEN from "../../../public/data/MBTILanguage/EnMBTI.json";
-import MBTIResultJP from "../../../public/data/MBTILanguage/JpMBTI.json";
-import A from "../../assets/images/MBTICharacters/A.png";
-import B from "../../assets/images/MBTICharacters/B.png";
-import E from "../../assets/images/MBTICharacters/E.png";
-import F from "../../assets/images/MBTICharacters/F.png";
-import N from "../../assets/images/MBTICharacters/N.png";
-import O from "../../assets/images/MBTICharacters/O.png";
-import S from "../../assets/images/MBTICharacters/S.png";
-import W from "../../assets/images/MBTICharacters/W.png";
-import R from "../../assets/images/MBTICharacters/R.png";
+import MBTIResults from "../../data/MBTILanguage/KoMBTI.json";
+import MBTIResultEN from "../../data/MBTILanguage/EnMBTI.json";
+import MBTIResultJP from "../../data/MBTILanguage/JpMBTI.json";
 import Button from "../../components/common/Button";
 import colors from "../../styles/colors";
 import MBTIDescription from "../../components/Survey/MBTIDescription";
@@ -186,11 +177,11 @@ export default function MbtiResult() {
   const firstCharImage = useMemo(() => {
     switch (derivedSkin) {
       case "O":
-        return <CItem src={O} />;
+        return <CItem src="images/MBTICharacters/O.png" />;
       case "N":
-        return <CItem src={N} />;
+        return <CItem src="images/MBTICharacters/N.png" />;
       default:
-        return <CItem src={A} />;
+        return <CItem src="images/MBTICharacters/A.png" />;
     }
   }, [derivedSkin]);
 
@@ -259,10 +250,10 @@ export default function MbtiResult() {
         <ContentWrapper>
           <Title>당신의 MBTI는?</Title>
           <CharacterWrapper>
-            {firstCharImage}
-            {pigment === "B" ? <CItem src={B} /> : <CItem src={E} />}
-            {moisture === "F" ? <CItem src={F} /> : <CItem src={S} />}
-            {reactivity === "W" ? <CItem src={W} /> : <CItem src={R} />}
+            <CItem src={`images/MBTICharacters/${skinKey}.png`} />
+            <CItem src={`/images/MBTICharacters/${pigKey}.png`} />
+            <CItem src={`/images/MBTICharacters/${moiKey}.png`} />
+            <CItem src={`/images/MBTICharacters/${reactKey}.png`} />
           </CharacterWrapper>
           <ResultContent>
             <Keyword>
