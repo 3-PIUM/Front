@@ -88,7 +88,7 @@ const routes = [
     element: <FindPassword />,
   },
   {
-    path: "/category/:categoryName/:subcategoryName",
+    path: "/:topClicked/:categoryName/:subcategoryName",
     element: <CategoryList />,
   },
   {

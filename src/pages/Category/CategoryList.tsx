@@ -3,7 +3,7 @@ import Header from "../../components/common/Header";
 import TextIconHeader from "../../components/common/TextIconHeader ";
 import { useNavigate, useParams } from "react-router-dom";
 import colors from "../../styles/colors";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { VscChevronDown } from "react-icons/vsc";
 import SortedModal from "../../components/model/SortedModal";
 import { useLocale } from "../../context/LanguageContext";
@@ -19,24 +19,26 @@ const Wrap = styled.div`
 `;
 
 const SubCategoryWrap = styled.div`
-  margin: 0 1rem;
+  padding: 0 1rem;
   margin-top: 44px;
   position: fixed;
   background-color: ${colors.white};
   z-index: 60;
-`;
 
-const SubCategoryList = styled.div`
   overflow-x: auto;
   width: 100%;
+  flex-wrap: wrap;
   font-size: 0.875rem;
 
-  // 스크롤바 안 보이게
   -ms-overflow-style: none;
   scrollbar-width: none;
   &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
   }
+`;
+
+const SubCategoryList = styled.div`
+  margin-right: 1rem;
 `;
 
 const SubCategoryUl = styled.ul`
@@ -44,6 +46,10 @@ const SubCategoryUl = styled.ul`
   width: max-content;
   margin-top: 0.5rem;
   flex-wrap: nowrap;
+  &::after {
+    content: "";
+    flex: 0 0 1rem;
+  }
 `;
 
 const SubCategoryLi = styled.li<{ $selected: boolean }>`
@@ -57,7 +63,7 @@ const SubCategoryLi = styled.li<{ $selected: boolean }>`
 
 const MenuWrap = styled.div`
   display: flex;
-  padding-top: 5.5rem;
+  margin-top: 5.5rem;
 `;
 
 const MainWrap = styled.div`
@@ -97,7 +103,8 @@ const ItemWrap = styled.div`
 
 export default function CategoryList() {
   const { t } = useLocale();
-  const { categoryName, subcategoryName } = useParams();
+  const { topClicked, categoryName, subcategoryName } = useParams();
+  const isVegan = topClicked === "vegan";
   const [pages, setPages] = useState(0);
   const [items, setItems] = useState([]);
 
@@ -121,11 +128,16 @@ export default function CategoryList() {
 
   const fetchSubcategory = async () => {
     try {
-      const response = await axiosInstance.get(`item/list/${Subcategory}`, {
+      const endpoint = isVegan
+        ? `item/vegan/list/${Subcategory}` // 비건용 API
+        : `item/list/${Subcategory}`; // 일반 API
+
+      const response = await axiosInstance.get(endpoint, {
         params: {
           page: pages,
         },
       });
+
       const data = response.data.result;
       const item = data.itemSearchInfoDTOs;
       setItems(item);
@@ -138,22 +150,47 @@ export default function CategoryList() {
     fetchSubcategory();
   }, [pages]);
 
+  const subListRef = useRef<HTMLDivElement | null>(null);
+  const selectedSubRef = useRef<HTMLLIElement | null>(null);
+
+  useEffect(() => {
+    const listEl = subListRef.current;
+    const selectedEl = selectedSubRef.current;
+
+    if (listEl && selectedEl) {
+      const listRect = listEl.getBoundingClientRect();
+      const selectedRect = selectedEl.getBoundingClientRect();
+
+      const offset =
+        selectedEl.offsetLeft -
+        listEl.offsetLeft -
+        listRect.width / 2 +
+        selectedRect.width / 2;
+
+      listEl.scrollTo({
+        left: offset,
+        behavior: "smooth",
+      });
+    }
+  }, [Subcategory]);
+
   console.log(items);
 
   return (
     <Wrap>
       <Header />
       <TextIconHeader pageName={Category} />
-      <SubCategoryWrap>
+      <SubCategoryWrap ref={subListRef}>
         <SubCategoryList>
           <SubCategoryUl>
             {selectedCategory?.items.map(
               (item: { label: string; value: string }) => (
                 <SubCategoryLi
+                  ref={item.value === Subcategory ? selectedSubRef : null}
                   $selected={item.value === Subcategory}
                   onClick={() =>
                     navigate(
-                      `/category/${encodeURIComponent(
+                      `/${topClicked}/${encodeURIComponent(
                         Category
                       )}/${encodeURIComponent(item.value)}`
                     )
