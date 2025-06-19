@@ -79,7 +79,7 @@
   },
   "category": {
     "pageTitle": "カテゴリ",
-    "veganTitle": "ヴィーガンカテゴリー",
+    "veganTitle": "ヴィーガン",
     "categoryname": [
       {
         "id": 1,
@@ -224,7 +224,12 @@
       "prefix": "あなたの肌MBTIを",
       "suffix": "チェックしよう！"
     },
-    "goTestBtn": "診断してみる"
+    "goTestBtn": "診断してみる",
+    "mbtiResult": "MBTI結果",
+    "feature": "特徴",
+    "tip": "ケアのポイント",
+    "resultTitle": "私の肌MBTIは？",
+    "goHome": "ホームに戻る"
   },
   "wishlist": {
     "pageTitle": "お気に入り"

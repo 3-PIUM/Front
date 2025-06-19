@@ -8,7 +8,6 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: ${colors.white};
   margin-top: 1rem;
-  //펼칠때
 `;
 
 const StyledTable = styled.table`
@@ -17,7 +16,6 @@ const StyledTable = styled.table`
 `;
 
 const StyledTd = styled.td<{ $selected?: boolean }>`
-  /* border: ${({ $selected }) => ($selected ? "none" : "1px solid #ddd")}; */
   border: 1px solid #ddd;
   text-align: center;
   padding: 0.75rem;

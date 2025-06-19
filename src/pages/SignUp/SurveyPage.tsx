@@ -7,7 +7,7 @@ import SurveyStep1 from "../../components/Survey/SurveyStep1";
 import SurveyStep2 from "../../components/Survey/SurveyStep2";
 import SurveyStep3 from "../../components/Survey/SurveyStep3";
 import Button from "../../components/common/Button";
-import StepIndicator from "../../components/StepIndicator";
+import StepIndicator from "../../components/Survey/StepIndicator";
 import { useLocale } from "../../context/LanguageContext";
 import axios from "axios";
 

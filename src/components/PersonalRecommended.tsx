@@ -69,19 +69,6 @@ export default function PersonalRecommended({
   const [activeTab, setActiveTab] = useState("전체");
   const [items, setItems] = useState<any[]>([]); // 아이템 상태를 별도로 관리
 
-  useEffect(() => {
-    const fetchMember = async () => {
-      try {
-        const response = await axiosInstance.get("/member");
-        const data = response.data;
-        console.log(data);
-      } catch (error) {
-        console.error("멤버 정보를 가져오는 중 오류 발생:", error);
-      }
-    };
-    fetchMember();
-  }, []);
-
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -105,8 +92,6 @@ export default function PersonalRecommended({
     fetchItems();
   }, [activeTab]);
 
-  console.log(items);
-
   const handleActiveTabValue = (tabValue: string) => {
     setActiveTab(tabValue);
   };
@@ -114,7 +99,7 @@ export default function PersonalRecommended({
   return (
     <RecommandBox>
       <RecommandTitle>
-        <div>{nickname ?? "null"}</div>님을 위한 추천 제품
+        <div>{nickname}</div>님을 위한 추천 제품
       </RecommandTitle>
       <RecommandCategoryWrapper>
         {t.home.recommended.map(
