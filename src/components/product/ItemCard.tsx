@@ -112,7 +112,7 @@ export default function ItemCard({
       originalPrice: price,
       discountRate: discountRate,
     };
-    navigate("/product-detail", { state: { product } });
+    navigate(`/product-detail?itemId=${itemId}`, { state: { product } });
   };
 
   const formattedPrice = price.toLocaleString();
