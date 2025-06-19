@@ -126,13 +126,13 @@ export default function MbtiQuestion() {
         });
 
         setQuestionMap(map);
-        setTypeOrder(detectedTypes); // 실제 받은 질문 순서대로 typeOrder 설정
+        setTypeOrder(detectedTypes); // ✅ typeOrder는 비동기적이므로 아래에 쓰면 안 됨
 
-        // 초기 질문 설정
-        const firstType = typeOrder[0];
+        // ✅ 여기에서 직접 detectedTypes로 초기 질문 설정
+        const firstType = detectedTypes[0];
         const firstQuestion = map.get(firstType)?.[0];
         if (firstQuestion) {
-          setCurrentQuestionId(firstQuestion.id);
+          setCurrentQuestionId(firstQuestion.id); // ✅ 안전하게 초기화
         }
       } catch (err) {
         console.error("질문 불러오기 실패", err);
@@ -197,9 +197,6 @@ export default function MbtiQuestion() {
     }
   };
 
-  console.log("questionMap", questionMap);
-  console.log(skinType, pigment, moisture, reactivity);
-
   useEffect(() => {
     if (!typeOrder.length || questionMap.size === 0) return;
 
@@ -235,6 +232,7 @@ export default function MbtiQuestion() {
       });
     }
   }, [skinType, pigment, moisture, reactivity, questionMap, typeOrder]);
+
   return (
     <Wrap>
       <TextHeader pageName={t.mbti.pageTitle} bgColor="transparent" />

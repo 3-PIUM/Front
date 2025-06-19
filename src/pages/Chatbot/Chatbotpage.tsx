@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { FiSend } from "react-icons/fi";
 import TextHeader from "../../components/common/TextHeader";
-import profileImg from "../../assets/images/surveyImage.png";
 import { useLocale } from "../../context/LanguageContext";
 import Header from "../../components/common/Header";
 
@@ -266,7 +265,7 @@ export default function ChatbotPage() {
           <MessageRow key={idx} isUser={msg.sender === "user"}>
             {msg.sender === "bot" && (
               <BotRow>
-                <BotImage src={profileImg} alt="bot" />
+                <BotImage src="images/CharacterImg/surveyImage.png" alt="bot" />
                 <BotName>{t.chatbot.botName}</BotName>
               </BotRow>
             )}

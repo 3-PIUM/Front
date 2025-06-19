@@ -1,4 +1,3 @@
-import WelcomeImage from "../../assets/images/welcomeImage.png";
 import styled from "styled-components";
 import colors from "../../styles/colors";
 import Button from "../../components/common/Button";
@@ -59,7 +58,10 @@ export default function Welcome() {
           <HighLight>{t.welcome.text}</HighLight>
         </MainText>
         <ImageWrap>
-          <Image src={WelcomeImage} alt="환영하는 캐릭터 이미지" />
+          <Image
+            src="/images/CharacterImg/welcomeImage.png"
+            alt="환영하는 캐릭터 이미지"
+          />
         </ImageWrap>
       </Wrap>
       <ButtonWrapper>
