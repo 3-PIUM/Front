@@ -70,7 +70,7 @@ export default function SurveyStep2({
             />
           ))}
         </AnswerWrapper>
-        <Link to="">
+        <Link to="/personal-test">
           <SkinTestWrapper>{t.survey.survey3.goTestTitle}</SkinTestWrapper>
         </Link>
       </Wrapper>

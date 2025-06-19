@@ -1,6 +1,5 @@
 import TextHeader from "../../components/common/TextHeader";
 import styled from "styled-components";
-import mbtiCharacter from "../../assets/images/testImage.png";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
@@ -79,7 +78,7 @@ export default function MbtiTest() {
           <div>{t.mbti.title.prefix}</div>
           <div>{t.mbti.title.suffix}</div>
         </Title>
-        <Character src={mbtiCharacter} alt="mbti 캐릭터" />
+        <Character src="images/CharacterImg/testImage.png" alt="mbti 캐릭터" />
         <Button onClick={() => navigate("/mbti/question")}>
           {t.mbti.goTestBtn}
         </Button>

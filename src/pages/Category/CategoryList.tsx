@@ -233,6 +233,7 @@ export default function CategoryList() {
               salePrice: number;
               id: number;
               originalPrice: number;
+              wishStatus: boolean;
             }) => (
               <ItemCard
                 imageSource={item.itemImage}
@@ -246,6 +247,7 @@ export default function CategoryList() {
                       )
                     : 0
                 }
+                wishStatus={item.wishStatus}
               />
             )
           )}

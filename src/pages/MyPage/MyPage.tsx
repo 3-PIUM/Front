@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import ProfileSource from "../../assets/images/ProfileImage.jpg";
-import dafaultProfileImage from "../../assets/images/dafaultProfileImage.png";
 import { FiEdit2 } from "react-icons/fi";
 import colors from "../../styles/colors";
 import Header from "../../components/common/Header";
@@ -165,7 +163,7 @@ export default function MyPage() {
               src={
                 profileImage
                   ? URL.createObjectURL(profileImage)
-                  : memberInfo?.profileImg ?? dafaultProfileImage
+                  : memberInfo?.profileImg ?? "images/dafaultProfileImage.png"
               }
               alt="프로필사진"
             />

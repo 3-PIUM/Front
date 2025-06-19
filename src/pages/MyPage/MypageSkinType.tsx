@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import colors from "../styles/colors";
+import colors from "../../styles/colors";
 import { useState, useEffect } from "react";
-import SelectButton from "../components/SelectForm/SelectButton";
+import SelectButton from "../../components/SelectForm/SelectButton";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/common/Header";
-import TextHeader from "../components/common/TextHeader";
-import { useLocale } from "../context/LanguageContext";
-import axiosInstance from "../api/axiosInstance";
-import Button from "../components/common/Button";
+import Header from "../../components/common/Header";
+import TextHeader from "../../components/common/TextHeader";
+import { useLocale } from "../../context/LanguageContext";
+import axiosInstance from "../../api/axiosInstance";
+import Button from "../../components/common/Button";
 
 const Wrapper = styled.div`
   display: flex;

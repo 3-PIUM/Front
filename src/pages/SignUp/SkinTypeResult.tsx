@@ -1,9 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import colors from "../../styles/colors";
-import Oily from "../../assets/images/SkinType/oily.png";
-import Combination from "../../assets/images/SkinType/combination.png";
-import Dry from "../../assets/images/SkinType/dry.png";
 import Button from "../../components/common/Button";
 import { useLocale } from "../../context/LanguageContext";
 
@@ -97,11 +94,14 @@ export default function SkinTypeResult() {
         <HeaderText>{t.survey.skinTypeResult}</HeaderText>
         <ImgWrapper>
           {result === "건성" ? (
-            <ResultImg src={Dry} alt="건성 피부" />
+            <ResultImg src="/images/SkinType/dry.png" alt="건성 피부" />
           ) : result === "지성" ? (
-            <ResultImg src={Oily} alt="지성 피부" />
+            <ResultImg src="/images/SkinType/oily.png" alt="지성 피부" />
           ) : result === "복합성" ? (
-            <ResultImg src={Combination} alt="복합성 피부" />
+            <ResultImg
+              src="/images/SkinType/combination.png"
+              alt="복합성 피부"
+            />
           ) : null}
         </ImgWrapper>
         <TextWrapper>

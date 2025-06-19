@@ -1,22 +1,14 @@
 import styled from "styled-components";
 import LogoHeader from "../components/common/LogoHeader";
 import colors from "../styles/colors";
-import Oily from "../assets/images/SkinType/oily.png";
-import Combination from "../assets/images/SkinType/combination.png";
-import Dry from "../assets/images/SkinType/dry.png";
 import { useState, useRef, useEffect } from "react";
 import ItemCard from "../components/product/ItemCard";
 import Header from "../components/common/Header";
-import StoreModal from "../components/model/StoreModal";
-import bannerKR from "../assets/images/bannerKR.png";
-import bannerJP from "../assets/images/bannerJP.png";
-import bannerEN from "../assets/images/bannerEN.png";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
-import surveyImage from "../assets/images/surveyImage.png";
 import { useLocale } from "../context/LanguageContext";
-import tabItems from "../data/tabItems.json";
 import hotItems from "../data/hotItems.json";
+import tabItems from "../data/tabItems.json";
 import skinType from "../data/language/skinType";
 import PersonalRecommended from "../components/PersonalRecommended";
 
@@ -290,17 +282,6 @@ export default function Home() {
 
   console.log(memberInfo);
 
-  const skinTypeImg = (type: string) => {
-    switch (type) {
-      case "복합성":
-        return Combination;
-      case "건성":
-        return Dry;
-      case "지성":
-        return Oily;
-    }
-  };
-
   const getLocalizedSkinType = (
     originalType: string,
     language: string
@@ -314,6 +295,13 @@ export default function Home() {
     { id: 3, name: "클렌징 오일" },
   ];
 
+  const skinTypeImageMap: Record<string, string> = {
+    건성: "/images/SkinType/dry.png",
+    복합성: "/images/SkinType/combination.png",
+    지성: "/images/SkinType/oily.png",
+    // 추가적으로 필요한 타입도 여기에 등록
+  };
+
   return (
     <Wrapper>
       <Header />
@@ -323,7 +311,7 @@ export default function Home() {
       />
       {memberInfo?.skinType == null ? (
         <InfoBox>
-          <img src={surveyImage} width="60%" />
+          <img src="images/CharacterImg/surveyImage.png" width="60%" />
           <InfoSubTitle>
             <div>{t.home.personalInfo.subtitle.prefix}</div>
             <div>{t.home.personalInfo.subtitle.suffix}</div>
@@ -354,7 +342,7 @@ export default function Home() {
           </TextInfo>
           <CharacterBox>
             <CharacterImg
-              src={skinTypeImg(memberInfo?.skinType)}
+              src={skinTypeImageMap[memberInfo?.skinType || "건성"]}
               alt={`${memberInfo.skinType} 피부`}
             />
           </CharacterBox>
@@ -365,10 +353,10 @@ export default function Home() {
         <BannerImage
           src={
             language === "한국어"
-              ? bannerKR
+              ? "/images/Banner/bannerKR.png"
               : language == "English"
-              ? bannerEN
-              : bannerJP
+              ? "/images/Banner/bannerEN.png"
+              : "/images/Banner/bannerJP.png"
           }
           alt="mbti 배너"
           onClick={() => navigate("/mbti")}

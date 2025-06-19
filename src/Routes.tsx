@@ -22,9 +22,9 @@ import Withdraw from "./pages/MyPage/WithdrawPage";
 import SettingLanguange from "./pages/MyPage/MypageLanguange";
 import IngredientDetail from "./pages/Ingredient/IngredientDetailPage";
 import ChatbotPage from "./pages/Chatbot/Chatbotpage";
-import MypagePersonalColor from "./pages/MypagePersonalColor";
-import MypageSkinType from "./pages/MypageSkinType";
-import MypageSkinConcern from "./pages/MypageSkinConcern";
+import MypagePersonalColor from "./pages/MyPage/MypagePersonalColor";
+import MypageSkinType from "./pages/MyPage/MypageSkinType";
+import MypageSkinConcern from "./pages/MyPage/MypageSkinConcern";
 import MbtiTest from "./pages/SkinMBTI/MbtiTest";
 import MbtiQuestion from "./pages/SkinMBTI/MbtiQuestion";
 import CategoryList from "./pages/Category/CategoryList";
@@ -36,6 +36,8 @@ import PaymentCompletePage from "./pages/Purchase/PaymentCompletePage";
 import SkinTest from "./pages/SignUp/SkinTest";
 import SkinTypeResult from "./pages/SignUp/SkinTypeResult";
 import MbtiResult from "./pages/SkinMBTI/MbtiResult";
+import PersonalTest from "./pages/SignUp/PersonalTest";
+import PersonalColorResult from "./pages/SignUp/PersonalColorResult";
 
 const routes = [
   // DefaultLayout
@@ -98,6 +100,14 @@ const routes = [
   {
     path: "/skinresult",
     element: <SkinTypeResult />,
+  },
+  {
+    path: "/personal-test",
+    element: <PersonalTest />,
+  },
+  {
+    path: "/personal-result",
+    element: <PersonalColorResult />,
   },
 
   //MenuLayout

@@ -1,7 +1,6 @@
 // src/components/SkinTypePrompt.tsx
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import profileImg from "../assets/images/surveyImage.png";
 
 const Wrapper = styled.div`
   background-color: #ffe7f0;
@@ -42,7 +41,7 @@ export default function SkinTypePrompt({
 }) {
   return (
     <Wrapper>
-      <FlowerImg src={profileImg} alt="bot" />
+      <FlowerImg src="images/CharacterImg/surveyImage.png" alt="bot" />
       <Text>
         지금 피부 타입을 등록하고
         <br />

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { FiSend } from "react-icons/fi";
 import profileImg from "../../assets/images/surveyImage.png";
+import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 const TextHeader = lazy(() => import("../../components/common/TextHeader"));
 const Header = lazy(() => import("../../components/common/Header"));
@@ -269,7 +270,7 @@ export default function ChatbotPage() {
           <MessageRow key={idx} isUser={msg.sender === "user"}>
             {msg.sender === "bot" && (
               <BotRow>
-                <BotImage src={profileImg} alt="bot" />
+                <BotImage src="images/CharacterImg/surveyImage.png" alt="bot" />
                 <BotName>{t.chatbot.botName}</BotName>
               </BotRow>
             )}
