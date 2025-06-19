@@ -2,8 +2,6 @@ import { lazy, Suspense } from "react";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { FiSend } from "react-icons/fi";
-import profileImg from "../../assets/images/surveyImage.png";
-import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 const TextHeader = lazy(() => import("../../components/common/TextHeader"));
 const Header = lazy(() => import("../../components/common/Header"));

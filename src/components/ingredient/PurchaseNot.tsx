@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import profileImg from "../../assets/images/purchaseNot.png";
 
 const Wrapper = styled.div`
   padding: 2rem 1rem;
@@ -24,7 +23,7 @@ const Text = styled.p`
 export default function PurchaseNot() {
   return (
     <Wrapper>
-      <FlowerImg src={profileImg} alt="구매내역 없음 이미지" />
+      <FlowerImg src="images/purchaseNot.png" alt="구매내역 없음 이미지" />
       <Text>구매내역이 없습니다.</Text>
     </Wrapper>
   );
