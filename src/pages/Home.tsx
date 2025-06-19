@@ -253,9 +253,6 @@ export default function Home() {
     return shuffled;
   }
 
-  const showAllItems =
-    activeTab === "전체" ? shuffleArray(allItems) : selectedTab?.items ?? [];
-
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -273,6 +270,7 @@ export default function Home() {
         if (result.language === "JP") setLanguage("日本語");
         if (result.language === "KR") setLanguage("한국어");
         setMemberInfo(result);
+        sessionStorage.setItem("memberInfo", JSON.stringify(result));
       } catch (error) {
         console.error("회원 정보 불러오기 실패:", error);
       }
@@ -302,6 +300,10 @@ export default function Home() {
     // 추가적으로 필요한 타입도 여기에 등록
   };
 
+  const nickname = JSON.parse(
+    sessionStorage.getItem("memberInfo") || "{}"
+  ).nickname;
+
   return (
     <Wrapper>
       <Header />
@@ -309,7 +311,7 @@ export default function Home() {
         onStoreClick={() => setShowStoreModal(true)}
         productList={mockProducts}
       />
-      {memberInfo?.skinType == null ? (
+      {memberInfo?.skinType == "" ? (
         <InfoBox>
           <img src="images/CharacterImg/surveyImage.png" width="60%" />
           <InfoSubTitle>
@@ -341,10 +343,16 @@ export default function Home() {
             </RecommendInfo>
           </TextInfo>
           <CharacterBox>
-            <CharacterImg
-              src={skinTypeImageMap[memberInfo?.skinType || "건성"]}
-              alt={`${memberInfo.skinType} 피부`}
-            />
+            {memberInfo?.skinType === "복합성" ? (
+              <CharacterImg
+                src="images/SkinType/combination.png"
+                alt="복합성 캐릭터"
+              />
+            ) : memberInfo?.skinType === "건성" ? (
+              <CharacterImg src="images/SkinType/dry.png" alt="건성 캐릭터" />
+            ) : (
+              <CharacterImg src="images/SkinType/oily.png" alt="지성 캐릭터" />
+            )}
           </CharacterBox>
         </PersonalInfo>
       )}
@@ -363,7 +371,7 @@ export default function Home() {
         />
       </BannerWrap>
       <RecommandListWrap>
-        <PersonalRecommended nickname={memberInfo?.nickname} />
+        <PersonalRecommended nickname={nickname} />
         <RecommandBox>
           <RecommandTitle>지금 한국🇰🇷에서 가장 핫한 제품</RecommandTitle>
           <RecommandListWrapper>

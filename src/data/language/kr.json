@@ -262,7 +262,12 @@
       "prefix": "나의 피부 MBI",
       "suffix": "테스트하러 가기！"
     },
-    "goTestBtn": "테스트하러 가기"
+    "goTestBtn": "테스트하러 가기",
+    "mbtiResult": "MBTI 결과",
+    "feature": "특징",
+    "tip": "팁",
+    "resultTitle": "나의 피부 MBTI는?",
+    "goHome": "홈으로 돌아가기"
   },
   "wishlist": {
     "pageTitle": "찜"

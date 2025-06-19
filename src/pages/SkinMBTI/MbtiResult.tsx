@@ -3,12 +3,13 @@ import TextHeader from "../../components/common/TextHeader";
 import { styled } from "styled-components";
 import { useEffect, useState, useMemo } from "react";
 import axiosInstance from "../../api/axiosInstance";
-import MBTIResults from "../../data/MBTILanguage/KoMBTI.json";
+import MBTIResultKO from "../../data/MBTILanguage/KoMBTI.json";
 import MBTIResultEN from "../../data/MBTILanguage/EnMBTI.json";
 import MBTIResultJP from "../../data/MBTILanguage/JpMBTI.json";
 import Button from "../../components/common/Button";
 import colors from "../../styles/colors";
 import MBTIDescription from "../../components/Survey/MBTIDescription";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`
   display: flex;
@@ -79,6 +80,8 @@ const Keyword = styled.div`
   display: flex;
   gap: 0.5rem;
   font-size: 0.9rem;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const Circle = styled.div`
@@ -87,6 +90,7 @@ const Circle = styled.div`
   background-color: ${colors.white};
   padding: 0.4rem;
   color: ${colors.mainPink};
+  text-align: center;
 `;
 
 const ResultDescription = styled.div`
@@ -104,56 +108,12 @@ const PersonalDescription = styled.div`
   margin-top: 2rem;
 `;
 
-const DescriptionItem = styled.div`
-  margin: 1rem 0;
-`;
-
-const Alphabet = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  font-family: 700;
-  font-size: 1.3rem;
-  font-weight: 700;
-  justify-content: center;
-  color: ${colors.mainPink};
-  padding: 1rem 0;
-  border-bottom: 1px solid #f23477;
-`;
-
-const DescriptionText = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FeatureAndTips = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 2rem;
-  gap: 2rem;
-`;
-
-const Top = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Bottom = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const SubTitle = styled.div`
-  display: flex;
-  font-weight: 500;
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-`;
-
 export default function MbtiResult() {
   const location = useLocation();
   const navigate = useNavigate();
   const { moisture, pigment, reactivity, skinType } = location.state || {};
   const [getSkin, setGetSkin] = useState<string>("");
+  const { t } = useLocale();
 
   // 1) skinType이 없을 때 서버 값(getSkin)을 가져온다
   useEffect(() => {
@@ -165,29 +125,33 @@ export default function MbtiResult() {
   }, [skinType]);
 
   // 2) 파생된 피부타입 글자(A/N/O)는 계산으로만 얻기
-  const derivedSkin = skinType
-    ? skinType[0]
-    : getSkin === "건성"
-    ? "A"
-    : getSkin === "복합성"
-    ? "N"
-    : "O";
+  const derivedSkin =
+    skinType === "건성"
+      ? "A"
+      : skinType === "복합성"
+      ? "N"
+      : skinType === "지성"
+      ? "O"
+      : getSkin === "건성"
+      ? "A"
+      : getSkin === "복합성"
+      ? "N"
+      : "O";
 
-  // 3) 캐릭터 이미지도 계산으로만
-  const firstCharImage = useMemo(() => {
-    switch (derivedSkin) {
-      case "O":
-        return <CItem src="images/MBTICharacters/O.png" />;
-      case "N":
-        return <CItem src="images/MBTICharacters/N.png" />;
-      default:
-        return <CItem src="images/MBTICharacters/A.png" />;
-    }
-  }, [derivedSkin]);
+  const language = localStorage.getItem("language");
+  const MBTIResults =
+    language === "English"
+      ? MBTIResultEN
+      : language === "日本語"
+      ? MBTIResultJP
+      : MBTIResultKO;
 
   // 4) 최종 MBTI 코드
   const mbti = `${derivedSkin}${pigment}${moisture}${reactivity}`;
   const finalResult = MBTIResults.mbti.find((item) => item.code === mbti);
+
+  console.log(derivedSkin);
+  console.log(mbti);
 
   const skinKey = mbti[0] as "A" | "N" | "O";
   const skinInfo = MBTIResults.skinTypes[skinKey];
@@ -197,6 +161,10 @@ export default function MbtiResult() {
   const moiInfo = MBTIResults.moisture[moiKey];
   const reactKey = mbti[3] as "R" | "W";
   const reactInfo = MBTIResults.Reactivity[reactKey];
+
+  console.log(skinKey);
+
+  console.log(skinInfo);
 
   // 5) 회원 정보 업데이트
   useEffect(() => {
@@ -242,15 +210,15 @@ export default function MbtiResult() {
       <Wrap>
         <HeaderWrapper>
           <TextHeader
-            pageName="MBTI 결과"
+            pageName={t.mbti.mbtiResult}
             bgColor="linear-gradient(to bottom right, #ffb199, #ebd7f5), linear-gradient(to top right, #ffd3ad, #fbd6e5)"
           />
         </HeaderWrapper>
 
         <ContentWrapper>
-          <Title>당신의 MBTI는?</Title>
+          <Title>{t.mbti.resultTitle}</Title>
           <CharacterWrapper>
-            <CItem src={`images/MBTICharacters/${skinKey}.png`} />
+            <CItem src={`/images/MBTICharacters/${skinKey}.png`} />
             <CItem src={`/images/MBTICharacters/${pigKey}.png`} />
             <CItem src={`/images/MBTICharacters/${moiKey}.png`} />
             <CItem src={`/images/MBTICharacters/${reactKey}.png`} />
@@ -296,7 +264,7 @@ export default function MbtiResult() {
       </Wrap>
       <ButtonWrapper>
         <Button
-          label="홈으로 돌아가기"
+          label={t.mbti.goHome}
           onClick={() => {
             navigate("/home");
           }}

@@ -99,30 +99,15 @@ const Line = styled.hr`
 
 export default function MyPage() {
   const navigate = useNavigate();
-  const [memberInfo, setMemberInfo] = useState<any>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const { t } = useLocale();
-
-  const fetchMemberInfo = async () => {
-    try {
-      const response = await axiosInstance.get("/member");
-      const result = response.data.result;
-      setMemberInfo(result);
-    } catch (error) {
-      console.log("사용자 정보 불러오는데 실패했습니다", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchMemberInfo();
-  }, [profileImage]);
-
-  console.log("mypage:", memberInfo);
 
   const handleLogout = async () => {
     try {
       await axiosInstance.post("/logout");
       console.log("로그아웃 성공");
+      sessionStorage.removeItem("memberInfo");
+      sessionStorage.removeItem("accessToken");
       navigate("/");
     } catch (error) {
       console.log("로그아웃 실패:", error);
@@ -145,12 +130,20 @@ export default function MyPage() {
       });
 
       setProfileImage(file);
-      await fetchMemberInfo();
+      // await fetchMemberInfo();
     } catch (err) {
       console.log("프로필사진 에러:", err);
     }
     setProfileImage(profileImage);
   };
+
+  const nickname = JSON.parse(
+    sessionStorage.getItem("memberInfo") || "{}"
+  ).nickname;
+
+  const profileImg = JSON.parse(
+    sessionStorage.getItem("memberInfo") || "{}"
+  ).profileImg;
 
   return (
     <>
@@ -163,7 +156,7 @@ export default function MyPage() {
               src={
                 profileImage
                   ? URL.createObjectURL(profileImage)
-                  : memberInfo?.profileImg ?? "images/dafaultProfileImage.png"
+                  : profileImg ?? "images/dafaultProfileImage.png"
               }
               alt="프로필사진"
             />
@@ -178,7 +171,7 @@ export default function MyPage() {
             onChange={handleFileSelect}
           />
         </ImageSection>
-        <Nickname>{memberInfo?.nickname ?? "null"}</Nickname>
+        <Nickname>{nickname}</Nickname>
       </TopWrapper>
       <Space />
       <Settings>
