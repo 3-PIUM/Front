@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import styled from "styled-components";
-import TextHeader from "../../components/common/TextHeader";
-import ImageUploadList from "../../components/review/ImageUploadList";
 import { useNavigate, useLocation } from "react-router-dom";
-import TermsToggle from "../../components/common/TermsToggle";
-import Header from "../../components/common/Header";
 import { useLocale } from "../../context/LanguageContext";
-import ReviewSurveySelector from "../../components/review/ReviewSurveySelector";
 import axiosInstance from "../../api/axiosInstance";
+
+const TextHeader = lazy(() => import("../../components/common/TextHeader"));
+const ImageUploadList = lazy(
+  () => import("../../components/review/ImageUploadList")
+);
+const TermsToggle = lazy(() => import("../../components/common/TermsToggle"));
+const Header = lazy(() => import("../../components/common/Header"));
+const ReviewSurveySelector = lazy(
+  () => import("../../components/review/ReviewSurveySelector")
+);
 
 const PageWrapper = styled.div`
   display: flex;
@@ -266,8 +271,12 @@ const ReviewWritePage = () => {
 
   return (
     <PageWrapper>
-      <Header />
-      <TextHeader pageName={t.review.writePageTitle} />
+      <Suspense fallback={null}>
+        <Header />
+      </Suspense>
+      <Suspense fallback={null}>
+        <TextHeader pageName={t.review.writePageTitle} />
+      </Suspense>
 
       <ContentWrapper>
         <StarRow>
@@ -286,22 +295,28 @@ const ReviewWritePage = () => {
         />
 
         <SurveySection>
-          <ReviewSurveySelector
-            questions={surveyQuestions}
-            onChange={setSurveyAnswers}
-            initialAnswers={editingReview?.surveyAnswers || {}}
-          />
+          <Suspense fallback={null}>
+            <ReviewSurveySelector
+              questions={surveyQuestions}
+              onChange={setSurveyAnswers}
+              initialAnswers={editingReview?.surveyAnswers || {}}
+            />
+          </Suspense>
         </SurveySection>
 
         <Label>{t.review.photoLabel}</Label>
-        <ImageUploadList
-          images={images}
-          onImageSelect={handleImageSelect}
-          onDeleteImage={handleDeleteImage}
-        />
+        <Suspense fallback={null}>
+          <ImageUploadList
+            images={images}
+            onImageSelect={handleImageSelect}
+            onDeleteImage={handleDeleteImage}
+          />
+        </Suspense>
         <InfoText>{t.review.photoInfo}</InfoText>
         <Divider />
-        <TermsToggle />
+        <Suspense fallback={null}>
+          <TermsToggle />
+        </Suspense>
       </ContentWrapper>
 
       <StickyFooter>

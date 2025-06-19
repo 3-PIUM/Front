@@ -1,10 +1,11 @@
+import { lazy, Suspense } from "react";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { FiSend } from "react-icons/fi";
-import TextHeader from "../../components/common/TextHeader";
 import profileImg from "../../assets/images/surveyImage.png";
 import { useLocale } from "../../context/LanguageContext";
-import Header from "../../components/common/Header";
+const TextHeader = lazy(() => import("../../components/common/TextHeader"));
+const Header = lazy(() => import("../../components/common/Header"));
 
 const ChatPageContainer = styled.div`
   display: flex;
@@ -258,8 +259,10 @@ export default function ChatbotPage() {
 
   return (
     <ChatPageContainer>
-      <Header />
-      <TextHeader pageName={t.chatbot.pageTitle} />
+      <Suspense fallback={null}>
+        <Header />
+        <TextHeader pageName={t.chatbot.pageTitle} />
+      </Suspense>
       <ChatContent>
         <DateText>{formattedDate}</DateText>
         {messages.map((msg, idx) => (

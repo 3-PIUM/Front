@@ -148,6 +148,7 @@ const StackedBarChart: React.FC<{ itemId: number }> = ({ itemId }) => {
           <ChartGroup>
             {Object.entries(group)
               .filter(([key]) => key !== "category")
+              .sort((a, b) => (b[1] as number) - (a[1] as number))
               .map(([label, percent]) => (
                 <BarContainer key={label}>
                   <Label>{label}</Label>
