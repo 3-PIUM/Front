@@ -1,13 +1,33 @@
 import styled from "styled-components";
 import Header from "../../components/common/Header";
-import PageTitle from "../../components/common/PageTitle";
 import colors from "../../styles/colors";
-import categories from "../../data/categories.json";
 import { useRef, useState, useEffect } from "react";
 import { VscChevronRight } from "react-icons/vsc";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import React from "react";
+
+const HeaderWrap = styled.div`
+  position: fixed;
+  width: 100%;
+  /* padding: 0 1rem; */
+  display: flex;
+  height: 3.5rem;
+  background-color: ${colors.white};
+  z-index: 100;
+`;
+
+const PageName = styled.div<{ $isSelected: boolean }>`
+  color: ${({ $isSelected }) =>
+    $isSelected ? colors.mainPink : colors.lightGrey};
+  border-bottom: ${({ $isSelected }) =>
+    $isSelected ? "1px solid #F23477" : "none"};
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 3.5rem;
+  width: 50%;
+  text-align: center;
+`;
 
 const Wrap = styled.div`
   display: flex;
@@ -20,7 +40,7 @@ const Line = styled.hr`
   border: none;
   background-color: ${colors.lightGrey};
   height: 0.5px;
-  margin-top: 44px;
+  margin-top: 60px;
 `;
 
 const CategoryWrapper = styled.div`
@@ -97,6 +117,13 @@ export default function Category() {
   const { t } = useLocale();
   const defaultCategory = t?.category?.categoryname?.[0]?.name ?? "";
   const [clicked, setClicked] = useState(defaultCategory);
+  const [topClicked, setTopClicked] = useState<string>("카테고리");
+
+  const isVegan = topClicked === "비건 카테고리";
+
+  const categoryList = isVegan
+    ? t.category.veganCategoryname
+    : t.category.categoryname;
 
   const selected = t.category.categoryname.find(
     (c: { id: number; name: string; items: string[] }) => c.name === clicked
@@ -172,13 +199,35 @@ export default function Category() {
     categoryName: string,
     subcategoryName: string
   ) => {
-    navigate(`/category/${categoryName}/${subcategoryName}`);
+    const base = isVegan ? "/vegan" : "/category";
+    navigate(`${base}/${categoryName}/${subcategoryName}`);
   };
+
+  useEffect(() => {
+    setClicked(categoryList?.[0]?.name ?? "");
+  }, [topClicked]);
 
   return (
     <Wrap>
       <Header />
-      <PageTitle pageName={t.category.pageTitle} />
+      <HeaderWrap>
+        <PageName
+          $isSelected={topClicked === "카테고리"}
+          onClick={() => {
+            setTopClicked("카테고리");
+          }}
+        >
+          {t.category.pageTitle}
+        </PageName>
+        <PageName
+          $isSelected={topClicked === "비건 카테고리"}
+          onClick={() => {
+            setTopClicked("비건 카테고리");
+          }}
+        >
+          {t.category.veganTitle}
+        </PageName>
+      </HeaderWrap>
       <Line />
       <CategoryWrapper>
         <CategoryItemList>
