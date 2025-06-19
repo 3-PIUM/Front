@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import styled from "styled-components";
 import { VscChevronLeft } from "react-icons/vsc";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
+import axiosInstance from "../../api/axiosInstance";
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -113,7 +113,7 @@ export default function FullHeader({ pageName }: FullHeaderProps) {
       }
 
       try {
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           `http://localhost:8080/item/search/list/${encodeURIComponent(
             searchTerm
           )}?page=0`
