@@ -78,6 +78,7 @@
   },
   "category": {
     "pageTitle": "카테고리",
+    "veganTitle": "비건 카테고리",
     "categoryname": [
       {
         "id": 1,
@@ -133,11 +134,6 @@
           { "label": "선스프레이/선패치", "value": "선스프레이-선패치" },
           { "label": "태닝/애프터선", "value": "태닝-애프터" }
         ]
-      },
-      {
-        "id": 6,
-        "name": "비건",
-        "items": []
       }
     ],
     "options": [
