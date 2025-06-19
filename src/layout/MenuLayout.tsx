@@ -7,9 +7,9 @@ import { FaRegUser, FaUser } from "react-icons/fa6";
 import colors from "../styles/colors";
 import { LuScanLine } from "react-icons/lu";
 import { Link, useLocation } from "react-router-dom";
-import ChatBotButton from "../components/chatbot/ChatBotButton";
+import { Suspense, lazy } from "react";
+const ChatBotButton = lazy(() => import("../components/chatbot/ChatBotButton"));
 import { useLocale } from "../context/LanguageContext";
-import ScrollToTopButton from "../components/common/ScrollToTopButton";
 
 const MenuWrap = styled.div`
   position: fixed;
@@ -123,7 +123,11 @@ export default function MenuLayout() {
   return (
     <>
       <Outlet />
-      {!location.pathname.includes("/product-detail") && <ChatBotButton />}
+      {!location.pathname.includes("/product-detail") && (
+        <Suspense fallback={null}>
+          <ChatBotButton />
+        </Suspense>
+      )}
       <MenuWrap>
         <Menu>
           <MenuLeft>

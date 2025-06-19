@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
@@ -119,14 +119,18 @@ export const calculatePOSTotal = (
 
 const QRPOSPage = () => {
   const location = useLocation();
+  const { memberId } = useParams();
   const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const cartItemIds = location.state?.cartItemIds;
-  const memberId = JSON.parse(sessionStorage.getItem("memberId") || "2");
   const query = new URLSearchParams(location.search);
   const cartItemIdsFromQuery = query.get("cartItemIds");
   const tokenFromQuery = query.get("token");
   const { t } = useLocale();
+
+  // const path = window.location.pathname;
+  // const pathMatch = path.match(/\/cart\/pay\/(\d+)/);
+  // const memberId = pathMatch ? pathMatch[1] : null;
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -172,12 +176,21 @@ const QRPOSPage = () => {
     try {
       const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
       const idsToUse = cartItemIds || cartItemIdsFromQuery;
-      if (!token || !idsToUse) return;
+      if (!token || !idsToUse) {
+        console.warn("❌ 토큰이나 장바구니 ID 없음");
+        return;
+      }
 
-      await axiosInstance.post(
-        `/cart/pay/${memberId}?cartItemIds=${idsToUse}`,
-        {}
+      console.log("🔐 토큰:", token);
+      console.log("🛒 cartItemIds:", idsToUse);
+      console.log("👤 memberId:", memberId);
+
+      const response = await axiosInstance.post(
+        `/cart/pay/${memberId}?cartItemIds=${idsToUse}`
       );
+
+      console.log("✅ 결제 성공 응답:", response);
+      console.log("📦 Navigating to payment complete");
       navigate("/payment-complete", { state: { selectedItems } });
     } catch (err) {
       console.error("💥 결제 실패:", err);
@@ -207,7 +220,7 @@ const QRPOSPage = () => {
                 {item.quantity === 1
                   ? t.order.quantityNumber.one
                   : t.order.quantityNumber.more}
-                X&nbsp;
+                &nbsp;X&nbsp;
                 {(item.quantity * item.discountedPrice).toLocaleString()}
                 {t.pos.won}
               </span>

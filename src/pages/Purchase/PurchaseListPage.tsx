@@ -1,10 +1,15 @@
+import { lazy, Suspense } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
-import Header from "../../components/common/Header";
 import axiosInstance from "../../api/axiosInstance";
+
+const PurchaseNot = lazy(
+  () => import("../../components/ingredient/purchaseNot")
+);
+const TextHeader = lazy(() => import("../../components/common/TextHeader"));
+const Header = lazy(() => import("../../components/common/Header"));
 
 interface Purchase {
   date: string;
@@ -64,7 +69,7 @@ const DetailButton = styled.div`
 export default function PurchaseListPage() {
   const navigate = useNavigate();
   const { t } = useLocale();
-  const [purchases, setPurchases] = useState<Purchase[]>([]);
+  const [purchases, setPurchases] = useState<Purchase[] | null>(null);
 
   useEffect(() => {
     const fetchPurchaseHistory = async () => {
@@ -92,12 +97,12 @@ export default function PurchaseListPage() {
   }, []);
 
   return (
-    <>
+    <Suspense fallback={null}>
       <Header />
       <TextHeader pageName={t.order.history} />
       <Wrapper>
-        {purchases.length === 0 ? (
-          <div>{t.order.noHistory || "구매내역이 없습니다."}</div>
+        {purchases === null ? null : purchases.length === 0 ? (
+          <PurchaseNot />
         ) : (
           purchases.map((purchase, idx) => (
             <PurchaseItem key={purchase.timestamp || idx}>
@@ -129,6 +134,6 @@ export default function PurchaseListPage() {
           ))
         )}
       </Wrapper>
-    </>
+    </Suspense>
   );
 }

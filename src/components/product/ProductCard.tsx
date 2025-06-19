@@ -116,14 +116,16 @@ const ProductCard = ({
                 alignItems: "flex-end",
               }}
             >
-              <OriginalPrice>
-                {originalPrice.toLocaleString()}
-                {t.productDetail.won}
-              </OriginalPrice>
+              {discountRate > 0 && (
+                <OriginalPrice>
+                  {originalPrice.toLocaleString()}
+                  {t.productDetail.won}
+                </OriginalPrice>
+              )}
               <div
                 style={{ display: "flex", alignItems: "center", gap: "6px" }}
               >
-                <Discount>{discountRate}%</Discount>
+                {discountRate > 0 && <Discount>{discountRate}%</Discount>}
                 <Price>
                   {discountedPrice.toLocaleString()}
                   {t.productDetail.won}

@@ -7,7 +7,10 @@ import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import LogoImg from "../../assets/logo/PIUM_logo.png";
+<<<<<<< HEAD
+=======
 
+>>>>>>> 520a089dbbdf2422ddacbd8d77dfae01081a07d4
 
 const HeaderWrap = styled.div`
   position: fixed;
