@@ -79,6 +79,7 @@
   },
   "category": {
     "pageTitle": "カテゴリ",
+    "veganTitle": "ヴィーガンカテゴリー",
     "categoryname": [
       {
         "id": 1,
@@ -137,11 +138,6 @@
           { "label": "サンスプレー／パッチ", "value": "선스프레이-선패치" },
           { "label": "タンニング／アフター", "value": "태닝-애프터" }
         ]
-      },
-      {
-        "id": 6,
-        "name": "ヴィーガン",
-        "items": []
       }
     ],
     "options": [
