@@ -5,6 +5,7 @@ import colors from "../../styles/colors";
 import { HiLocationMarker } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
+import LogoImg from "../../assets/logo/PIUM_logo.png";
 import axios from "axios";
 
 const HeaderWrap = styled.div`
@@ -20,8 +21,9 @@ const HeaderWrap = styled.div`
   z-index: 100;
 `;
 
-const LogoWrap = styled.div`
+const LogoWrap = styled.img`
   display: flex;
+  height: 70%;
 `;
 
 const RightIcons = styled.div`
@@ -120,7 +122,7 @@ export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
   return (
     <>
       <HeaderWrap>
-        <LogoWrap>로고 이미지</LogoWrap>
+        <LogoWrap src={LogoImg} />
         <RightIcons>
           <IconWrapper onClick={onStoreClick}>
             <HiLocationMarker size={20} />
