@@ -5,8 +5,9 @@ import colors from "../../styles/colors";
 import { HiLocationMarker } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
+import axiosInstance from "../../api/axiosInstance";
 import LogoImg from "../../assets/logo/PIUM_logo.png";
-import axios from "axios";
+
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -104,7 +105,7 @@ export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
       }
 
       try {
-        const res = await axios.get(
+        const res = await axiosInstance.get(
           `http://localhost:8080/item/search/list/${encodeURIComponent(
             searchTerm
           )}?page=0`

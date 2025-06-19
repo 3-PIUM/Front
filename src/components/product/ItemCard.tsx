@@ -133,7 +133,7 @@ export default function ItemCard({
         <ItemName>{itemName}</ItemName>
         <PriceWrap>
           <ItemDiscount>{discountRate}%</ItemDiscount>
-          <ItemPrice>{formattedPrice}원</ItemPrice>
+          <ItemPrice>{formattedPrice}</ItemPrice>
         </PriceWrap>
       </ItemWrap>
     </>
