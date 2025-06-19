@@ -36,6 +36,8 @@ import PaymentCompletePage from "./pages/Purchase/PaymentCompletePage";
 import SkinTest from "./pages/SignUp/SkinTest";
 import SkinTypeResult from "./pages/SignUp/SkinTypeResult";
 import MbtiResult from "./pages/SkinMBTI/MbtiResult";
+import PersonalTest from "./pages/SignUp/PersonalTest";
+import PersonalColorResult from "./pages/SignUp/PersonalColorResult";
 
 const routes = [
   // DefaultLayout
@@ -98,6 +100,14 @@ const routes = [
   {
     path: "/skinresult",
     element: <SkinTypeResult />,
+  },
+  {
+    path: "/personal-test",
+    element: <PersonalTest />,
+  },
+  {
+    path: "/personal-result",
+    element: <PersonalColorResult />,
   },
 
   //MenuLayout
