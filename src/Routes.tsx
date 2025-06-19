@@ -50,7 +50,7 @@ const routes = [
   { path: "/mypage/language", element: <SettingLanguange /> },
   { path: "/ingredient-detail", element: <IngredientDetail /> },
   { path: "/chatbot", element: <ChatbotPage /> },
-  { path: "/pos", element: <PostMachinePage /> },
+  { path: "/cart/pay/:memberId", element: <PostMachinePage /> },
   { path: "payment-complete", element: <PaymentCompletePage /> },
   {
     path: "/mypage/personalcolor",

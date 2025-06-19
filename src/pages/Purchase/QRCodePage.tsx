@@ -31,6 +31,7 @@ const QRCodePage = () => {
   const location = useLocation();
 
   const selectedCartItems = location.state?.selectedItems;
+  const memberId = location.state?.memberId;
 
   useEffect(() => {
     if (!selectedCartItems) {
@@ -49,12 +50,11 @@ const QRCodePage = () => {
     );
     const updated = [...previous, purchaseData];
     localStorage.setItem("purchaseHistory", JSON.stringify(updated));
-  }, [selectedCartItems, navigate]);
+  }, [selectedCartItems, memberId, navigate]);
 
   const cartItemIds = selectedCartItems?.map((item: any) => item.id).join(",");
-  // const ip = "192.168.0.123";
-  // const accessToken = sessionStorage.getItem("accessToken");
-  const qrValue = `http://172.28.127.154:5173/pos?cartItemIds=${cartItemIds}`;
+  const qrValue = `http://172.28.127.154:5173/cart/pay/${memberId}?cartItemIds=${cartItemIds}`;
+
   const { t } = useLocale();
 
   useEffect(() => {

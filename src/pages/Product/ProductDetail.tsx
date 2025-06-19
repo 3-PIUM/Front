@@ -1,22 +1,43 @@
 // src/pages/Product/ProductDetail.tsx
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import ProductCard from "../../components/product/ProductCard";
-import SkinTypeRankList from "../../components/product/SkinTypeRankList";
-import ReviewSatisfactionCard from "../../components/review/ReviewSatisfactionCard";
-import ReviewCard from "../../components/review/ReviewCard";
-import Button from "../../components/common/Button";
-import FullHeader from "../../components/common/TextIconHeader ";
-import IngredientWarningSummary from "../../components/ingredient/IngredientWarningSummary";
-import IngredientScoreSummary from "../../components/ingredient/IngredientScoreSummary";
-import StackedBarChart from "../../components/ingredient/StackedBarChart";
-import ProductOptionSelector from "../../components/product/ProductOptionSelector";
 import { useLocale } from "../../context/LanguageContext";
-import ScrollToTopButton from "../../components/common/ScrollToTopButton";
 import axiosInstance from "../../api/axiosInstance";
-import Header from "../../components/common/Header";
+
+const ProductCard = React.lazy(
+  () => import("../../components/product/ProductCard")
+);
+const SkinTypeRankList = React.lazy(
+  () => import("../../components/product/SkinTypeRankList")
+);
+const ReviewSatisfactionCard = React.lazy(
+  () => import("../../components/review/ReviewSatisfactionCard")
+);
+const ReviewCard = React.lazy(
+  () => import("../../components/review/ReviewCard")
+);
+const Button = React.lazy(() => import("../../components/common/Button"));
+const FullHeader = React.lazy(
+  () => import("../../components/common/TextIconHeader ")
+);
+const IngredientWarningSummary = React.lazy(
+  () => import("../../components/ingredient/IngredientWarningSummary")
+);
+const IngredientScoreSummary = React.lazy(
+  () => import("../../components/ingredient/IngredientScoreSummary")
+);
+const StackedBarChart = React.lazy(
+  () => import("../../components/ingredient/StackedBarChart")
+);
+const ProductOptionSelector = React.lazy(
+  () => import("../../components/product/ProductOptionSelector")
+);
+const ScrollToTopButton = React.lazy(
+  () => import("../../components/common/ScrollToTopButton")
+);
+const Header = React.lazy(() => import("../../components/common/Header"));
 
 const PageWrapper = styled.div`
   display: flex;
@@ -238,10 +259,16 @@ export default function ProductDetail() {
 
   return (
     <PageWrapper>
-      <Header />
-      <FullHeader pageName="" />
+      <Suspense fallback={null}>
+        <Header />
+      </Suspense>
+      <Suspense fallback={null}>
+        <FullHeader pageName="" />
+      </Suspense>
       <ProductCardWrapper ref={pageWrapperRef}>
-        <ProductCard {...product} imageUrl={product.imageUrl.mainImage} />
+        <Suspense fallback={null}>
+          <ProductCard {...product} imageUrl={product.imageUrl.mainImage} />
+        </Suspense>
         {/* Option name display (e.g., [브랜드명] 옵션1) */}
         {product.options.length > 0 &&
           selectedOptionName &&
@@ -258,22 +285,26 @@ export default function ProductDetail() {
             </div>
           )}
         {product.options.length > 0 && (
-          <ProductOptionSelector
-            options={product.options.map((opt: string, idx: number) => ({
-              id: `option-${idx}`,
-              imageUrl: product.imageUrl.mainImage,
-              name: `${opt}`,
-              discountedPrice: product.discountedPrice,
-              discountRate: product.discountRate,
-            }))}
-            onChange={(id: string, name: string) => {
-              setSelectedOptionId(id);
-              setSelectedOptionName(name); // name 저장
-            }}
-          />
+          <Suspense fallback={null}>
+            <ProductOptionSelector
+              options={product.options.map((opt: string, idx: number) => ({
+                id: `option-${idx}`,
+                imageUrl: product.imageUrl.mainImage,
+                name: `${opt}`,
+                discountedPrice: product.discountedPrice,
+                discountRate: product.discountRate,
+              }))}
+              onChange={(id: string, name: string) => {
+                setSelectedOptionId(id);
+                setSelectedOptionName(name); // name 저장
+              }}
+            />
+          </Suspense>
         )}
         <div style={{ padding: "0 1rem" }}>
-          <Button label={t.productDetail.addCart} onClick={handleAddToCart} />
+          <Suspense fallback={null}>
+            <Button label={t.productDetail.addCart} onClick={handleAddToCart} />
+          </Suspense>
         </div>
         <TabMenu>
           {(["detail", "ingredient", "review"] as const).map((tab) => (
@@ -296,18 +327,28 @@ export default function ProductDetail() {
         {selectedTab === "ingredient" && isSkinRegistered !== null && (
           <>
             <SkinTypeWrapper>
-              <IngredientScoreSummary itemId={Number(itemId)} />
-              <IngredientWarningSummary itemId={Number(itemId)} />
+              <Suspense fallback={null}>
+                <IngredientScoreSummary itemId={Number(itemId)} />
+              </Suspense>
+              <Suspense fallback={null}>
+                <IngredientWarningSummary itemId={Number(itemId)} />
+              </Suspense>
             </SkinTypeWrapper>
             <SkinTypeWrapper>
-              <SkinTypeRankList itemId={Number(itemId)} />
+              <Suspense fallback={null}>
+                <SkinTypeRankList itemId={Number(itemId)} />
+              </Suspense>
             </SkinTypeWrapper>
           </>
         )}
         {selectedTab === "review" && (
           <ReviewWrapper>
-            <ReviewSatisfactionCard score={averageRating} />
-            <StackedBarChart itemId={Number(itemId)} />
+            <Suspense fallback={null}>
+              <ReviewSatisfactionCard score={averageRating} />
+            </Suspense>
+            <Suspense fallback={null}>
+              <StackedBarChart itemId={Number(itemId)} />
+            </Suspense>
             {(() => {
               const token = sessionStorage.getItem("accessToken");
               let currentMemberId: number | null = null;
@@ -379,7 +420,9 @@ export default function ProductDetail() {
                   ? [...realReviews].reverse()
                   : [...realReviews].slice(0, 2).reverse()
                 ).map((r) => (
-                  <ReviewCard key={r.reviewId} {...r} itemId={product?.id} />
+                  <Suspense key={r.reviewId} fallback={null}>
+                    <ReviewCard {...r} itemId={product?.id} />
+                  </Suspense>
                 ))}
                 {realReviews.length > 2 && (
                   <div
@@ -412,7 +455,9 @@ export default function ProductDetail() {
             )}
           </ReviewWrapper>
         )}
-        <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
+        <Suspense fallback={null}>
+          <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
+        </Suspense>
       </ProductCardWrapper>
     </PageWrapper>
   );

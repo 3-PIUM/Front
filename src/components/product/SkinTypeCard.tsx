@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface SkinTypeCardProps {
-  rank: number;
+  rank: number | null;
   title: string;
   description: string;
   isTop: boolean;
@@ -9,7 +9,7 @@ interface SkinTypeCardProps {
 
 const Card = styled.div<{ isTop: boolean }>`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   border: ${({ isTop }) => (isTop ? "1.5px solid #ff4081" : "1px solid #ccc")};
   background-color: #fff;
@@ -25,7 +25,9 @@ const Medal = styled.span`
 `;
 
 const TextBox = styled.div`
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   flex: 1;
 `;
 
@@ -41,10 +43,8 @@ const Description = styled.p`
   margin-top: 0.4rem;
   line-height: 1.5;
   word-break: keep-all;
-  white-space: normal;
-  max-width: 240px;
-  margin-left: 1.3rem;
-  /* text-align: right; */
+  white-space: pre-wrap;
+  text-align: right;
 `;
 
 const SkinTypeCard = ({
@@ -56,7 +56,9 @@ const SkinTypeCard = ({
   const medals = ["🥇", "🥈", "🥉"];
   return (
     <Card isTop={isTop}>
-      <Medal>{medals[rank - 1]}</Medal>
+      {rank !== null && rank >= 1 && rank <= 3 && (
+        <Medal>{medals[rank - 1]}</Medal>
+      )}
       <TextBox>
         <Title isTop={isTop}>{title}</Title>
         <Description>{description}</Description>

@@ -1,11 +1,16 @@
+import React, { Suspense, useState, useEffect } from "react";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import OptionModal from "../../components/model/OptionModal";
 import { useLocale } from "../../context/LanguageContext";
-import TextHeader from "../../components/common/TextHeader";
-import Header from "../../components/common/Header";
 import axiosInstance from "../../api/axiosInstance";
+
+const OptionModal = React.lazy(
+  () => import("../../components/model/OptionModal")
+);
+const TextHeader = React.lazy(
+  () => import("../../components/common/TextHeader")
+);
+const Header = React.lazy(() => import("../../components/common/Header"));
 
 const PageWrapper = styled.div`
   display: flex;
@@ -362,12 +367,16 @@ const CartPage = () => {
         JSON.stringify([newRecord, ...purchaseHistory])
       );
 
+      const memberRes = await axiosInstance.get("/member");
+      const memberId = memberRes.data.result.memberId;
+
       // 🚀 QR 페이지로 이동
       navigate("/qr", {
         state: {
           qrUrls,
           selectedItems,
-          cartItemIds, // 전달
+          cartItemIds,
+          memberId, // 전달
         },
       });
     } catch (err) {
@@ -377,8 +386,12 @@ const CartPage = () => {
 
   return (
     <PageWrapper>
-      <Header />
-      <TextHeader pageName={t.cart.pageTitle} />
+      <Suspense fallback={null}>
+        <Header />
+      </Suspense>
+      <Suspense fallback={null}>
+        <TextHeader pageName={t.cart.pageTitle} />
+      </Suspense>
       <HeaderControlBar>
         <SelectAll onClick={toggleAll}>
           {t.cart.selected} ({selectedKeys.length}/{cartItems.length})
@@ -472,7 +485,9 @@ const CartPage = () => {
                 </LeftRow>
                 <RightColumn>
                   <PriceBox>
-                    <Discount>{item.discountRate}%</Discount>
+                    {item.discountRate > 0 && (
+                      <Discount>{item.discountRate}%</Discount>
+                    )}
                     <Price>
                       {item.discountedPrice.toLocaleString()}
                       {t.cart.won}
@@ -500,21 +515,23 @@ const CartPage = () => {
       </StickyBottom>
 
       {showOptionFor && (
-        <OptionModal
-          options={
-            cartItems.find((item) => getKey(item.id) === showOptionFor)
-              ?.availableOptions || []
-          }
-          onSelect={async (newOption) => {
-            const id = showOptionFor;
-            if (id) {
-              const prevOption =
-                cartItems.find((item) => item.id === id)?.option || "";
-              await handleOptionChange(id, prevOption, newOption);
+        <Suspense fallback={null}>
+          <OptionModal
+            options={
+              cartItems.find((item) => getKey(item.id) === showOptionFor)
+                ?.availableOptions || []
             }
-          }}
-          onClose={() => setShowOptionFor(null)}
-        />
+            onSelect={async (newOption) => {
+              const id = showOptionFor;
+              if (id) {
+                const prevOption =
+                  cartItems.find((item) => item.id === id)?.option || "";
+                await handleOptionChange(id, prevOption, newOption);
+              }
+            }}
+            onClose={() => setShowOptionFor(null)}
+          />
+        </Suspense>
       )}
     </PageWrapper>
   );

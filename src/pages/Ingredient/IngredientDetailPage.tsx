@@ -1,12 +1,15 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-import TextHeader from "../../components/common/TextHeader";
-import ScorePieChart from "../../components/ingredient/ScorePieChart";
-import ScoreBar from "../../components/ingredient/ScoreBar";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { useLocale } from "../../context/LanguageContext";
 import { useLocation } from "react-router-dom";
-import Header from "../../components/common/Header";
 import axiosInstance from "../../api/axiosInstance";
+
+const TextHeader = lazy(() => import("../../components/common/TextHeader"));
+const ScorePieChart = lazy(
+  () => import("../../components/ingredient/ScorePieChart")
+);
+const ScoreBar = lazy(() => import("../../components/ingredient/ScoreBar"));
+const Header = lazy(() => import("../../components/common/Header"));
 
 // 스타일
 const Container = styled.div`
@@ -143,8 +146,12 @@ export default function IngredientDetailPage() {
 
   return (
     <>
-      <Header />
-      <TextHeader pageName={t.ingredientDetail.ingredientDetail} />
+      <Suspense fallback={null}>
+        <Header />
+      </Suspense>
+      <Suspense fallback={null}>
+        <TextHeader pageName={t.ingredientDetail.ingredientDetail} />
+      </Suspense>
       <Container>
         <Title>{t.ingredientDetail.title}</Title>
         <Description>
@@ -163,7 +170,9 @@ export default function IngredientDetailPage() {
         <Wrapper>
           {groupedData.length > 0 && (
             <ChartWrapper>
-              <ScorePieChart data={groupedData} />
+              <Suspense fallback={null}>
+                <ScorePieChart data={groupedData} />
+              </Suspense>
             </ChartWrapper>
           )}
 
@@ -171,17 +180,19 @@ export default function IngredientDetailPage() {
             .sort((a, b) => b.percent - a.percent)
             .map((item) => (
               <div key={item.score}>
-                <ScoreBar
-                  score={`${item.score}${t.ingredientDetail.scoreUnit}`}
-                  percent={item.percent}
-                  color={item.color}
-                  active={openScore === item.score}
-                  onClick={() =>
-                    setOpenScore((prev) =>
-                      prev === item.score ? null : item.score
-                    )
-                  }
-                />
+                <Suspense fallback={null}>
+                  <ScoreBar
+                    score={`${item.score}${t.ingredientDetail.scoreUnit}`}
+                    percent={item.percent}
+                    color={item.color}
+                    active={openScore === item.score}
+                    onClick={() =>
+                      setOpenScore((prev) =>
+                        prev === item.score ? null : item.score
+                      )
+                    }
+                  />
+                </Suspense>
                 {openScore === item.score &&
                   item.ingredients.map((ing: any, idx: number) => (
                     <IngredientBox key={idx}>
