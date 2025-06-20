@@ -101,12 +101,20 @@ const ItemWrap = styled.div`
   gap: 0.5rem;
 `;
 
+interface ItemType {
+  itemImage: string;
+  itemName: string;
+  salePrice: number;
+  id: number;
+  originalPrice: number;
+  wishStatus: boolean;
+}
+
 export default function CategoryList() {
   const { t } = useLocale();
   const { topClicked, categoryName, subcategoryName } = useParams();
   const isVegan = topClicked === "vegan";
   const [pages, setPages] = useState(0);
-  const [items, setItems] = useState([]);
 
   const Category = categoryName || "";
   const Subcategory = subcategoryName || "";
@@ -114,6 +122,9 @@ export default function CategoryList() {
   const selectedCategory = t.category.categoryname.find(
     (cat: { name: string; items: string[] }) => cat.name === Category
   );
+
+  const [items, setItems] = useState<ItemType[]>([]);
+  const [sortedItems, setSortedItems] = useState<ItemType[]>([]);
 
   const navigate = useNavigate();
 
@@ -124,6 +135,26 @@ export default function CategoryList() {
 
   const handleShowSorts = () => {
     setOpenModal(true);
+  };
+
+  const sortItems = (items: any[], sortType: string) => {
+    if (sortType === t.category.sorted.lowPrice) {
+      return [...items].sort((a, b) => a.salePrice - b.salePrice);
+    }
+
+    if (sortType === t.category.sorted.highDiscount) {
+      return [...items].sort((a, b) => {
+        const discountA = a.originalPrice
+          ? (1 - a.salePrice / a.originalPrice) * 100
+          : 0;
+        const discountB = b.originalPrice
+          ? (1 - b.salePrice / b.originalPrice) * 100
+          : 0;
+        return discountB - discountA;
+      });
+    }
+
+    return items; // 추천순 (기본)
   };
 
   const fetchSubcategory = async () => {
@@ -149,6 +180,11 @@ export default function CategoryList() {
   useEffect(() => {
     fetchSubcategory();
   }, [pages]);
+
+  useEffect(() => {
+    const newSorted = sortItems(items, selectedSort);
+    setSortedItems(newSorted);
+  }, [items, selectedSort]);
 
   const subListRef = useRef<HTMLDivElement | null>(null);
   const selectedSubRef = useRef<HTMLLIElement | null>(null);
@@ -226,7 +262,7 @@ export default function CategoryList() {
       )}
       <MainWrap>
         <ItemWrap>
-          {items.map(
+          {sortedItems.map(
             (item: {
               itemImage: string;
               itemName: string;
