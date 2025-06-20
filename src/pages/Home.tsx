@@ -237,21 +237,21 @@ export default function Home() {
     },
   ];
 
-  const selectedTab = tabItems.find((tab) => tab.label === activeTab);
+  // const selectedTab = tabItems.find((tab) => tab.label === activeTab);
 
-  const allItems = tabItems
-    .filter((tab) => tab.label !== "전체")
-    .flatMap((tab) => tab.items);
+  // const allItems = tabItems
+  //   .filter((tab) => tab.label !== "전체")
+  //   .flatMap((tab) => tab.items);
 
-  // 배열 섞는 함수
-  function shuffleArray<T>(array: T[]): T[] {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  }
+  // // 배열 섞는 함수
+  // function shuffleArray<T>(array: T[]): T[] {
+  //   const shuffled = [...array];
+  //   for (let i = shuffled.length - 1; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1));
+  //     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  //   }
+  //   return shuffled;
+  // }
 
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -311,7 +311,7 @@ export default function Home() {
         onStoreClick={() => setShowStoreModal(true)}
         productList={mockProducts}
       />
-      {memberInfo?.skinType == "" ? (
+      {!memberInfo?.skinType ? (
         <InfoBox>
           <img src="images/CharacterImg/surveyImage.png" width="60%" />
           <InfoSubTitle>
@@ -372,7 +372,7 @@ export default function Home() {
       </BannerWrap>
       <RecommandListWrap>
         <PersonalRecommended nickname={nickname} />
-        <RecommandBox>
+        {/* <RecommandBox>
           <RecommandTitle>지금 한국🇰🇷에서 가장 핫한 제품</RecommandTitle>
           <RecommandListWrapper>
             {hotItems.map((category) =>
@@ -388,7 +388,7 @@ export default function Home() {
               ))
             )}
           </RecommandListWrapper>
-        </RecommandBox>
+        </RecommandBox> */}
       </RecommandListWrap>
       {showStoreModal && (
         <StoreModal
