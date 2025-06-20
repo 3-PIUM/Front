@@ -44,12 +44,12 @@ export default function CountryInput({
         }}
         value={country || ""}
       >
-        <option value="" disabled selected>
+        <option value="" disabled>
           {t.signup.countryPlaceholder}
         </option>
         {dummyCountry.map((country) => (
           <option key={country.code} value={country.code}>
-            {country.flag}{" "}
+            {country.flag}
             {
               country.name[
                 language === "한국어"

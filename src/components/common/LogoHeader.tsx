@@ -6,11 +6,6 @@ import { HiLocationMarker } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
-import LogoImg from "../../assets/logo/PIUM_logo.png";
-<<<<<<< HEAD
-=======
-
->>>>>>> 520a089dbbdf2422ddacbd8d77dfae01081a07d4
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -126,7 +121,7 @@ export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
   return (
     <>
       <HeaderWrap>
-        <LogoWrap src={LogoImg} />
+        <LogoWrap src="/images/logo/PIUM_logo.png" />
         <RightIcons>
           <IconWrapper onClick={onStoreClick}>
             <HiLocationMarker size={20} />
