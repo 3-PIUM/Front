@@ -71,7 +71,10 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function WelcomePage() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<number>(() => {
+    const saved = sessionStorage.getItem("surveyStep");
+    return saved ? parseInt(saved) : 1;
+  });
   const [skinType, setSkinType] = useState<string | null>(null);
   const [personalColor, setPersonalColor] = useState<string | null>(null);
   const [skinIssue, setSkinIssue] = useState<string[] | null>(null);
@@ -102,6 +105,7 @@ export default function WelcomePage() {
       sessionStorage.removeItem("language");
       sessionStorage.removeItem("skinType");
       sessionStorage.removeItem("personalColor");
+      sessionStorage.removeItem("surveyStep");
     } catch (error) {
       console.log("실패", error);
     }
@@ -121,6 +125,17 @@ export default function WelcomePage() {
       setPersonalColor(personalColor);
     }
   }, [personalColor]);
+
+  useEffect(() => {
+    sessionStorage.setItem("surveyStep", step.toString());
+  }, [step]);
+
+  useEffect(() => {
+    const savedStep = sessionStorage.getItem("surveyStep");
+    if (savedStep) {
+      setStep(parseInt(savedStep));
+    }
+  }, []);
 
   console.log(skinType);
   console.log(personalColor);

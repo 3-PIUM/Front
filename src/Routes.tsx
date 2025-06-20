@@ -98,7 +98,7 @@ const routes = [
     element: <SkinTest />,
   },
   {
-    path: "/skinresult",
+    path: "/skin-result",
     element: <SkinTypeResult />,
   },
   {

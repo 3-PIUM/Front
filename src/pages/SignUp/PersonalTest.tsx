@@ -5,6 +5,7 @@ import Button from "../../components/common/Button";
 import colors from "../../styles/colors";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Wrap = styled.div`
   display: flex;
@@ -62,6 +63,7 @@ const ButtonWrapper = styled.div`
 
 export default function PersonalTest() {
   const [preview, setPreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const navigate = useNavigate();
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,13 +71,34 @@ export default function PersonalTest() {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreview(imageUrl);
+      setSelectedFile(file);
     }
   };
 
   const handleGoResult = () => {
-    const formData = new FormData();
-    formData.append("image", selectedFile);
-    navigate("/personal-result");
+    const fetchTestPersonalColor = async () => {
+      try {
+        if (!selectedFile) {
+          alert("이미지를 먼저 업로드해주세요.");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        await axios.post("http://52.79.241.142:8000/predict-season", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        navigate("/personal-result");
+      } catch (err) {
+        console.log("퍼스널컬러 api 연동에 실패했습니다", err);
+      }
+    };
+    fetchTestPersonalColor();
+    console.log("클릭됨");
+
+    // navigate("/personal-result");
   };
 
   return (
@@ -103,7 +126,7 @@ export default function PersonalTest() {
         <Button
           label="결과 보기"
           onClick={() => {
-            handleGoResult;
+            handleGoResult();
           }}
         />
       </ButtonWrapper>
