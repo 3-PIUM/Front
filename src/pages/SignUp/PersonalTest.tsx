@@ -69,6 +69,13 @@ export default function PersonalTest() {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      const isValidType =
+        file.type === "image/jpeg" || file.type === "image/png";
+      if (!isValidType) {
+        alert("JPG 또는 PNG 형식의 이미지 파일만 업로드할 수 있습니다.");
+        return;
+      }
+
       const imageUrl = URL.createObjectURL(file);
       setPreview(imageUrl);
       setSelectedFile(file);
@@ -110,7 +117,7 @@ export default function PersonalTest() {
           <UploadTitle htmlFor="personalimg">이미지 업로드하기</UploadTitle>
           <UploadInput
             type="file"
-            accept="image/*"
+            accept="image/jpeg, image/png"
             id="personalimg"
             onChange={handleFileSelect}
             style={{ width: "min-content" }}

@@ -215,7 +215,11 @@ export default function CategoryList() {
   return (
     <Wrap>
       <Header />
-      <TextIconHeader pageName={Category} isVegan={topClicked === "vegan"} />
+      <TextIconHeader
+        pageName={Category}
+        isVegan={topClicked === "vegan"}
+        backPath="/category"
+      />
       <SubCategoryWrap ref={subListRef}>
         <SubCategoryList>
           <SubCategoryUl>

@@ -109,6 +109,7 @@ const SearchResultItem = styled.div`
 interface FullHeaderProps {
   pageName: string;
   isVegan?: boolean;
+  backPath?: string;
 }
 
 interface SearchResult {
@@ -120,7 +121,11 @@ interface SearchResult {
   discountRate: number;
 }
 
-export default function FullHeader({ pageName, isVegan }: FullHeaderProps) {
+export default function FullHeader({
+  pageName,
+  isVegan,
+  backPath,
+}: FullHeaderProps) {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -153,7 +158,15 @@ export default function FullHeader({ pageName, isVegan }: FullHeaderProps) {
   return (
     <>
       <HeaderWrap>
-        <LeftIcon onClick={() => navigate(-1)}>
+        <LeftIcon
+          onClick={() => {
+            if (backPath) {
+              navigate(backPath);
+            } else {
+              navigate(-1);
+            }
+          }}
+        >
           <VscChevronLeft size={24} />
         </LeftIcon>
 
