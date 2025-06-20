@@ -104,6 +104,7 @@ export default function SettingPersonalColor() {
 
   const goSave = () => {
     const savePersonalColor = async () => {
+      console.log("선택된 personalType:", selected);
       try {
         await axiosInstance.patch("/member", {
           personalType: selected,
@@ -124,6 +125,8 @@ export default function SettingPersonalColor() {
     savePersonalColor();
     setIsChanged(false);
   };
+
+  console.log("선택된 personalType:", selected);
 
   return (
     <>
