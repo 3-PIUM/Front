@@ -65,20 +65,27 @@ const ModalButton = styled.button`
 
 export default function SettingSkinConcern() {
   const { t } = useLocale();
-  const [selected, setSelected] = useState<Number[]>([]);
+  const [selected, setSelected] = useState<number[]>([]);
   const [memberInfo, setMemberInfo] = useState<any>(null);
   const [isChanged, setIsChanged] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchMemberInfo = async () => {
-      const response = await axiosInstance.get("/member");
-      const result = response.data.result;
-      setMemberInfo(result);
-      setSelected(result.skinIssue);
-    };
-    fetchMemberInfo();
+    // const fetchMemberInfo = async () => {
+    //   const response = await axiosInstance.get("/member");
+    //   const result = response.data.result;
+    //   setMemberInfo(result);
+    //   setSelected(result.skinIssue);
+    // };
+    // fetchMemberInfo();
+
+    const stored = sessionStorage.getItem("memberInfo");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setMemberInfo(parsed);
+      setSelected(parsed.skinIssue);
+    }
   }, []);
 
   const goSave = () => {
@@ -87,6 +94,17 @@ export default function SettingSkinConcern() {
         await axiosInstance.patch("/member", {
           skinIssue: selected,
         });
+
+        const stored = sessionStorage.getItem("memberInfo");
+        if (stored) {
+          const updated = JSON.parse(stored);
+          updated.skinIssue = selected;
+          sessionStorage.setItem(
+            "memberInfo",
+            JSON.stringify(updated.skinIssue)
+          );
+          setMemberInfo(updated);
+        }
         setShowModal(true);
       } catch (error) {
         console.log("error:", error);
@@ -128,7 +146,7 @@ export default function SettingSkinConcern() {
   return (
     <>
       <Header />
-      <TextHeader pageName="피부 고민" />
+      <TextHeader pageName={t.mypage.skinConcerns} />
       <Wrapper>
         <AnswerWrapper>
           {t.mypage.skinConcernsItem.map((item: ItemProps) => (

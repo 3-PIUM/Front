@@ -87,17 +87,20 @@ export default function SettingSkinType() {
     value: string;
   }
 
-  const skinType = JSON.parse(
-    sessionStorage.getItem("memberInfo") || "{}"
-  ).skinType;
+  // const skinType = JSON.parse(
+  //   sessionStorage.getItem("memberInfo") || "{}"
+  // ).skinType;
 
-  console.log(skinType);
+  // console.log(skinType);
 
   useEffect(() => {
-    if (skinType) {
-      setSelected(skinType);
+    const stored = sessionStorage.getItem("memberInfo");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setMemberInfo(parsed);
+      setSelected(parsed.skinType);
     }
-  }, [memberInfo]);
+  }, []);
 
   const goSave = () => {
     const editSkinType = async () => {
@@ -106,7 +109,13 @@ export default function SettingSkinType() {
           skinType: selected,
         });
         setShowModal(true);
-        sessionStorage.setItem("memberInfo", JSON.stringify(skinType));
+        const stored = sessionStorage.getItem("memberInfo");
+        if (stored) {
+          const updated = JSON.parse(stored);
+          updated.skinType = selected;
+          sessionStorage.setItem("memberInfo", JSON.stringify(updated));
+          setMemberInfo(updated);
+        }
       } catch (error) {
         console.log("error", error);
       }

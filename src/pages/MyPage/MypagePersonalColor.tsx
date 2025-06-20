@@ -83,22 +83,40 @@ export default function SettingPersonalColor() {
     personalType?: string;
   }
 
+  // useEffect(() => {
+  //   const fetchMemberInfo = async () => {
+  //     const response = await axiosInstance.get("/member");
+  //     const result = response.data.result;
+  //     setMemberInfo(result);
+  //     setSelected(result.personalType);
+  //   };
+  //   fetchMemberInfo();
+  // }, []);
+
   useEffect(() => {
-    const fetchMemberInfo = async () => {
-      const response = await axiosInstance.get("/member");
-      const result = response.data.result;
-      setMemberInfo(result);
-      setSelected(result.personalType);
-    };
-    fetchMemberInfo();
+    const stored = sessionStorage.getItem("memberInfo");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setMemberInfo(parsed);
+      setSelected(parsed.personalType || "");
+    }
   }, []);
 
   const goSave = () => {
     const savePersonalColor = async () => {
+      console.log("선택된 personalType:", selected);
       try {
         await axiosInstance.patch("/member", {
           personalType: selected,
         });
+
+        const stored = sessionStorage.getItem("memberInfo");
+        if (stored) {
+          const updated = JSON.parse(stored);
+          updated.personalType = selected;
+          sessionStorage.setItem("memberInfo", JSON.stringify(updated));
+          setMemberInfo(updated);
+        }
         setShowModal(true);
       } catch (error) {
         console.log("error:", error);
@@ -107,6 +125,8 @@ export default function SettingPersonalColor() {
     savePersonalColor();
     setIsChanged(false);
   };
+
+  console.log("선택된 personalType:", selected);
 
   return (
     <>
