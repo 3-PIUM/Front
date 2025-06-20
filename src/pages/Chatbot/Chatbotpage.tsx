@@ -26,11 +26,11 @@ const ChatContent = styled.div`
   background-color: #fefefe;
 `;
 
-const MessageRow = styled.div<{ isUser: boolean }>`
+const MessageRow = styled.div<{ $isUser: boolean }>`
   display: flex;
   align-items: flex-start;
   margin: 10px 0;
-  flex-direction: ${({ isUser }) => (isUser ? "row-reverse" : "column")};
+  flex-direction: ${({ $isUser }) => ($isUser ? "row-reverse" : "column")};
 `;
 
 const BotRow = styled.div`
@@ -273,7 +273,7 @@ export default function ChatbotPage() {
       <ChatContent>
         <DateText>{formattedDate}</DateText>
         {messages.map((msg, idx) => (
-          <MessageRow key={idx} isUser={msg.sender === "user"}>
+          <MessageRow key={idx} $isUser={msg.sender === "user"}>
             {msg.sender === "bot" && (
               <BotRow>
                 <BotImage src="images/CharacterImg/surveyImage.png" alt="bot" />
@@ -395,6 +395,7 @@ export default function ChatbotPage() {
               </div>
               {dummyCartItems.map((item, index) => (
                 <div
+                  key={item.id}
                   style={{
                     borderBottom:
                       index !== dummyCartItems.length - 1
@@ -403,7 +404,6 @@ export default function ChatbotPage() {
                   }}
                 >
                   <div
-                    key={item.id}
                     style={{
                       display: "flex",
                       alignItems: "flex-start",
@@ -476,6 +476,7 @@ export default function ChatbotPage() {
               </div>
               {dummyWishItems.map((item, index) => (
                 <div
+                  key={item.id}
                   style={{
                     borderBottom:
                       index !== dummyWishItems.length - 1
@@ -484,7 +485,6 @@ export default function ChatbotPage() {
                   }}
                 >
                   <div
-                    key={item.id}
                     style={{
                       display: "flex",
                       alignItems: "flex-start",

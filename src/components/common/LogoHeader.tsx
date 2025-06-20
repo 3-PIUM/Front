@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 
+
 const HeaderWrap = styled.div`
   position: fixed;
   width: 100%;

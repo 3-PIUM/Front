@@ -97,7 +97,7 @@ const ScanPage = () => {
 
       const video = videoRef.current;
       const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
       if (!ctx) return;
 
       const w = video.videoWidth;
@@ -136,8 +136,11 @@ const ScanPage = () => {
       .then((stream) => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          videoRef.current.play();
-          requestAnimationFrame(scanLoop);
+
+          videoRef.current.onloadedmetadata = () => {
+            videoRef.current?.play();
+            requestAnimationFrame(scanLoop);
+          };
         }
       })
       .catch((err) => {

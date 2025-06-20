@@ -84,11 +84,11 @@ const ReviewSurveySelector: React.FC<Props> = ({
 }) => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
 
-  // ✅ 최초 마운트 시 1회만 초기화되게
+  // 최초 마운트 시 1회만 초기화되게
   useEffect(() => {
     setAnswers(initialAnswers);
-    onChange(initialAnswers); // 부모에게도 최초 상태 전달
-  }, []); // <-- 의존성 배열 비워야 최초 1회만 실행
+    onChange(initialAnswers);
+  }, []);
 
   const handleSelect = (questionId: string, option: string) => {
     const updated = { ...answers, [questionId]: option };
