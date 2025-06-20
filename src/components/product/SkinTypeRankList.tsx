@@ -8,8 +8,14 @@ import SkinTypeModal from "../model/SkinTypeModal";
 const SectionTitle = styled.h3`
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 0.8rem;
   color: #222;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
 `;
 
 const EmptyMessage = styled.p`
@@ -19,9 +25,9 @@ const EmptyMessage = styled.p`
 `;
 
 const Select = styled.select`
-  padding: 0.3rem 0.6rem;
+  padding: 0.3rem 0rem;
   font-size: 14px;
-  margin-left: 0.6rem;
+  margin-left: 0.4rem;
   border: 1px solid #ccc;
   border-radius: 4px;
 `;
@@ -95,8 +101,8 @@ const SkinTypeRankList = ({ itemId }: Props) => {
 
   return (
     <div>
-      <SectionTitle>
-        {t.productDetail.skinReviewSummary}
+      <TitleWrapper>
+        <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
         {options.length > 0 && (
           <Select
             value={selectedOption}
@@ -109,7 +115,7 @@ const SkinTypeRankList = ({ itemId }: Props) => {
             ))}
           </Select>
         )}
-      </SectionTitle>
+      </TitleWrapper>
 
       {filteredData.map((item) => (
         <div

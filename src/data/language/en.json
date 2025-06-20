@@ -510,5 +510,9 @@
     "approved": "Payment approved.",
     "insertCard": "Please insert your card into the reader.",
     "storeName": "Olive Young Myeongdong"
+  },
+  "skinModel": {
+    "detailedReview": "AI Detailed Review",
+    "close": "Close"
   }
 }
