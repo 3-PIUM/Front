@@ -179,7 +179,7 @@ export default function CategoryList() {
   return (
     <Wrap>
       <Header />
-      <TextIconHeader pageName={Category} />
+      <TextIconHeader pageName={Category} isVegan={topClicked === "vegan"} />
       <SubCategoryWrap ref={subListRef}>
         <SubCategoryList>
           <SubCategoryUl>
