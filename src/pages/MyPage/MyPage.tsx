@@ -137,6 +137,11 @@ export default function MyPage() {
     setProfileImage(profileImage);
   };
 
+  useEffect(() => {
+    const stored = sessionStorage.getItem("memberInfo");
+    console.log(stored);
+  }, []);
+
   const nickname = JSON.parse(
     sessionStorage.getItem("memberInfo") || "{}"
   ).nickname;
