@@ -602,5 +602,9 @@
     "approved": "승인이 완료 되었습니다.",
     "insertCard": "카드를 카드리더기에 꽂아주세요",
     "storeName": "올리브영 명동점"
+  },
+  "skinModel": {
+    "detailedReview": "AI 상세 리뷰 요약",
+    "close": "닫기"
   }
 }

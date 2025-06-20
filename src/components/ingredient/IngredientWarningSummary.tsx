@@ -117,6 +117,9 @@ export default function IngredientWarningSummary({
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [isSkinRegistered, setIsSkinRegistered] = useState<boolean>(true);
 
+  // Show all tags state
+  const [showAll, setShowAll] = useState(false);
+
   // 사용자 피부 정보 조회
   useEffect(() => {
     const fetchUserSkin = async () => {
@@ -198,13 +201,66 @@ export default function IngredientWarningSummary({
           />
         </div>
       ) : (
-        <TagContainer>
-          {ingredients.map((item, idx) => (
-            <Tag key={idx} onClick={() => setSelectedIngredient(item)}>
-              {item.name}
-            </Tag>
-          ))}
-        </TagContainer>
+        <>
+          <TagContainer>
+            {ingredients
+              .slice(0, showAll ? ingredients.length : 6)
+              .map((item, idx) => (
+                <Tag key={idx} onClick={() => setSelectedIngredient(item)}>
+                  {item.name}
+                </Tag>
+              ))}
+          </TagContainer>
+          {ingredients.length > 6 && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "0rem",
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  height: "1px",
+                  backgroundColor: "#ddd",
+                  width: "100%",
+                  position: "absolute",
+                  top: "50%",
+                  left: 0,
+                  zIndex: 0,
+                }}
+              />
+              <button
+                onClick={() => setShowAll(!showAll)}
+                style={{
+                  background: "#fff",
+                  borderRadius: "50%",
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                  border: "none",
+                  width: "34px",
+                  height: "34px",
+                  zIndex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "16px",
+                    lineHeight: "1",
+                    color: "#F23477",
+                  }}
+                >
+                  {showAll ? "▲" : "▼"}
+                </span>
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       {selectedIngredient && (

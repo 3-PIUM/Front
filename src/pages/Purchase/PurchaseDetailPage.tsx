@@ -1,9 +1,10 @@
+import { Suspense, lazy } from "react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
-import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
-import Header from "../../components/common/Header";
+const Header = lazy(() => import("../../components/common/Header"));
+const TextHeader = lazy(() => import("../../components/common/TextHeader"));
 import axiosInstance from "../../api/axiosInstance";
 
 interface PurchaseDetailItem {
@@ -157,8 +158,10 @@ export default function PurchaseDetailPage() {
 
   return (
     <>
-      <Header />
-      <TextHeader pageName={t.order.detaiTitle} />
+      <Suspense fallback={null}>
+        <Header />
+        <TextHeader pageName={t.order.detaiTitle} />
+      </Suspense>
       <PageWrapper>
         <DateText>{formattedDate}</DateText>
 

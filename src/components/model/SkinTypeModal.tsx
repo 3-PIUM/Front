@@ -1,5 +1,5 @@
-// SkinTypeModal.tsx
 import styled from "styled-components";
+// import { useLocale } from "../../context/LanguageContext";
 
 const Overlay = styled.div`
   position: fixed;
@@ -46,7 +46,7 @@ const CloseButton = styled.button`
   font-weight: bold;
   cursor: pointer;
 `;
-
+// const { t } = useLocale();
 const SkinTypeModal = ({
   content,
   onClose,

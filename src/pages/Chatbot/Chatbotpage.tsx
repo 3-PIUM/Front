@@ -53,8 +53,8 @@ const BotName = styled.div`
   margin-top: 4px;
 `;
 
-const MessageBubble = styled.div<{ isUser: boolean }>`
-  background-color: ${({ isUser }) => (isUser ? "#d2e3fc" : "#f2f2f2")};
+const MessageBubble = styled.div<{ $isUser: boolean }>`
+  background-color: ${({ $isUser }) => ($isUser ? "#d2e3fc" : "#f2f2f2")};
   color: #000;
   padding: 10px 14px;
   border-radius: 14px;
@@ -72,7 +72,9 @@ const TimeText = styled.div`
 
 const InputContainer = styled.form`
   display: flex;
-  padding: 0.75rem 1rem;
+  padding-top: 0.75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   border-top: 1px solid #e5e7eb;
 `;
 
@@ -82,6 +84,11 @@ const ChatInput = styled.input`
   border: 1px solid #ddd;
   border-radius: 20px;
   font-size: 1rem;
+  outline: none;
+
+  &:focus {
+    border-color: #e91e63;
+  }
 `;
 
 const SendButton = styled.button`
@@ -202,6 +209,7 @@ export default function ChatbotPage() {
     ]);
   }, [t]);
   const [input, setInput] = useState("");
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const today = new Date();
   const dayLabel = t.chatbot.response.days?.[today.getDay()] ?? "";
   const formattedDate = `${today.getFullYear()}.${String(
@@ -273,7 +281,7 @@ export default function ChatbotPage() {
               </BotRow>
             )}
             <BotRow>
-              <MessageBubble isUser={msg.sender === "user"}>
+              <MessageBubble $isUser={msg.sender === "user"}>
                 {msg.text}
               </MessageBubble>
               <TimeText>{msg.time}</TimeText>
@@ -305,7 +313,7 @@ export default function ChatbotPage() {
               style={{
                 border: "1px solid #eee",
                 borderRadius: "12px",
-                padding: "1rem",
+                padding: "1rem 0.3rem",
                 backgroundColor: "#fff0f5",
                 cursor: "pointer",
                 flex: 1,
@@ -331,7 +339,7 @@ export default function ChatbotPage() {
               style={{
                 border: "1px solid #eee",
                 borderRadius: "12px",
-                padding: "1rem",
+                padding: "1rem 0.3rem",
                 backgroundColor: "#fff0f5",
                 cursor: "pointer",
                 flex: 1,
@@ -529,17 +537,96 @@ export default function ChatbotPage() {
         )}
       </ChatContent>
 
-      <InputContainer onSubmit={handleSubmit}>
-        <ChatInput
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={t.chatbot.placeholder}
-        />
-        <SendButton type="submit" onClick={handleSubmit}>
-          <FiSend />
-        </SendButton>
-      </InputContainer>
+      <div>
+        <InputContainer onSubmit={handleSubmit}>
+          <ChatInput
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={t.chatbot.placeholder}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+          />
+          <SendButton type="submit" onClick={handleSubmit}>
+            <FiSend />
+          </SendButton>
+        </InputContainer>
+
+        {isInputFocused && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "0.5rem",
+              padding: "0.5rem 1rem",
+              background: "#fff",
+            }}
+          >
+            <button
+              onClick={() => {
+                const userInput = t.chatbot.suggestions.recommend;
+                setMessages((prev) => [
+                  ...prev,
+                  {
+                    sender: "user",
+                    text: userInput,
+                    time: getTime(),
+                  },
+                  {
+                    sender: "bot",
+                    text: `${t.chatbot.recommendText[0]}\n${t.chatbot.recommendText[1]}`,
+                    time: getTime(),
+                  },
+                ]);
+                setMode("recommend");
+                setInput("");
+              }}
+              style={{
+                padding: "0.8rem 1rem",
+                fontSize: "13px",
+                backgroundColor: "#fce4ec",
+                borderRadius: "16px",
+                border: "none",
+                cursor: "pointer",
+                flex: 1,
+              }}
+            >
+              {t.chatbot.suggestions.recommend}
+            </button>
+            <button
+              onClick={() => {
+                const userInput = t.chatbot.suggestions.compare;
+                setMessages((prev) => [
+                  ...prev,
+                  {
+                    sender: "user",
+                    text: userInput,
+                    time: getTime(),
+                  },
+                  {
+                    sender: "bot",
+                    text: t.chatbot.compareText,
+                    time: getTime(),
+                  },
+                ]);
+                setMode("compare");
+                setInput("");
+              }}
+              style={{
+                padding: "0.8rem 1rem",
+                fontSize: "13px",
+                backgroundColor: "#fce4ec",
+                borderRadius: "16px",
+                border: "none",
+                cursor: "pointer",
+                flex: 1,
+              }}
+            >
+              {t.chatbot.suggestions.compare}
+            </button>
+          </div>
+        )}
+      </div>
     </ChatPageContainer>
   );
 }

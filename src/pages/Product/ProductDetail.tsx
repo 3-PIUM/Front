@@ -5,6 +5,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
+import ImageNot from "../../components/ingredient/ImageNot";
+
+const TextHeader = React.lazy(
+  () => import("../../components/common/TextHeader")
+);
 
 const ProductCard = React.lazy(
   () => import("../../components/product/ProductCard")
@@ -43,7 +48,7 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding-bottom: 5rem;
+  padding-bottom: 4rem;
 `;
 
 const ProductCardWrapper = styled.div`
@@ -265,6 +270,9 @@ export default function ProductDetail() {
       <Suspense fallback={null}>
         <FullHeader pageName="" />
       </Suspense>
+      <Suspense fallback={null}>
+        <TextHeader pageName={t.order.detaiTitle} />
+      </Suspense>
       <ProductCardWrapper ref={pageWrapperRef}>
         <Suspense fallback={null}>
           <ProductCard {...product} imageUrl={product.imageUrl.mainImage} />
@@ -317,12 +325,39 @@ export default function ProductDetail() {
             </TabButton>
           ))}
         </TabMenu>
-        {selectedTab === "detail" && product.imageUrl.detailImages && (
-          <div style={{ marginBottom: "3rem" }}>
-            {product.imageUrl.detailImages.map((url: string, idx: number) => (
-              <BannerImage key={idx} src={url} alt={`detail-banner-${idx}`} />
-            ))}
-          </div>
+        {selectedTab === "detail" && (
+          <>
+            {product.imageUrl.detailImages.length > 0 ? (
+              (() => {
+                try {
+                  const parsedImages: string[] = JSON.parse(
+                    product.imageUrl.detailImages[0]
+                  );
+                  const validUrls = parsedImages.filter(
+                    (url: string) => url.trim() !== ""
+                  );
+                  return validUrls.length > 0 ? (
+                    <div style={{ marginBottom: "0rem" }}>
+                      {validUrls.map((url: string, idx: number) => (
+                        <BannerImage
+                          key={idx}
+                          src={url}
+                          alt={`detail-banner-${idx}`}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <ImageNot />
+                  );
+                } catch (e) {
+                  console.error("❌ 이미지 파싱 실패:", e);
+                  return <ImageNot />;
+                }
+              })()
+            ) : (
+              <ImageNot />
+            )}
+          </>
         )}
         {selectedTab === "ingredient" && isSkinRegistered !== null && (
           <>

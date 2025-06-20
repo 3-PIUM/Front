@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import profileImg from "../../assets/images/purchaseNot.png";
 
 const Wrapper = styled.div`
   padding: 2rem 1rem;
@@ -21,11 +20,11 @@ const Text = styled.p`
   font-weight: 500;
 `;
 
-export default function PurchaseNot() {
+export default function ImageNot() {
   return (
     <Wrapper>
-      <FlowerImg src={profileImg} alt="구매내역 없음 이미지" />
-      <Text>구매내역이 없습니다.</Text>
+      <FlowerImg src="images/purchaseNot.png" alt="구매내역 없음 이미지" />
+      <Text>이 상품은 상세페이지가 없습니다.</Text>
     </Wrapper>
   );
 }
