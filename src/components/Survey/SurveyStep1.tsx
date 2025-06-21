@@ -2,7 +2,7 @@ import styled from "styled-components";
 import SelectButton from "../SelectForm/SelectButton";
 import { Link } from "react-router-dom";
 import colors from "../../styles/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
@@ -48,6 +48,12 @@ export default function SurveyStep1({ skinType, setSkinType }: skinProps) {
     value: string;
   }
 
+  useEffect(() => {
+    if (skinType) {
+      setSelected(skinType);
+    }
+  }, [skinType]);
+
   return (
     <>
       <Wrapper>
@@ -58,10 +64,11 @@ export default function SurveyStep1({ skinType, setSkinType }: skinProps) {
               key={item.id}
               size="large"
               buttonName={item.option}
-              isActivated={selected === item.option}
+              isActivated={selected === item.value}
               onClick={() => {
-                setSelected(item.option);
+                setSelected(item.value);
                 setSkinType(item.value);
+                sessionStorage.setItem("skinType", item.value);
               }}
             />
           ))}

@@ -70,12 +70,15 @@ const ButtonWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-export default function WelcomePage() {
+export default function SurveyPage() {
   const [step, setStep] = useState<number>(() => {
     const saved = sessionStorage.getItem("surveyStep");
     return saved ? parseInt(saved) : 1;
   });
-  const [skinType, setSkinType] = useState<string | null>(null);
+  const [skinType, setSkinType] = useState<string | null>(() => {
+    const savedSkinType = sessionStorage.getItem("skinType");
+    return savedSkinType ? savedSkinType : null;
+  });
   const [personalColor, setPersonalColor] = useState<string | null>(null);
   const [skinIssue, setSkinIssue] = useState<string[] | null>(null);
   const navigate = useNavigate();
@@ -106,17 +109,13 @@ export default function WelcomePage() {
       sessionStorage.removeItem("skinType");
       sessionStorage.removeItem("personalColor");
       sessionStorage.removeItem("surveyStep");
+      sessionStorage.removeItem("skinType");
+      sessionStorage.removeItem("skinConcern");
+      sessionStorage.removeItem("personalColor");
     } catch (error) {
       console.log("실패", error);
     }
   };
-
-  useEffect(() => {
-    if (skinType) {
-      setSkinType(skinType);
-    }
-    console.log(skinType);
-  }, [skinType]);
 
   console.log(skinType);
 
@@ -135,11 +134,23 @@ export default function WelcomePage() {
     if (savedStep) {
       setStep(parseInt(savedStep));
     }
-  }, []);
+    const storedSkinType = sessionStorage.getItem("skinType");
+    if (storedSkinType) setSkinType(storedSkinType);
 
-  console.log(skinType);
-  console.log(personalColor);
-  console.log(skinIssue);
+    const storedSkinIssue = sessionStorage.getItem("skinConcern");
+    if (storedSkinIssue) {
+      try {
+        const parsed = JSON.parse(storedSkinIssue); // parsed: number[]
+        const stringIssue = parsed.map((id: number) => String(id)); // string[]로 변환
+        setSkinIssue(stringIssue);
+      } catch (e) {
+        console.error("skinConcern 파싱 오류", e);
+      }
+    }
+
+    const storedPersonalColor = sessionStorage.getItem("personalColor");
+    if (storedPersonalColor) setPersonalColor(storedPersonalColor);
+  }, []);
 
   return (
     <>

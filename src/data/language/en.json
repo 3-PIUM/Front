@@ -32,6 +32,43 @@
     "female": "Female",
     "signupBtn": "Sign Up"
   },
+  "colorTest": {
+    "testTitle": "Personal Diagnosis",
+    "uploadImg": "Upload Image",
+    "goResult": "View Result",
+    "resultTitle": "Diagnosis Result",
+    "goSurvey": "Go Back",
+    "result": {
+      "봄웜": {
+        "image": "/images/ColorCharacter/spring.png",
+        "bgColor": "#FFEFD5",
+        "label": "Spring Warm",
+        "textColor": "#E78A46",
+        "description": "Spring Warm is a type that suits bright and warm colors such as coral and apricot. It gives off a lively and lovely vibe overall."
+      },
+      "여름쿨": {
+        "image": "/images/ColorCharacter/summer.png",
+        "bgColor": "#E6E6FA",
+        "label": "Summer Cool",
+        "textColor": "#6B6FAF",
+        "description": "Summer Cool is a type that suits soft and cool tones like lavender and light pink. It gives a pure and elegant impression."
+      },
+      "가을웜": {
+        "image": "/images/ColorCharacter/autumn.png",
+        "bgColor": "#F3E2C7",
+        "label": "Autumn Warm",
+        "textColor": "#5A3E2B",
+        "description": "Autumn Warm suits warm and deep colors like brown, mustard, and camel. It gives off a calm, mature, and luxurious vibe."
+      },
+      "겨울쿨": {
+        "image": "/images/ColorCharacter/winter.png",
+        "bgColor": "#E0F7FA",
+        "label": "Winter Cool",
+        "textColor": "#001F3F",
+        "description": "Winter Cool suits vivid and cool tones like black, cool red, and navy. It gives a chic and sophisticated impression."
+      }
+    }
+  },
   "aboutYou": {
     "skipBtn": "Skip",
     "mainTitle": {

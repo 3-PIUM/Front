@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import colors from "../../styles/colors";
 import PersonalColorButton from "../SelectForm/PersonalColorButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
@@ -52,6 +52,12 @@ export default function SurveyStep2({
     colors: string[];
   }
 
+  useEffect(() => {
+    if (personalColor) {
+      setSelected(personalColor);
+    }
+  }, [personalColor]);
+
   return (
     <>
       <Wrapper>
@@ -61,11 +67,12 @@ export default function SurveyStep2({
             <PersonalColorButton
               key={item.id}
               buttonName={item.option}
-              isActivated={selected === item.option}
+              isActivated={selected === item.value}
               colors={item.colors}
               onClick={() => {
-                setSelected(item.option);
+                setSelected(item.value);
                 setPersonalColor(item.value);
+                sessionStorage.setItem("personalColor", item.value);
               }}
             />
           ))}
