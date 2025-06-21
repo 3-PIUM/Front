@@ -139,6 +139,12 @@ export default function Login() {
     console.log(languageCode);
   }, [language]);
 
+  useEffect(() => {
+    sessionStorage.removeItem("memberInfo");
+    sessionStorage.removeItem("surveyStep");
+    sessionStorage.removeItem("accessToken");
+  }, []);
+
   return (
     <>
       <Wrap>

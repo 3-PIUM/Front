@@ -32,6 +32,43 @@
     "female": "女性",
     "signupBtn": "会員登録する"
   },
+  "colorTest": {
+    "testTitle": "パーソナル診断",
+    "uploadImg": "画像をアップロードする",
+    "goResult": "結果を見る",
+    "resultTitle": "診断結果",
+    "goSurvey": "戻る",
+    "result": {
+      "봄웜": {
+        "image": "/images/ColorCharacter/spring.png",
+        "bgColor": "#FFEFD5",
+        "label": "スプリングウォーム",
+        "textColor": "#E78A46",
+        "description": "スプリングウォームは、コーラルやアプリコットのような明るくて暖かい色が似合うタイプで、全体的に元気で愛らしい雰囲気を持っています。"
+      },
+      "여름쿨": {
+        "image": "/images/ColorCharacter/summer.png",
+        "bgColor": "#E6E6FA",
+        "label": "サマークール",
+        "textColor": "#6B6FAF",
+        "description": "サマークールは、ラベンダーやライトピンクのような柔らかくて涼しい色が似合うタイプで、清楚で上品な印象を与えます。"
+      },
+      "가을웜": {
+        "image": "/images/ColorCharacter/autumn.png",
+        "bgColor": "#F3E2C7",
+        "label": "オータムウォーム",
+        "textColor": "#5A3E2B",
+        "description": "オータムウォームは、ブラウン、マスタード、キャメルなどの暖かくて深みのある色が似合い、落ち着きと高級感のある雰囲気を持っています。"
+      },
+      "겨울쿨": {
+        "image": "/images/ColorCharacter/winter.png",
+        "bgColor": "#E0F7FA",
+        "label": "ウィンタークール",
+        "textColor": "#001F3F",
+        "description": "ウィンタークールは、ブラック、クールレッド、ネイビーなどの鮮やかで冷たい色が似合うタイプで、クールで洗練された印象を与えます。"
+      }
+    }
+  },
   "aboutYou": {
     "skipBtn": "スキップ",
     "mainTitle": {

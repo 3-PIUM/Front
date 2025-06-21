@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
+import { FaLeaf } from "react-icons/fa";
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -20,13 +21,30 @@ const HeaderWrap = styled.div`
 `;
 
 const LeftIcon = styled.div`
+  display: flex;
+  cursor: pointer;
+  flex: 1;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: auto;
+  position: absolute;
+  left: 50%;
+
+  transform: translateX(-50%);
+  gap: 0.5rem;
+`;
+
+const LeafWrap = styled.div`
+  display: flex;
+  align-items: center;
   cursor: pointer;
 `;
 
 const Title = styled.h1`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  display: flex;
   font-size: 16px;
   font-weight: 700;
   color: ${colors.black};
@@ -34,6 +52,9 @@ const Title = styled.h1`
 
 const RightIcons = styled.div`
   display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
   gap: 1rem;
   /* margin-right: -0.9rem; */
 `;
@@ -87,6 +108,8 @@ const SearchResultItem = styled.div`
 
 interface FullHeaderProps {
   pageName: string;
+  isVegan?: boolean;
+  backPath?: string;
 }
 
 interface SearchResult {
@@ -98,7 +121,11 @@ interface SearchResult {
   discountRate: number;
 }
 
-export default function FullHeader({ pageName }: FullHeaderProps) {
+export default function FullHeader({
+  pageName,
+  isVegan,
+  backPath,
+}: FullHeaderProps) {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -131,10 +158,28 @@ export default function FullHeader({ pageName }: FullHeaderProps) {
   return (
     <>
       <HeaderWrap>
-        <LeftIcon onClick={() => navigate(-1)}>
+        <LeftIcon
+          onClick={() => {
+            if (backPath) {
+              navigate(backPath);
+            } else {
+              navigate(-1);
+            }
+          }}
+        >
           <VscChevronLeft size={24} />
         </LeftIcon>
-        <Title>{pageName}</Title>
+
+        <TextWrapper>
+          {isVegan && (
+            <LeafWrap>
+              <FaLeaf style={{ fontSize: "1rem", color: "#6DBE45" }} />
+            </LeafWrap>
+          )}
+
+          <Title>{pageName}</Title>
+        </TextWrapper>
+
         <RightIcons>
           <IconWrapper onClick={() => setIsSearchOpen(true)}>
             <FiSearch size={20} />

@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 
-
 const HeaderWrap = styled.div`
   position: fixed;
   width: 100%;
@@ -122,7 +121,10 @@ export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
   return (
     <>
       <HeaderWrap>
-        <LogoWrap src="/images/logo/PIUM_logo.png" />
+        <LogoWrap
+          src="/images/logo/PIUM_logo.png"
+          onClick={() => navigate("/home")}
+        />
         <RightIcons>
           <IconWrapper onClick={onStoreClick}>
             <HiLocationMarker size={20} />

@@ -94,25 +94,26 @@ export default function SettingSkinConcern() {
         await axiosInstance.patch("/member", {
           skinIssue: selected,
         });
+        console.log("보낸 값", selected);
 
         const stored = sessionStorage.getItem("memberInfo");
         if (stored) {
           const updated = JSON.parse(stored);
           updated.skinIssue = selected;
-          sessionStorage.setItem(
-            "memberInfo",
-            JSON.stringify(updated.skinIssue)
-          );
+          sessionStorage.setItem("memberInfo", JSON.stringify(updated)); // ✅ 전체 객체 저장
           setMemberInfo(updated);
         }
         setShowModal(true);
       } catch (error) {
+        setShowModal(false);
         console.log("error:", error);
       }
     };
     saveSkinConcern();
     setIsChanged(false);
   };
+
+  console.log(selected);
 
   useEffect(() => {
     if (!memberInfo) return;
@@ -161,13 +162,26 @@ export default function SettingSkinConcern() {
         </AnswerWrapper>
       </Wrapper>
       <ButtonWrapper>
-        <Button label={t.save} onClick={goSave} disabled={!isChanged} />
+        <Button
+          label={t.save}
+          onClick={() => {
+            goSave();
+          }}
+          disabled={!isChanged}
+        />
       </ButtonWrapper>
       {showModal && (
         <ModalOverlay>
           <ModalContent>
             <div>정보가 성공적으로 수정되었습니다</div>
-            <ModalButton onClick={() => navigate("/mypage")}>확인</ModalButton>
+            <ModalButton
+              onClick={() => {
+                navigate("/mypage");
+                setShowModal(false);
+              }}
+            >
+              확인
+            </ModalButton>
           </ModalContent>
         </ModalOverlay>
       )}

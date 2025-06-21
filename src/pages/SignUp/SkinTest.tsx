@@ -136,7 +136,7 @@ export default function SkinTest() {
                 onClick={() => {
                   const selected = currentQuestion.optionO;
                   if (selected.result) {
-                    navigate("/skinresult", {
+                    navigate("/skin-result", {
                       state: { result: selected.value },
                     });
                   } else {
