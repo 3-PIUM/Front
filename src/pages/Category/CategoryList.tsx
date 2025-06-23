@@ -325,7 +325,7 @@ export default function CategoryList() {
         ref={containerRef}
         style={{
           overflowY: "auto",
-          height: "calc(100vh - 200px)",
+          height: rowCount > 1 ? "calc(100vh - 200px)" : "auto",
           gap: "1rem",
         }}
       >
