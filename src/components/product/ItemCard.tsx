@@ -2,7 +2,7 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import { FaHeart } from "react-icons/fa6";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 
 const ItemWrap = styled.div`
@@ -112,7 +112,10 @@ export default function ItemCard({
       originalPrice: price,
       discountRate: discountRate,
     };
-    navigate(`/product-detail?itemId=${itemId}`, { state: { product } });
+    navigate(`/product-detail?itemId=${itemId}`, {
+      replace: true,
+      state: { product },
+    });
   };
 
   const formattedPrice = price.toLocaleString();

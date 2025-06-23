@@ -256,11 +256,13 @@ export default function CategoryList() {
   const containerRef = useRef<HTMLDivElement>(null); // 스크롤 영역
 
   //useVirtualizer 훅
+  const ROW_HEIGHT = 180;
+  const rowCount = Math.ceil(items.length / 3);
   const rowVirtualizer = useVirtualizer({
-    count: items.length, // 전체 아이템 개수
-    getScrollElement: () => containerRef.current, // 스크롤 대상
-    estimateSize: () => 180, // 아이템 하나의 높이
-    overscan: 5,
+    count: rowCount,
+    getScrollElement: () => containerRef.current,
+    estimateSize: () => ROW_HEIGHT,
+    overscan: 2,
   });
 
   return (
@@ -321,17 +323,26 @@ export default function CategoryList() {
       )}
       <MainWrap
         ref={containerRef}
-        style={{ overflowY: "auto", height: "40rem", gap: "1rem" }}
+        style={{
+          overflowY: "auto",
+          height: rowCount * ROW_HEIGHT,
+          gap: "1rem",
+        }}
       >
         <div
           style={{
             position: "relative",
-            height: rowVirtualizer.getTotalSize(),
+            height: rowCount * ROW_HEIGHT,
           }}
         >
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const startIndex = virtualRow.index * 3;
             const visibleItems = items.slice(startIndex, startIndex + 3);
+
+            console.log(
+              `렌더링되는 row ${virtualRow.index}:`,
+              visibleItems.map((item) => item.itemName)
+            );
 
             return (
               <div
