@@ -32,6 +32,43 @@
     "female": "여자",
     "signupBtn": "회원가입하기"
   },
+  "colorTest": {
+    "testTitle": "퍼스널 진단",
+    "uploadImg": "이미지 업로드 하기",
+    "goResult": "결과 보기",
+    "resultTitle": "퍼스널 진단 결과",
+    "goSurvey": "돌아가기",
+    "result": {
+      "봄웜": {
+        "image": "/images/ColorCharacter/spring.png",
+        "bgColor": "#FFEFD5",
+        "label": "봄웜톤",
+        "textColor": "#E78A46",
+        "description": "봄웜은 밝고 따뜻한 색감이 잘 어울리는 타입으로, 코랄이나 살구색처럼 화사하고 생기 있는 컬러가 잘 받습니다. 전체적으로 발랄하고 사랑스러운 분위기를 풍깁니다."
+      },
+      "여름쿨": {
+        "image": "/images/ColorCharacter/summer.png",
+        "bgColor": "#E6E6FA",
+        "label": "여름쿨톤",
+        "textColor": "#6B6FAF",
+        "description": "부드럽고 차가운 색감이 잘 어울리며, 라벤더나 연핑크처럼 은은하고 맑은 컬러가 잘 어울립니다. 청초하고 우아한 인상을 주는 타입입니다."
+      },
+      "가을웜": {
+        "image": "/images/ColorCharacter/autumn.png",
+        "bgColor": "#F3E2C7",
+        "label": "가을웜톤",
+        "textColor": "#5A3E2B",
+        "description": "따뜻하면서도 깊이감 있는 색이 잘 어울리는 타입으로, 브라운 계열이나 머스타드, 카멜색 등이 잘 어울립니다. 차분하고 고급스러운 분위기를 가지고 있습니다."
+      },
+      "겨울쿨": {
+        "image": "/images/ColorCharacter/winter.png",
+        "bgColor": "#E0F7FA",
+        "label": "겨울쿨톤",
+        "textColor": "#001F3F",
+        "description": "선명하고 차가운 색감이 잘 어울리며, 블랙이나 쿨레드, 네이비처럼 강렬한 대비를 가진 색이 잘 받습니다. 도도하고 세련된 인상을 주는 타입입니다."
+      }
+    }
+  },
   "aboutYou": {
     "skipBtn": "건너뛰기",
     "mainTitle": {
@@ -139,68 +176,91 @@
     "options": [
       {
         "id": 0,
-        "name": "전체"
+        "name": "전체",
+        "value": "전체"
       },
       {
         "id": 1,
-        "name": "잡티"
+        "name": "잡티",
+        "value": "잡티"
       },
       {
         "id": 2,
-        "name": "미백"
+        "name": "미백",
+        "value": "미백"
       },
       {
         "id": 3,
-        "name": "주름"
+        "name": "주름",
+        "value": "주름"
       },
       {
         "id": 4,
-        "name": "모공"
+        "name": "모공",
+        "value": "모공"
       },
       {
         "id": 5,
-        "name": "탄력"
+        "name": "탄력",
+        "value": "탄력"
       },
       {
         "id": 6,
-        "name": "홍조"
+        "name": "홍조",
+        "value": "홍조"
       },
       {
         "id": 7,
-        "name": "각질"
+        "name": "각질",
+        "value": "각질"
       },
       {
         "id": 8,
-        "name": "트러블"
+        "name": "트러블",
+        "value": "트러블"
       },
       {
         "id": 9,
-        "name": "블랙헤드"
+        "name": "블랙헤드",
+        "value": "블랙헤드"
       },
       {
         "id": 10,
-        "name": "피지과다"
+        "name": "피지과다",
+        "value": "피지과다"
       },
       {
         "id": 11,
-        "name": "민감성"
+        "name": "민감성",
+        "value": "민감성"
       },
       {
         "id": 12,
-        "name": "아토피"
+        "name": "아토피",
+        "value": "아토피"
       },
       {
         "id": 13,
-        "name": "다크서클"
+        "name": "다크서클",
+        "value": "다크서클"
       }
     ],
     "optionBtnOpen": "펼치기",
     "optionBtnClose": "접기",
-    "sorted": {
-      "recommended": "추천순",
-      "lowPrice": "낮은 가격순",
-      "highDiscount": "할인율순"
-    },
+    "sorted": [
+      {
+        "name": "추천순",
+        "value": ""
+      },
+      {
+        "name": "낮은 가격순",
+        "value": "PRICE_ASC"
+      },
+      {
+        "name": "높은 가격순",
+        "value": "PRICE_DESC"
+      }
+    ],
     "skinconcerns": {
       "all": "전체",
       "미백": "미백",

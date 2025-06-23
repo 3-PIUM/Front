@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import SelectButton from "./../SelectForm/SelectButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
@@ -32,15 +32,22 @@ export default function SurveyStep2({ skinIssue, setSkinIssue }: issueProps) {
   const [selected, setSelected] = useState<number[]>([]);
 
   const toggleSelection = (id: number) => {
+    let newSelected: number[];
+
     if (selected.includes(id)) {
-      const newSelected = selected.filter((item) => item !== id);
-      setSelected(newSelected);
-      setSkinIssue(newSelected.map(String));
+      // 이미 선택된 항목이면 제거
+      newSelected = selected.filter((item) => item !== id);
     } else {
-      const newSelected = [...selected, id];
-      setSelected(newSelected);
-      setSkinIssue(newSelected.map(String));
+      // 선택되지 않은 항목이면 추가
+      newSelected = [...selected, id];
     }
+
+    setSelected(newSelected); // 컴포넌트 내부 상태 업데이트
+    setSkinIssue(newSelected.map(String)); // 부모로 전달할 값 (string[] 형식)
+    sessionStorage.setItem(
+      "skinConcern",
+      JSON.stringify(newSelected.map(String))
+    );
   };
 
   interface ConcernProps {
@@ -49,6 +56,12 @@ export default function SurveyStep2({ skinIssue, setSkinIssue }: issueProps) {
     id: number;
   }
 
+  useEffect(() => {
+    if (skinIssue) {
+      setSelected(skinIssue.map((id) => Number(id)));
+    }
+  }, [skinIssue]); // ✅ 이렇게 바꿔야 변경사항이 반영됩니다!
+
   return (
     <>
       <Wrapper>
@@ -56,6 +69,7 @@ export default function SurveyStep2({ skinIssue, setSkinIssue }: issueProps) {
         <AnswerWrapper>
           {t.mypage.skinConcernsItem.map((item: ConcernProps) => (
             <SelectButton
+              key={item.id} // ✅ 이게 있어야 상태 복원이 반영됩니다
               buttonName={item.name}
               size="small"
               isActivated={selected.includes(item.id)}

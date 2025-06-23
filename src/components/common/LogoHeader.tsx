@@ -9,7 +9,6 @@ import axiosInstance from "../../api/axiosInstance";
 import StoreModal from "../model/StoreModal";
 import type { Store } from "../model/StoreModal";
 
-
 const HeaderWrap = styled.div`
   position: fixed;
   width: 100%;

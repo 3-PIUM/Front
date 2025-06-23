@@ -3,10 +3,18 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import Button from "../../components/common/Button";
 import { useLocale } from "../../context/LanguageContext";
+import Header from "../../components/common/Header";
+
+const Wrap = styled.div`
+  overflow: hidden;
+  background-color: ${colors.lightGrey};
+  height: 100dvh; // dynamic viewport height
+`;
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  top: 0;
 `;
 
 const HeaderText = styled.div`
@@ -88,9 +96,9 @@ export default function SkinTypeResult() {
     skinTypeTranslations[result as SkinType]?.[lang as Language] || result;
 
   return (
-    <>
+    <Wrap>
       <Wrapper>
-        <header />
+        <Header bgColor={colors.lightGrey} />
         <HeaderText>{t.survey.skinTypeResult}</HeaderText>
         <ImgWrapper>
           {result === "건성" ? (
@@ -137,6 +145,6 @@ export default function SkinTypeResult() {
           onClick={() => navigate("/survey")}
         />
       </ButtonWrapper>
-    </>
+    </Wrap>
   );
 }

@@ -1,6 +1,7 @@
 import { useLocation, useRoutes } from "react-router-dom";
 import routes from "./Routes";
-import { LanguageProvider } from "./context/LanguageContext"; // ✅ 추가
+import { LanguageProvider } from "./context/LanguageContext";
+import { Suspense } from "react";
 
 const App = () => {
   const location = useLocation();
@@ -8,8 +9,9 @@ const App = () => {
 
   return (
     <LanguageProvider>
-      {" "}
-      <div key={location.key}>{content}</div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <div key={location.key}>{content}</div>
+      </Suspense>
     </LanguageProvider>
   );
 };

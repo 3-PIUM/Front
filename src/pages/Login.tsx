@@ -17,7 +17,15 @@ const Wrap = styled.div`
 `;
 
 const LogoWrap = styled.div`
-  height: 11rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10rem;
+`;
+
+const LogoImg = styled.img`
+  display: flex;
+  width: 35%;
 `;
 
 const LanguageTab = styled.div`
@@ -25,6 +33,7 @@ const LanguageTab = styled.div`
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  margin-top: 2rem;
 `;
 
 const LanguageText = styled.div`
@@ -139,11 +148,19 @@ export default function Login() {
     console.log(languageCode);
   }, [language]);
 
+  useEffect(() => {
+    sessionStorage.removeItem("memberInfo");
+    sessionStorage.removeItem("surveyStep");
+    sessionStorage.removeItem("accessToken");
+  }, []);
+
   return (
     <>
       <Wrap>
         <Header />
-        <LogoWrap></LogoWrap>
+        <LogoWrap>
+          <LogoImg src="/images/logo/PIUM_logo.png" />
+        </LogoWrap>
         <LanguageTab>
           <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />
           <LanguageText onClick={openLanguageModal}>{language}</LanguageText>

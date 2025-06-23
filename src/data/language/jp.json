@@ -32,6 +32,43 @@
     "female": "女性",
     "signupBtn": "会員登録する"
   },
+  "colorTest": {
+    "testTitle": "パーソナル診断",
+    "uploadImg": "画像をアップロードする",
+    "goResult": "結果を見る",
+    "resultTitle": "診断結果",
+    "goSurvey": "戻る",
+    "result": {
+      "봄웜": {
+        "image": "/images/ColorCharacter/spring.png",
+        "bgColor": "#FFEFD5",
+        "label": "スプリングウォーム",
+        "textColor": "#E78A46",
+        "description": "スプリングウォームは、コーラルやアプリコットのような明るくて暖かい色が似合うタイプで、全体的に元気で愛らしい雰囲気を持っています。"
+      },
+      "여름쿨": {
+        "image": "/images/ColorCharacter/summer.png",
+        "bgColor": "#E6E6FA",
+        "label": "サマークール",
+        "textColor": "#6B6FAF",
+        "description": "サマークールは、ラベンダーやライトピンクのような柔らかくて涼しい色が似合うタイプで、清楚で上品な印象を与えます。"
+      },
+      "가을웜": {
+        "image": "/images/ColorCharacter/autumn.png",
+        "bgColor": "#F3E2C7",
+        "label": "オータムウォーム",
+        "textColor": "#5A3E2B",
+        "description": "オータムウォームは、ブラウン、マスタード、キャメルなどの暖かくて深みのある色が似合い、落ち着きと高級感のある雰囲気を持っています。"
+      },
+      "겨울쿨": {
+        "image": "/images/ColorCharacter/winter.png",
+        "bgColor": "#E0F7FA",
+        "label": "ウィンタークール",
+        "textColor": "#001F3F",
+        "description": "ウィンタークールは、ブラック、クールレッド、ネイビーなどの鮮やかで冷たい色が似合うタイプで、クールで洗練された印象を与えます。"
+      }
+    }
+  },
   "aboutYou": {
     "skipBtn": "スキップ",
     "mainTitle": {
@@ -141,28 +178,37 @@
       }
     ],
     "options": [
-      { "id": 0, "name": "すべて" },
-      { "id": 1, "name": "シミ" },
-      { "id": 2, "name": "美白" },
-      { "id": 3, "name": "しわ" },
-      { "id": 4, "name": "毛穴" },
-      { "id": 5, "name": "ハリ" },
-      { "id": 6, "name": "赤み" },
-      { "id": 7, "name": "角質" },
-      { "id": 8, "name": "トラブル" },
-      { "id": 9, "name": "ブラックヘッド" },
-      { "id": 10, "name": "皮脂過多" },
-      { "id": 11, "name": "敏感肌" },
-      { "id": 12, "name": "アトピー" },
-      { "id": 13, "name": "クマ" }
+      { "id": 0, "name": "全体", "value": "전체" },
+      { "id": 1, "name": "シミ", "value": "잡티" },
+      { "id": 2, "name": "美白", "value": "미백" },
+      { "id": 3, "name": "シワ", "value": "주름" },
+      { "id": 4, "name": "毛穴", "value": "모공" },
+      { "id": 5, "name": "弾力", "value": "탄력" },
+      { "id": 6, "name": "赤み", "value": "홍조" },
+      { "id": 7, "name": "角質", "value": "각질" },
+      { "id": 8, "name": "肌トラブル", "value": "트러블" },
+      { "id": 9, "name": "ブラックヘッド", "value": "블랙헤드" },
+      { "id": 10, "name": "皮脂過多", "value": "피지과다" },
+      { "id": 11, "name": "敏感肌", "value": "민감성" },
+      { "id": 12, "name": "アトピー", "value": "아토피" },
+      { "id": 13, "name": "クマ", "value": "다크서클" }
     ],
     "optionBtnOpen": "もっと見る",
     "optionBtnClose": "閉じる",
-    "sorted": {
-      "recommended": "おすすめ順",
-      "lowPrice": "価格が安い順",
-      "highDiscount": "割引率が高い順"
-    },
+    "sorted": [
+      {
+        "name": "おすすめ順",
+        "value": ""
+      },
+      {
+        "name": "価格が安い順",
+        "value": "PRICE_ASC"
+      },
+      {
+        "name": "価格が高い順",
+        "value": "PRICE_DESC"
+      }
+    ],
     "skinconcerns": {
       "all": "すべて",
       "미백": "美白",
