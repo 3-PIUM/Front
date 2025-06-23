@@ -1,6 +1,9 @@
 import { styled } from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import colors from "../../styles/colors";
+import { FaHeart } from "react-icons/fa6";
+import { useState } from "react";
+import axiosInstance from "../../api/axiosInstance";
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,7 +37,7 @@ const ItemImage = styled.img`
 const ItemInfo = styled.div`
   display: flex;
   flex-direction: column;
-  width: 65%;
+  width: 55%;
   padding: 1rem 0 1rem 1rem;
   justify-content: center;
 `;
@@ -64,6 +67,13 @@ const ItemName = styled.div`
   font-size: 0.75rem;
 `;
 
+const Heart = styled.div`
+  display: flex;
+  width: 10%;
+  justify-content: center;
+  align-items: center;
+`;
+
 interface ItemProps {
   imageSource: string;
   itemName: string;
@@ -86,6 +96,31 @@ export default function TopRankItem({
   rank,
 }: ItemProps) {
   const { t } = useLocale();
+  const [isWished, setIsWished] = useState(wishStatus ?? false);
+
+  const handleWish = async (event: React.MouseEvent) => {
+    event.stopPropagation();
+
+    if (!isWished) {
+      try {
+        const response = await axiosInstance.post(`/wishlist/${itemId}`);
+        setIsWished(true);
+        console.log("찜 추가가 됐습니다", response.data);
+      } catch {
+        console.error("찜 추가에 실패했습니다");
+      }
+    } else {
+      try {
+        await axiosInstance.delete(`/wishlist/${itemId}`);
+        console.log("찜 취소가 됐습니다");
+        setIsWished(false);
+        onWishChange?.();
+      } catch {
+        console.error("찜 취소에 실패했습니다");
+      }
+    }
+  };
+
   return (
     <Wrapper>
       <RankTitle color={rankColors[Number(rank) - 1]}>{rank}</RankTitle>
@@ -98,6 +133,13 @@ export default function TopRankItem({
           <ItemPrice>{price}원</ItemPrice>
         </PriceWrap>
       </ItemInfo>
+      <Heart>
+        <FaHeart
+          fontSize={"1.4rem"}
+          color={isWished ? colors.mainPink : colors.mediumGrey}
+          onClick={handleWish}
+        />
+      </Heart>
     </Wrapper>
   );
 }
