@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
   padding: 2rem 1rem;
@@ -21,10 +22,11 @@ const Text = styled.p`
 `;
 
 export default function ImageNot() {
+  const { t } = useLocale();
   return (
     <Wrapper>
       <FlowerImg src="images/purchaseNot.png" alt="구매내역 없음 이미지" />
-      <Text>이 상품은 상세페이지가 없습니다.</Text>
+      <Text>{t.detailNot}</Text>
     </Wrapper>
   );
 }

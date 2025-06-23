@@ -514,5 +514,7 @@
   "skinModel": {
     "detailedReview": "AI Detailed Review",
     "close": "Close"
-  }
+  },
+  "purchaseNot": "There is no purchase history.",
+  "detailNot": "This product does not have a detail page."
 }

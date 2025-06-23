@@ -6,6 +6,8 @@ import { HiLocationMarker } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
+import StoreModal from "../model/StoreModal";
+import type { Store } from "../model/StoreModal";
 
 
 const HeaderWrap = styled.div`
@@ -89,12 +91,41 @@ interface LogoHeaderProps {
   onStoreClick?: () => void; // 모달 제어 함수
 }
 
+const dummyStores: Store[] = [
+  {
+    name: "강남점",
+    distance: "1.2km",
+    imageUrl:
+      "https://image.oliveyoung.co.kr/cfimages/oystore/DEBE_202501151112191.png?rs=800x0",
+    status: "영업 중" as const,
+    hours: "10:00 - 22:00",
+  },
+  {
+    name: "홍대점",
+    distance: "3.5km" as const,
+    imageUrl:
+      "https://image.oliveyoung.co.kr/cfimages/oystore/DEBE_202501151112191.png?rs=800x0",
+    status: "영업 준비 중",
+    hours: "11:00 - 21:00",
+  },
+  {
+    name: "신촌점",
+    distance: "10.5km" as const,
+    imageUrl:
+      "https://image.oliveyoung.co.kr/cfimages/oystore/DEBE_202501151112191.png?rs=800x0",
+    status: "영업 준비 중",
+    hours: "11:00 - 21:00",
+  },
+];
+
 export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
   const navigate = useNavigate();
   const { t } = useLocale();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
+  const [selectedStore, setSelectedStore] = useState<Store | null>(null);
 
   useEffect(() => {
     const fetchSearch = async () => {
@@ -122,9 +153,12 @@ export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
   return (
     <>
       <HeaderWrap>
-        <LogoWrap src="/images/logo/PIUM_logo.png" />
+        <LogoWrap
+          src="/images/logo/PIUM_logo.png"
+          onClick={() => navigate("/home")}
+        />
         <RightIcons>
-          <IconWrapper onClick={onStoreClick}>
+          <IconWrapper onClick={() => setIsStoreModalOpen(true)}>
             <HiLocationMarker size={20} />
           </IconWrapper>
           <IconWrapper onClick={() => setIsSearchOpen(true)}>
@@ -135,6 +169,19 @@ export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
           </IconWrapper>
         </RightIcons>
       </HeaderWrap>
+
+      {isStoreModalOpen && (
+        <StoreModal
+          stores={dummyStores}
+          onClose={() => setIsStoreModalOpen(false)}
+          onSelect={(store) => {
+            console.log("선택된 매장:", store);
+            setSelectedStore(store);
+            setIsStoreModalOpen(false);
+          }}
+          selectedStore={selectedStore} // ✅ 이 줄 추가
+        />
+      )}
 
       {isSearchOpen && (
         <SearchOverlay onClick={() => setIsSearchOpen(false)}>

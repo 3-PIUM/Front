@@ -513,5 +513,7 @@
   "skinModel": {
     "detailedReview": "AI 詳細レビュー要約",
     "close": "閉じる"
-  }
+  },
+  "purchaseNot": "購入した商品の履歴がありません。",
+  "detailNot": "この商品の詳細ページはありません。"
 }
