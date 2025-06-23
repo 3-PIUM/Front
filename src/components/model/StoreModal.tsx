@@ -3,7 +3,7 @@ import colors from "../../styles/colors";
 import { useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 
-interface Store {
+export interface Store {
   name: string;
   distance: string;
   imageUrl: string;
@@ -15,6 +15,7 @@ interface StoreModalProps {
   onClose: () => void;
   onSelect: (store: Store) => void;
   stores: Store[];
+  selectedStore: Store | null; // ✅ 추가
 }
 
 const Overlay = styled.div`
@@ -88,10 +89,9 @@ export default function StoreModal({
   onClose,
   onSelect,
   stores,
+  selectedStore, // ✅ 여기 추가
 }: StoreModalProps) {
-  const [selectedStoreName, setSelectedStoreName] = useState<string | null>(
-    null
-  );
+  const selectedStoreName = selectedStore?.name;
   const { t } = useLocale();
 
   return (
@@ -110,9 +110,7 @@ export default function StoreModal({
                 key={index}
                 $selected={selectedStoreName === store.name}
                 onClick={() => {
-                  setSelectedStoreName(store.name);
-                  onSelect(store);
-                  onClose();
+                  onSelect(store); // ✅ 선택만 처리
                 }}
               >
                 <StoreImage src={store.imageUrl} alt={store.name} />

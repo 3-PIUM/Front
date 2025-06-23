@@ -1,5 +1,5 @@
 import styled from "styled-components";
-// import { useLocale } from "../../context/LanguageContext";
+import { useLocale } from "../../context/LanguageContext";
 
 const Overlay = styled.div`
   position: fixed;
@@ -46,7 +46,7 @@ const CloseButton = styled.button`
   font-weight: bold;
   cursor: pointer;
 `;
-// const { t } = useLocale();
+
 const SkinTypeModal = ({
   content,
   onClose,
@@ -54,12 +54,13 @@ const SkinTypeModal = ({
   content: string;
   onClose: () => void;
 }) => {
+  const { t } = useLocale();
   return (
     <Overlay>
       <ModalBox>
-        <Title>AI 리뷰 요약</Title>
+        <Title>{t.skinModel.detailedReview}</Title>
         <Content>{content}</Content>
-        <CloseButton onClick={onClose}>닫기</CloseButton>
+        <CloseButton onClick={onClose}>{t.skinModel.close}</CloseButton>
       </ModalBox>
     </Overlay>
   );

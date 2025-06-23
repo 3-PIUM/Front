@@ -666,5 +666,7 @@
   "skinModel": {
     "detailedReview": "AI 상세 리뷰 요약",
     "close": "닫기"
-  }
+  },
+  "purchaseNot": "구매한 상품 내역이 없습니다.",
+  "detailNot": "이 상품은 상세페이지가 없습니다."
 }

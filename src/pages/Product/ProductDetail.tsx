@@ -151,7 +151,7 @@ export default function ProductDetail() {
           originalPrice: data.originalPrice,
           discountedPrice: data.salePrice,
           discountRate: data.discountRate,
-          stock: 4,
+          stock: Math.floor(Math.random() * 100) + 1,
           options: data.options || [],
           veganType: data.veganType,
         });
