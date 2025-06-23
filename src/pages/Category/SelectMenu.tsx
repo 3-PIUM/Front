@@ -64,8 +64,6 @@ export default function SelectMenu({
     options[0]?.value ?? "전체"
   );
 
-  console.log(selectedId);
-
   return (
     <Wrapper>
       <StyledTable>

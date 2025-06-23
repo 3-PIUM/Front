@@ -159,7 +159,7 @@ export default function Login() {
       <Wrap>
         <Header />
         <LogoWrap>
-          <LogoImg src="public/images/logo/PIUM_logo.png" />
+          <LogoImg src="/images/logo/PIUM_logo.png" />
         </LogoWrap>
         <LanguageTab>
           <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />
