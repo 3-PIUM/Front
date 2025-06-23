@@ -119,20 +119,23 @@ export default function IngredientWarningSummary({
 
   // Show all tags state
   const [showAll, setShowAll] = useState(false);
+  const [skinType, setSkinType] = useState<string>("");
 
   // 사용자 피부 정보 조회
   useEffect(() => {
     const fetchUserSkin = async () => {
-      try {
-        const res = await axiosInstance.get("/member");
-        const skinType = res.data.result.skinType;
-        console.log("📌 [fetchUserSkin] 추출된 skinType:", skinType);
-        if (!skinType) {
+      const stored = sessionStorage.getItem("memberInfo");
+
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        const type = parsed.skinType;
+        console.log("skinTYPE", type);
+        setSkinType(type);
+        if (type) {
+          setIsSkinRegistered(true);
+        } else {
           setIsSkinRegistered(false);
         }
-      } catch (err) {
-        console.error("사용자 피부 정보 조회 실패", err);
-        setIsSkinRegistered(false);
       }
     };
     if (activeTab === "mySkin") fetchUserSkin();

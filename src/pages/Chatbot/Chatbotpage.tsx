@@ -558,7 +558,9 @@ export default function ChatbotPage() {
               display: "flex",
               justifyContent: "center",
               gap: "0.5rem",
-              padding: "0.5rem 1rem",
+              paddingTop: "0.5rem",
+              paddingLeft: "1rem",
+              paddingRight: "1rem",
               background: "#fff",
             }}
           >

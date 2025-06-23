@@ -56,7 +56,7 @@ const SkinTypeCard = ({
   const medals = ["🥇", "🥈", "🥉"];
   return (
     <Card isTop={isTop}>
-      {rank !== null && rank >= 1 && rank <= 3 && (
+      {rank !== null && rank > 0 && rank <= 3 && (
         <Medal>{medals[rank - 1]}</Medal>
       )}
       <TextBox>

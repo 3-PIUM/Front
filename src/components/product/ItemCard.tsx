@@ -4,6 +4,7 @@ import { FaHeart } from "react-icons/fa6";
 import { useState } from "react";
 import { replace, useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import { useLocale } from "../../context/LanguageContext";
 
 const ItemWrap = styled.div`
   display: flex;
@@ -79,6 +80,7 @@ export default function ItemCard({
 }: ItemProps) {
   const [isWished, setIsWished] = useState(wishStatus ?? false);
   const navigate = useNavigate();
+  const { t } = useLocale();
 
   const handleWish = async (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -136,7 +138,10 @@ export default function ItemCard({
         <ItemName>{itemName}</ItemName>
         <PriceWrap>
           <ItemDiscount>{discountRate}%</ItemDiscount>
-          <ItemPrice>{formattedPrice}</ItemPrice>
+          <ItemPrice>
+            {formattedPrice}
+            {t.pos.won}
+          </ItemPrice>
         </PriceWrap>
       </ItemWrap>
     </>
