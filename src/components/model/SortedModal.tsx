@@ -54,7 +54,7 @@ const Sorted = styled.div<{ $selected: boolean }>`
 `;
 
 interface ModalProps {
-  selectedSort: String;
+  selectedSort: string | undefined;
   onSelectedSort: (sort: string) => void;
   closeModal: () => void;
 }
@@ -70,15 +70,17 @@ function ModalContent({
     <Wrapper onClick={closeModal}>
       <ModalBox onClick={(e) => e.stopPropagation()}>
         <SortedBox>
-          {(Object.values(t.category.sorted) as string[]).map((sort) => (
-            <Sorted
-              key={sort}
-              $selected={selectedSort === sort}
-              onClick={() => onSelectedSort(sort)}
-            >
-              {sort}
-            </Sorted>
-          ))}
+          {(t.category.sorted as { name: string; value: string }[]).map(
+            (sort) => (
+              <Sorted
+                key={sort.value}
+                $selected={selectedSort === sort.value}
+                onClick={() => onSelectedSort(sort.value)}
+              >
+                {sort.name}
+              </Sorted>
+            )
+          )}
         </SortedBox>
       </ModalBox>
     </Wrapper>

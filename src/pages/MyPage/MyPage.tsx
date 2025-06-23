@@ -130,17 +130,10 @@ export default function MyPage() {
       });
 
       setProfileImage(file);
-      // await fetchMemberInfo();
     } catch (err) {
       console.log("프로필사진 에러:", err);
     }
-    setProfileImage(profileImage);
   };
-
-  useEffect(() => {
-    const stored = sessionStorage.getItem("memberInfo");
-    console.log(stored);
-  }, []);
 
   const nickname = JSON.parse(
     sessionStorage.getItem("memberInfo") || "{}"

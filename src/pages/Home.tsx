@@ -122,59 +122,59 @@ const RecommandListWrap = styled.div`
   padding-bottom: 80px;
 `;
 
-const RecommandBox = styled.div``;
+// const RecommandBox = styled.div``;
 
-const RecommandTitle = styled.div`
-  display: flex;
-  flex-direction: row;
-  font-weight: 700;
-  font-size: 1.125rem;
+// const RecommandTitle = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   font-weight: 700;
+//   font-size: 1.125rem;
+// `;
+
+// const RecommandCategoryWrapper = styled.div`
+//   display: flex;
+//   flex-wrap: nowrap;
+//   overflow-x: auto;
+//   gap: 0.5rem;
+//   padding: 0.5rem 0;
+//   margin-top: 0.5rem;
+
+//   // 스크롤바 안 보이게
+//   -ms-overflow-style: none;
+//   scrollbar-width: none;
+//   &::-webkit-scrollbar {
+//     display: none; /* Chrome, Safari, Opera */
+//   }
+// `;
+
+// const RecommandCategory = styled.div<{ $isActive: boolean }>`
+//   display: flex;
+//   padding: 0.375rem 0.75rem;
+//   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+//   background-color: ${({ $isActive }) =>
+//     $isActive ? colors.mainPink : colors.white};
+//   color: ${({ $isActive }) => ($isActive ? colors.white : colors.black)};
+//   border-radius: 1.25rem;
+//   font-size: 0.75rem;
+//   min-width: max-content;
 `;
 
-const RecommandCategoryWrapper = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-  margin-top: 0.5rem;
+// const PersonalRecommandList = styled.div<{ $isScroll: boolean }>`;
+//   display: flex;
+//   margin-top: 0.5rem;
+//   gap: 0.5rem;
 
-  // 스크롤바 안 보이게
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-`;
-
-const RecommandCategory = styled.div<{ $isActive: boolean }>`
-  display: flex;
-  padding: 0.375rem 0.75rem;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: ${({ $isActive }) =>
-    $isActive ? colors.mainPink : colors.white};
-  color: ${({ $isActive }) => ($isActive ? colors.white : colors.black)};
-  border-radius: 1.25rem;
-  font-size: 0.75rem;
-  min-width: max-content;
-`;
-
-const PersonalRecommandList = styled.div<{ $isScroll: boolean }>`
-  display: flex;
-  margin-top: 0.5rem;
-  gap: 0.5rem;
-
-  ${({ $isScroll }) =>
-    $isScroll &&
-    `
-    overflow-x: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  `}
-`;
+//   ${({ $isScroll }) =>
+//     $isScroll &&
+//     `
+//     overflow-x: auto;
+//     -ms-overflow-style: none;
+//     scrollbar-width: none;
+//     &::-webkit-scrollbar {
+//       display: none;
+//     }
+//   `}
+// `;
 
 const BannerWrap = styled.div`
   display: flex;
@@ -187,21 +187,21 @@ const BannerImage = styled.img`
   border-radius: 0.75rem;
 `;
 
-const RecommandListWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  width: 100%;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+// const RecommandListWrapper = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   flex-wrap: nowrap;
+//   overflow-x: auto;
+//   width: 100%;
+//   gap: 0.5rem;
+//   margin-top: 0.5rem;
 
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
+//   -ms-overflow-style: none;
+//   scrollbar-width: none;
+//   &::-webkit-scrollbar {
+//     display: none;
+//   }
+// `;
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("전체");
@@ -292,13 +292,6 @@ export default function Home() {
     { id: 2, name: "보습 크림" },
     { id: 3, name: "클렌징 오일" },
   ];
-
-  const skinTypeImageMap: Record<string, string> = {
-    건성: "/images/SkinType/dry.png",
-    복합성: "/images/SkinType/combination.png",
-    지성: "/images/SkinType/oily.png",
-    // 추가적으로 필요한 타입도 여기에 등록
-  };
 
   const nickname = JSON.parse(
     sessionStorage.getItem("memberInfo") || "{}"

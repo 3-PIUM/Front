@@ -42,7 +42,11 @@ const ToggleButton = styled.div`
   font-size: 0.8rem;
 `;
 
-export default function SelectMenu() {
+export default function SelectMenu({
+  onSelect,
+}: {
+  onSelect: (name: string) => void;
+}) {
   const { t } = useLocale();
   const [expanded, setExpanded] = useState(false);
 
@@ -56,9 +60,9 @@ export default function SelectMenu() {
 
   const visibleRows = expanded ? rows : rows.slice(0, 3);
 
-  console.log(options[0]);
-
-  const [selectedId, setSelectedId] = useState<number>(options[0]?.id ?? 0);
+  const [selectedId, setSelectedId] = useState<string>(
+    options[0]?.value ?? "전체"
+  );
 
   return (
     <Wrapper>
@@ -66,11 +70,14 @@ export default function SelectMenu() {
         <tbody>
           {visibleRows.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              {row.map((item: { id: number; name: string }) => (
+              {row.map((item: { id: number; name: string; value: string }) => (
                 <StyledTd
                   key={item.id}
-                  $selected={item.id === selectedId}
-                  onClick={() => setSelectedId(item.id)}
+                  $selected={item.value === selectedId}
+                  onClick={() => {
+                    setSelectedId(item.value);
+                    onSelect(item.value);
+                  }}
                 >
                   {item.name}
                 </StyledTd>
