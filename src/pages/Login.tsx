@@ -20,12 +20,12 @@ const LogoWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 5rem;
+  margin-top: 10rem;
 `;
 
 const LogoImg = styled.img`
   display: flex;
-  width: 40%;
+  width: 35%;
 `;
 
 const LanguageTab = styled.div`
@@ -33,6 +33,7 @@ const LanguageTab = styled.div`
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  margin-top: 2rem;
 `;
 
 const LanguageText = styled.div`
