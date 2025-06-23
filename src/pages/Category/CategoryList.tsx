@@ -95,12 +95,12 @@ const SortValue = styled.div`
   color: ${colors.darkGrey};
 `;
 
-const ItemWrap = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: 1rem;
-  gap: 0.5rem;
-`;
+// const ItemWrap = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(3, 1fr);
+//   margin-top: 1rem;
+//   gap: 0.5rem;
+// `;
 
 interface ItemType {
   itemImage: string;
@@ -262,7 +262,7 @@ export default function CategoryList() {
     count: rowCount,
     getScrollElement: () => containerRef.current,
     estimateSize: () => ROW_HEIGHT,
-    overscan: 2,
+    overscan: 1,
   });
 
   return (
@@ -325,7 +325,7 @@ export default function CategoryList() {
         ref={containerRef}
         style={{
           overflowY: "auto",
-          height: rowCount * ROW_HEIGHT,
+          height: "calc(100vh - 200px)",
           gap: "1rem",
         }}
       >
