@@ -176,68 +176,91 @@
     "options": [
       {
         "id": 0,
-        "name": "전체"
+        "name": "전체",
+        "value": "전체"
       },
       {
         "id": 1,
-        "name": "잡티"
+        "name": "잡티",
+        "value": "잡티"
       },
       {
         "id": 2,
-        "name": "미백"
+        "name": "미백",
+        "value": "미백"
       },
       {
         "id": 3,
-        "name": "주름"
+        "name": "주름",
+        "value": "주름"
       },
       {
         "id": 4,
-        "name": "모공"
+        "name": "모공",
+        "value": "모공"
       },
       {
         "id": 5,
-        "name": "탄력"
+        "name": "탄력",
+        "value": "탄력"
       },
       {
         "id": 6,
-        "name": "홍조"
+        "name": "홍조",
+        "value": "홍조"
       },
       {
         "id": 7,
-        "name": "각질"
+        "name": "각질",
+        "value": "각질"
       },
       {
         "id": 8,
-        "name": "트러블"
+        "name": "트러블",
+        "value": "트러블"
       },
       {
         "id": 9,
-        "name": "블랙헤드"
+        "name": "블랙헤드",
+        "value": "블랙헤드"
       },
       {
         "id": 10,
-        "name": "피지과다"
+        "name": "피지과다",
+        "value": "피지과다"
       },
       {
         "id": 11,
-        "name": "민감성"
+        "name": "민감성",
+        "value": "민감성"
       },
       {
         "id": 12,
-        "name": "아토피"
+        "name": "아토피",
+        "value": "아토피"
       },
       {
         "id": 13,
-        "name": "다크서클"
+        "name": "다크서클",
+        "value": "다크서클"
       }
     ],
     "optionBtnOpen": "펼치기",
     "optionBtnClose": "접기",
-    "sorted": {
-      "recommended": "추천순",
-      "lowPrice": "낮은 가격순",
-      "highDiscount": "할인율순"
-    },
+    "sorted": [
+      {
+        "name": "추천순",
+        "value": ""
+      },
+      {
+        "name": "낮은 가격순",
+        "value": "PRICE_ASC"
+      },
+      {
+        "name": "높은 가격순",
+        "value": "PRICE_DESC"
+      }
+    ],
     "skinconcerns": {
       "all": "전체",
       "미백": "미백",

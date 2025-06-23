@@ -17,7 +17,15 @@ const Wrap = styled.div`
 `;
 
 const LogoWrap = styled.div`
-  height: 11rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+`;
+
+const LogoImg = styled.img`
+  display: flex;
+  width: 40%;
 `;
 
 const LanguageTab = styled.div`
@@ -149,7 +157,9 @@ export default function Login() {
     <>
       <Wrap>
         <Header />
-        <LogoWrap></LogoWrap>
+        <LogoWrap>
+          <LogoImg src="public/images/logo/PIUM_logo.png" />
+        </LogoWrap>
         <LanguageTab>
           <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />
           <LanguageText onClick={openLanguageModal}>{language}</LanguageText>

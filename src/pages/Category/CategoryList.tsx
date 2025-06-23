@@ -114,7 +114,6 @@ export default function CategoryList() {
   const { t } = useLocale();
   const { topClicked, categoryName, subcategoryName } = useParams();
   const isVegan = topClicked === "vegan";
-  const [pages, setPages] = useState(0);
 
   const Category = categoryName || "";
   const Subcategory = subcategoryName || "";
@@ -124,38 +123,38 @@ export default function CategoryList() {
   );
 
   const [items, setItems] = useState<ItemType[]>([]);
-  const [sortedItems, setSortedItems] = useState<ItemType[]>([]);
+  // const [sortedItems, setSortedItems] = useState<ItemType[]>([]);
 
   const navigate = useNavigate();
 
-  const [selectedSort, setSelectedSort] = useState(
-    t.category.sorted.recommended ?? "Recommended"
-  );
+  const [selectedSort, setSelectedSort] = useState<string>("");
+
   const [openModal, setOpenModal] = useState(false);
+  const [skinIssue, setSkinIssue] = useState<string>("전체");
 
   const handleShowSorts = () => {
     setOpenModal(true);
   };
 
-  const sortItems = (items: any[], sortType: string) => {
-    if (sortType === t.category.sorted.lowPrice) {
-      return [...items].sort((a, b) => a.salePrice - b.salePrice);
-    }
+  // const sortItems = (items: any[], sortType: string) => {
+  //   if (sortType === t.category.sorted.lowPrice) {
+  //     return [...items].sort((a, b) => a.salePrice - b.salePrice);
+  //   }
 
-    if (sortType === t.category.sorted.highDiscount) {
-      return [...items].sort((a, b) => {
-        const discountA = a.originalPrice
-          ? (1 - a.salePrice / a.originalPrice) * 100
-          : 0;
-        const discountB = b.originalPrice
-          ? (1 - b.salePrice / b.originalPrice) * 100
-          : 0;
-        return discountB - discountA;
-      });
-    }
+  //   if (sortType === t.category.sorted.highDiscount) {
+  //     return [...items].sort((a, b) => {
+  //       const discountA = a.originalPrice
+  //         ? (1 - a.salePrice / a.originalPrice) * 100
+  //         : 0;
+  //       const discountB = b.originalPrice
+  //         ? (1 - b.salePrice / b.originalPrice) * 100
+  //         : 0;
+  //       return discountB - discountA;
+  //     });
+  //   }
 
-    return items; // 추천순 (기본)
-  };
+  //   return items; // 추천순 (기본)
+  // };
 
   const fetchSubcategory = async () => {
     try {
@@ -163,10 +162,17 @@ export default function CategoryList() {
         ? `item/vegan/list/${Subcategory}` // 비건용 API
         : `item/list/${Subcategory}`; // 일반 API
 
+      const params: any = {};
+      if (skinIssue !== "전체") {
+        params.skinIssue = skinIssue;
+      }
+
+      if (selectedSort !== "") {
+        params.priceSort = selectedSort;
+      }
+
       const response = await axiosInstance.get(endpoint, {
-        params: {
-          page: pages,
-        },
+        params,
       });
 
       const data = response.data.result;
@@ -177,14 +183,16 @@ export default function CategoryList() {
     }
   };
 
-  useEffect(() => {
-    fetchSubcategory();
-  }, [pages]);
+  console.log(skinIssue);
 
   useEffect(() => {
-    const newSorted = sortItems(items, selectedSort);
-    setSortedItems(newSorted);
-  }, [items, selectedSort]);
+    fetchSubcategory();
+  }, [skinIssue, selectedSort]);
+
+  // useEffect(() => {
+  //   const newSorted = sortItems(items, selectedSort);
+  //   setSortedItems(newSorted);
+  // }, [items, selectedSort]);
 
   const subListRef = useRef<HTMLDivElement | null>(null);
   const selectedSubRef = useRef<HTMLLIElement | null>(null);
@@ -211,6 +219,7 @@ export default function CategoryList() {
   }, [Subcategory]);
 
   console.log(items);
+  console.log(selectedSort);
 
   return (
     <Wrap>
@@ -245,11 +254,15 @@ export default function CategoryList() {
         </SubCategoryList>
       </SubCategoryWrap>
       <MenuWrap>
-        <SelectMenu />
+        <SelectMenu onSelect={(name) => setSkinIssue(name)} />
       </MenuWrap>
       <SortWrap>
         <SortOptions onClick={handleShowSorts}>
-          <SortValue>{selectedSort}</SortValue>
+          <SortValue>
+            {t.category.sorted.find(
+              (option: { value: string }) => option.value === selectedSort
+            )?.name ?? t.category.sorted[0]?.name}
+          </SortValue>
           <VscChevronDown fontSize={"1.2rem"} />
         </SortOptions>
       </SortWrap>
@@ -266,7 +279,7 @@ export default function CategoryList() {
       )}
       <MainWrap>
         <ItemWrap>
-          {sortedItems.map(
+          {items.map(
             (item: {
               itemImage: string;
               itemName: string;
