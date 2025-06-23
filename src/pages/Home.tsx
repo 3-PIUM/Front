@@ -8,9 +8,10 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { useLocale } from "../context/LanguageContext";
 import hotItems from "../data/hotItems.json";
-import tabItems from "../data/tabItems.json";
+import topRank from "../data/topRankDummyData.json";
 import skinType from "../data/language/skinType";
 import PersonalRecommended from "../components/PersonalRecommended";
+import TopRankItem from "../components/product/TopRankItem";
 
 const Wrapper = styled.div`
   display: flex;
@@ -122,14 +123,14 @@ const RecommandListWrap = styled.div`
   padding-bottom: 80px;
 `;
 
-// const RecommandBox = styled.div``;
+const RecommandBox = styled.div``;
 
-// const RecommandTitle = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   font-weight: 700;
-//   font-size: 1.125rem;
-// `;
+const RecommandTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-weight: 700;
+  font-size: 1.125rem;
+`;
 
 // const RecommandCategoryWrapper = styled.div`
 //   display: flex;
@@ -157,24 +158,24 @@ const RecommandListWrap = styled.div`
 //   border-radius: 1.25rem;
 //   font-size: 0.75rem;
 //   min-width: max-content;
+//`;
+
+const PersonalRecommandList = styled.div<{ $isScroll: boolean }>`
+  display: flex;
+  margin-top: 0.5rem;
+  gap: 0.5rem;
+
+  ${({ $isScroll }) =>
+    $isScroll &&
+    `
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `}
 `;
-
-// const PersonalRecommandList = styled.div<{ $isScroll: boolean }>`;
-//   display: flex;
-//   margin-top: 0.5rem;
-//   gap: 0.5rem;
-
-//   ${({ $isScroll }) =>
-//     $isScroll &&
-//     `
-//     overflow-x: auto;
-//     -ms-overflow-style: none;
-//     scrollbar-width: none;
-//     &::-webkit-scrollbar {
-//       display: none;
-//     }
-//   `}
-// `;
 
 const BannerWrap = styled.div`
   display: flex;
@@ -187,21 +188,20 @@ const BannerImage = styled.img`
   border-radius: 0.75rem;
 `;
 
-// const RecommandListWrapper = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: nowrap;
-//   overflow-x: auto;
-//   width: 100%;
-//   gap: 0.5rem;
-//   margin-top: 0.5rem;
+const RecommandListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  width: 100%;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 
-//   -ms-overflow-style: none;
-//   scrollbar-width: none;
-//   &::-webkit-scrollbar {
-//     display: none;
-//   }
-// `;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("전체");
@@ -365,23 +365,22 @@ export default function Home() {
       </BannerWrap>
       <RecommandListWrap>
         <PersonalRecommended nickname={nickname} />
-        {/* <RecommandBox>
-          <RecommandTitle>지금 한국🇰🇷에서 가장 핫한 제품</RecommandTitle>
+        <RecommandBox>
+          <RecommandTitle>TOP 10</RecommandTitle>
           <RecommandListWrapper>
-            {hotItems.map((category) =>
-              category.items.map((item) => (
-                <ItemCard
-                  key={item.id}
-                  itemId={item.id}
-                  itemName={item.name}
-                  imageSource={item.url}
-                  discountRate={item.discount}
-                  price={item.price}
-                />
-              ))
-            )}
+            {topRank.map((item) => (
+              <TopRankItem
+                key={item.id}
+                itemId={item.id}
+                itemName={item.name}
+                imageSource={item.url}
+                discountRate={item.discount}
+                price={item.price}
+                rank={item.rank}
+              />
+            ))}
           </RecommandListWrapper>
-        </RecommandBox> */}
+        </RecommandBox>
       </RecommandListWrap>
       {showStoreModal && (
         <StoreModal
