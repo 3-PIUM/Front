@@ -23,40 +23,43 @@ const SkeletonBase = styled.div`
   animation: ${shimmer} 1.5s infinite;
 `;
 
-const ItemWrap = styled.div`
+const ItemWrap = styled.div<{ size?: string }>`
   display: flex;
   flex-direction: column;
-  width: 6.5rem;
+  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
   gap: 0.3rem;
 `;
 
-const ImageWrap = styled.div`
+const ImageWrap = styled.div<{ size?: string }>`
   position: relative;
-  width: 6.5rem;
-  height: 6.5rem;
+  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+  height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
   flex-shrink: 1;
   background-color: #f5f5f5; // ✅ 스켈레톤 백업용 배경
   border-radius: 0.625rem;
   overflow: hidden;
 `;
 
-const ItemImage = styled.img<{ $isLoading: boolean }>`
+const ItemImage = styled.img<{ $isLoading: boolean; size?: string }>`
   position: absolute;
   top: 0;
   left: 0;
-  width: 6.5rem;
-  height: 6.5rem;
+  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+  height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+
   border-radius: 0.625rem;
   opacity: ${({ $isLoading }) => ($isLoading ? 0 : 1)};
   transition: opacity 0.3s ease;
 `;
 
-const SkeletonImage = styled(SkeletonBase)`
+const SkeletonImage = styled(SkeletonBase)<{ size?: string }>`
   position: absolute;
   top: 0;
   left: 0;
-  width: 6.5rem;
-  height: 6.5rem;
+  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+
+  height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+
   border-radius: 0.625rem;
 `;
 
@@ -100,8 +103,9 @@ interface ItemProps {
   discountRate: number;
   price: number;
   itemId: number;
-  wishStatus: boolean;
+  wishStatus?: boolean;
   onWishChange?: () => void;
+  size?: string;
 }
 
 export default function ItemCard({
@@ -112,6 +116,7 @@ export default function ItemCard({
   itemId,
   wishStatus,
   onWishChange,
+  size,
 }: ItemProps) {
   const [isWished, setIsWished] = useState(wishStatus ?? false);
   const navigate = useNavigate();
@@ -160,14 +165,15 @@ export default function ItemCard({
 
   return (
     <>
-      <ItemWrap onClick={handleClick}>
-        <ImageWrap style={{ width: "6.5rem", height: "6.5rem" }}>
-          <SkeletonImage />
+      <ItemWrap onClick={handleClick} size={size}>
+        <ImageWrap size={size}>
+          <SkeletonImage size={size} />
           <ItemImage
             src={imageSource}
             onLoad={() => setIsLoading(false)}
             onError={() => setIsLoading(false)}
             $isLoading={isLoading}
+            size={size}
           />
           {!isLoading && (
             <Heart>

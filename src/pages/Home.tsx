@@ -203,6 +203,22 @@ const RecommandListWrapper = styled.div`
   }
 `;
 
+const BigListWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  width: 100%;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState("전체");
   const [showStoreModal, setShowStoreModal] = useState(false);
@@ -365,6 +381,22 @@ export default function Home() {
       </BannerWrap>
       <RecommandListWrap>
         <PersonalRecommended nickname={nickname} />
+        <RecommandBox>
+          <RecommandTitle>오늘의 추천 제품</RecommandTitle>
+          <BigListWrapper>
+            {topRank.map((item) => (
+              <ItemCard
+                key={item.id}
+                itemId={item.id}
+                itemName={item.name}
+                imageSource={item.url}
+                discountRate={item.discount}
+                price={item.price}
+                size="big"
+              />
+            ))}
+          </BigListWrapper>
+        </RecommandBox>
         <RecommandBox>
           <RecommandTitle>TOP 10</RecommandTitle>
           <RecommandListWrapper>
