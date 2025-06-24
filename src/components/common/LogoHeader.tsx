@@ -87,7 +87,7 @@ interface SearchResult {
 }
 
 interface LogoHeaderProps {
-  onStoreClick?: () => void; // 모달 제어 함수
+  onStoreClick?: () => void;
 }
 
 const dummyStores: Store[] = [

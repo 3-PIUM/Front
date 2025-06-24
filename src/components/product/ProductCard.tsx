@@ -80,6 +80,7 @@ interface ProductCardProps {
   discountRate: number;
   imageUrl: string;
   stock: number;
+  viewCount: number | null; // 👁 Add this line
 }
 
 const ProductCard = ({
@@ -90,6 +91,7 @@ const ProductCard = ({
   discountRate,
   imageUrl,
   stock,
+  viewCount, // 👁 Add this line
 }: ProductCardProps) => {
   const { t } = useLocale();
 
@@ -99,7 +101,35 @@ const ProductCard = ({
         <ProductImage src={imageUrl} />
       </ImageWrapper>
       <InfoWrapper>
-        <Brand>{brand}</Brand>
+        {/* 👁 조회수 표시 */}
+        {viewCount !== null && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              gap: "0.4rem",
+              marginBottom: "0.5rem",
+            }}
+          >
+            <Brand>{brand}</Brand>
+            <span
+              style={{
+                border: "1px solid #F23477",
+                color: "#F23477",
+                padding: "0.1rem 0.5rem",
+                borderRadius: "999px",
+                fontSize: "11px",
+                display: "inline-block",
+                minWidth: "fit-content",
+                marginBottom: "0.4rem",
+              }}
+            >
+              {viewCount}명이 보고 있어요
+            </span>
+          </div>
+        )}
+        {viewCount === null && <Brand>{brand}</Brand>}
         <Title>{name}</Title>
         <InfoRow>
           <Stock>
