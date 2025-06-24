@@ -5,7 +5,6 @@ import { useLocale } from "../../context/LanguageContext";
 
 const Wrapper = styled.div`
   width: 100%;
-  /* border: 1px dashed red; // 어디까지가 Wrapper인지 확인 */
 `;
 
 const Header = styled.div`
@@ -15,13 +14,11 @@ const Header = styled.div`
   cursor: pointer;
   padding: 1rem 0;
   background-color: white;
-  /* border: 1px solid blue; // Header가 어디까지인지 확인 */
 `;
 
 const Label = styled.h4`
   font-size: 1rem;
   font-weight: bold;
-  /* margin-top: 0.3rem; */
 `;
 
 const Content = styled.ul`
@@ -32,7 +29,6 @@ const Content = styled.ul`
   color: #555;
   margin-top: 1rem;
   line-height: 1.6;
-  /* background-color: #f2f2f2; */
 `;
 
 const Bullet = styled.li``;

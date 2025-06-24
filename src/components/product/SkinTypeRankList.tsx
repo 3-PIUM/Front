@@ -53,7 +53,6 @@ const SkinTypeRankList = ({ itemId }: Props) => {
   const [options, setOptions] = useState<string[]>([]);
   const [modalContent, setModalContent] = useState<string | null>(null);
 
-  // useEffect 내부에서 option 리스트 생성
   useEffect(() => {
     const fetchSummary = async () => {
       try {
@@ -80,7 +79,6 @@ const SkinTypeRankList = ({ itemId }: Props) => {
     if (itemId) fetchSummary();
   }, [itemId]);
 
-  // 필터링된 데이터
   const filteredByOption = selectedOption
     ? data.filter((d) => d.itemOption === selectedOption)
     : data;

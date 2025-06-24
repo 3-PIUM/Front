@@ -31,7 +31,7 @@ const Label = styled.div`
 
 const BarWrapper = styled.div`
   width: 100%;
-  max-width: 140px; // 여기서 조정 가능
+  max-width: 140px;
   margin: 0 1rem;
 `;
 

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import colors from "../../styles/colors";
-import { useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 
 export interface Store {
@@ -89,7 +88,7 @@ export default function StoreModal({
   onClose,
   onSelect,
   stores,
-  selectedStore, // ✅ 여기 추가
+  selectedStore,
 }: StoreModalProps) {
   const selectedStoreName = selectedStore?.name;
   const { t } = useLocale();
@@ -110,7 +109,7 @@ export default function StoreModal({
                 key={index}
                 $selected={selectedStoreName === store.name}
                 onClick={() => {
-                  onSelect(store); // ✅ 선택만 처리
+                  onSelect(store);
                 }}
               >
                 <StoreImage src={store.imageUrl} alt={store.name} />

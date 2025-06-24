@@ -3,13 +3,20 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { FiSend } from "react-icons/fi";
 import { useLocale } from "../../context/LanguageContext";
+import axiosInstance from "../../api/axiosInstance";
 const TextHeader = lazy(() => import("../../components/common/TextHeader"));
 const Header = lazy(() => import("../../components/common/Header"));
 
 const ChatPageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 93vh;
+  overflow: hidden;
+`;
+
+const ChatHeaderWrapper = styled.div`
+  flex-shrink: 0;
+  background-color: #fff;
+  z-index: 100;
 `;
 
 const DateText = styled.div`
@@ -21,9 +28,12 @@ const DateText = styled.div`
 
 const ChatContent = styled.div`
   flex: 1;
-  padding: 4rem 1rem;
+  padding: 4rem 1rem 2rem;
   overflow-y: auto;
   background-color: #fefefe;
+  position: relative;
+  height: 0;
+  min-height: 0;
 `;
 
 const MessageRow = styled.div<{ $isUser: boolean }>`
@@ -71,11 +81,15 @@ const TimeText = styled.div`
 `;
 
 const InputContainer = styled.form`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
-  padding-top: 0.75rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 0.75rem 1rem;
   border-top: 1px solid #e5e7eb;
+  background-color: #fff;
+  z-index: 999;
 `;
 
 const ChatInput = styled.input`
@@ -113,87 +127,105 @@ export default function ChatbotPage() {
   const [mode, setMode] = useState<"default" | "compare" | "recommend">(
     "default"
   );
-
-  const dummyCartItems = [
-    {
-      id: 1,
-      name: "물앤더 쥬시 래스팅 틴트",
-      brand: "톤앤",
-      price: "18,000원",
-      image:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
-      checked: true,
-    },
-    {
-      id: 2,
-      name: "쿨앤 더 쥬시 래스팅 틴트",
-      brand: "톤앤",
-      price: "18,000원",
-      image:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
-      checked: false,
-    },
-    {
-      id: 3,
-      name: "쿨앤 더 쥬시 래스팅 틴트",
-      brand: "톤앤",
-      price: "18,000원",
-      image:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
-      checked: false,
-    },
-    {
-      id: 4,
-      name: "쿨앤 더 쥬시 래스팅 틴트",
-      brand: "톤앤",
-      price: "18,000원",
-      image:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
-      checked: false,
-    },
-  ];
-
-  const dummyWishItems = [
-    {
-      id: 5,
-      name: "선샤인 글로우 틴트",
-      brand: "톤앤",
-      price: "18,000원",
-      image:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
-      checked: false,
-    },
-    {
-      id: 6,
-      name: "레드벨벳 틴트",
-      brand: "톤앤",
-      price: "18,000원",
-      image:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
-      checked: false,
-    },
-    {
-      id: 7,
-      name: "모브베리 글로시 립",
-      brand: "톤앤",
-      price: "18,000원",
-      image:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
-      checked: false,
-    },
-    {
-      id: 8,
-      name: "코랄핑크 워터틴트",
-      brand: "톤앤",
-      price: "18,000원",
-      image:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0015/A00000015062402ko.jpg?l=ko",
-      checked: false,
-    },
-  ];
   const [selectedCompareItems, setSelectedCompareItems] = useState<number[]>(
     []
   );
+
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [wishItems, setWishItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      try {
+        const res = await axiosInstance.get("/cart/items");
+        const items = res.data?.result?.items || [];
+        setCartItems(
+          items.map((item: any) => ({
+            id: item.cartItemId,
+            name: item.itemName,
+            brand: item.brand,
+            price: `${item.salePrice.toLocaleString()}원`,
+            image: item.mainImageUrl,
+            checked: false,
+          }))
+        );
+      } catch (err) {
+        console.error("장바구니 불러오기 실패", err);
+      }
+    };
+
+    const fetchWishItems = async () => {
+      try {
+        const res = await axiosInstance.get("/wishlist/items");
+        const items = res.data?.result || [];
+        setWishItems(
+          items.map((entry: any) => ({
+            id: entry.item.itemId,
+            name: entry.item.itemName,
+            brand: entry.item.brand,
+            price: `${entry.item.salePrice.toLocaleString()}원`,
+            image: entry.item.mainImageUrl,
+            checked: false,
+          }))
+        );
+      } catch (err) {
+        console.error("찜 목록 불러오기 실패", err);
+      }
+    };
+
+    fetchCartItems();
+    fetchWishItems();
+  }, []);
+
+  const sendChatMessage = async (userInput: string) => {
+    const sessionId = "user-session-id"; // 실제 필요에 따라 고유값으로 대체
+
+    // ✅ 선택된 비교 상품 ID와 메시지 로그 출력
+    console.log("📦 선택된 비교 상품 ID 목록:", selectedCompareItems);
+    console.log("📝 입력 메시지:", userInput);
+    try {
+      const res = await axiosInstance.post("http://52.79.241.142:8000/chat", {
+        message: userInput,
+        lang: "KR",
+        item_ids: selectedCompareItems,
+        session_id: sessionId,
+      });
+
+      const output = res.data.output || t.chatbot.response.default;
+      const itemList = res.data.itemList || [];
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "user",
+          text: userInput,
+          time: getTime(),
+        },
+        {
+          sender: "bot",
+          text: output,
+          time: getTime(),
+        },
+      ]);
+
+      console.log("추천된 아이템 목록:", itemList);
+    } catch (err) {
+      console.error("챗봇 API 실패", err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "user",
+          text: userInput,
+          time: getTime(),
+        },
+        {
+          sender: "bot",
+          text: t.chatbot.response.default,
+          time: getTime(),
+        },
+      ]);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -234,6 +266,8 @@ export default function ChatbotPage() {
     }
     return t.chatbot.response.default;
   };
+  const [showSuggestionModal, setShowSuggestionModal] = useState(false);
+  const [compareModeStarted, setCompareModeStarted] = useState(false);
 
   const getTime = () => {
     const now = new Date();
@@ -247,47 +281,47 @@ export default function ChatbotPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-
-    const userMessage: Message = {
-      sender: "user",
-      text: input,
-      time: getTime(),
-    };
-
-    const response: Message = {
-      sender: "bot",
-      text: botReply(input),
-      time: getTime(),
-    };
-
-    setMessages((prev) => [...prev, userMessage, response]);
+    sendChatMessage(input.trim());
     setInput("");
+    if (mode === "compare") {
+      setCompareModeStarted(true);
+    }
   };
 
   return (
     <ChatPageContainer>
-      <Suspense fallback={null}>
+      <ChatHeaderWrapper>
         <Header />
         <TextHeader pageName={t.chatbot.pageTitle} />
-      </Suspense>
+      </ChatHeaderWrapper>
       <ChatContent>
         <DateText>{formattedDate}</DateText>
-        {messages.map((msg, idx) => (
-          <MessageRow key={idx} $isUser={msg.sender === "user"}>
-            {msg.sender === "bot" && (
+        {messages.map((msg, idx) =>
+          msg.sender === "bot" ? (
+            <MessageRow key={idx} $isUser={false}>
               <BotRow>
                 <BotImage src="images/CharacterImg/surveyImage.png" alt="bot" />
                 <BotName>{t.chatbot.botName}</BotName>
               </BotRow>
-            )}
-            <BotRow>
-              <MessageBubble $isUser={msg.sender === "user"}>
-                {msg.text}
-              </MessageBubble>
-              <TimeText>{msg.time}</TimeText>
-            </BotRow>
-          </MessageRow>
-        ))}
+              <BotRow>
+                <MessageBubble $isUser={false}>{msg.text}</MessageBubble>
+                <TimeText>{msg.time}</TimeText>
+              </BotRow>
+            </MessageRow>
+          ) : (
+            <MessageRow
+              key={idx}
+              $isUser={true}
+              style={{
+                flexDirection: "row-reverse",
+                alignItems: "center",
+              }}
+            >
+              <MessageBubble $isUser={true}>{msg.text}</MessageBubble>
+              <TimeText style={{ marginRight: "0.4rem" }}>{msg.time}</TimeText>
+            </MessageRow>
+          )
+        )}
 
         {mode === "default" && messages.length === 1 && (
           <div
@@ -300,15 +334,10 @@ export default function ChatbotPage() {
           >
             <div
               onClick={() => {
+                const userInput = t.chatbot.suggestions.recommend;
+                sendChatMessage(userInput); // ✅ 자동 메시지 전송
                 setMode("recommend");
-                setMessages((prev) => [
-                  ...prev,
-                  {
-                    sender: "bot",
-                    text: `${t.chatbot.recommendText[0]}\n${t.chatbot.recommendText[1]}`,
-                    time: getTime(),
-                  },
-                ]);
+                setInput("");
               }}
               style={{
                 border: "1px solid #eee",
@@ -326,15 +355,11 @@ export default function ChatbotPage() {
             </div>
             <div
               onClick={() => {
+                const userInput = t.chatbot.suggestions.compare;
+                sendChatMessage(userInput);
                 setMode("compare");
-                setMessages((prev) => [
-                  ...prev,
-                  {
-                    sender: "bot",
-                    text: t.chatbot.compareText,
-                    time: getTime(),
-                  },
-                ]);
+                setCompareModeStarted(false);
+                setInput("");
               }}
               style={{
                 border: "1px solid #eee",
@@ -353,7 +378,133 @@ export default function ChatbotPage() {
           </div>
         )}
 
-        {mode === "compare" && (
+        {mode === "compare" && compareModeStarted && (
+          <>
+            <div
+              style={{
+                background: "#f9f9f9",
+                borderRadius: "16px",
+                padding: "0.7rem",
+                marginTop: "1rem",
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                  marginBottom: "0.7rem",
+                }}
+              >
+                장바구니 목록
+              </div>
+              {cartItems
+                .filter((item) => selectedCompareItems.includes(item.id))
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    <img
+                      src={item.image}
+                      alt="item"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "12px",
+                        marginRight: "1rem",
+                        objectFit: "cover",
+                        backgroundColor: "#eee",
+                      }}
+                    />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: "bold", fontSize: "14px" }}>
+                        {item.name}
+                      </div>
+                      <div
+                        style={{
+                          color: "#666",
+                          fontSize: "14px",
+                          marginTop: "4px",
+                        }}
+                      >
+                        {item.brand}
+                      </div>
+                      <div style={{ fontSize: "14px", fontWeight: 500 }}>
+                        {item.price}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+
+            <div
+              style={{
+                background: "#f9f9f9",
+                borderRadius: "16px",
+                padding: "0.7rem",
+                marginTop: "1rem",
+              }}
+            >
+              <div
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                  marginBottom: "0.7rem",
+                }}
+              >
+                찜 목록
+              </div>
+              {wishItems
+                .filter((item) => selectedCompareItems.includes(item.id))
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    <img
+                      src={item.image}
+                      alt="item"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "12px",
+                        marginRight: "1rem",
+                        objectFit: "cover",
+                        backgroundColor: "#eee",
+                      }}
+                    />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: "bold", fontSize: "14px" }}>
+                        {item.name}
+                      </div>
+                      <div
+                        style={{
+                          color: "#666",
+                          fontSize: "14px",
+                          marginTop: "4px",
+                        }}
+                      >
+                        {item.brand}
+                      </div>
+                      <div style={{ fontSize: "14px", fontWeight: 500 }}>
+                        {item.price}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
+
+        {mode === "compare" && !compareModeStarted && (
           <>
             <div
               style={{
@@ -393,12 +544,12 @@ export default function ChatbotPage() {
               <div style={{ fontWeight: 700, marginBottom: "0.5rem" }}>
                 {t.compare.cartList}
               </div>
-              {dummyCartItems.map((item, index) => (
+              {cartItems.map((item, index) => (
                 <div
                   key={item.id}
                   style={{
                     borderBottom:
-                      index !== dummyCartItems.length - 1
+                      index !== cartItems.length - 1
                         ? "1px solid #ddd"
                         : "none",
                   }}
@@ -474,12 +625,12 @@ export default function ChatbotPage() {
               <div style={{ fontWeight: 700, marginBottom: "0.5rem" }}>
                 {t.compare.wishlist}
               </div>
-              {dummyWishItems.map((item, index) => (
+              {wishItems.map((item, index) => (
                 <div
                   key={item.id}
                   style={{
                     borderBottom:
-                      index !== dummyWishItems.length - 1
+                      index !== wishItems.length - 1
                         ? "1px solid #ddd"
                         : "none",
                   }}
@@ -552,79 +703,87 @@ export default function ChatbotPage() {
           </SendButton>
         </InputContainer>
 
-        {isInputFocused && (
+        {showSuggestionModal && (
           <div
             style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "0.5rem",
-              paddingTop: "0.5rem",
-              paddingLeft: "1rem",
-              paddingRight: "1rem",
-              background: "#fff",
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: "#fff",
+              borderTopLeftRadius: "16px",
+              borderTopRightRadius: "16px",
+              padding: "1rem",
+              boxShadow: "0 -2px 8px rgba(0,0,0,0.1)",
+              zIndex: 1000,
             }}
           >
-            <button
-              onClick={() => {
-                const userInput = t.chatbot.suggestions.recommend;
-                setMessages((prev) => [
-                  ...prev,
-                  {
-                    sender: "user",
-                    text: userInput,
-                    time: getTime(),
-                  },
-                  {
-                    sender: "bot",
-                    text: `${t.chatbot.recommendText[0]}\n${t.chatbot.recommendText[1]}`,
-                    time: getTime(),
-                  },
-                ]);
-                setMode("recommend");
-                setInput("");
-              }}
+            <div
               style={{
-                padding: "0.8rem 1rem",
-                fontSize: "13px",
-                backgroundColor: "#fce4ec",
-                borderRadius: "16px",
-                border: "none",
-                cursor: "pointer",
-                flex: 1,
+                marginBottom: "1rem",
+                fontWeight: "bold",
+                textAlign: "center",
               }}
             >
-              {t.chatbot.suggestions.recommend}
-            </button>
+              원하는 기능을 선택해주세요
+            </div>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <button
+                onClick={() => {
+                  const userInput = t.chatbot.suggestions.recommend;
+                  sendChatMessage(userInput);
+                  setMode("recommend");
+                  setInput("");
+                  setShowSuggestionModal(false);
+                }}
+                style={{
+                  flex: 1,
+                  padding: "0.8rem 1rem",
+                  fontSize: "13px",
+                  backgroundColor: "#fce4ec",
+                  borderRadius: "16px",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                {t.chatbot.suggestions.recommend}
+              </button>
+              <button
+                onClick={() => {
+                  const userInput = t.chatbot.suggestions.compare;
+                  sendChatMessage(userInput);
+                  setMode("compare");
+                  setInput("");
+                  setShowSuggestionModal(false);
+                }}
+                style={{
+                  flex: 1,
+                  padding: "0.8rem 1rem",
+                  fontSize: "13px",
+                  backgroundColor: "#fce4ec",
+                  borderRadius: "16px",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                {t.chatbot.suggestions.compare}
+              </button>
+            </div>
             <button
-              onClick={() => {
-                const userInput = t.chatbot.suggestions.compare;
-                setMessages((prev) => [
-                  ...prev,
-                  {
-                    sender: "user",
-                    text: userInput,
-                    time: getTime(),
-                  },
-                  {
-                    sender: "bot",
-                    text: t.chatbot.compareText,
-                    time: getTime(),
-                  },
-                ]);
-                setMode("compare");
-                setInput("");
-              }}
+              onClick={() => setShowSuggestionModal(false)}
               style={{
-                padding: "0.8rem 1rem",
-                fontSize: "13px",
-                backgroundColor: "#fce4ec",
-                borderRadius: "16px",
+                marginTop: "1rem",
+                display: "block",
+                width: "100%",
+                textAlign: "center",
+                color: "#888",
+                background: "none",
                 border: "none",
+                fontSize: "13px",
                 cursor: "pointer",
-                flex: 1,
               }}
             >
-              {t.chatbot.suggestions.compare}
+              닫기
             </button>
           </div>
         )}

@@ -45,7 +45,6 @@ const ValueText = styled.span`
 `;
 
 const ScorePieChart = ({ data }: ScorePieChartProps) => {
-  // 차트에 들어갈 데이터는 percent 기반
   const chartData = data.map(({ score, percent, color }) => ({
     name: score,
     value: percent,

@@ -3,10 +3,9 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
 import SkinTypePrompt from "../SkinTypePrompt";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 
-// 스타일 정의
 const Wrapper = styled.div`
   background-color: white;
   padding-top: 1.5rem;
@@ -108,7 +107,6 @@ export default function IngredientWarningSummary({
 }: IngredientWarningSummaryProps) {
   const { t } = useLocale();
   const navigate = useNavigate();
-  const location = useLocation();
   const [selectedIngredient, setSelectedIngredient] =
     useState<Ingredient | null>(null);
   const [activeTab, setActiveTab] = useState<"sensitive" | "mySkin">(
@@ -117,11 +115,9 @@ export default function IngredientWarningSummary({
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [isSkinRegistered, setIsSkinRegistered] = useState<boolean>(true);
 
-  // Show all tags state
   const [showAll, setShowAll] = useState(false);
-  const [skinType, setSkinType] = useState<string>("");
+  const [_, setSkinType] = useState<string>("");
 
-  // 사용자 피부 정보 조회
   useEffect(() => {
     const fetchUserSkin = async () => {
       const stored = sessionStorage.getItem("memberInfo");
@@ -141,7 +137,6 @@ export default function IngredientWarningSummary({
     if (activeTab === "mySkin") fetchUserSkin();
   }, [activeTab]);
 
-  // 성분 API 호출
   useEffect(() => {
     const fetchIngredients = async () => {
       if (!itemId) return;
@@ -150,7 +145,6 @@ export default function IngredientWarningSummary({
         const data = res.data.result.cautionIngredients;
 
         if (activeTab === "sensitive") {
-          // 모든 성분을 하나로 묶고 중복 제거
           const flat: Ingredient[] = data.map((d: any) => ({
             name: d.ingredientName,
             risks: d.cautionSkinType,

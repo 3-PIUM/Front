@@ -56,7 +56,6 @@ const RightIcons = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
-  /* margin-right: -0.9rem; */
 `;
 
 const IconWrapper = styled.div`
@@ -141,9 +140,7 @@ export default function FullHeader({
 
       try {
         const res = await axiosInstance.get(
-          `http://localhost:8080/item/search/list/${encodeURIComponent(
-            searchTerm
-          )}?page=0`
+          `/item/advancedSearch/list/${encodeURIComponent(searchTerm)}`
         );
         setSearchResults(res.data.result.itemSearchInfoDTOs || []);
       } catch (err) {

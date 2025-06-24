@@ -117,7 +117,7 @@ export default function ProductDetail() {
   const [isSkinRegistered, setIsSkinRegistered] = useState<boolean | null>(
     null
   );
-  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
+  const [_, setSelectedOptionId] = useState<string | null>(null);
   const [selectedOptionName, setSelectedOptionName] = useState<string | null>(
     null
   );

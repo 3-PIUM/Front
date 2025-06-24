@@ -10,7 +10,7 @@ interface Question {
 interface Props {
   questions: Question[];
   onChange: (answers: Record<string, string>) => void;
-  initialAnswers?: Record<string, string>; // 추가
+  initialAnswers?: Record<string, string>;
 }
 
 const Wrapper = styled.div`
@@ -29,12 +29,11 @@ const QuestionBlock = styled.div`
 const QuestionTitle = styled.div`
   font-weight: bold;
   font-size: 15px;
-  /* text-align: center; */
 `;
 
 const OptionGroup = styled.div`
   display: flex;
-  justify-content: space-between; // 양 끝 정렬
+  justify-content: space-between;
   width: 100%;
 `;
 
@@ -84,7 +83,6 @@ const ReviewSurveySelector: React.FC<Props> = ({
 }) => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
 
-  // 최초 마운트 시 1회만 초기화되게
   useEffect(() => {
     setAnswers(initialAnswers);
     onChange(initialAnswers);

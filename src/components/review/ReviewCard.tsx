@@ -208,7 +208,7 @@ const ReviewCard = ({
     const y = dateObj.getFullYear();
     const m = dateObj.getMonth() + 1;
     const d = dateObj.getDate();
-    return `${y}.${m}.${d}`; // 끝에 마침표 없음
+    return `${y}.${m}.${d}`;
   };
 
   const reviewData = {
