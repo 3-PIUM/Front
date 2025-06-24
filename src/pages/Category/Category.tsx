@@ -3,7 +3,7 @@ import Header from "../../components/common/Header";
 import colors from "../../styles/colors";
 import { useRef, useState, useEffect } from "react";
 import { VscChevronRight } from "react-icons/vsc";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import React from "react";
 import { FaLeaf } from "react-icons/fa";
@@ -11,7 +11,6 @@ import { FaLeaf } from "react-icons/fa";
 const HeaderWrap = styled.div`
   position: fixed;
   width: 100%;
-  /* padding: 0 1rem; */
   display: flex;
   height: 3.5rem;
   background-color: ${colors.white};
@@ -143,10 +142,6 @@ export default function Category() {
     ? t.category.veganCategoryname
     : t.category.categoryname;
 
-  // const selected = t.category.categoryname.find(
-  //   (c: { id: number; name: string; items: string[] }) => c.name === clicked
-  // );
-
   const refMap = useRef<Record<string, HTMLDivElement | null>>({});
 
   const navigate = useNavigate();
@@ -220,10 +215,6 @@ export default function Category() {
     const base = isVegan ? "/vegan" : "/category";
     navigate(`${base}/${categoryName}/${subcategoryName}`);
   };
-
-  // useEffect(() => {
-  //   setClicked(categoryList?.[0]?.name ?? "");
-  // }, [topClicked]);
 
   useEffect(() => {
     const getTopClicked = sessionStorage.getItem("topClicked");

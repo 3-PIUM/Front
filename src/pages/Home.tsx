@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import LogoHeader from "../components/common/LogoHeader";
 import colors from "../styles/colors";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ItemCard from "../components/product/ItemCard";
 import Header from "../components/common/Header";
 import { useNavigate } from "react-router-dom";
@@ -177,21 +177,13 @@ export default function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const [activeTab, setActiveTab] = useState("전체");
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
   const { t, setLanguage, language } = useLocale();
+  const [top10Items, setTop10Items] = useState<any[]>([]);
   sessionStorage.removeItem("topClicked");
   sessionStorage.removeItem("categoryName");
   sessionStorage.removeItem("subcategoryName");
-
-  const listRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (activeTab === "전체" && listRef.current) {
-      listRef.current.scrollLeft = 0;
-    }
-  }, [activeTab]);
 
   useEffect(() => {
     const fetchMemberInfo = async () => {
@@ -208,15 +200,34 @@ export default function Home() {
       }
     };
     fetchMemberInfo();
+
+    const getTop10 = async () => {
+      try {
+        const items = await axiosInstance.get("/item/top10");
+        const top10 = items.data.result;
+        setTop10Items(top10);
+      } catch {}
+    };
+    getTop10();
   }, []);
 
   console.log(memberInfo);
 
+  type SkinTypeKey = keyof typeof skinType;
+  type LanguageKey = keyof (typeof skinType)[SkinTypeKey];
+
   const getLocalizedSkinType = (
-    originalType: string,
+    originalType: SkinTypeKey,
     language: string
   ): string => {
-    return skinType[originalType]?.[language] ?? "";
+    if (
+      language === "한국어" ||
+      language === "English" ||
+      language === "日本語"
+    ) {
+      return skinType[originalType]?.[language as LanguageKey] ?? "";
+    }
+    return "";
   };
 
   const nickname = JSON.parse(
@@ -289,6 +300,34 @@ export default function Home() {
       <RecommandListWrap>
         <PersonalRecommended nickname={nickname} />
         <RecommandBox>
+          <RecommandTitle>TOP 10</RecommandTitle>
+          <RecommandListWrapper>
+            {top10Items.map(
+              (
+                item: {
+                  itemId: number;
+                  itemName: string;
+                  discoutRate: number;
+                  itemImage: string;
+                  salePrice: number;
+                  originalPrice: number;
+                },
+                index: number
+              ) => (
+                <TopRankItem
+                  key={item.itemId}
+                  itemId={item.itemId}
+                  itemName={item.itemName}
+                  imageSource={item.itemImage}
+                  discountRate={item.discoutRate}
+                  price={item.salePrice}
+                  rank={index + 1}
+                />
+              )
+            )}
+          </RecommandListWrapper>
+        </RecommandBox>
+        <RecommandBox>
           <RecommandTitle>오늘의 추천 제품</RecommandTitle>
           <BigListWrapper>
             {topRank.map((item) => (
@@ -303,22 +342,6 @@ export default function Home() {
               />
             ))}
           </BigListWrapper>
-        </RecommandBox>
-        <RecommandBox>
-          <RecommandTitle>TOP 10</RecommandTitle>
-          <RecommandListWrapper>
-            {topRank.map((item) => (
-              <TopRankItem
-                key={item.id}
-                itemId={item.id}
-                itemName={item.name}
-                imageSource={item.url}
-                discountRate={item.discount}
-                price={item.price}
-                rank={item.rank}
-              />
-            ))}
-          </RecommandListWrapper>
         </RecommandBox>
       </RecommandListWrap>
     </Wrapper>

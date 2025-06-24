@@ -22,11 +22,10 @@ const RecommandCategoryWrapper = styled.div`
   padding: 0.5rem 0;
   margin-top: 0.5rem;
 
-  // 스크롤바 안 보이게
   -ms-overflow-style: none;
   scrollbar-width: none;
   &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
   }
 `;
 
@@ -67,7 +66,7 @@ export default function PersonalRecommended({
 }: PersonalRecommendedProps) {
   const { t } = useLocale();
   const [activeTab, setActiveTab] = useState("전체");
-  const [items, setItems] = useState<any[]>([]); // 아이템 상태를 별도로 관리
+  const [items, setItems] = useState<any[]>([]);
 
   const listRef = useRef<HTMLDivElement>(null);
 

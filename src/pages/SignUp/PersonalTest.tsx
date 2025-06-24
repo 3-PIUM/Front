@@ -117,8 +117,6 @@ export default function PersonalTest() {
     };
     fetchTestPersonalColor();
     console.log("클릭됨");
-
-    // navigate("/personal-result");
   };
 
   return (

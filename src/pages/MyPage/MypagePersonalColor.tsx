@@ -83,16 +83,6 @@ export default function SettingPersonalColor() {
     personalType?: string;
   }
 
-  // useEffect(() => {
-  //   const fetchMemberInfo = async () => {
-  //     const response = await axiosInstance.get("/member");
-  //     const result = response.data.result;
-  //     setMemberInfo(result);
-  //     setSelected(result.personalType);
-  //   };
-  //   fetchMemberInfo();
-  // }, []);
-
   useEffect(() => {
     const stored = sessionStorage.getItem("memberInfo");
     if (stored) {
@@ -126,8 +116,6 @@ export default function SettingPersonalColor() {
     setIsChanged(false);
   };
 
-  console.log("선택된 personalType:", selected);
-
   return (
     <>
       <Header />
@@ -154,8 +142,11 @@ export default function SettingPersonalColor() {
       {showModal && (
         <ModalOverlay>
           <ModalContent>
-            <div>정보가 성공적으로 수정되었습니다</div>
-            <ModalButton onClick={() => navigate("/mypage")}>확인</ModalButton>
+            <div>{t.mypage.updateSuccess}</div>
+            <ModalButton onClick={() => navigate("/mypage")}>
+              {" "}
+              {t.welcome.btn}
+            </ModalButton>
           </ModalContent>
         </ModalOverlay>
       )}

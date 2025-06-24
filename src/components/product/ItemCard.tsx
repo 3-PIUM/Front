@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import { useLocale } from "../../context/LanguageContext";
 
-// shimmer 애니메이션 정의
 const shimmer = keyframes`
   0% {
     background-position: -100%;
@@ -16,7 +15,6 @@ const shimmer = keyframes`
   }
 `;
 
-// 공통 스켈레톤 스타일
 const SkeletonBase = styled.div`
   background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
   background-size: 200% 100%;
@@ -35,7 +33,7 @@ const ImageWrap = styled.div<{ size?: string }>`
   width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
   height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
   flex-shrink: 1;
-  background-color: #f5f5f5; // ✅ 스켈레톤 백업용 배경
+  background-color: #f5f5f5;
   border-radius: 0.625rem;
   overflow: hidden;
 `;
