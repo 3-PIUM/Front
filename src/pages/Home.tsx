@@ -226,6 +226,10 @@ export default function Home() {
   const [memberInfo, setMemberInfo] = useState<any>(null);
   const { t, setLanguage, language } = useLocale();
 
+  sessionStorage.removeItem("topClicked");
+  sessionStorage.removeItem("categoryName");
+  sessionStorage.removeItem("subcategoryName");
+
   const dummyStores = [
     {
       name: "강남점",

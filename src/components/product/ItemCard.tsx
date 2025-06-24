@@ -71,20 +71,21 @@ const Heart = styled.div`
   z-index: 50;
 `;
 
-const ItemName = styled.div`
+const ItemName = styled.div<{ size?: string }>`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.75rem;
+  font-size: ${({ size }) => (size === "big" ? "1rem" : "0.75rem")};
+  font-weight: ${({ size }) => (size === "big" ? "500" : "")};
 `;
 
-const PriceWrap = styled.div`
+const PriceWrap = styled.div<{ size?: string }>`
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: ${({ size }) => (size === "big" ? "0.9rem" : "0.8rem")};
   font-weight: 700;
 `;
 
@@ -207,8 +208,8 @@ export default function ItemCard({
           </>
         ) : (
           <>
-            <ItemName>{itemName}</ItemName>
-            <PriceWrap>
+            <ItemName size={size}>{itemName}</ItemName>
+            <PriceWrap size={size}>
               <ItemDiscount>{discountRate}%</ItemDiscount>
               <ItemPrice>
                 {formattedPrice}

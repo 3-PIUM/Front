@@ -11,21 +11,30 @@ const Wrapper = styled.div`
 `;
 
 const rankColors = [
-  "#F23477", // 1위
-  "#F75A8B", // 2위
-  "#FB8FA8", // 3위
-  "#FDC3D2", // 4위
-  "#fcdae6", // 5위
+  "#F23477",
+  "#F75A8B",
+  "#FB8FA8",
+  "#F75A8B",
+  "#FB8FA8",
+  "#b6b6b6",
+  "#b6b6b6",
+  "#b6b6b6",
+  "#b6b6b6",
+  "#b6b6b6",
 ];
 
 const RankTitle = styled.div<{ color: string }>`
   display: flex;
   font-size: 1.2rem;
   font-weight: 700;
-  width: 10%;
+  width: 15%;
   justify-content: center;
   align-items: center;
   color: ${(props) => props.color};
+
+  .medal {
+    font-size: 1.8rem;
+  }
 `;
 
 const ItemImage = styled.img`
@@ -37,7 +46,7 @@ const ItemImage = styled.img`
 const ItemInfo = styled.div`
   display: flex;
   flex-direction: column;
-  width: 55%;
+  width: 60%;
   padding: 1rem 0 1rem 1rem;
   justify-content: center;
 `;
@@ -45,7 +54,7 @@ const ItemInfo = styled.div`
 const PriceWrap = styled.div`
   display: flex;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 700;
 `;
 
@@ -64,7 +73,8 @@ const ItemName = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
 `;
 
 const Heart = styled.div`
@@ -123,8 +133,15 @@ export default function TopRankItem({
 
   return (
     <Wrapper>
-      <RankTitle color={rankColors[Number(rank) - 1]}>{rank}</RankTitle>
-
+      <RankTitle color={rankColors[Number(rank) - 1]}>
+        {rank === "1" || rank === "2" || rank === "3" ? (
+          <span className="medal">
+            {rank === "1" ? "🥇" : rank === "2" ? "🥈" : "🥉"}
+          </span>
+        ) : (
+          rank
+        )}
+      </RankTitle>
       <ItemImage src={imageSource} />
       <ItemInfo>
         <ItemName>{itemName}</ItemName>
@@ -133,13 +150,13 @@ export default function TopRankItem({
           <ItemPrice>{price}원</ItemPrice>
         </PriceWrap>
       </ItemInfo>
-      <Heart>
+      {/* <Heart>
         <FaHeart
           fontSize={"1.4rem"}
           color={isWished ? colors.mainPink : colors.mediumGrey}
           onClick={handleWish}
         />
-      </Heart>
+      </Heart> */}
     </Wrapper>
   );
 }

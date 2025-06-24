@@ -6,7 +6,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FaRegUser, FaUser } from "react-icons/fa6";
 import colors from "../styles/colors";
 import { LuScanLine } from "react-icons/lu";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Suspense, lazy } from "react";
 const ChatBotButton = lazy(() => import("../components/chatbot/ChatBotButton"));
 import { useLocale } from "../context/LanguageContext";
@@ -79,8 +79,16 @@ const StyledLink = styled(Link)`
   color: inherit;
 `;
 
+const ClickableDiv = styled.div`
+  display: flex;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+`;
+
 export default function MenuLayout() {
   const { t } = useLocale();
+  const navigate = useNavigate();
 
   const leftmenuItems = [
     {
@@ -131,14 +139,34 @@ export default function MenuLayout() {
       <MenuWrap>
         <Menu>
           <MenuLeft>
-            {leftmenuItems.map(({ path, label, icon, activeIcon }) => (
-              <StyledLink to={path} key={path}>
-                <MenuButton $active={isActive(path)}>
-                  {isActive(path) ? activeIcon : icon}
-                  <MenuText $active={isActive(path)}>{label}</MenuText>
-                </MenuButton>
-              </StyledLink>
-            ))}
+            {leftmenuItems.map(({ path, label, icon, activeIcon }) => {
+              const isCategory = path === "/category";
+
+              if (isCategory) {
+                return (
+                  <ClickableDiv
+                    key={path}
+                    onClick={() =>
+                      navigate("/category", { state: { reset: true } })
+                    }
+                  >
+                    <MenuButton $active={isActive(path)}>
+                      {isActive(path) ? activeIcon : icon}
+                      <MenuText $active={isActive(path)}>{label}</MenuText>
+                    </MenuButton>
+                  </ClickableDiv>
+                );
+              }
+
+              return (
+                <StyledLink to={path} key={path}>
+                  <MenuButton $active={isActive(path)}>
+                    {isActive(path) ? activeIcon : icon}
+                    <MenuText $active={isActive(path)}>{label}</MenuText>
+                  </MenuButton>
+                </StyledLink>
+              );
+            })}
           </MenuLeft>
           <MenuRight>
             {rightMenuItems.map(({ path, label, icon, activeIcon }) => (

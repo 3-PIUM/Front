@@ -143,9 +143,9 @@ export default function Category() {
     ? t.category.veganCategoryname
     : t.category.categoryname;
 
-  const selected = t.category.categoryname.find(
-    (c: { id: number; name: string; items: string[] }) => c.name === clicked
-  );
+  // const selected = t.category.categoryname.find(
+  //   (c: { id: number; name: string; items: string[] }) => c.name === clicked
+  // );
 
   const refMap = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -221,9 +221,33 @@ export default function Category() {
     navigate(`${base}/${categoryName}/${subcategoryName}`);
   };
 
+  // useEffect(() => {
+  //   setClicked(categoryList?.[0]?.name ?? "");
+  // }, [topClicked]);
+
   useEffect(() => {
-    setClicked(categoryList?.[0]?.name ?? "");
-  }, [topClicked]);
+    const getTopClicked = sessionStorage.getItem("topClicked");
+    const getCategoryName = sessionStorage.getItem("categoryName");
+
+    if (getTopClicked) {
+      if (getTopClicked === "vegan") {
+        setTopClicked("비건 카테고리");
+      } else {
+        setTopClicked("카테고리");
+      }
+    }
+
+    if (getCategoryName) {
+      setTimeout(() => {
+        setClicked(getCategoryName);
+        const el = refMap.current[getCategoryName];
+        if (el) {
+          const top = el.offsetTop - 90;
+          window.scrollTo({ top, behavior: "smooth" });
+        }
+      }, 0);
+    }
+  }, []);
 
   return (
     <Wrap>
@@ -233,6 +257,7 @@ export default function Category() {
           $isSelected={topClicked === "카테고리"}
           onClick={() => {
             setTopClicked("카테고리");
+            setClicked(categoryList?.[0]?.name);
           }}
         >
           <PageName>{t.category.pageTitle}</PageName>
@@ -241,6 +266,7 @@ export default function Category() {
           $isSelected={topClicked === "비건 카테고리"}
           onClick={() => {
             setTopClicked("비건 카테고리");
+            setClicked(categoryList?.[0]?.name);
           }}
         >
           <IconWrapper selected={isVegan}>
