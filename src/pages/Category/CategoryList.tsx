@@ -116,6 +116,18 @@ export default function CategoryList() {
   const { topClicked, categoryName, subcategoryName } = useParams();
   const isVegan = topClicked === "vegan";
 
+  if (topClicked) {
+    sessionStorage.setItem("topClicked", topClicked);
+  }
+
+  if (categoryName) {
+    sessionStorage.setItem("categoryName", categoryName);
+  }
+
+  if (subcategoryName) {
+    sessionStorage.setItem("subcategoryName", subcategoryName);
+  }
+
   const Category = categoryName || "";
   const Subcategory = subcategoryName || "";
 

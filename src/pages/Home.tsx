@@ -131,34 +131,6 @@ const RecommandTitle = styled.div`
   font-size: 1.125rem;
 `;
 
-// const RecommandCategoryWrapper = styled.div`
-//   display: flex;
-//   flex-wrap: nowrap;
-//   overflow-x: auto;
-//   gap: 0.5rem;
-//   padding: 0.5rem 0;
-//   margin-top: 0.5rem;
-
-//   // 스크롤바 안 보이게
-//   -ms-overflow-style: none;
-//   scrollbar-width: none;
-//   &::-webkit-scrollbar {
-//     display: none; /* Chrome, Safari, Opera */
-//   }
-// `;
-
-// const RecommandCategory = styled.div<{ $isActive: boolean }>`
-//   display: flex;
-//   padding: 0.375rem 0.75rem;
-//   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-//   background-color: ${({ $isActive }) =>
-//     $isActive ? colors.mainPink : colors.white};
-//   color: ${({ $isActive }) => ($isActive ? colors.white : colors.black)};
-//   border-radius: 1.25rem;
-//   font-size: 0.75rem;
-//   min-width: max-content;
-//`;
-
 const BannerWrap = styled.div`
   display: flex;
   padding: 1rem;
@@ -202,10 +174,16 @@ const BigListWrapper = styled.div`
 `;
 
 export default function Home() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [activeTab, setActiveTab] = useState("전체");
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
   const { t, setLanguage, language } = useLocale();
+  sessionStorage.removeItem("topClicked");
+  sessionStorage.removeItem("categoryName");
+  sessionStorage.removeItem("subcategoryName");
 
   const listRef = useRef<HTMLDivElement>(null);
 

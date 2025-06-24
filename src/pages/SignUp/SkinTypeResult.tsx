@@ -4,11 +4,16 @@ import colors from "../../styles/colors";
 import Button from "../../components/common/Button";
 import { useLocale } from "../../context/LanguageContext";
 import Header from "../../components/common/Header";
+import { useEffect } from "react";
 
 const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   overflow: hidden;
-  background-color: ${colors.lightGrey};
-  height: 100dvh; // dynamic viewport height
+  flex: 1;
+  padding-top: 44px;
+  background-color: ${colors.subPink};
 `;
 
 const Wrapper = styled.div`
@@ -66,6 +71,27 @@ export default function SkinTypeResult() {
   const result = location.state?.result;
   const { t } = useLocale();
 
+  useEffect(() => {
+    const root = document.getElementById("root");
+    const originalBg = root?.style.backgroundColor;
+    const originalTop = root?.style.paddingTop;
+    const originalBottom = root?.style.paddingBottom;
+
+    if (root) {
+      root.style.backgroundColor = "transparent";
+      root.style.paddingTop = "0";
+      root.style.paddingBottom = "0";
+    }
+
+    return () => {
+      if (root) {
+        root.style.backgroundColor = originalBg || "";
+        root.style.paddingTop = originalTop || "";
+        root.style.paddingBottom = originalBottom || "";
+      }
+    };
+  }, []);
+
   const lang = localStorage.getItem("language");
   const navigate = useNavigate();
 
@@ -98,7 +124,7 @@ export default function SkinTypeResult() {
   return (
     <Wrap>
       <Wrapper>
-        <Header bgColor={colors.lightGrey} />
+        <Header bgColor={colors.subPink} />
         <HeaderText>{t.survey.skinTypeResult}</HeaderText>
         <ImgWrapper>
           {result === "건성" ? (
