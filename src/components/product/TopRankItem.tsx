@@ -5,6 +5,7 @@ import colors from "../../styles/colors";
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
+  align-items: center;
 `;
 
 const rankColors = [
@@ -24,8 +25,8 @@ const RankTitle = styled.div<{ color: string }>`
   display: flex;
   font-size: 1.2rem;
   font-weight: 700;
-  width: 15%;
-  justify-content: center;
+  width: 10%;
+  justify-content: baseline;
   align-items: center;
   color: ${(props) => props.color};
 
@@ -38,12 +39,13 @@ const ItemImage = styled.img`
   display: flex;
   width: 25%;
   height: 25%;
+  border-radius: 0.5rem;
 `;
 
 const ItemInfo = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 65%;
   padding: 1rem 0 1rem 1rem;
   justify-content: center;
 `;
@@ -65,10 +67,11 @@ const ItemPrice = styled.div`
 `;
 
 const ItemName = styled.div`
-  display: flex;
-  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-overflow: ellipsis;
   text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 500;
@@ -82,7 +85,7 @@ interface ItemProps {
   itemId: number;
   wishStatus?: boolean;
   onWishChange?: () => void;
-  rank: string;
+  rank: number;
 }
 
 export default function TopRankItem({
@@ -98,9 +101,9 @@ export default function TopRankItem({
   return (
     <Wrapper>
       <RankTitle color={rankColors[Number(rank) - 1]}>
-        {rank === "1" || rank === "2" || rank === "3" ? (
+        {rank === 1 || rank === 2 || rank === 3 ? (
           <span className="medal">
-            {rank === "1" ? "🥇" : rank === "2" ? "🥈" : "🥉"}
+            {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
           </span>
         ) : (
           rank
