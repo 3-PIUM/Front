@@ -1,9 +1,7 @@
-// ReviewSatisfactionCard.tsx
 import styled from "styled-components";
 import { FaStar } from "react-icons/fa";
 import { useLocale } from "../../context/LanguageContext";
 
-// styled-components
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -18,7 +16,6 @@ const Label = styled.span`
   flex: 1;
   font-size: 1rem;
   color: #222;
-  /* font-weight: bold; */
 `;
 
 const Score = styled.span`

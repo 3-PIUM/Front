@@ -6,7 +6,7 @@ import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 
 const PurchaseNot = lazy(
-  () => import("../../components/ingredient/purchaseNot")
+  () => import("../../components/ingredient/PurchaseNot")
 );
 const TextHeader = lazy(() => import("../../components/common/TextHeader"));
 const Header = lazy(() => import("../../components/common/Header"));

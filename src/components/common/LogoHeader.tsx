@@ -117,7 +117,7 @@ const dummyStores: Store[] = [
   },
 ];
 
-export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
+export default function LogoHeader({}: LogoHeaderProps) {
   const navigate = useNavigate();
   const { t } = useLocale();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -178,7 +178,7 @@ export default function LogoHeader({ onStoreClick }: LogoHeaderProps) {
             setSelectedStore(store);
             setIsStoreModalOpen(false);
           }}
-          selectedStore={selectedStore} // ✅ 이 줄 추가
+          selectedStore={selectedStore}
         />
       )}
 

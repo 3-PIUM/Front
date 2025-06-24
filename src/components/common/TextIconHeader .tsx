@@ -56,7 +56,6 @@ const RightIcons = styled.div`
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
-  /* margin-right: -0.9rem; */
 `;
 
 const IconWrapper = styled.div`

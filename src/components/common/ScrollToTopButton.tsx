@@ -27,10 +27,9 @@ export default function ScrollToTopButton({ scrollTargetRef }: Props) {
   const scrollToTop = () => {
     scrollTargetRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
-  const [visible, setVisible] = useState(false);
+  const [_, setVisible] = useState(false);
 
   const handleScroll = () => {
-    console.log("스크롤 위치:", window.scrollY); // 여기가 0만 찍히는지 확인
     setVisible(window.scrollY > 300);
   };
 

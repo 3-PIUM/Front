@@ -2,18 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 
-// ===== 스타일 =====
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr); // 2열 구성
+  grid-template-columns: 1fr;
   gap: 1rem;
   margin-top: 0.5rem;
   padding: 0.5rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    /* grid-template-columns: repeat(2, 1fr);*/
-  }
 `;
 
 const ChartGroupWrapper = styled.div`
@@ -92,14 +86,12 @@ const Highlight = styled.span`
   color: #f23477;
 `;
 
-// ===== 데이터 =====
 const getColorByPercent = (percent: number) => {
   if (percent >= 60) return "#F23477";
   else if (percent >= 30) return "#F884A8";
   else return "#f9cfdc";
 };
 
-// ===== 컴포넌트 =====
 interface ChartDataItem {
   category: string;
   [key: string]: number | string;

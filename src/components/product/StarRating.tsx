@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface StarRatingProps {
-  rating: number; // 0~5
+  rating: number;
 }
 
 const StarContainer = styled.div`
@@ -11,7 +11,7 @@ const StarContainer = styled.div`
 
 const Star = styled.span<{ filled: boolean }>`
   font-size: 0.8rem;
-  color: ${({ filled }) => (filled ? "#FFD700" : "#ccc")}; // 노랑 or 회색
+  color: ${({ filled }) => (filled ? "#FFD700" : "#ccc")};
   cursor: default;
 `;
 
