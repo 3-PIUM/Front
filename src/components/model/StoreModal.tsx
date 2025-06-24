@@ -14,7 +14,7 @@ interface StoreModalProps {
   onClose: () => void;
   onSelect: (store: Store) => void;
   stores: Store[];
-  selectedStore: Store | null; // ✅ 추가
+  selectedStore: Store | null;
 }
 
 const Overlay = styled.div`

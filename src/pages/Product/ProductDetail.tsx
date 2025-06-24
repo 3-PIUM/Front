@@ -129,6 +129,53 @@ export default function ProductDetail() {
   const { t } = useLocale();
 
   const [showAllReviews, setShowAllReviews] = useState(false);
+  // 👁 조회수 state
+  const [viewCount, setViewCount] = useState<number | null>(null);
+  // 👁 상품 조회수 가져오기 (서버 값 반영 후, 1 증가를 로컬에서 처리)
+  useEffect(() => {
+    const fetchViewCount = async () => {
+      if (!itemId) return;
+      try {
+        const res = await axiosInstance.get(`/item/${itemId}/view-count`);
+        console.log("✅ 조회수 (서버 값):", res.data.result);
+        setViewCount(() => {
+          const newValue = res.data.result;
+          return newValue < 0 ? 0 : newValue;
+        });
+        // 로컬에서만 1 증가
+        setViewCount((prev) => (prev !== null ? prev + 1 : 1));
+        console.log("➕ 조회수 1 증가 (프론트 로컬 반영):", viewCount);
+      } catch (err) {
+        console.error("조회수 가져오기 실패", err);
+      }
+    };
+    fetchViewCount();
+    // eslint-disable-next-line
+  }, [itemId]);
+
+  // 👁 상품 조회수 감소 (페이지 이탈 시)
+  useEffect(() => {
+    const decreaseView = async () => {
+      if (!itemId) return;
+      console.log("⚠️ 페이지 이탈 - 조회수 감소 시도");
+      try {
+        await axiosInstance.post(`/item/view/${itemId}/decrease`);
+      } catch (err) {
+        console.error("조회수 감소 실패", err);
+      }
+    };
+
+    const handleBeforeUnload = () => {
+      console.log("🧹 beforeunload triggered");
+      decreaseView();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      decreaseView();
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [itemId]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -275,7 +322,11 @@ export default function ProductDetail() {
       </Suspense>
       <ProductCardWrapper ref={pageWrapperRef}>
         <Suspense fallback={null}>
-          <ProductCard {...product} imageUrl={product.imageUrl.mainImage} />
+          <ProductCard
+            {...product}
+            imageUrl={product.imageUrl.mainImage}
+            viewCount={viewCount}
+          />
         </Suspense>
         {/* Option name display (e.g., [브랜드명] 옵션1) */}
         {product.options.length > 0 &&
@@ -309,6 +360,7 @@ export default function ProductDetail() {
             />
           </Suspense>
         )}
+
         <div style={{ padding: "0 1rem" }}>
           <Suspense fallback={null}>
             <Button label={t.productDetail.addCart} onClick={handleAddToCart} />
@@ -447,18 +499,25 @@ export default function ProductDetail() {
                   textAlign: "center",
                 }}
               >
-                등록된 리뷰가 없습니다.
+                {t.noReview}
               </div>
             ) : (
               <>
-                {(showAllReviews
-                  ? [...realReviews].reverse()
-                  : [...realReviews].slice(0, 2).reverse()
-                ).map((r) => (
-                  <Suspense key={r.reviewId} fallback={null}>
-                    <ReviewCard {...r} itemId={product?.id} />
-                  </Suspense>
-                ))}
+                <div
+                  style={{
+                    maxHeight: showAllReviews ? "400px" : "auto",
+                    overflowY: showAllReviews ? "auto" : "visible",
+                  }}
+                >
+                  {(showAllReviews
+                    ? [...realReviews].reverse()
+                    : [...realReviews].slice(0, 2).reverse()
+                  ).map((r) => (
+                    <Suspense key={r.reviewId} fallback={null}>
+                      <ReviewCard {...r} itemId={product?.id} />
+                    </Suspense>
+                  ))}
+                </div>
                 {realReviews.length > 2 && (
                   <div
                     style={{
