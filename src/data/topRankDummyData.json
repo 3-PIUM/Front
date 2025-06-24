@@ -1,0 +1,82 @@
+[
+  {
+    "id": 101,
+    "name": "비타민C 앰플",
+    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discount": 20,
+    "price": 32000,
+    "rank": "1"
+  },
+  {
+    "id": 102,
+    "name": "수분 크림",
+    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discount": 15,
+    "price": 25000,
+    "rank": "2"
+  },
+  {
+    "id": 103,
+    "name": "클렌징 폼",
+    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discount": 10,
+    "price": 18000,
+    "rank": "3"
+  },
+  {
+    "id": 104,
+    "name": "미백 에센스",
+    "url": "https://via.placeholder.com/150",
+    "discount": 25,
+    "price": 41000,
+    "rank": "4"
+  },
+  {
+    "id": 105,
+    "name": "선크림 SPF50+",
+    "url": "https://via.placeholder.com/150",
+    "discount": 12,
+    "price": 22000,
+    "rank": "5"
+  },
+  {
+    "id": 106,
+    "name": "진정 토너",
+    "url": "https://via.placeholder.com/150",
+    "discount": 18,
+    "price": 27000,
+    "rank": "6"
+  },
+  {
+    "id": 107,
+    "name": "리페어 세럼",
+    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discount": 30,
+    "price": 36000,
+    "rank": "7"
+  },
+  {
+    "id": 108,
+    "name": "각질 패드",
+    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discount": 20,
+    "price": 21000,
+    "rank": "8"
+  },
+  {
+    "id": 109,
+    "name": "모공 수축 에센스",
+    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discount": 22,
+    "price": 34000,
+    "rank": "9"
+  },
+  {
+    "id": 110,
+    "name": "수딩 젤",
+    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discount": 17,
+    "price": 20000,
+    "rank": "10"
+  }
+]

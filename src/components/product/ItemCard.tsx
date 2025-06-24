@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import colors from "../../styles/colors";
 import { FaHeart } from "react-icons/fa6";
 import { useState } from "react";
@@ -6,22 +6,60 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import { useLocale } from "../../context/LanguageContext";
 
-const ItemWrap = styled.div`
+// shimmer 애니메이션 정의
+const shimmer = keyframes`
+  0% {
+    background-position: -100%;
+  }
+  100% {
+    background-position: 100%;
+  }
+`;
+
+// 공통 스켈레톤 스타일
+const SkeletonBase = styled.div`
+  background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: ${shimmer} 1.5s infinite;
+`;
+
+const ItemWrap = styled.div<{ size?: string }>`
   display: flex;
   flex-direction: column;
-  width: 6.5rem;
+  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
   gap: 0.3rem;
 `;
 
-const ImageWrap = styled.div`
+const ImageWrap = styled.div<{ size?: string }>`
   position: relative;
+  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+  height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
   flex-shrink: 1;
+  background-color: #f5f5f5; // ✅ 스켈레톤 백업용 배경
+  border-radius: 0.625rem;
+  overflow: hidden;
 `;
 
-const ItemImage = styled.img`
-  display: flex;
-  width: 6.5rem;
-  height: 6.5rem;
+const ItemImage = styled.img<{ $isLoading: boolean; size?: string }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+  height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+
+  border-radius: 0.625rem;
+  opacity: ${({ $isLoading }) => ($isLoading ? 0 : 1)};
+  transition: opacity 0.3s ease;
+`;
+
+const SkeletonImage = styled(SkeletonBase)<{ size?: string }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+
+  height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
+
   border-radius: 0.625rem;
 `;
 
@@ -65,8 +103,9 @@ interface ItemProps {
   discountRate: number;
   price: number;
   itemId: number;
-  wishStatus: boolean;
+  wishStatus?: boolean;
   onWishChange?: () => void;
+  size?: string;
 }
 
 export default function ItemCard({
@@ -77,10 +116,12 @@ export default function ItemCard({
   itemId,
   wishStatus,
   onWishChange,
+  size,
 }: ItemProps) {
   const [isWished, setIsWished] = useState(wishStatus ?? false);
   const navigate = useNavigate();
   const { t } = useLocale();
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleWish = async (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -114,32 +155,68 @@ export default function ItemCard({
       originalPrice: price,
       discountRate: discountRate,
     };
-    navigate(`/product-detail?itemId=${itemId}`, { state: { product } });
+    navigate(`/product-detail?itemId=${itemId}`, {
+      replace: true,
+      state: { product },
+    });
   };
 
   const formattedPrice = price.toLocaleString();
 
   return (
     <>
-      <ItemWrap onClick={handleClick}>
-        <ImageWrap>
-          <ItemImage src={imageSource} />
-          <Heart>
-            <FaHeart
-              fontSize={"1.4rem"}
-              color={isWished ? colors.mainPink : colors.mediumGrey}
-              onClick={handleWish}
-            />
-          </Heart>
+      <ItemWrap onClick={handleClick} size={size}>
+        <ImageWrap size={size}>
+          <SkeletonImage size={size} />
+          <ItemImage
+            src={imageSource}
+            onLoad={() => setIsLoading(false)}
+            onError={() => setIsLoading(false)}
+            $isLoading={isLoading}
+            size={size}
+          />
+          {!isLoading && (
+            <Heart>
+              <FaHeart
+                fontSize={"1.4rem"}
+                color={isWished ? colors.mainPink : colors.mediumGrey}
+                onClick={handleWish}
+              />
+            </Heart>
+          )}
         </ImageWrap>
-        <ItemName>{itemName}</ItemName>
-        <PriceWrap>
-          <ItemDiscount>{discountRate}%</ItemDiscount>
-          <ItemPrice>
-            {formattedPrice}
-            {t.pos.won}
-          </ItemPrice>
-        </PriceWrap>
+
+        {isLoading ? (
+          <>
+            <SkeletonBase
+              style={{
+                width: "100%",
+                height: "0.75rem",
+                borderRadius: "4px",
+                marginTop: "0.3rem",
+              }}
+            />
+            <SkeletonBase
+              style={{
+                width: "80%",
+                height: "0.75rem",
+                borderRadius: "4px",
+                marginTop: "0.3rem",
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <ItemName>{itemName}</ItemName>
+            <PriceWrap>
+              <ItemDiscount>{discountRate}%</ItemDiscount>
+              <ItemPrice>
+                {formattedPrice}
+                {t.pos.won}
+              </ItemPrice>
+            </PriceWrap>
+          </>
+        )}
       </ItemWrap>
     </>
   );
