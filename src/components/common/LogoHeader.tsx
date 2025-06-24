@@ -127,7 +127,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
 
   useEffect(() => {
-    const fetchSearch = async () => {
+    const fetchSearchResults = async () => {
       if (!searchTerm) {
         setSearchResults([]);
         return;
@@ -135,9 +135,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
 
       try {
         const res = await axiosInstance.get(
-          `http://localhost:8080/item/search/list/${encodeURIComponent(
-            searchTerm
-          )}?page=0`
+          `/item/advancedSearch/list/${encodeURIComponent(searchTerm)}`
         );
         setSearchResults(res.data.result.itemSearchInfoDTOs || []);
       } catch (err) {
@@ -145,7 +143,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
       }
     };
 
-    const delay = setTimeout(fetchSearch, 300); // debounce
+    const delay = setTimeout(fetchSearchResults, 300);
     return () => clearTimeout(delay);
   }, [searchTerm]);
 

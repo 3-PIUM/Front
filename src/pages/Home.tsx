@@ -7,7 +7,6 @@ import Header from "../components/common/Header";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { useLocale } from "../context/LanguageContext";
-import hotItems from "../data/hotItems.json";
 import topRank from "../data/topRankDummyData.json";
 import skinType from "../data/language/skinType";
 import PersonalRecommended from "../components/PersonalRecommended";
@@ -160,23 +159,6 @@ const RecommandTitle = styled.div`
 //   min-width: max-content;
 //`;
 
-const PersonalRecommandList = styled.div<{ $isScroll: boolean }>`
-  display: flex;
-  margin-top: 0.5rem;
-  gap: 0.5rem;
-
-  ${({ $isScroll }) =>
-    $isScroll &&
-    `
-    overflow-x: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  `}
-`;
-
 const BannerWrap = styled.div`
   display: flex;
   padding: 1rem;
@@ -221,53 +203,9 @@ const BigListWrapper = styled.div`
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("전체");
-  const [showStoreModal, setShowStoreModal] = useState(false);
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
   const { t, setLanguage, language } = useLocale();
-
-  const dummyStores = [
-    {
-      name: "강남점",
-      distance: "500m",
-      imageUrl:
-        "https://image.oliveyoung.co.kr/cfimages/oystore/DD1D_1.jpg?rs=800x0",
-      status: "영업 중",
-      hours: "10:00 ~ 22:00",
-    },
-    {
-      name: "신촌점",
-      distance: "1.2km",
-      imageUrl:
-        "https://image.oliveyoung.co.kr/cfimages/oystore/DD1D_1.jpg?rs=800x0",
-      status: "영업 준비 중",
-      hours: "11:00 ~ 21:00",
-    },
-    {
-      name: "홍대점",
-      distance: "4.2km",
-      imageUrl:
-        "https://image.oliveyoung.co.kr/cfimages/oystore/DD1D_1.jpg?rs=800x0",
-      status: "영업 준비 중",
-      hours: "11:00 ~ 21:00",
-    },
-  ];
-
-  // const selectedTab = tabItems.find((tab) => tab.label === activeTab);
-
-  // const allItems = tabItems
-  //   .filter((tab) => tab.label !== "전체")
-  //   .flatMap((tab) => tab.items);
-
-  // // 배열 섞는 함수
-  // function shuffleArray<T>(array: T[]): T[] {
-  //   const shuffled = [...array];
-  //   for (let i = shuffled.length - 1; i > 0; i--) {
-  //     const j = Math.floor(Math.random() * (i + 1));
-  //     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  //   }
-  //   return shuffled;
-  // }
 
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -303,12 +241,6 @@ export default function Home() {
     return skinType[originalType]?.[language] ?? "";
   };
 
-  const mockProducts = [
-    { id: 1, name: "선크림" },
-    { id: 2, name: "보습 크림" },
-    { id: 3, name: "클렌징 오일" },
-  ];
-
   const nickname = JSON.parse(
     sessionStorage.getItem("memberInfo") || "{}"
   ).nickname;
@@ -316,10 +248,7 @@ export default function Home() {
   return (
     <Wrapper>
       <Header />
-      <LogoHeader
-        onStoreClick={() => setShowStoreModal(true)}
-        productList={mockProducts}
-      />
+      <LogoHeader />
       {!memberInfo?.skinType ? (
         <InfoBox>
           <img src="images/CharacterImg/surveyImage.png" width="60%" />
@@ -414,13 +343,6 @@ export default function Home() {
           </RecommandListWrapper>
         </RecommandBox>
       </RecommandListWrap>
-      {showStoreModal && (
-        <StoreModal
-          onClose={() => setShowStoreModal(false)}
-          onSelect={(store) => console.log("선택한 매장:", store)}
-          stores={dummyStores}
-        />
-      )}
     </Wrapper>
   );
 }
