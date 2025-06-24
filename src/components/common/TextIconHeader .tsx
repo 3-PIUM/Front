@@ -148,7 +148,7 @@ export default function FullHeader({
       }
     };
 
-    const delay = setTimeout(fetchSearchResults, 300); // 디바운싱
+    const delay = setTimeout(fetchSearchResults, 300);
     return () => clearTimeout(delay);
   }, [searchTerm]);
 

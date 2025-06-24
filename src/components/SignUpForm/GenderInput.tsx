@@ -20,6 +20,12 @@ const GenderField = styled.div`
   gap: 0.5rem;
 `;
 
+const ButtonInputWrap = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+`;
+
 const GenderButton = styled.div`
   display: flex;
   justify-content: space-between;
@@ -50,7 +56,7 @@ const GenderOption = styled.div<{ $selected: boolean; $readOnly?: boolean }>`
   ${({ $readOnly }) =>
     $readOnly &&
     `
-    pointer-events: none;    /* 클릭/포커스 자체를 막음 */
+    pointer-events: none;   
 
     &:focus {
       box-shadow: none;
@@ -90,59 +96,63 @@ export default function GenderInput({
     <>
       <GenderField>
         <FieldName>{t.signup.gender}</FieldName>
-        <GenderButton>
-          <GenderOption
-            $selected={gender === "MALE"}
-            onClick={() => {
-              if (readOnly) return;
-              setGender("MALE");
-              setGenderText(null);
-            }}
-            $readOnly={readOnly}
-          >
-            <GenderText $selected={gender === "MALE"} $readOnly={readOnly}>
-              {t.signup.male}
-            </GenderText>
-            <IoMale
-              color={
-                readOnly
-                  ? gender === "MALE"
-                    ? colors.darkGrey
+        <ButtonInputWrap>
+          <GenderButton>
+            <GenderOption
+              $selected={gender === "MALE"}
+              onClick={() => {
+                if (readOnly) return;
+                setGender("MALE");
+                setGenderText("");
+              }}
+              $readOnly={readOnly}
+            >
+              <GenderText $selected={gender === "MALE"} $readOnly={readOnly}>
+                {t.signup.male}
+              </GenderText>
+              <IoMale
+                color={
+                  readOnly
+                    ? gender === "MALE"
+                      ? colors.darkGrey
+                      : colors.lightGrey
+                    : gender === "MALE"
+                    ? colors.mainPink
                     : colors.lightGrey
-                  : gender === "MALE"
-                  ? colors.mainPink
-                  : colors.lightGrey
-              }
-            />
-          </GenderOption>
-          <GenderOption
-            $selected={gender === "FEMALE"}
-            onClick={() => {
-              if (readOnly) return;
-              setGender("FEMALE");
-              setGenderText(null);
-            }}
-            $readOnly={readOnly}
-          >
-            <GenderText $selected={gender === "FEMALE"} $readOnly={readOnly}>
-              {t.signup.female}
-            </GenderText>
-            <IoFemale
-              color={
-                readOnly
-                  ? gender === "FEMALE"
-                    ? colors.darkGrey
+                }
+              />
+            </GenderOption>
+            <GenderOption
+              $selected={gender === "FEMALE"}
+              onClick={() => {
+                if (readOnly) return;
+                setGender("FEMALE");
+                setGenderText("");
+              }}
+              $readOnly={readOnly}
+            >
+              <GenderText $selected={gender === "FEMALE"} $readOnly={readOnly}>
+                {t.signup.female}
+              </GenderText>
+              <IoFemale
+                color={
+                  readOnly
+                    ? gender === "FEMALE"
+                      ? colors.darkGrey
+                      : colors.lightGrey
+                    : gender === "FEMALE"
+                    ? colors.mainPink
                     : colors.lightGrey
-                  : gender === "FEMALE"
-                  ? colors.mainPink
-                  : colors.lightGrey
-              }
-            />
-          </GenderOption>
-        </GenderButton>
-        {genderText && (
-          <ErrorText style={{ color: colors.mainPink }}>{genderText}</ErrorText>
-        )}
+                }
+              />
+            </GenderOption>
+          </GenderButton>
+          {genderText && (
+            <ErrorText style={{ color: colors.mainPink }}>
+              {genderText}
+            </ErrorText>
+          )}
+        </ButtonInputWrap>
       </GenderField>
     </>
   );

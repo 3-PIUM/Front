@@ -35,8 +35,11 @@ export default function Signup() {
   const { t, language } = useLocale();
 
   const [nickname, setNickname] = useState<string>("");
-  const [nicknameVaildMessage, setNicknameVaildMessage] = useState<string>("");
-  const [nicknameVaild, setNicknameVaild] = useState<boolean>(false);
+  const [nicknameText, setNicknameText] = useState<string>("");
+
+  const [nicknameValidMessage, setNicknameValidMessage] = useState<string>("");
+  const [nicknameValid, setNicknameValid] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const [birth, setBirth] = useState<string>("");
   const [birthText, setBirthText] = useState<string>("");
@@ -81,7 +84,7 @@ export default function Signup() {
       ? `${birth.slice(0, 4)}-${birth.slice(4, 6)}-${birth.slice(6, 8)}`
       : "";
 
-  const isNicknameValid = nicknameVaild === true;
+  const isNicknameValid = nicknameValid === true && isChecked === true;
   const isBirthValid = birth.length === 8 && isValidDateString(birth);
   const isEmailVerified = checkVerifyCode === true;
   const isPasswordMatch = password === secondPassword;
@@ -94,27 +97,6 @@ export default function Signup() {
     isPasswordMatch &&
     isCountrySelected &&
     isGenderSelected;
-
-  // const handleSendEmail = async () => {
-  //   if (!email) {
-  //     setSendEmail(false);
-  //     setSendEmailText("이메일을 입력해주세요");
-  //     return;
-  //   }
-  //   try {
-  //     const emailResponse = await axios.post(
-  //       "http://localhost:8080/main/send",
-  //       {
-  //         email,
-  //       }
-  //     );
-  //     setSendEmail(true);
-  //     setSendEmailText("이메일을 확인해주세요");
-  //   } catch {
-  //     setSendEmail(false);
-  //     setSendEmailText("이메일 전송에 실패했습니다");
-  //   }
-  // };
 
   const handleSignup = async () => {
     if (isFormValid) {
@@ -131,14 +113,22 @@ export default function Signup() {
       sessionStorage.setItem("signupData", JSON.stringify(signupData));
       navigate("/about");
     } else {
-      if (!isNicknameValid) setNicknameVaildMessage("닉네임을 확인해주세요");
-      else if (!isBirthValid) setBirthText("생년월일은 8자리를 입력해주세요");
-      else if (!isEmailVerified)
-        setVerifyCodeText("이메일 인증을 완료해주세요");
-      else if (!isPasswordMatch)
-        setPasswordText("비밀번호가 일치하지 않습니다");
-      else if (!isCountrySelected) setCountryText("국가를 선택해주세요");
-      else if (!isGenderSelected) setGenderText("성별을 선택해주세요");
+      if (!nickname) setNicknameText(t.signup.errorMessage.nicknameInput);
+      if (isChecked === false)
+        setNicknameText(t.signup.errorMessage.nicknameVerify);
+      if (!birth.trim()) {
+        setBirthText(t.signup.errorMessage.eightBirth);
+      }
+      if (!email) {
+        setSendEmailText(t.signup.errorMessage.emailInput);
+      }
+      if (!verifyCode) {
+        setVerifyCodeText(t.signup.errorMessage.emailVerify);
+      }
+      if (!password) setPasswordText(t.signup.errorMessage.passwordInput);
+      if (!isPasswordMatch) setPasswordText(t.signup.errorMessage.password);
+      if (!isCountrySelected) setCountryText(t.signup.errorMessage.country);
+      if (!isGenderSelected) setGenderText(t.signup.errorMessage.gender);
     }
   };
 
@@ -150,10 +140,14 @@ export default function Signup() {
         <Nickname
           nickname={nickname}
           setNickname={setNickname}
-          nicknameVaild={nicknameVaild}
-          setNicknameVaild={setNicknameVaild}
-          nicknameVaildMessage={nicknameVaildMessage}
-          setNicknameVaildMessage={setNicknameVaildMessage}
+          nicknameValid={nicknameValid}
+          setNicknameValid={setNicknameValid}
+          nicknameValidMessage={nicknameValidMessage}
+          setNicknameValidMessage={setNicknameValidMessage}
+          nicknameText={nicknameText}
+          setNicknameText={setNicknameText}
+          isChecked={isChecked}
+          setIsChecked={setIsChecked}
         />
 
         <Birth

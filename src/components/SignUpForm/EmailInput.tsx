@@ -63,7 +63,6 @@ interface EmailProps {
 export default function EmailInput({
   email,
   setEmail,
-  sendEmail,
   setSendEmail,
   sendEmailText,
   setSendEmailText,
@@ -90,7 +89,7 @@ export default function EmailInput({
   const handleSendEmail = async () => {
     if (!email) {
       setSendEmail(false);
-      setSendEmailText("이메일을 입력해주세요");
+      setSendEmailText(t.signup.errorMessage.emailInput);
       return;
     }
     try {
@@ -102,30 +101,31 @@ export default function EmailInput({
       setTimeLeft(180);
     } catch {
       setSendEmail(false);
-      setSendEmailText("이메일 전송에 실패했습니다");
+      setSendEmailText(t.signup.errorMessage.emailFail);
     }
   };
 
   const handleCheckVerify = async () => {
     if (!verifyCode) {
-      setVerifyCodeText("인증 번호를 입력해주세요");
+      setVerifyCodeText(t.signup.errorMessage.emailcode);
       return;
     }
 
     try {
-      const verifyResponse = await axios.post(
-        "http://localhost:8080/mail/verify",
-        {
-          email,
-          code: verifyCode,
-        }
-      );
-      setCheckVerifyCode(true);
-      setVerifyCodeText(null);
-      //인증 성공시 비활성화
+      const response = await axios.post("http://localhost:8080/mail/verify", {
+        email,
+        code: verifyCode,
+      });
+      if (response.data.result.check === true) {
+        setCheckVerifyCode(true);
+        setVerifyCodeText(null);
+      } else {
+        setCheckVerifyCode(false);
+        setVerifyCodeText(t.signup.errorMessage.emailcodeFail);
+      }
     } catch {
       setCheckVerifyCode(false);
-      setVerifyCodeText("인증에 실패했습니다. 다시 시도해주세요.");
+      setVerifyCodeText(t.signup.errorMessage.emailcodeFail);
     }
   };
 
@@ -171,7 +171,7 @@ export default function EmailInput({
                 marginTop: "0.5rem",
               }}
             >
-              남은 시간: {Math.floor(timeLeft / 60)}:
+              {t.signup.errorMessage.time} {Math.floor(timeLeft / 60)}:
               {(timeLeft % 60).toString().padStart(2, "0")}
             </div>
           )}
@@ -187,6 +187,7 @@ export default function EmailInput({
               onChange={(e) => {
                 setVerifyCode(e.target.value);
                 setVerifyCodeText(null);
+                setCheckVerifyCode(null);
               }}
               disabled={checkVerifyCode === true}
             />
@@ -201,7 +202,7 @@ export default function EmailInput({
               )}
             </FunctionBtn>
           </ButtonInputWrap>
-          {sendEmailText && (
+          {verifyCodeText && (
             <div
               style={{
                 color: colors.mainPink,

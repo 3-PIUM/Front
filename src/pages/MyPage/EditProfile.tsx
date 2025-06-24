@@ -6,7 +6,6 @@ import axiosInstance from "../../api/axiosInstance";
 import styled from "styled-components";
 import Nickname from "../../components/SignUpForm/NicknameInput";
 import Birth from "../../components/SignUpForm/BirthInput";
-import PasswordInput from "../../components/SignUpForm/PasswordInput";
 import CountryInput from "../../components/SignUpForm/CountryInput";
 import GenderInput from "../../components/SignUpForm/GenderInput";
 import Button from "../../components/common/Button";
@@ -203,10 +202,10 @@ export default function EditProfile() {
           <Nickname
             nickname={nickname}
             setNickname={setNickname}
-            nicknameVaild={nicknameVaild}
-            setNicknameVaild={setNicknameVaild}
-            nicknameVaildMessage={nicknameVaildMessage}
-            setNicknameVaildMessage={setNicknameVaildMessage}
+            nicknameValid={nicknameVaild}
+            setNicknameValid={setNicknameVaild}
+            nicknameValidMessage={nicknameVaildMessage}
+            setNicknameValidMessage={setNicknameVaildMessage}
             disabled={nickname == memberInfo?.nickname}
           />
 
@@ -219,7 +218,7 @@ export default function EditProfile() {
 
           <FieldName>{t.signup.email} </FieldName>
           <ButtonInputWrap>
-            <InputField type="text" disabled={true} value={memberInfo?.email} />
+            <InputField type="text" disabled={true} value={email} />
           </ButtonInputWrap>
 
           <CountryInput
@@ -248,8 +247,10 @@ export default function EditProfile() {
       {showModal && (
         <ModalOverlay>
           <ModalContent>
-            <div>정보가 성공적으로 수정되었습니다</div>
-            <ModalButton onClick={() => navigate("/mypage")}>확인</ModalButton>
+            <div>{t.mypage.updateSuccess}</div>
+            <ModalButton onClick={() => navigate("/mypage")}>
+              {t.welcome.btn}
+            </ModalButton>
           </ModalContent>
         </ModalOverlay>
       )}

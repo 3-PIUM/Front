@@ -140,8 +140,8 @@ export default function SurveyPage() {
     const storedSkinIssue = sessionStorage.getItem("skinConcern");
     if (storedSkinIssue) {
       try {
-        const parsed = JSON.parse(storedSkinIssue); // parsed: number[]
-        const stringIssue = parsed.map((id: number) => String(id)); // string[]로 변환
+        const parsed = JSON.parse(storedSkinIssue);
+        const stringIssue = parsed.map((id: number) => String(id));
         setSkinIssue(stringIssue);
       } catch (e) {
         console.error("skinConcern 파싱 오류", e);
@@ -213,7 +213,7 @@ export default function SurveyPage() {
                 border="1px solid #7F7F7F"
                 onClick={() => setStep(2)}
               />
-              <Button label="등록하기" width="48vw" onClick={goFinish} />
+              <Button label={t.survey.apply} width="48vw" onClick={goFinish} />
             </>
           )}
         </ButtonWrapper>

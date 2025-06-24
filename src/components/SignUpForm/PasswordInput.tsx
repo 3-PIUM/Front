@@ -34,14 +34,20 @@ export default function PasswordInput({
         fieldName={t.signup.password}
         type="password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => {
+          setPassword(e.target.value);
+          setPasswordText(null);
+        }}
       />
       <div>
         <TextField
           fieldName={t.signup.passwordCheck}
           type="password"
           value={secondPassword}
-          onChange={(e) => setSecondPassword(e.target.value)}
+          onChange={(e) => {
+            setSecondPassword(e.target.value);
+            setPasswordText(null);
+          }}
         />
         {passwordText && (
           <ErrorText style={{ color: colors.mainPink }}>

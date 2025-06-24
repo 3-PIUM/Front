@@ -32,7 +32,25 @@
     "gender": "Gender",
     "male": "Male",
     "female": "Female",
-    "signupBtn": "Sign Up"
+    "signupBtn": "Sign Up",
+    "errorMessage": {
+      "nicknameInput": "Please enter your nickname.",
+      "yesNickname": "This nickname is available.",
+      "noNickname": "This nickname is not available.",
+      "nicknameVerify": "Please check nickname availability",
+      "eightBirth": "Please enter your birth date in 8 digits.",
+      "birthValid": "Please enter a valid date.",
+      "emailInput": "Please enter your email address.",
+      "emailVerify": "Please complete the email verification.",
+      "emailFail": "Failed to send email.",
+      "emailcode": "Please enter the verification code.",
+      "emailcodeFail": "Verification failed. Please try again.",
+      "time": "Time remaining",
+      "passwordInput": "Please enter your password",
+      "password": "Passwords do not match.",
+      "country": "Please select your country.",
+      "gender": "Please select your gender."
+    }
   },
   "colorTest": {
     "testTitle": "Personal Diagnosis",
@@ -113,7 +131,8 @@
     "skinTypeTestTitle": "Skin Type Test",
     "loading": "Loading...",
     "skinTypeResult": "Skin Type Result",
-    "goBackSurvey": "Back to Survey"
+    "goBackSurvey": "Back to Survey",
+    "apply": "Apply"
   },
   "category": {
     "pageTitle": "Category",
@@ -280,6 +299,7 @@
   },
 
   "mypage": {
+    "updateSuccess": "Your information has been successfully updated",
     "pageTitle": "My Page",
     "personalTitle": "Personal Information",
     "editPersonal": "Edit Personal Information",

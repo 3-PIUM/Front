@@ -95,8 +95,6 @@ export default function SkinTypeResult() {
   const lang = localStorage.getItem("language");
   const navigate = useNavigate();
 
-  console.log(result); // "건성", "지성" 등
-
   type Language = "한국어" | "English" | "日本語";
   type SkinType = "건성" | "지성" | "복합성";
 

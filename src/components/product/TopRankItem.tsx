@@ -1,9 +1,6 @@
 import { styled } from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import colors from "../../styles/colors";
-import { FaHeart } from "react-icons/fa6";
-import { useState } from "react";
-import axiosInstance from "../../api/axiosInstance";
 
 const Wrapper = styled.div`
   display: flex;
@@ -77,13 +74,6 @@ const ItemName = styled.div`
   font-weight: 500;
 `;
 
-const Heart = styled.div`
-  display: flex;
-  width: 10%;
-  justify-content: center;
-  align-items: center;
-`;
-
 interface ItemProps {
   imageSource: string;
   itemName: string;
@@ -100,36 +90,10 @@ export default function TopRankItem({
   itemName,
   discountRate,
   price,
-  itemId,
-  wishStatus,
-  onWishChange,
   rank,
 }: ItemProps) {
   const { t } = useLocale();
-  const [isWished, setIsWished] = useState(wishStatus ?? false);
-
-  const handleWish = async (event: React.MouseEvent) => {
-    event.stopPropagation();
-
-    if (!isWished) {
-      try {
-        const response = await axiosInstance.post(`/wishlist/${itemId}`);
-        setIsWished(true);
-        console.log("찜 추가가 됐습니다", response.data);
-      } catch {
-        console.error("찜 추가에 실패했습니다");
-      }
-    } else {
-      try {
-        await axiosInstance.delete(`/wishlist/${itemId}`);
-        console.log("찜 취소가 됐습니다");
-        setIsWished(false);
-        onWishChange?.();
-      } catch {
-        console.error("찜 취소에 실패했습니다");
-      }
-    }
-  };
+  const formattedPrice = price.toLocaleString();
 
   return (
     <Wrapper>
@@ -147,16 +111,12 @@ export default function TopRankItem({
         <ItemName>{itemName}</ItemName>
         <PriceWrap>
           <ItemDiscount>{discountRate}%</ItemDiscount>
-          <ItemPrice>{price}원</ItemPrice>
+          <ItemPrice>
+            {formattedPrice}
+            {t.pos.won}
+          </ItemPrice>
         </PriceWrap>
       </ItemInfo>
-      {/* <Heart>
-        <FaHeart
-          fontSize={"1.4rem"}
-          color={isWished ? colors.mainPink : colors.mediumGrey}
-          onClick={handleWish}
-        />
-      </Heart> */}
     </Wrapper>
   );
 }

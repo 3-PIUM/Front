@@ -41,42 +41,52 @@ const ErrorText = styled.div`
 interface NicknameProps {
   nickname: string;
   setNickname: (value: string) => void;
-  nicknameVaild: boolean;
-  setNicknameVaild: (value: boolean) => void;
-  nicknameVaildMessage: string;
-  setNicknameVaildMessage: (value: string) => void;
+  nicknameValid: boolean;
+  setNicknameValid: (value: boolean) => void;
+  nicknameValidMessage: string;
+  setNicknameValidMessage: (value: string) => void;
   disabled?: boolean | undefined;
+  nicknameText?: string;
+  setNicknameText?: (value: string) => void;
+  isChecked?: boolean;
+  setIsChecked?: (value: boolean) => void;
 }
 
 export default function Nickname({
   nickname,
   setNickname,
-  nicknameVaild,
-  setNicknameVaild,
-  nicknameVaildMessage,
-  setNicknameVaildMessage,
+  nicknameValid,
+  setNicknameValid,
+  nicknameValidMessage,
+  setNicknameValidMessage,
   disabled,
+  nicknameText,
+  setNicknameText,
+  setIsChecked,
 }: NicknameProps) {
   const { t } = useLocale();
 
   const handleDuplicate = async () => {
     if (!nickname) {
-      setNicknameVaild(false);
-      setNicknameVaildMessage("닉네임을 입력해주세요");
+      setNicknameValid(false);
+      setNicknameValidMessage(t.signup.errorMessage.nicknameInput);
       return;
     }
+    setNicknameValidMessage("");
+    setNicknameText?.("");
     try {
       await axios.get("http://localhost:8080/member/check", {
         params: {
           nickname: nickname,
         },
       });
-      setNicknameVaild(true);
-      setNicknameVaildMessage("사용 가능한 닉네임입니다");
+      setNicknameValid(true);
+      setNicknameValidMessage(t.signup.errorMessage.yesNickname);
+      setIsChecked?.(true);
     } catch {
-      setNicknameVaild(false);
-
-      setNicknameVaildMessage("사용 불가능한 닉네임입니다");
+      setNicknameValid(false);
+      setNicknameValidMessage(t.signup.errorMessage.noNickname);
+      setIsChecked?.(false);
     }
   };
 
@@ -90,20 +100,31 @@ export default function Nickname({
             value={nickname}
             onChange={(e) => {
               setNickname(e.target.value);
-              setNicknameVaildMessage("");
+              setNicknameValidMessage("");
+              setNicknameText?.("");
+              setIsChecked?.(false);
             }}
           />
           <FunctionBtn onClick={handleDuplicate} disabled={disabled ?? false}>
             {t.signup.nicknameDuplicate}
           </FunctionBtn>
         </ButtonInputWrap>
-        {nicknameVaildMessage && (
+        {nicknameValidMessage && (
           <ErrorText
             style={{
-              color: nicknameVaild ? colors.darkGrey : colors.mainPink,
+              color: nicknameValid ? colors.darkGrey : colors.mainPink,
             }}
           >
-            {nicknameVaildMessage}
+            {nicknameValidMessage}
+          </ErrorText>
+        )}
+        {nicknameText && (
+          <ErrorText
+            style={{
+              color: colors.mainPink,
+            }}
+          >
+            {nicknameText}
           </ErrorText>
         )}
       </div>

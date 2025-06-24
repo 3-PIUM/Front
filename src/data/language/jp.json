@@ -32,7 +32,25 @@
     "gender": "性別",
     "male": "男性",
     "female": "女性",
-    "signupBtn": "会員登録する"
+    "signupBtn": "会員登録する",
+    "errorMessage": {
+      "nicknameInput": "ニックネームを入力してください。",
+      "yesNickname": "このニックネームは使用可能です。",
+      "noNickname": "このニックネームは使用できません。",
+      "nicknameVerify": "ニックネームの重複確認を行ってください",
+      "eightBirth": "生年月日を8桁で入力してください。",
+      "birthValid": "正しい日付を入力してください。",
+      "emailInput": "メールアドレスを入力してください。",
+      "emailVerify": "メール認証を完了してください。",
+      "emailFail": "メールの送信に失敗しました。",
+      "emailcode": "認証コードを入力してください。",
+      "emailcodeFail": "認証に失敗しました。もう一度お試しください。",
+      "time": "残り時間",
+      "passwordInput": "パスワードを入力してください",
+      "password": "パスワードが一致しません。",
+      "country": "国を選択してください。",
+      "gender": "性別を選択してください。"
+    }
   },
   "colorTest": {
     "testTitle": "パーソナル診断",
@@ -114,7 +132,8 @@
     "skinTypeTestTitle": "肌タイプ診断",
     "loading": "読み込み中...",
     "skinTypeResult": "肌タイプの結果",
-    "goBackSurvey": "アンケートに戻る"
+    "goBackSurvey": "アンケートに戻る",
+    "apply": "申し込み"
   },
   "category": {
     "pageTitle": "カテゴリ",
@@ -283,6 +302,7 @@
     "pageTitle": "お気に入り"
   },
   "mypage": {
+    "updateSuccess": "情報が正常に更新されました",
     "pageTitle": "マイページ (",
     "personalTitle": "個人情報",
     "editPersonal": "個人情報を編集",

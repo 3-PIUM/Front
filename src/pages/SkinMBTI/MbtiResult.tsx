@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import TextHeader from "../../components/common/TextHeader";
 import { styled } from "styled-components";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
 import MBTIResultKO from "../../data/MBTILanguage/KoMBTI.json";
 import MBTIResultEN from "../../data/MBTILanguage/EnMBTI.json";
@@ -115,7 +115,6 @@ export default function MbtiResult() {
   const [getSkin, setGetSkin] = useState<string>("");
   const { t } = useLocale();
 
-  // 1) skinType이 없을 때 서버 값(getSkin)을 가져온다
   useEffect(() => {
     if (!skinType) {
       axiosInstance.get("/member").then((res) => {
@@ -124,7 +123,6 @@ export default function MbtiResult() {
     }
   }, [skinType]);
 
-  // 2) 파생된 피부타입 글자(A/N/O)는 계산으로만 얻기
   const derivedSkin =
     skinType === "건성"
       ? "A"
@@ -146,7 +144,6 @@ export default function MbtiResult() {
       ? MBTIResultJP
       : MBTIResultKO;
 
-  // 4) 최종 MBTI 코드
   const mbti = `${derivedSkin}${pigment}${moisture}${reactivity}`;
   const finalResult = MBTIResults.mbti.find((item) => item.code === mbti);
 
@@ -166,7 +163,6 @@ export default function MbtiResult() {
 
   console.log(skinInfo);
 
-  // 5) 회원 정보 업데이트
   useEffect(() => {
     const updateMember = async () => {
       try {
@@ -184,7 +180,6 @@ export default function MbtiResult() {
 
     updateMember();
 
-    // 배경 설정
     const root = document.getElementById("root");
     const originalBg = root?.style.backgroundColor;
     const originalTop = root?.style.paddingTop;

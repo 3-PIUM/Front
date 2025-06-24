@@ -56,10 +56,10 @@ export default function Birth({
       return;
     }
     if (birth.length != 8) {
-      setBirthText("생년월일 8자를 입력해주세요");
+      setBirthText(t.signup.errorMessage.eightBirth);
       return;
     } else if (!isValidDateString(birth)) {
-      setBirthText("올바른 날짜를 입력해주세요");
+      setBirthText(t.signup.errorMessage.birthValid);
     } else {
       setBirthText("");
     }

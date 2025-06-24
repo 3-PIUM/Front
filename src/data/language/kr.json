@@ -31,7 +31,25 @@
     "gender": "성별",
     "male": "남자",
     "female": "여자",
-    "signupBtn": "회원가입하기"
+    "signupBtn": "회원가입하기",
+    "errorMessage": {
+      "nicknameInput": "닉네임을 확인해주세요",
+      "yesNickname": "사용 가능한 닉네임입니다",
+      "noNickname": "사용 불가능한 닉네임입니다",
+      "nicknameVerify": "닉네임 중복 검사를 진행해주세요",
+      "eightBirth": "생년월일은 8자리를 입력해주세요",
+      "birthValid": "올바른 날짜를 입력해주세요",
+      "emailInput": "이메일을 입력해주세요",
+      "emailVerify": "이메일 인증을 완료해주세요",
+      "emailFail": "이메일 전송에 실패했습니다",
+      "emailcode": "인증 번호를 입력해주세요",
+      "emailcodeFail": "인증에 실패했습니다. 다시 시도해주세요",
+      "time": "남은 시간",
+      "passwordInput": "비밀번호를 입력해주세요",
+      "password": "비밀번호가 일치하지 않습니다",
+      "country": "국가를 선택해주세요",
+      "gender": "성별을 선택해주세요"
+    }
   },
   "colorTest": {
     "testTitle": "퍼스널 진단",
@@ -112,7 +130,8 @@
     "skinTypeTestTitle": "피부 타입 진단",
     "loadong": "로딩 중...",
     "skinTypeResult": "피부 타입 결과",
-    "goBackSurvey": "설문조사로 돌아가기"
+    "goBackSurvey": "설문조사로 돌아가기",
+    "apply": "등록하기"
   },
   "category": {
     "pageTitle": "카테고리",
@@ -334,6 +353,7 @@
     "pageTitle": "찜"
   },
   "mypage": {
+    "updateSuccess": "정보가 성공적으로 수정되었습니다",
     "pageTitle": "마이페이지",
     "personalTitle": "개인정보",
     "editPersonal": "개인정보 수정",

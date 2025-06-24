@@ -40,7 +40,6 @@ export default function ScrollToTopButton({ scrollTargetRef }: Props) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 일단 조건 없이 항상 보이게
   return (
     <TopButton onClick={scrollToTop} $visible={true}>
       ↑ {t.scroll.top}
