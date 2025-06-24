@@ -220,6 +220,9 @@ const BigListWrapper = styled.div`
 `;
 
 export default function Home() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [activeTab, setActiveTab] = useState("전체");
   const [showStoreModal, setShowStoreModal] = useState(false);
   const navigate = useNavigate();

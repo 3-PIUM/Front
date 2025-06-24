@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
@@ -56,6 +56,7 @@ export default function PersonalColorResult() {
   const location = useLocation();
   const { t, language } = useLocale();
   console.log("language", language);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const root = document.getElementById("root");
@@ -113,7 +114,12 @@ export default function PersonalColorResult() {
         <Description>{seasonData.description}</Description>
       </ContentWrapper>
       <ButtonWrapper>
-        <Button label={t.colorTest.goSurvey} />
+        <Button
+          label={t.colorTest.goSurvey}
+          onClick={() => {
+            navigate("/survey");
+          }}
+        />
       </ButtonWrapper>
     </Wrap>
   );
