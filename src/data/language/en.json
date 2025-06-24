@@ -5,6 +5,8 @@
     "wishlist": "Wishlist",
     "mypage": "MyPage"
   },
+  "loading": "Loading",
+
   "login": {
     "emailPlaceholder": "email",
     "passwordPlaceholder": "password",

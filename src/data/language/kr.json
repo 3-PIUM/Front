@@ -5,6 +5,7 @@
     "wishlist": "찜",
     "mypage": "마이페이지"
   },
+  "loading": "로딩 중",
   "login": {
     "emailPlaceholder": "이메일",
     "passwordPlaceholder": "비밀번호",
