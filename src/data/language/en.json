@@ -564,5 +564,6 @@
     "close": "Close"
   },
   "purchaseNot": "There is no purchase history.",
-  "detailNot": "This product does not have a detail page."
+  "detailNot": "This product does not have a detail page.",
+  " noReview": "No reviews have been submitted."
 }
