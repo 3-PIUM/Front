@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import LogoHeader from "../components/common/LogoHeader";
 import colors from "../styles/colors";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ItemCard from "../components/product/ItemCard";
 import Header from "../components/common/Header";
 import { useNavigate } from "react-router-dom";
@@ -177,21 +177,12 @@ export default function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const [activeTab, setActiveTab] = useState("전체");
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
   const { t, setLanguage, language } = useLocale();
   sessionStorage.removeItem("topClicked");
   sessionStorage.removeItem("categoryName");
   sessionStorage.removeItem("subcategoryName");
-
-  const listRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (activeTab === "전체" && listRef.current) {
-      listRef.current.scrollLeft = 0;
-    }
-  }, [activeTab]);
 
   useEffect(() => {
     const fetchMemberInfo = async () => {
@@ -212,11 +203,21 @@ export default function Home() {
 
   console.log(memberInfo);
 
+  type SkinTypeKey = keyof typeof skinType;
+  type LanguageKey = keyof (typeof skinType)[SkinTypeKey];
+
   const getLocalizedSkinType = (
-    originalType: string,
+    originalType: SkinTypeKey,
     language: string
   ): string => {
-    return skinType[originalType]?.[language] ?? "";
+    if (
+      language === "한국어" ||
+      language === "English" ||
+      language === "日本語"
+    ) {
+      return skinType[originalType]?.[language as LanguageKey] ?? "";
+    }
+    return "";
   };
 
   const nickname = JSON.parse(
