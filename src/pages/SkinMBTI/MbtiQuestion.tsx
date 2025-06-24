@@ -91,7 +91,6 @@ export default function MbtiQuestion() {
   const { t } = useLocale();
   const [currentQuestionId, setCurrentQuestionId] = useState<number>(16); // 초기 질문 ID
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
-  const [currentTypeIndex, setCurrentTypeIndex] = useState(0);
   const [skinType, setSkinType] = useState<string | null>(null);
   const [moisture, setMoisture] = useState<string | null>(null);
   const [reactivity, setReactivity] = useState<string | null>(null);
@@ -126,29 +125,18 @@ export default function MbtiQuestion() {
         });
 
         setQuestionMap(map);
-        setTypeOrder(detectedTypes); // ✅ typeOrder는 비동기적이므로 아래에 쓰면 안 됨
+        setTypeOrder(detectedTypes);
 
-        // ✅ 여기에서 직접 detectedTypes로 초기 질문 설정
         const firstType = detectedTypes[0];
         const firstQuestion = map.get(firstType)?.[0];
         if (firstQuestion) {
-          setCurrentQuestionId(firstQuestion.id); // ✅ 안전하게 초기화
+          setCurrentQuestionId(firstQuestion.id);
         }
       } catch (err) {
         console.error("질문 불러오기 실패", err);
       }
     };
 
-    const fetchMemberInfo = async () => {
-      try {
-        const response = await axiosInstance.get("/member");
-        const result = response.data.result;
-      } catch (error) {
-        console.error("회원 정보 불러오기 실패:", error);
-      }
-    };
-
-    fetchMemberInfo();
     fetchMBTIQuestions();
 
     const root = document.getElementById("root");
@@ -184,13 +172,11 @@ export default function MbtiQuestion() {
     type: string
   ) => {
     if (isResult) {
-      // 타입 저장만 함
       if (type === "SKINTYPE") setSkinType(value);
       if (type === "PIGMENT") setPigment(value);
       if (type === "MOISTURE") setMoisture(value);
       if (type === "REACTIVITY") setReactivity(value);
 
-      // 이동은 useEffect에서 처리 → 여기선 return만
       return;
     } else {
       setCurrentQuestionId(nextId);
@@ -210,17 +196,14 @@ export default function MbtiQuestion() {
     const answers = typeOrder.map((type) => answerMap[type]);
     const answeredCount = answers.filter(Boolean).length;
 
-    // 아직 답변 안 한 타입이 있다면
     if (answeredCount < typeOrder.length) {
       const nextType = typeOrder[answeredCount];
       const nextQuestion = questionMap.get(nextType)?.[0];
       if (nextQuestion) {
-        setCurrentTypeIndex(answeredCount);
         setCurrentQuestionId(nextQuestion.id);
       }
     }
 
-    // 모든 답변을 완료했다면 결과 페이지로 이동
     if (answeredCount === typeOrder.length) {
       navigate("/mbti/result", {
         state: {

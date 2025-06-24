@@ -1,13 +1,11 @@
 import { styled } from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import colors from "../../styles/colors";
-import { FaHeart } from "react-icons/fa6";
-import { useState } from "react";
-import axiosInstance from "../../api/axiosInstance";
 
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
+  align-items: center;
 `;
 
 const rankColors = [
@@ -27,8 +25,8 @@ const RankTitle = styled.div<{ color: string }>`
   display: flex;
   font-size: 1.2rem;
   font-weight: 700;
-  width: 15%;
-  justify-content: center;
+  width: 10%;
+  justify-content: baseline;
   align-items: center;
   color: ${(props) => props.color};
 
@@ -41,12 +39,13 @@ const ItemImage = styled.img`
   display: flex;
   width: 25%;
   height: 25%;
+  border-radius: 0.5rem;
 `;
 
 const ItemInfo = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 65%;
   padding: 1rem 0 1rem 1rem;
   justify-content: center;
 `;
@@ -68,20 +67,14 @@ const ItemPrice = styled.div`
 `;
 
 const ItemName = styled.div`
-  display: flex;
-  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-overflow: ellipsis;
   font-size: 1rem;
   font-weight: 500;
-`;
-
-const Heart = styled.div`
-  display: flex;
-  width: 10%;
-  justify-content: center;
-  align-items: center;
 `;
 
 interface ItemProps {
@@ -92,7 +85,7 @@ interface ItemProps {
   itemId: number;
   wishStatus?: boolean;
   onWishChange?: () => void;
-  rank: string;
+  rank: number;
 }
 
 export default function TopRankItem({
@@ -100,43 +93,17 @@ export default function TopRankItem({
   itemName,
   discountRate,
   price,
-  itemId,
-  wishStatus,
-  onWishChange,
   rank,
 }: ItemProps) {
   const { t } = useLocale();
-  const [isWished, setIsWished] = useState(wishStatus ?? false);
-
-  const handleWish = async (event: React.MouseEvent) => {
-    event.stopPropagation();
-
-    if (!isWished) {
-      try {
-        const response = await axiosInstance.post(`/wishlist/${itemId}`);
-        setIsWished(true);
-        console.log("찜 추가가 됐습니다", response.data);
-      } catch {
-        console.error("찜 추가에 실패했습니다");
-      }
-    } else {
-      try {
-        await axiosInstance.delete(`/wishlist/${itemId}`);
-        console.log("찜 취소가 됐습니다");
-        setIsWished(false);
-        onWishChange?.();
-      } catch {
-        console.error("찜 취소에 실패했습니다");
-      }
-    }
-  };
+  const formattedPrice = price.toLocaleString();
 
   return (
     <Wrapper>
       <RankTitle color={rankColors[Number(rank) - 1]}>
-        {rank === "1" || rank === "2" || rank === "3" ? (
+        {rank === 1 || rank === 2 || rank === 3 ? (
           <span className="medal">
-            {rank === "1" ? "🥇" : rank === "2" ? "🥈" : "🥉"}
+            {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
           </span>
         ) : (
           rank
@@ -147,16 +114,12 @@ export default function TopRankItem({
         <ItemName>{itemName}</ItemName>
         <PriceWrap>
           <ItemDiscount>{discountRate}%</ItemDiscount>
-          <ItemPrice>{price}원</ItemPrice>
+          <ItemPrice>
+            {formattedPrice}
+            {t.pos.won}
+          </ItemPrice>
         </PriceWrap>
       </ItemInfo>
-      {/* <Heart>
-        <FaHeart
-          fontSize={"1.4rem"}
-          color={isWished ? colors.mainPink : colors.mediumGrey}
-          onClick={handleWish}
-        />
-      </Heart> */}
     </Wrapper>
   );
 }

@@ -26,7 +26,6 @@ export default function WishList() {
   sessionStorage.removeItem("subcategoryName");
   const { t } = useLocale();
   const [itemList, setItemList] = useState<wishProps[]>();
-  // 찜 목록을 새로고침할 때 사용
   const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   useEffect(() => {
@@ -68,7 +67,7 @@ export default function WishList() {
   }
 
   const handleWishChange = () => {
-    setRefreshTrigger((prev) => !prev); // useEffect 다시 실행
+    setRefreshTrigger((prev) => !prev);
   };
 
   return (

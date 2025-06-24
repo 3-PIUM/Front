@@ -5,7 +5,7 @@ import Header from "../../components/common/Header";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/common/PageTitle";
 import axiosInstance from "../../api/axiosInstance";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { useLocale } from "../../context/LanguageContext";
 
 const TopWrapper = styled.div`

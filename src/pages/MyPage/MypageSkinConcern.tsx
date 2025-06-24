@@ -173,14 +173,14 @@ export default function SettingSkinConcern() {
       {showModal && (
         <ModalOverlay>
           <ModalContent>
-            <div>정보가 성공적으로 수정되었습니다</div>
+            <div>{t.mypage.updateSuccess}</div>
             <ModalButton
               onClick={() => {
                 navigate("/mypage");
                 setShowModal(false);
               }}
             >
-              확인
+              {t.welcome.btn}
             </ModalButton>
           </ModalContent>
         </ModalOverlay>

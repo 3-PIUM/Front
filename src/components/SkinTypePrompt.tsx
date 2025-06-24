@@ -1,6 +1,4 @@
-// src/components/SkinTypePrompt.tsx
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   background-color: #ffe7f0;

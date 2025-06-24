@@ -158,8 +158,11 @@ export default function SettingSkinType() {
       {showModal && (
         <ModalOverlay>
           <ModalContent>
-            <div>정보가 성공적으로 수정되었습니다</div>
-            <ModalButton onClick={() => navigate("/mypage")}>확인</ModalButton>
+            <div>{t.mypage.updateSuccess}</div>
+            <ModalButton onClick={() => navigate("/mypage")}>
+              {" "}
+              {t.welcome.btn}
+            </ModalButton>
           </ModalContent>
         </ModalOverlay>
       )}

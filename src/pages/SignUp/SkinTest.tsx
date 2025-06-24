@@ -66,16 +66,11 @@ const LoadingText = styled.div`
 export default function SkinTest() {
   const navigate = useNavigate();
   const { t } = useLocale();
-  //질문 목록
   const [questions, setQuestions] = useState<QuestionGroup[]>([]);
-  //현재 보여줄 질문
   const [currentQuestionId, setCurrentQuestionId] = useState<number | null>(
     null
   );
-  //질문 수
   const [questionNumber, setQuestionNumber] = useState(1);
-  //결과
-  const [resultValue, setResultValue] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSkinTest = async () => {
@@ -88,7 +83,7 @@ export default function SkinTest() {
         );
         const data = response.data.result;
         setQuestions(data);
-        setCurrentQuestionId(data[0].questions[0].id); // 첫 질문 설정
+        setCurrentQuestionId(data[0].questions[0].id);
       } catch (error) {
         console.error("Error fetching skin test data:", error);
       }

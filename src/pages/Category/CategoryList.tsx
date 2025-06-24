@@ -95,13 +95,6 @@ const SortValue = styled.div`
   color: ${colors.darkGrey};
 `;
 
-// const ItemWrap = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(3, 1fr);
-//   margin-top: 1rem;
-//   gap: 0.5rem;
-// `;
-
 interface ItemType {
   itemImage: string;
   itemName: string;
@@ -136,7 +129,6 @@ export default function CategoryList() {
   );
 
   const [items, setItems] = useState<ItemType[]>([]);
-  // const [sortedItems, setSortedItems] = useState<ItemType[]>([]);
 
   const navigate = useNavigate();
 
@@ -149,61 +141,12 @@ export default function CategoryList() {
     setOpenModal(true);
   };
 
-  // const sortItems = (items: any[], sortType: string) => {
-  //   if (sortType === t.category.sorted.lowPrice) {
-  //     return [...items].sort((a, b) => a.salePrice - b.salePrice);
-  //   }
-
-  //   if (sortType === t.category.sorted.highDiscount) {
-  //     return [...items].sort((a, b) => {
-  //       const discountA = a.originalPrice
-  //         ? (1 - a.salePrice / a.originalPrice) * 100
-  //         : 0;
-  //       const discountB = b.originalPrice
-  //         ? (1 - b.salePrice / b.originalPrice) * 100
-  //         : 0;
-  //       return discountB - discountA;
-  //     });
-  //   }
-
-  //   return items; // 추천순 (기본)
-  // };
-
-  // const fetchSubcategory = async () => {
-  //   try {
-  //     const endpoint = isVegan
-  //       ? `item/vegan/list/${Subcategory}` // 비건용 API
-  //       : `item/list/${Subcategory}`; // 일반 API
-
-  //     const params: any = {};
-  //     if (skinIssue !== "전체") {
-  //       params.skinIssue = skinIssue;
-  //     }
-
-  //     if (selectedSort !== "") {
-  //       params.priceSort = selectedSort;
-  //     }
-
-  //     const response = await axiosInstance.get(endpoint, {
-  //       params,
-  //     });
-
-  //     const data = response.data.result;
-  //     const item = data.itemSearchInfoDTOs;
-  //     setItems(item);
-  //   } catch (error) {
-  //     console.log("서브카테고리 불러오기 실패", error);
-  //   }
-  // };
-
-  console.log(skinIssue);
-
   useEffect(() => {
     const fetchSubcategory = async () => {
       try {
         const endpoint = isVegan
-          ? `item/vegan/list/${Subcategory}` // 비건용 API
-          : `item/list/${Subcategory}`; // 일반 API
+          ? `item/vegan/list/${Subcategory}`
+          : `item/list/${Subcategory}`;
 
         const params: any = {};
         if (skinIssue !== "전체") {
@@ -228,11 +171,6 @@ export default function CategoryList() {
 
     fetchSubcategory();
   }, [skinIssue, selectedSort]);
-
-  // useEffect(() => {
-  //   const newSorted = sortItems(items, selectedSort);
-  //   setSortedItems(newSorted);
-  // }, [items, selectedSort]);
 
   const subListRef = useRef<HTMLDivElement | null>(null);
   const selectedSubRef = useRef<HTMLLIElement | null>(null);
@@ -259,15 +197,13 @@ export default function CategoryList() {
   }, [Subcategory]);
 
   useEffect(() => {
-    // 스크롤 위치 초기화
     if (containerRef.current) {
       containerRef.current.scrollTo({ top: 0 });
     }
   }, [skinIssue, selectedSort, Subcategory]);
 
-  const containerRef = useRef<HTMLDivElement>(null); // 스크롤 영역
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  //useVirtualizer 훅
   const ROW_HEIGHT = 180;
   const rowCount = Math.ceil(items.length / 3);
   const rowVirtualizer = useVirtualizer({
