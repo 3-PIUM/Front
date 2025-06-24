@@ -188,7 +188,9 @@ export default function PurchaseDetailPage() {
                     : t.order.quantityNumber.more}
                 </Quantity>
                 <PriceBox>
-                  <Discount>{item.discountRate}%</Discount>
+                  {item.discountRate > 0 && (
+                    <Discount>{item.discountRate}%</Discount>
+                  )}
                   <Price>
                     {(item.price || 0).toLocaleString()}
                     {t.order.won}

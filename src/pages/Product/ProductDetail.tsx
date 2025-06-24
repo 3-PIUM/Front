@@ -123,7 +123,6 @@ export default function ProductDetail() {
   );
   const pageWrapperRef = useRef<HTMLDivElement>(null);
   const [product, setProduct] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const itemId = new URLSearchParams(location.search).get("itemId");
   const { t } = useLocale();
@@ -181,7 +180,6 @@ export default function ProductDetail() {
     const fetchProduct = async () => {
       if (!itemId) {
         setError("상품 ID가 유효하지 않습니다.");
-        setLoading(false);
         return;
       }
       try {
@@ -210,7 +208,6 @@ export default function ProductDetail() {
         }
         setError("상품 정보를 불러오는 데 실패했습니다.");
       } finally {
-        setLoading(false);
       }
     };
     fetchProduct();
@@ -233,7 +230,7 @@ export default function ProductDetail() {
 
         const mappedReviews = reviews.map((r: any) => ({
           reviewId: r.reviewId,
-          username: r.memberId,
+          memberName: r.memberName,
           memberId: r.memberId,
           date: new Date(r.updatedAt).toLocaleDateString(),
           rating: r.rating,
@@ -297,10 +294,6 @@ export default function ProductDetail() {
     }
   };
 
-  if (loading)
-    return (
-      <div style={{ padding: "2rem", textAlign: "center" }}>로딩 중...</div>
-    );
   if (error)
     return (
       <div style={{ padding: "2rem", color: "red", textAlign: "center" }}>
@@ -505,7 +498,7 @@ export default function ProductDetail() {
               <>
                 <div
                   style={{
-                    maxHeight: showAllReviews ? "400px" : "auto",
+                    maxHeight: showAllReviews ? "auto" : "auto",
                     overflowY: showAllReviews ? "auto" : "visible",
                   }}
                 >
