@@ -21,6 +21,9 @@ const ItemWrapper = styled.div`
 `;
 
 export default function WishList() {
+  sessionStorage.removeItem("topClicked");
+  sessionStorage.removeItem("categoryName");
+  sessionStorage.removeItem("subcategoryName");
   const { t } = useLocale();
   const [itemList, setItemList] = useState<wishProps[]>();
   // 찜 목록을 새로고침할 때 사용

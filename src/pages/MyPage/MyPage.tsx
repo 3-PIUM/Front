@@ -98,6 +98,9 @@ const Line = styled.hr`
 `;
 
 export default function MyPage() {
+  sessionStorage.removeItem("topClicked");
+  sessionStorage.removeItem("categoryName");
+  sessionStorage.removeItem("subcategoryName");
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const { t } = useLocale();

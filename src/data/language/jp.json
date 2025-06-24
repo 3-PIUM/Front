@@ -5,6 +5,8 @@
     "wishlist": "お気に入り",
     "mypage": "マイページ"
   },
+  "loading": "読み込み中",
+
   "login": {
     "emailPlaceholder": "メールアドレス",
     "passwordPlaceholder": "パスワード",

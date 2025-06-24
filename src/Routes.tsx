@@ -39,6 +39,7 @@
 // import PersonalTest from "./pages/SignUp/PersonalTest";
 // import PersonalColorResult from "./pages/SignUp/PersonalColorResult";
 import { lazy } from "react";
+import Loading from "./pages/Loading";
 
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/SignUp/Signup"));
@@ -162,6 +163,10 @@ const routes = [
   {
     path: "/personal-result",
     element: <PersonalColorResult />,
+  },
+  {
+    path: "/loading",
+    element: <Loading />,
   },
 
   //MenuLayout
