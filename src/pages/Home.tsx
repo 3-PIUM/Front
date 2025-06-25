@@ -307,7 +307,7 @@ export default function Home() {
                 item: {
                   itemId: number;
                   itemName: string;
-                  discoutRate: number;
+                  discountRate: number;
                   itemImage: string;
                   salePrice: number;
                   originalPrice: number;
@@ -319,7 +319,7 @@ export default function Home() {
                   itemId={item.itemId}
                   itemName={item.itemName}
                   imageSource={item.itemImage}
-                  discountRate={item.discoutRate}
+                  discountRate={item.discountRate}
                   price={item.salePrice}
                   rank={index + 1}
                 />

@@ -84,6 +84,7 @@ export default function PersonalRecommended({
         });
         const data = response.data.result;
         setItems(data);
+        console.log(data);
       } catch (error) {
         console.error("아이템을 가져오는 중 오류 발생:", error);
       }
@@ -122,13 +123,7 @@ export default function PersonalRecommended({
             itemName={product.itemName}
             imageSource={product.itemImage}
             price={product.salePrice}
-            discountRate={
-              product.originalPrice
-                ? Math.round(
-                    (1 - product.salePrice / product.originalPrice) * 100
-                  )
-                : 0
-            }
+            discountRate={product.discountRate}
             itemId={product.id}
             wishStatus={product.wishStatus}
           />
