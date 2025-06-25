@@ -312,11 +312,7 @@ const CartPage = () => {
     );
   };
 
-  const handleOptionChange = async (
-    id: string,
-    prevOption: string,
-    newOption: string
-  ) => {
+  const handleOptionChange = async (id: string, newOption: string) => {
     await axiosInstance.patch(`/cart/items/${id}/updateOption`, {
       changeOption: newOption,
     });
@@ -524,9 +520,7 @@ const CartPage = () => {
             onSelect={async (newOption) => {
               const id = showOptionFor;
               if (id) {
-                const prevOption =
-                  cartItems.find((item) => item.id === id)?.option || "";
-                await handleOptionChange(id, prevOption, newOption);
+                await handleOptionChange(id, newOption);
               }
             }}
             onClose={() => setShowOptionFor(null)}

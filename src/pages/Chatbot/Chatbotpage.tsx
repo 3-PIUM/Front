@@ -61,7 +61,7 @@ export default function ChatbotPage() {
     e.returnValue = "";
   };
 
-  const handleBrowserNav = (e: PopStateEvent) => {
+  const handleBrowserNav = (_e: PopStateEvent) => {
     setShowExitModal(true);
     history.pushState(null, "", location.href);
   };

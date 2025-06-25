@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 interface RecommendItem {
   itemId: number;
   itemName: string;
-  itemImage: string | null;
+  imgUrl: string;
   discountPrice: number;
 }
 
@@ -18,8 +18,8 @@ const ChatRecommendList: React.FC<Props> = ({ items }) => {
   const scrollContainerStyle: React.CSSProperties = {
     display: "flex",
     overflowX: "auto",
-    gap: "1rem",
-    padding: "1rem 0",
+    gap: "0.4rem",
+    padding: "0.5rem 0",
     msOverflowStyle: "none",
     scrollbarWidth: "none",
   };
@@ -40,7 +40,7 @@ const ChatRecommendList: React.FC<Props> = ({ items }) => {
             onClick={() => navigate(`/product-detail?itemId=${item.itemId}`)}
             style={{
               cursor: "pointer",
-              maxWidth: "140px",
+              width: "180px",
               fontSize: "0.75rem",
               flexDirection: "column",
               alignItems: "center",
@@ -67,7 +67,7 @@ const ChatRecommendList: React.FC<Props> = ({ items }) => {
             >
               <img
                 src={
-                  item.itemImage ??
+                  item.imgUrl ??
                   "https://image.oliveyoung.co.kr/uploads/images/goods/550/10/0000/0017/A00000017330210ko.jpg"
                 }
                 alt={item.itemName}
@@ -82,7 +82,7 @@ const ChatRecommendList: React.FC<Props> = ({ items }) => {
             <div
               style={{
                 color: "#000",
-                fontSize: "1rem",
+                fontSize: "0.9rem",
                 fontWeight: "bold",
                 textAlign: "center",
                 alignSelf: "center",
@@ -101,6 +101,8 @@ const ChatRecommendList: React.FC<Props> = ({ items }) => {
                 // lineHeight: 1.3,
                 // textAlign: "left",
                 alignSelf: "flex-start",
+                paddingRight: "0.3rem",
+                paddingLeft: "0.3rem",
               }}
               title={item.itemName}
             >

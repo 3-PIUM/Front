@@ -86,6 +86,7 @@ export default function IngredientDetailPage() {
   const itemId = Number(new URLSearchParams(location.search).get("itemId"));
   const [openScore, setOpenScore] = useState<string | null>(null);
   const [groupedData, setGroupedData] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -124,6 +125,7 @@ export default function IngredientDetailPage() {
         }));
 
         setGroupedData(result);
+        setIsLoading(false);
       } catch (err) {
         console.error("성분 스코어 불러오기 실패", err);
       }
@@ -165,8 +167,18 @@ export default function IngredientDetailPage() {
         <Wrapper>
           {groupedData.length > 0 && (
             <ChartWrapper>
-              <Suspense fallback={null}>
-                <ScorePieChart data={groupedData} />
+              <Suspense
+                fallback={
+                  <div
+                    style={{
+                      height: "200px",
+                      background: "#f3f3f3",
+                      borderRadius: "8px",
+                    }}
+                  />
+                }
+              >
+                <ScorePieChart data={groupedData} isLoading={isLoading} />
               </Suspense>
             </ChartWrapper>
           )}
@@ -175,7 +187,18 @@ export default function IngredientDetailPage() {
             .sort((a, b) => b.percent - a.percent)
             .map((item) => (
               <div key={item.score}>
-                <Suspense fallback={null}>
+                <Suspense
+                  fallback={
+                    <div
+                      style={{
+                        backgroundColor: "#eee",
+                        height: "60px",
+                        borderRadius: "10px",
+                        marginBottom: "0.8rem",
+                      }}
+                    />
+                  }
+                >
                   <ScoreBar
                     score={`${item.score}${t.ingredientDetail.scoreUnit}`}
                     percent={item.percent}
@@ -186,6 +209,7 @@ export default function IngredientDetailPage() {
                         prev === item.score ? null : item.score
                       )
                     }
+                    isLoading={isLoading}
                   />
                 </Suspense>
                 {openScore === item.score &&

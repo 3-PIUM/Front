@@ -91,7 +91,6 @@ const getColorByPercent = (percent: number) => {
   else if (percent >= 30) return "#F884A8";
   else return "#f9cfdc";
 };
-
 interface ChartDataItem {
   category: string;
   [key: string]: number | string;

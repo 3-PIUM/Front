@@ -1,3 +1,4 @@
+import { createGlobalStyle } from "styled-components";
 import { PieChart, Pie, Cell } from "recharts";
 import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
@@ -11,7 +12,22 @@ interface IngredientData {
 
 interface ScorePieChartProps {
   data: IngredientData[];
+  isLoading?: boolean;
 }
+
+const GlobalStyle = createGlobalStyle`
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+`;
 
 const ChartWrapper = styled.div`
   display: flex;
@@ -44,7 +60,42 @@ const ValueText = styled.span`
   color: #333;
 `;
 
-const ScorePieChart = ({ data }: ScorePieChartProps) => {
+const ScorePieChart = ({ data, isLoading }: ScorePieChartProps) => {
+  if (isLoading) {
+    return (
+      <>
+        <GlobalStyle />
+        <ChartWrapper>
+          <div
+            style={{
+              width: 180,
+              height: 180,
+              borderRadius: "50%",
+              backgroundColor: "#f0f0f0",
+              animation: "pulse 1.5s infinite",
+            }}
+          />
+          <LegendWrapper>
+            {Array(3)
+              .fill(null)
+              .map((_, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    width: "140px",
+                    height: "16px",
+                    backgroundColor: "#f0f0f0",
+                    borderRadius: "8px",
+                    animation: "pulse 1.5s infinite",
+                  }}
+                />
+              ))}
+          </LegendWrapper>
+        </ChartWrapper>
+      </>
+    );
+  }
+
   const chartData = data.map(({ score, percent, color }) => ({
     name: score,
     value: percent,
