@@ -7,10 +7,6 @@ import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import ImageNot from "../../components/ingredient/ImageNot";
 
-const TextHeader = React.lazy(
-  () => import("../../components/common/TextHeader")
-);
-
 const ProductCard = React.lazy(
   () => import("../../components/product/ProductCard")
 );
@@ -24,7 +20,7 @@ const ReviewCard = React.lazy(
   () => import("../../components/review/ReviewCard")
 );
 const Button = React.lazy(() => import("../../components/common/Button"));
-const FullHeader = React.lazy(
+const TextIconHeader = React.lazy(
   () => import("../../components/common/TextIconHeader ")
 );
 const IngredientWarningSummary = React.lazy(
@@ -308,10 +304,7 @@ export default function ProductDetail() {
         <Header />
       </Suspense>
       <Suspense fallback={null}>
-        <FullHeader pageName="" />
-      </Suspense>
-      <Suspense fallback={null}>
-        <TextHeader pageName={t.order.detaiTitle} />
+        <TextIconHeader pageName="" />
       </Suspense>
       <ProductCardWrapper ref={pageWrapperRef}>
         <Suspense fallback={null}>
@@ -375,9 +368,11 @@ export default function ProductDetail() {
             {product.imageUrl.detailImages.length > 0 ? (
               (() => {
                 try {
-                  const parsedImages: string[] = JSON.parse(
-                    product.imageUrl.detailImages[0]
+                  const fixedJson = product.imageUrl.detailImages[0].replace(
+                    /'/g,
+                    '"'
                   );
+                  const parsedImages: string[] = JSON.parse(fixedJson);
                   const validUrls = parsedImages.filter(
                     (url: string) => url.trim() !== ""
                   );

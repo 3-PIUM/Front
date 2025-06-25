@@ -194,7 +194,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
               <ResultItem
                 key={item.id}
                 onClick={() => {
-                  navigate(`/product-detail/${item.id}`);
+                  navigate(`/product-detail?itemId=${item.id}`);
                   setIsSearchOpen(false);
                 }}
               >

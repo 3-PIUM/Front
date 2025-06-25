@@ -8,6 +8,7 @@ import ChatInputBox from "../../components/chatbot/ChatInputBox";
 import styled from "styled-components";
 import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
 
 interface Message {
   sender: "user" | "bot";
@@ -23,7 +24,7 @@ const ChatPageContainer = styled.div`
 const ChatContent = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 1rem;
+  padding: 3rem 1rem 2.5rem;
 `;
 const DateText = styled.div`
   text-align: center;
@@ -48,8 +49,8 @@ export default function ChatbotPage() {
   const [wishItems, setWishItems] = useState<any[]>([]);
   const [input, setInput] = useState("");
   const [compareModeStarted, setCompareModeStarted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Utility: get time string
   const getTime = () => {
     const now = new Date();
     return (
@@ -59,14 +60,12 @@ export default function ChatbotPage() {
     );
   };
 
-  // Date for chat
   const today = new Date();
   const dayLabel = t.chatbot.response.days?.[today.getDay()] ?? "";
   const formattedDate = `${today.getFullYear()}.${String(
     today.getMonth() + 1
   ).padStart(2, "0")}.${String(today.getDate()).padStart(2, "0")} ${dayLabel}`;
 
-  // Fetch cart and wish items
   useEffect(() => {
     const fetchCartItems = async () => {
       try {
@@ -79,7 +78,7 @@ export default function ChatbotPage() {
             brand: item.brand,
             price: `${item.salePrice.toLocaleString()}원`,
             image: item.mainImageUrl,
-            checked: false,
+            checked: selectedCompareItems.includes(item.cartItemId),
           }))
         );
       } catch (err) {
@@ -97,7 +96,7 @@ export default function ChatbotPage() {
             brand: entry.item.brand,
             price: `${entry.item.salePrice.toLocaleString()}원`,
             image: entry.item.mainImageUrl,
-            checked: false,
+            checked: selectedCompareItems.includes(entry.item.itemId),
           }))
         );
       } catch (err) {
@@ -106,35 +105,39 @@ export default function ChatbotPage() {
     };
     fetchCartItems();
     fetchWishItems();
-  }, []);
+  }, [selectedCompareItems]);
 
-  // Initial welcome message
   useEffect(() => {
-    setMessages([
-      {
-        sender: "bot",
-        text: t.chatbot.welcome,
-        time: getTime(),
-      },
-    ]);
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setMessages([
+        {
+          sender: "bot",
+          text: t.chatbot.welcome,
+          time: getTime(),
+        },
+      ]);
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [t]);
 
-  // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Send chat message
   const sendChatMessage = async (userInput: string) => {
-    const sessionId = "user-session-id"; // 실제 필요에 따라 고유값으로 대체
+    const sessionId = "user-session-id";
+    const lang = t.lang || "KR";
+    setIsLoading(true); // Show spinner before network call
     try {
-      const res = await axiosInstance.post("http://52.79.241.142:8000/chat", {
+      const res = await axiosInstance.post("/chat/message", {
         message: userInput,
-        lang: "KR",
+        lang: lang,
         item_ids: selectedCompareItems,
         session_id: sessionId,
       });
-      const output = res.data.output || t.chatbot.response.default;
+      const output = res.data.result.output || t.chatbot.response.default;
       setMessages((prev) => [
         ...prev,
         {
@@ -148,6 +151,9 @@ export default function ChatbotPage() {
           time: getTime(),
         },
       ]);
+      if (mode === "compare" && !compareModeStarted) {
+        setCompareModeStarted(true);
+      }
     } catch (err) {
       setMessages((prev) => [
         ...prev,
@@ -162,10 +168,11 @@ export default function ChatbotPage() {
           time: getTime(),
         },
       ]);
+    } finally {
+      setIsLoading(false); // Hide spinner after response
     }
   };
 
-  // Handle input submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -176,7 +183,6 @@ export default function ChatbotPage() {
     }
   };
 
-  // Handle suggestion click (for recommend/compare)
   const handleSuggestionClick = (type: "recommend" | "compare") => {
     const userInput = t.chatbot.suggestions[type];
     sendChatMessage(userInput);
@@ -185,7 +191,6 @@ export default function ChatbotPage() {
     if (type === "compare") setCompareModeStarted(false);
   };
 
-  // Handle select for compare items
   const handleCompareSelect = (itemId: number) => {
     setSelectedCompareItems((prev) =>
       prev.includes(itemId)
@@ -194,7 +199,6 @@ export default function ChatbotPage() {
     );
   };
 
-  // Compare intro text
   const compareIntro = (
     <div
       style={{
@@ -220,9 +224,85 @@ export default function ChatbotPage() {
       <TextHeader pageName={t.chatbot.pageTitle} />
       <ChatContent>
         <DateText>{formattedDate}</DateText>
-        {/* Render all messages */}
-        {messages.map((msg, idx) => (
-          <MessageWrapper key={idx}>
+
+        {/* 1. 기본 안내 메시지 */}
+        {messages[0] && (
+          <MessageWrapper>
+            <ChatMessage
+              sender={messages[0].sender}
+              text={messages[0].text}
+              time={messages[0].time}
+              botName={t.chatbot.botName}
+            />
+          </MessageWrapper>
+        )}
+
+        {/* 2. 사용자 입력 메시지 (예: "상품 비교하기") */}
+        {messages[1] && (
+          <MessageWrapper>
+            <ChatMessage
+              sender={messages[1].sender}
+              text={messages[1].text}
+              time={messages[1].time}
+              botName={t.chatbot.botName}
+            />
+          </MessageWrapper>
+        )}
+
+        {/* {messages[2] && (
+          <MessageWrapper>
+            <ChatMessage
+              sender={messages[2].sender}
+              text={messages[2].text}
+              time={messages[2].time}
+              botName={t.chatbot.botName}
+            />
+          </MessageWrapper>
+        )} */}
+
+        {/* 3. 선택된 장바구니/찜 항목 (항상 유지) */}
+        {mode === "compare" && (
+          <>
+            <ChatItemList
+              title="장바구니 목록"
+              items={cartItems.filter((item) =>
+                selectedCompareItems.includes(item.id)
+              )}
+              selectedIds={selectedCompareItems}
+              onToggle={handleCompareSelect}
+            />
+            <ChatItemList
+              title="찜 목록"
+              items={wishItems.filter((item) =>
+                selectedCompareItems.includes(item.id)
+              )}
+              selectedIds={selectedCompareItems}
+              onToggle={handleCompareSelect}
+            />
+          </>
+        )}
+
+        {mode === "compare" && !compareModeStarted && (
+          <>
+            {compareIntro}
+            <ChatItemList
+              title={t.compare.cartList}
+              items={cartItems}
+              selectedIds={selectedCompareItems}
+              onToggle={handleCompareSelect}
+            />
+            <ChatItemList
+              title={t.compare.wishlist}
+              items={wishItems}
+              selectedIds={selectedCompareItems}
+              onToggle={handleCompareSelect}
+            />
+          </>
+        )}
+
+        {/* 4. 이후 메시지 (가격 비교해줘 등) */}
+        {messages.slice(2).map((msg, idx) => (
+          <MessageWrapper key={idx + 2}>
             <ChatMessage
               sender={msg.sender}
               text={msg.text}
@@ -232,7 +312,6 @@ export default function ChatbotPage() {
           </MessageWrapper>
         ))}
 
-        {/* Initial suggestions */}
         {mode === "default" && messages.length === 1 && (
           <ChatSuggestions
             recommendLabel={t.chatbot.suggestions.recommend}
@@ -240,37 +319,28 @@ export default function ChatbotPage() {
             onSelect={handleSuggestionClick}
           />
         )}
-
-        {/* Compare mode: intro and checklist */}
-        {mode === "compare" && !compareModeStarted && (
-          <>
-            {compareIntro}
-            <ChatItemList
-              title={t.compare.cartList}
-              items={cartItems.map((item) => ({
-                ...item,
-                checked: selectedCompareItems.includes(item.id),
-              }))}
-              selectedIds={selectedCompareItems}
-              onToggle={handleCompareSelect}
-            />
-            <ChatItemList
-              title={t.compare.wishlist}
-              items={wishItems.map((item) => ({
-                ...item,
-                checked: selectedCompareItems.includes(item.id),
-              }))}
-              selectedIds={selectedCompareItems}
-              onToggle={handleCompareSelect}
-            />
-          </>
-        )}
       </ChatContent>
       <ChatInputBox
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onSubmit={handleSubmit}
       />
+      {isLoading && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(255, 255, 255, 0.6)",
+            zIndex: 999,
+            pointerEvents: "none",
+          }}
+        >
+          <LoadingSpinner text={t.loading} />
+        </div>
+      )}
     </ChatPageContainer>
   );
 }
