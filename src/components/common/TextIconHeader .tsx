@@ -80,13 +80,29 @@ const SearchModal = styled.div`
   overflow-y: auto;
 `;
 
-const SearchInput = styled.input`
+const SearchInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+`;
+
+const SearchInputIcon = styled(FiSearch)<{ clickedBar?: boolean }>`
+  position: absolute;
+  font-size: 1.2rem;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  color: ${({ clickedBar }) => (clickedBar ? colors.mainPink : "#333")};
+  pointer-events: auto;
+`;
+
+const SearchInput = styled.input<{ clickedBar?: boolean }>`
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid #333;
+  border: 1px solid
+    ${({ clickedBar }) => (clickedBar ? colors.mainPink : "#333")};
   border-radius: 4px;
-  margin-bottom: 1rem;
 
   &:focus {
     border-color: #f23477;
@@ -94,11 +110,13 @@ const SearchInput = styled.input`
   }
 `;
 
-const SearchResultItem = styled.div`
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
+const ResultItem = styled.div`
+  margin: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: #333;
   cursor: pointer;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
 
   white-space: nowrap;
   overflow: hidden;
@@ -129,6 +147,7 @@ export default function FullHeader({
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [clickedBar, setClickedBar] = useState<boolean>(false);
   const { t } = useLocale();
 
   useEffect(() => {
@@ -188,22 +207,42 @@ export default function FullHeader({
       </HeaderWrap>
 
       {isSearchOpen && (
-        <SearchOverlay onClick={() => setIsSearchOpen(false)}>
+        <SearchOverlay
+          onClick={() => {
+            setIsSearchOpen(false);
+          }}
+        >
           <SearchModal onClick={(e) => e.stopPropagation()}>
-            <SearchInput
-              type="text"
-              placeholder={t?.search?.placeholder || ""}
-              autoFocus
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <SearchInputWrapper>
+              <SearchInput
+                type="text"
+                placeholder={t?.search?.placeholder || ""}
+                value={searchTerm}
+                autoFocus
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onClick={() => setClickedBar(true)}
+                clickedBar={clickedBar}
+              />
+              <SearchInputIcon
+                clickedBar={clickedBar}
+                onClick={() => {
+                  if (searchTerm.trim()) {
+                    navigate(`/search/${encodeURIComponent(searchTerm)}`);
+                    setIsSearchOpen(false);
+                  }
+                }}
+              />
+            </SearchInputWrapper>
             {searchResults.map((item) => (
-              <SearchResultItem
+              <ResultItem
                 key={item.id}
-                onClick={() => navigate(`/product-detail?itemId=${item.id}`)}
+                onClick={() => {
+                  navigate(`/product-detail?itemId=${item.id}`);
+                  setIsSearchOpen(false);
+                }}
               >
                 {item.itemName}
-              </SearchResultItem>
+              </ResultItem>
             ))}
           </SearchModal>
         </SearchOverlay>
