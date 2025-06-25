@@ -7,6 +7,7 @@ import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import ImageNot from "../../components/ingredient/ImageNot";
 import RecommendModal from "../../components/model/RecommendModal";
+import AlertModal from "../../components/model/AlertModal";
 
 const ProductCard = React.lazy(
   () => import("../../components/product/ProductCard")
@@ -171,6 +172,8 @@ export default function ProductDetail() {
 
   const [isRecommendOpen, setIsRecommendOpen] = useState(false);
   const [recommendItems, setRecommendItems] = useState<any[]>([]);
+  // Modal state for option alert
+  const [showOptionAlert, setShowOptionAlert] = useState(false);
 
   const [showAllReviews, setShowAllReviews] = useState(false);
   // 👁 조회수 state
@@ -386,7 +389,7 @@ export default function ProductDetail() {
               label={t.productDetail.addCart}
               onClick={async () => {
                 if (product.options.length > 0 && !selectedOptionName) {
-                  alert(t.productDetail.selectOption);
+                  setShowOptionAlert(true);
                   return;
                 }
 
@@ -605,6 +608,13 @@ export default function ProductDetail() {
         <Suspense fallback={null}>
           <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
         </Suspense>
+        {/* Option select modal */}
+        {showOptionAlert && (
+          <AlertModal
+            message="옵션을 선택해 주세요"
+            onClose={() => setShowOptionAlert(false)}
+          />
+        )}
         {isRecommendOpen && (
           <RecommendModal
             items={recommendItems}

@@ -1,4 +1,5 @@
 import React, { Suspense, useState, useEffect } from "react";
+import AlertModal from "../../components/model/AlertModal";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
@@ -225,6 +226,7 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [showOptionFor, setShowOptionFor] = useState<string | null>(null);
+  const [showWarningModal, setShowWarningModal] = useState(false);
   const navigate = useNavigate();
   const { t } = useLocale();
 
@@ -335,7 +337,7 @@ const CartPage = () => {
 
   const handleSubmit = async () => {
     if (selectedKeys.length === 0) {
-      alert("선택된 상품이 없습니다.");
+      setShowWarningModal(true);
       return;
     }
 
@@ -526,6 +528,12 @@ const CartPage = () => {
             onClose={() => setShowOptionFor(null)}
           />
         </Suspense>
+      )}
+      {showWarningModal && (
+        <AlertModal
+          message="선택된 상품이 없습니다."
+          onClose={() => setShowWarningModal(false)}
+        />
       )}
     </PageWrapper>
   );

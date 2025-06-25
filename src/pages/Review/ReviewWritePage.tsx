@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
+import AlertModal from "../../components/model/AlertModal";
 
 const TextHeader = lazy(() => import("../../components/common/TextHeader"));
 const ImageUploadList = lazy(
@@ -117,6 +118,9 @@ const ReviewWritePage = () => {
   const [surveyAnswers, setSurveyAnswers] = useState<Record<string, string>>(
     editingReview?.surveyAnswers || {}
   );
+
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlertModal, setShowAlertModal] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -260,8 +264,16 @@ const ReviewWritePage = () => {
 
   const handleSubmit = () => {
     if (!itemId) return alert("itemId가 없습니다");
-    if (!text.trim()) return alert("리뷰 내용을 입력해주세요.");
-    if (!rating) return alert("별점을 선택해주세요.");
+    if (!text.trim()) {
+      setAlertMessage("리뷰 내용을 입력해주세요.");
+      setShowAlertModal(true);
+      return;
+    }
+    if (!rating) {
+      setAlertMessage("별점을 선택해주세요.");
+      setShowAlertModal(true);
+      return;
+    }
     if (editingReview) {
       handleReviewEdit();
     } else {
@@ -324,6 +336,12 @@ const ReviewWritePage = () => {
           {editingReview ? "수정하기" : t.review.submit}
         </SubmitButton>
       </StickyFooter>
+      {showAlertModal && (
+        <AlertModal
+          message={alertMessage}
+          onClose={() => setShowAlertModal(false)}
+        />
+      )}
     </PageWrapper>
   );
 };
