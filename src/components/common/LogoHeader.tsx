@@ -58,14 +58,15 @@ const SearchModal = styled.div`
 const SearchInputWrapper = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0 1rem 0;
+  padding: 0 1rem;
 `;
 
 const SearchInputIcon = styled(FiSearch)<{ clickedBar?: boolean }>`
   position: absolute;
   font-size: 1.2rem;
   top: 50%;
-  right: 1rem;
+  right: 2rem;
   transform: translateY(-50%);
   color: ${({ clickedBar }) => (clickedBar ? colors.mainPink : "#333")};
   pointer-events: auto;
@@ -77,7 +78,7 @@ const SearchInput = styled.input<{ clickedBar?: boolean }>`
   font-size: 1rem;
   border: 1px solid
     ${({ clickedBar }) => (clickedBar ? colors.mainPink : "#333")};
-  border-radius: 4px;
+  border-radius: 5rem;
 
   &:focus {
     border-color: #f23477;
@@ -182,6 +183,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
               onClick={() => {
                 setIsSearchOpen(true);
                 setOpenSearchBar(true);
+                setClickedBar(true);
               }}
             >
               <FiSearch size={20} />

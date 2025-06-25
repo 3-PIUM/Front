@@ -98,14 +98,13 @@ const SearchInputIcon = styled(FiSearch)<{ clickedBar?: boolean }>`
 
 const SearchInput = styled.input<{ clickedBar?: boolean }>`
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   font-size: 1rem;
   border: 1px solid
     ${({ clickedBar }) => (clickedBar ? colors.mainPink : "#333")};
-  border-radius: 4px;
+  border-radius: 5rem;
 
   &:focus {
-    border-color: #f23477;
     outline: none;
   }
 `;
@@ -197,7 +196,12 @@ export default function FullHeader({
         </TextWrapper>
 
         <RightIcons>
-          <IconWrapper onClick={() => setIsSearchOpen(true)}>
+          <IconWrapper
+            onClick={() => {
+              setIsSearchOpen(true);
+              setClickedBar(true);
+            }}
+          >
             <FiSearch size={20} />
           </IconWrapper>
           <IconWrapper onClick={() => navigate("/cart")}>

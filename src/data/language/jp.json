@@ -482,7 +482,8 @@
     }
   },
   "search": {
-    "placeholder": "検索ワードを入力してください"
+    "placeholder": "検索ワードを入力してください",
+    "result": "の検索結果"
   },
   "chatbot": {
     "pageTitle": "チャットボット",

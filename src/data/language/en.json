@@ -482,7 +482,8 @@
       "more": "pieces"
     },
     "search": {
-      "placeholder": "Please enter a search term"
+      "placeholder": "Please enter a search term",
+      "result": "Search Results"
     }
   },
   "chatbot": {

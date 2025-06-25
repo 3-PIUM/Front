@@ -3,7 +3,6 @@ import { VscChevronLeft } from "react-icons/vsc";
 import { FiShoppingCart } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import colors from "../../styles/colors";
-import { useLocale } from "../../context/LanguageContext";
 
 const HeaderWrap = styled.div`
   position: fixed;
@@ -43,7 +42,6 @@ interface FullHeaderProps {
 
 export default function SearchHeader({ backPath }: FullHeaderProps) {
   const navigate = useNavigate();
-  const { t } = useLocale();
 
   return (
     <>

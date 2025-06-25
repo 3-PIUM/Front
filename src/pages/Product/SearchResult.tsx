@@ -133,7 +133,8 @@ export default function SearchPage() {
         </SearchInputWrapper>
       </SearchWrapper>
       <TextWrapper>
-        <HighlightText>"{keyword}"</HighlightText> &nbsp; 검색 결과
+        <HighlightText>"{keyword}"</HighlightText> &nbsp;{" "}
+        <div>{t.search.result}</div>
       </TextWrapper>
       <ItemWrapper>
         {items.map((item) => (
