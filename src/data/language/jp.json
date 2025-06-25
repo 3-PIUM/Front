@@ -12,6 +12,7 @@
     "passwordPlaceholder": "パスワード",
     "loginButton": "ログイン",
     "findpassword": "パスワード忘れた？",
+    "adminLogin": "管理者ログイン",
     "temporarypassword": "仮パスワードを受け取る",
     "signupLink": "会員登録",
     "error": "メールアドレスまたはパスワードをご確認ください"
@@ -481,7 +482,8 @@
     }
   },
   "search": {
-    "placeholder": "検索ワードを入力してください"
+    "placeholder": "検索ワードを入力してください",
+    "result": "の検索結果"
   },
   "chatbot": {
     "pageTitle": "チャットボット",

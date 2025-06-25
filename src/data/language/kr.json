@@ -12,6 +12,7 @@
     "loginButton": "로그인하기",
     "signupLink": "회원가입",
     "findpassword": "비밀번호 찾기",
+    "adminLogin": "관리자 로그인",
     "temporarypassword": "임시 비밀번호 받기",
     "error": "이메일 또는 비밀번호를 확인해주세요"
   },
@@ -587,7 +588,8 @@
     }
   },
   "search": {
-    "placeholder": "검색어를 입력하세요"
+    "placeholder": "검색어를 입력하세요",
+    "result": "검색 결과"
   },
   "chatbot": {
     "pageTitle": "챗봇",

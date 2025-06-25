@@ -55,12 +55,30 @@ const SearchModal = styled.div`
   overflow-y: auto;
 `;
 
-const SearchInput = styled.input`
+const SearchInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  margin: 0.5rem 0 1rem 0;
+  padding: 0 1rem;
+`;
+
+const SearchInputIcon = styled(FiSearch)<{ clickedBar?: boolean }>`
+  position: absolute;
+  font-size: 1.2rem;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-50%);
+  color: ${({ clickedBar }) => (clickedBar ? colors.mainPink : "#333")};
+  pointer-events: auto;
+`;
+
+const SearchInput = styled.input<{ clickedBar?: boolean }>`
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  border: 1px solid #333;
-  border-radius: 4px;
+  border: 1px solid
+    ${({ clickedBar }) => (clickedBar ? colors.mainPink : "#333")};
+  border-radius: 5rem;
 
   &:focus {
     border-color: #f23477;
@@ -125,6 +143,8 @@ export default function LogoHeader({}: LogoHeaderProps) {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isStoreModalOpen, setIsStoreModalOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
+  const [openSearchBar, setOpenSearchBar] = useState<boolean>(false);
+  const [clickedBar, setClickedBar] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -158,9 +178,17 @@ export default function LogoHeader({}: LogoHeaderProps) {
           <IconWrapper onClick={() => setIsStoreModalOpen(true)}>
             <HiLocationMarker size={20} />
           </IconWrapper>
-          <IconWrapper onClick={() => setIsSearchOpen(true)}>
-            <FiSearch size={20} />
-          </IconWrapper>
+          {!openSearchBar && (
+            <IconWrapper
+              onClick={() => {
+                setIsSearchOpen(true);
+                setOpenSearchBar(true);
+                setClickedBar(true);
+              }}
+            >
+              <FiSearch size={20} />
+            </IconWrapper>
+          )}
           <IconWrapper onClick={() => navigate("/cart")}>
             <FiShoppingCart size={20} />
           </IconWrapper>
@@ -181,15 +209,34 @@ export default function LogoHeader({}: LogoHeaderProps) {
       )}
 
       {isSearchOpen && (
-        <SearchOverlay onClick={() => setIsSearchOpen(false)}>
+        <SearchOverlay
+          onClick={() => {
+            setIsSearchOpen(false);
+            setOpenSearchBar(false);
+          }}
+        >
           <SearchModal onClick={(e) => e.stopPropagation()}>
-            <SearchInput
-              type="text"
-              placeholder={t?.search?.placeholder || ""}
-              value={searchTerm}
-              autoFocus
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <SearchInputWrapper>
+              <SearchInput
+                type="text"
+                placeholder={t?.search?.placeholder || ""}
+                value={searchTerm}
+                autoFocus
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onClick={() => setClickedBar(true)}
+                clickedBar={clickedBar}
+              />
+              <SearchInputIcon
+                clickedBar={clickedBar}
+                onClick={() => {
+                  if (searchTerm.trim()) {
+                    navigate(`/search/${encodeURIComponent(searchTerm)}`);
+                    setIsSearchOpen(false);
+                    setOpenSearchBar(false);
+                  }
+                }}
+              />
+            </SearchInputWrapper>
             {searchResults.map((item) => (
               <ResultItem
                 key={item.id}

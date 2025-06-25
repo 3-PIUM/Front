@@ -136,6 +136,7 @@ export default function CategoryList() {
 
   const [openModal, setOpenModal] = useState(false);
   const [skinIssue, setSkinIssue] = useState<string>("전체");
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleShowSorts = () => {
     setOpenModal(true);
@@ -164,6 +165,8 @@ export default function CategoryList() {
         const data = response.data.result;
         const item = data.itemSearchInfoDTOs;
         setItems(item);
+
+        setTimeout(() => setIsLoading(false), 500);
       } catch (error) {
         console.log("서브카테고리 불러오기 실패", error);
       }
@@ -321,6 +324,7 @@ export default function CategoryList() {
                         : 0
                     }
                     wishStatus={item.wishStatus}
+                    isLoading={isLoading}
                   />
                 ))}
               </div>

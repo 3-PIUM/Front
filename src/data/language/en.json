@@ -13,6 +13,7 @@
     "loginButton": "Login",
     "signupLink": "Sign up",
     "findpassword": "Forgot Password?",
+    "adminLogin": "Admin Login",
     "temporarypassword": "Get Temporary Password",
     "error": "Please check your email or password"
   },
@@ -481,7 +482,8 @@
       "more": "pieces"
     },
     "search": {
-      "placeholder": "Please enter a search term"
+      "placeholder": "Please enter a search term",
+      "result": "Search Results"
     }
   },
   "chatbot": {

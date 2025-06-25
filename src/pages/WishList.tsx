@@ -27,6 +27,7 @@ export default function WishList() {
   const { t } = useLocale();
   const [itemList, setItemList] = useState<wishProps[]>();
   const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchWishlistItem = async () => {
@@ -35,6 +36,7 @@ export default function WishList() {
         const list = response.data.result;
         console.log("찜 목록을 불러왔습니다", list);
         setItemList(list);
+        setTimeout(() => setIsLoading(false), 500);
       } catch (error) {
         console.log("찜 목록을 불러오지 못했습니다", error);
       }
@@ -85,6 +87,7 @@ export default function WishList() {
             itemId={wish.item.itemId}
             wishStatus={wish.item.wishStatus}
             onWishChange={handleWishChange}
+            isLoading={isLoading}
           />
         ))}
       </ItemWrapper>

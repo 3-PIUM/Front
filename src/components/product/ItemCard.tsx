@@ -39,9 +39,6 @@ const ImageWrap = styled.div<{ size?: string }>`
 `;
 
 const ItemImage = styled.img<{ $isLoading: boolean; size?: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
   height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
 
@@ -51,9 +48,6 @@ const ItemImage = styled.img<{ $isLoading: boolean; size?: string }>`
 `;
 
 const SkeletonImage = styled(SkeletonBase)<{ size?: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
 
   height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
@@ -105,6 +99,7 @@ interface ItemProps {
   wishStatus?: boolean;
   onWishChange?: () => void;
   size?: string;
+  isLoading: boolean;
 }
 
 export default function ItemCard({
@@ -116,11 +111,11 @@ export default function ItemCard({
   wishStatus,
   onWishChange,
   size,
+  isLoading,
 }: ItemProps) {
   const [isWished, setIsWished] = useState(wishStatus ?? false);
   const navigate = useNavigate();
   const { t } = useLocale();
-  const [isLoading, setIsLoading] = useState(true);
 
   const handleWish = async (event: React.MouseEvent) => {
     event.stopPropagation();
@@ -164,17 +159,32 @@ export default function ItemCard({
 
   return (
     <>
-      <ItemWrap onClick={handleClick} size={size}>
-        <ImageWrap size={size}>
-          <SkeletonImage size={size} />
-          <ItemImage
-            src={imageSource}
-            onLoad={() => setIsLoading(false)}
-            onError={() => setIsLoading(false)}
-            $isLoading={isLoading}
-            size={size}
+      {isLoading ? (
+        <ItemWrap onClick={handleClick} size={size}>
+          <ImageWrap size={size}>
+            <SkeletonImage size={size} />
+          </ImageWrap>
+          <SkeletonBase
+            style={{
+              width: "100%",
+              height: "0.75rem",
+              borderRadius: "4px",
+              marginTop: "0.3rem",
+            }}
           />
-          {!isLoading && (
+          <SkeletonBase
+            style={{
+              width: "80%",
+              height: "0.75rem",
+              borderRadius: "4px",
+              marginTop: "0.3rem",
+            }}
+          />
+        </ItemWrap>
+      ) : (
+        <ItemWrap onClick={handleClick} size={size}>
+          <ImageWrap size={size}>
+            <ItemImage src={imageSource} $isLoading={isLoading} size={size} />
             <Heart>
               <FaHeart
                 fontSize={"1.4rem"}
@@ -182,41 +192,17 @@ export default function ItemCard({
                 onClick={handleWish}
               />
             </Heart>
-          )}
-        </ImageWrap>
-
-        {isLoading ? (
-          <>
-            <SkeletonBase
-              style={{
-                width: "100%",
-                height: "0.75rem",
-                borderRadius: "4px",
-                marginTop: "0.3rem",
-              }}
-            />
-            <SkeletonBase
-              style={{
-                width: "80%",
-                height: "0.75rem",
-                borderRadius: "4px",
-                marginTop: "0.3rem",
-              }}
-            />
-          </>
-        ) : (
-          <>
-            <ItemName size={size}>{itemName}</ItemName>
-            <PriceWrap size={size}>
-              <ItemDiscount>{discountRate}%</ItemDiscount>
-              <ItemPrice>
-                {formattedPrice}
-                {t.pos.won}
-              </ItemPrice>
-            </PriceWrap>
-          </>
-        )}
-      </ItemWrap>
+          </ImageWrap>
+          <ItemName size={size}>{itemName}</ItemName>
+          <PriceWrap size={size}>
+            <ItemDiscount>{discountRate}%</ItemDiscount>
+            <ItemPrice>
+              {formattedPrice}
+              {t.pos.won}
+            </ItemPrice>
+          </PriceWrap>
+        </ItemWrap>
+      )}
     </>
   );
 }

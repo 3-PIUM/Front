@@ -1,6 +1,22 @@
-import { styled } from "styled-components";
+import { keyframes, styled } from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import colors from "../../styles/colors";
+
+const shimmer = keyframes`
+  0% {
+    background-position: -100%;
+  }
+  100% {
+    background-position: 100%;
+  }
+`;
+
+const SkeletonBase = styled.div`
+  background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  background-position: -100%; // ✅ 이 줄 추가
+  animation: ${shimmer} 1.5s infinite;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -37,8 +53,15 @@ const RankTitle = styled.div<{ color: string }>`
 
 const ItemImage = styled.img`
   display: flex;
-  width: 25%;
-  height: 25%;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 0.5rem;
+`;
+
+const SkeletonImage = styled(SkeletonBase)<{ size?: string }>`
+  display: flex;
+  width: 5rem;
+  height: 5rem;
   border-radius: 0.5rem;
 `;
 
@@ -86,6 +109,7 @@ interface ItemProps {
   wishStatus?: boolean;
   onWishChange?: () => void;
   rank: number;
+  isLoading: boolean;
 }
 
 export default function TopRankItem({
@@ -94,32 +118,67 @@ export default function TopRankItem({
   discountRate,
   price,
   rank,
+  isLoading,
 }: ItemProps) {
   const { t } = useLocale();
   const formattedPrice = price.toLocaleString();
 
   return (
-    <Wrapper>
-      <RankTitle color={rankColors[Number(rank) - 1]}>
-        {rank === 1 || rank === 2 || rank === 3 ? (
-          <span className="medal">
-            {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
-          </span>
-        ) : (
-          rank
-        )}
-      </RankTitle>
-      <ItemImage src={imageSource} />
-      <ItemInfo>
-        <ItemName>{itemName}</ItemName>
-        <PriceWrap>
-          <ItemDiscount>{discountRate}%</ItemDiscount>
-          <ItemPrice>
-            {formattedPrice}
-            {t.pos.won}
-          </ItemPrice>
-        </PriceWrap>
-      </ItemInfo>
-    </Wrapper>
+    <>
+      {isLoading ? (
+        <Wrapper>
+          <RankTitle color={rankColors[Number(rank) - 1]}>
+            {rank === 1 || rank === 2 || rank === 3 ? (
+              <span className="medal">
+                {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
+              </span>
+            ) : (
+              rank
+            )}
+          </RankTitle>
+          <SkeletonImage />
+          <ItemInfo>
+            <SkeletonBase
+              style={{
+                width: "100%",
+                height: "0.75rem",
+                borderRadius: "4px",
+                marginBottom: "0.3rem",
+              }}
+            />
+            <SkeletonBase
+              style={{
+                width: "60%",
+                height: "0.75rem",
+                borderRadius: "4px",
+              }}
+            />
+          </ItemInfo>
+        </Wrapper>
+      ) : (
+        <Wrapper>
+          <RankTitle color={rankColors[Number(rank) - 1]}>
+            {rank === 1 || rank === 2 || rank === 3 ? (
+              <span className="medal">
+                {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
+              </span>
+            ) : (
+              rank
+            )}
+          </RankTitle>
+          <ItemImage src={imageSource} />
+          <ItemInfo>
+            <ItemName>{itemName}</ItemName>
+            <PriceWrap>
+              <ItemDiscount>{discountRate}%</ItemDiscount>
+              <ItemPrice>
+                {formattedPrice}
+                {t.pos.won}
+              </ItemPrice>
+            </PriceWrap>
+          </ItemInfo>
+        </Wrapper>
+      )}
+    </>
   );
 }

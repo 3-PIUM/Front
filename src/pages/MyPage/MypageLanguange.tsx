@@ -49,7 +49,6 @@ const Line = styled.hr`
 
 export default function SettingLanguange() {
   const { t, language, setLanguage } = useLocale();
-  const [clickedLanguage, setClickedLanguage] = useState(language);
 
   useEffect(() => {
     const root = document.getElementById("root");
@@ -64,11 +63,10 @@ export default function SettingLanguange() {
 
   const handleChangeLanguage = (lang: string) => {
     setLanguage(lang);
-    setClickedLanguage(lang);
     const editMemberInfo = async () => {
       try {
         await axiosInstance.patch("/member", {
-          language: clickedLanguage,
+          language: lang,
         });
       } catch (error) {
         console.log("회원정보 수정에 실패하였습니다", error);
