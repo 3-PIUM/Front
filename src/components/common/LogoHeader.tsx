@@ -172,7 +172,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
           stores={dummyStores}
           onClose={() => setIsStoreModalOpen(false)}
           onSelect={(store) => {
-            console.log("선택된 매장:", store);
+            sessionStorage.setItem("selectedStore", JSON.stringify(store));
             setSelectedStore(store);
             setIsStoreModalOpen(false);
           }}
@@ -194,7 +194,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
               <ResultItem
                 key={item.id}
                 onClick={() => {
-                  navigate(`/product-detail/${item.id}`);
+                  navigate(`/product-detail?itemId=${item.id}`);
                   setIsSearchOpen(false);
                 }}
               >

@@ -113,6 +113,10 @@ const PaymentCompletePage = () => {
   }, []);
 
   const [showApproved, setShowApproved] = useState(false);
+  const storedStore = sessionStorage.getItem("selectedStore");
+  const storeName = storedStore
+    ? JSON.parse(storedStore).name
+    : t.paymentComplete.storeName;
 
   return (
     <PageWrapper>
@@ -129,7 +133,7 @@ const PaymentCompletePage = () => {
       </LeftSide>
 
       <RightSide>
-        <BrandInfo>{t.paymentComplete.storeName}</BrandInfo>
+        <BrandInfo>올리브영 {storeName}</BrandInfo>
 
         <PointSection></PointSection>
 

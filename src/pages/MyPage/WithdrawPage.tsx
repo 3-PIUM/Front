@@ -136,7 +136,12 @@ export default function WithdrawalPage() {
           ? customReason.trim()
           : selectedReason;
 
-      const response = await axiosInstance.delete("/member");
+      const token = sessionStorage.getItem("accessToken");
+      const response = await axiosInstance.delete("/member", {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+      });
 
       console.log("탈퇴 성공", response.status);
       alert(t.withdrawal.alert.complete);

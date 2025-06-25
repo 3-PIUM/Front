@@ -200,7 +200,7 @@ export default function FullHeader({
             {searchResults.map((item) => (
               <SearchResultItem
                 key={item.id}
-                onClick={() => navigate(`/product-detail/${item.id}`)}
+                onClick={() => navigate(`/product-detail?itemId=${item.id}`)}
               >
                 {item.itemName}
               </SearchResultItem>

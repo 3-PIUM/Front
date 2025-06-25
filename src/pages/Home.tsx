@@ -206,6 +206,7 @@ export default function Home() {
         const items = await axiosInstance.get("/item/top10");
         const top10 = items.data.result;
         setTop10Items(top10);
+        console.log(top10);
       } catch {}
     };
     getTop10();

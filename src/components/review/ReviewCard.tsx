@@ -7,7 +7,7 @@ import axiosInstance from "../../api/axiosInstance";
 
 interface ReviewCardProps {
   reviewId: number;
-  username: string;
+  memberName: string;
   memberId: number;
   date: string;
   rating: number;
@@ -129,7 +129,7 @@ const ModalImage = styled.img`
 
 const ReviewCard = ({
   reviewId,
-  username,
+  memberName,
   memberId,
   date,
   rating,
@@ -213,7 +213,7 @@ const ReviewCard = ({
 
   const reviewData = {
     reviewId,
-    username,
+    memberName,
     memberId,
     date,
     rating,
@@ -228,7 +228,7 @@ const ReviewCard = ({
   return (
     <>
       <Card>
-        <UsernameText>{username}</UsernameText>
+        <UsernameText>{memberName}</UsernameText>
         <TopRow>
           <StarRating rating={rating} />
           <DateText>{formatDate(date)}</DateText>
