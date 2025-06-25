@@ -40,6 +40,7 @@
 // import PersonalColorResult from "./pages/SignUp/PersonalColorResult";
 import { lazy } from "react";
 import Loading from "./pages/Loading";
+import SearchResult from "./pages/Product/SearchResult";
 
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/SignUp/Signup"));
@@ -190,6 +191,7 @@ const routes = [
       { path: "qr", element: <QRCodePage /> },
       { path: "purchase-list", element: <PurchaseList /> },
       { path: "purchase-detail", element: <PurchaseDetail /> },
+      { path: "search/:keyword", element: <SearchResult /> },
     ],
   },
 ];

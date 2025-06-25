@@ -28,7 +28,7 @@ const LogoWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 8rem;
+  margin-top: 10rem;
 `;
 
 const LogoImg = styled.img`
@@ -194,11 +194,6 @@ export default function AdminLogin() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </InputWrap>
-        <AccountActions>
-          <div onClick={() => navigate("/findpassword")}>
-            {t.login.findpassword}
-          </div>
-        </AccountActions>
 
         {showError && <ErrorText>{errorText}</ErrorText>}
       </Wrap>
