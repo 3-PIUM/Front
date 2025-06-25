@@ -93,6 +93,7 @@ const Category = lazy(() => import("./pages/Category/Category"));
 const ProductDetail = lazy(() => import("./pages/Product/ProductDetail"));
 const ReviewWritePage = lazy(() => import("./pages/Review/ReviewWritePage"));
 const ScanPage = lazy(() => import("./pages/Scan/ScanPage"));
+const AdminLogin = lazy(() => import("./pages/Admin/AdminLogin"));
 
 const routes = [
   // DefaultLayout
@@ -167,6 +168,10 @@ const routes = [
   {
     path: "/loading",
     element: <Loading />,
+  },
+  {
+    path: "/admin/login",
+    element: <AdminLogin />,
   },
 
   //MenuLayout

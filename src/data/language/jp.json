@@ -12,6 +12,7 @@
     "passwordPlaceholder": "パスワード",
     "loginButton": "ログイン",
     "findpassword": "パスワード忘れた？",
+    "adminLogin": "管理者ログイン",
     "temporarypassword": "仮パスワードを受け取る",
     "signupLink": "会員登録",
     "error": "メールアドレスまたはパスワードをご確認ください"

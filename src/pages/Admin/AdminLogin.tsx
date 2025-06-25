@@ -1,13 +1,13 @@
 import { GrLanguage } from "react-icons/gr";
-import colors from "../styles/colors";
 import styled from "styled-components";
-import Button from "../components/common/Button";
 import { useEffect, useState } from "react";
-import Header from "../components/common/Header";
-import LanguageModal from "../components/model/LanguageModal";
-import { useLocale } from "../context/LanguageContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import colors from "../../styles/colors";
+import Header from "../../components/common/Header";
+import Button from "../../components/common/Button";
+import LanguageModal from "../../components/model/LanguageModal";
+import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -16,11 +16,19 @@ const Wrap = styled.div`
   height: auto;
 `;
 
+const AdminText = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${colors.mainPink};
+  margin-top: 1rem;
+`;
+
 const LogoWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10rem;
+  margin-top: 8rem;
 `;
 
 const LogoImg = styled.img`
@@ -82,12 +90,11 @@ const InputPassword = styled.input<{ $passwordFocused: boolean }>`
 const AccountActions = styled.div`
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
   font-size: 0.875rem;
   color: ${colors.mediumGrey};
   font-weight: 700;
   margin-top: 1rem;
-  gap: 0.5rem;
+  gap: 1rem;
 `;
 
 const ErrorText = styled.div`
@@ -106,7 +113,7 @@ const ButtonWrap = styled.div`
   padding: 2rem 1rem;
 `;
 
-export default function Login() {
+export default function AdminLogin() {
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -159,9 +166,11 @@ export default function Login() {
     <>
       <Wrap>
         <Header />
+
         <LogoWrap>
           <LogoImg src="/images/logo/PIUM_logo.png" />
         </LogoWrap>
+        <AdminText>관리자 전용</AdminText>
         <LanguageTab>
           <GrLanguage fontSize="1.25rem" color={colors.darkGrey} />
           <LanguageText onClick={openLanguageModal}>{language}</LanguageText>
@@ -186,14 +195,8 @@ export default function Login() {
           />
         </InputWrap>
         <AccountActions>
-          <div onClick={() => navigate("/signup")}>{t.login.signupLink}</div>
-          <div>|</div>
           <div onClick={() => navigate("/findpassword")}>
             {t.login.findpassword}
-          </div>
-          <div>|</div>
-          <div onClick={() => navigate("/admin/login")}>
-            {t.login.adminLogin}
           </div>
         </AccountActions>
 
