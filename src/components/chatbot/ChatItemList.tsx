@@ -37,7 +37,34 @@ const ItemRow = styled.label`
 `;
 
 const Checkbox = styled.input`
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #cecece;
+  border-radius: 50%;
+  background-color: white;
   margin-right: 1rem;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+
+  &::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #f23477;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:checked::before {
+    opacity: 1;
+  }
 `;
 
 const ItemImage = styled.img`
@@ -85,7 +112,7 @@ const ChatItemList = ({
           <ItemRow key={item.id}>
             {onToggle && (
               <Checkbox
-                type="checkbox"
+                type="radio"
                 checked={isChecked}
                 onChange={() => onToggle(item.id)}
               />
