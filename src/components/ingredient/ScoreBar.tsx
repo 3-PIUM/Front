@@ -62,6 +62,7 @@ interface Props {
   color: string;
   active: boolean;
   onClick: () => void;
+  isLoading?: boolean;
 }
 
 export default function ScoreBar({
@@ -70,7 +71,46 @@ export default function ScoreBar({
   color,
   active,
   onClick,
+  isLoading = false,
 }: Props) {
+  if (isLoading) {
+    return (
+      <Wrapper $active={false}>
+        <Left>
+          <Dot style={{ backgroundColor: "#ccc" }} />
+          <div
+            style={{
+              backgroundColor: "#eee",
+              width: "60px",
+              height: "14px",
+              borderRadius: "4px",
+            }}
+          />
+        </Left>
+        <BarWrapper>
+          <Bar>
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#ddd",
+                borderRadius: "5px",
+              }}
+            />
+          </Bar>
+        </BarWrapper>
+        <div
+          style={{
+            backgroundColor: "#eee",
+            width: "30px",
+            height: "14px",
+            borderRadius: "4px",
+          }}
+        />
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper onClick={onClick} $active={active}>
       <Left>

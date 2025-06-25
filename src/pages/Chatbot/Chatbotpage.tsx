@@ -9,8 +9,8 @@ import styled from "styled-components";
 import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
-import ChatRecommendList from "../../components/chatbot/ChatRecommendList";
 import { useNavigate } from "react-router-dom";
+import ChatRecommendList from "../../components/chatbot/ChatRecommendList";
 
 interface Message {
   sender: "user" | "bot";
@@ -54,13 +54,14 @@ export default function ChatbotPage() {
   const [compareModeStarted, setCompareModeStarted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [recommendList, setRecommendList] = useState<any[]>([]);
 
   const handleBeforeUnload = (e: BeforeUnloadEvent) => {
     e.preventDefault();
     e.returnValue = "";
   };
 
-  const handleBrowserNav = (e: PopStateEvent) => {
+  const handleBrowserNav = (_e: PopStateEvent) => {
     setShowExitModal(true);
     history.pushState(null, "", location.href);
   };
@@ -174,6 +175,10 @@ export default function ChatbotPage() {
         session_id: sessionId,
       });
       const output = res.data.result.output || t.chatbot.response.default;
+      const itemList = res.data.result.itemList || [];
+      setRecommendList(itemList);
+      console.log(output);
+
       setMessages((prev) => {
         const updated: Message[] = [
           ...prev,
@@ -288,7 +293,7 @@ export default function ChatbotPage() {
             zIndex: 1000,
           }}
         >
-          챗팅 다시 하기
+          {t.chatbot.Replay}
         </button>
       </>
       <ChatContent>
@@ -333,7 +338,7 @@ export default function ChatbotPage() {
         {mode === "compare" && compareModeStarted && (
           <>
             <ChatItemList
-              title="장바구니 목록"
+              title={t.compare.cartList}
               items={cartItems.filter((item) =>
                 selectedCompareItems.includes(item.id)
               )}
@@ -341,7 +346,7 @@ export default function ChatbotPage() {
               onToggle={handleCompareSelect}
             />
             <ChatItemList
-              title="찜 목록"
+              title={t.compare.wishlist}
               items={wishItems.filter((item) =>
                 selectedCompareItems.includes(item.id)
               )}
@@ -393,19 +398,16 @@ export default function ChatbotPage() {
             </MessageWrapper>
           ))}
 
-        {mode === "default" &&
-          messages.length === 1 &&
-          messages[0]?.text === t.chatbot.welcome &&
-          t.chatbot.suggestions.items && (
-            <ChatRecommendList items={t.chatbot.suggestions.items} />
-          )}
-        {/* ChatSuggestions always shown in default mode with only welcome message */}
         {mode === "default" && messages.length === 1 && (
           <ChatSuggestions
             recommendLabel={t.chatbot.suggestions.recommend}
             compareLabel={t.chatbot.suggestions.compare}
             onSelect={handleSuggestionClick}
           />
+        )}
+
+        {mode === "recommend" && recommendList.length > 0 && (
+          <ChatRecommendList items={recommendList} />
         )}
       </ChatContent>
       <ChatInputBox
@@ -455,7 +457,9 @@ export default function ChatbotPage() {
             }}
           >
             <p style={{ marginBottom: "1rem" }}>
-              정말로 페이지를 나가시겠습니까?
+              {t.chatbot.response.leavePage[0]}
+              <br />
+              {t.chatbot.response.leavePage[1]}
             </p>
             <button
               onClick={() => setShowExitModal(false)}
@@ -470,7 +474,7 @@ export default function ChatbotPage() {
                 fontWeight: "bold",
               }}
             >
-              아니요
+              {t.chatbot.response.cancel}
             </button>
             <button
               onClick={() => {
@@ -488,7 +492,7 @@ export default function ChatbotPage() {
                 fontWeight: "bold",
               }}
             >
-              네, 나갈래요
+              {t.chatbot.response.confirm}
             </button>
           </div>
         </div>

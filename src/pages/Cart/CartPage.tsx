@@ -1,4 +1,5 @@
 import React, { Suspense, useState, useEffect } from "react";
+import AlertModal from "../../components/model/AlertModal";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
@@ -225,6 +226,7 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [showOptionFor, setShowOptionFor] = useState<string | null>(null);
+  const [showWarningModal, setShowWarningModal] = useState(false);
   const navigate = useNavigate();
   const { t } = useLocale();
 
@@ -312,11 +314,7 @@ const CartPage = () => {
     );
   };
 
-  const handleOptionChange = async (
-    id: string,
-    prevOption: string,
-    newOption: string
-  ) => {
+  const handleOptionChange = async (id: string, newOption: string) => {
     await axiosInstance.patch(`/cart/items/${id}/updateOption`, {
       changeOption: newOption,
     });
@@ -339,7 +337,7 @@ const CartPage = () => {
 
   const handleSubmit = async () => {
     if (selectedKeys.length === 0) {
-      alert("선택된 상품이 없습니다.");
+      setShowWarningModal(true);
       return;
     }
 
@@ -524,14 +522,18 @@ const CartPage = () => {
             onSelect={async (newOption) => {
               const id = showOptionFor;
               if (id) {
-                const prevOption =
-                  cartItems.find((item) => item.id === id)?.option || "";
-                await handleOptionChange(id, prevOption, newOption);
+                await handleOptionChange(id, newOption);
               }
             }}
             onClose={() => setShowOptionFor(null)}
           />
         </Suspense>
+      )}
+      {showWarningModal && (
+        <AlertModal
+          message={t.alertModal.noItemSelected}
+          onClose={() => setShowWarningModal(false)}
+        />
       )}
     </PageWrapper>
   );

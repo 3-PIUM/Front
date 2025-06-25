@@ -51,6 +51,21 @@ const Label = styled.div<{ color: string }>`
   margin-top: 0.25rem;
 `;
 
+const SkeletonBox = styled.div`
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 1rem;
+`;
+
+const SkeletonCard = styled.div`
+  flex: 1;
+  height: 64px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+`;
+
 interface IngredientScoreSummaryProps {
   itemId: number;
 }
@@ -66,6 +81,7 @@ export default function IngredientScoreSummary({
     caution: 0,
     harmful: 0,
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchScoreCounts = async () => {
@@ -80,6 +96,7 @@ export default function IngredientScoreSummary({
       } catch (error) {
         console.error("성분 점수 불러오기 실패", error);
       }
+      setIsLoading(false);
     };
 
     if (itemId) {
@@ -97,20 +114,28 @@ export default function IngredientScoreSummary({
           {t.productDetail.viewAll} &gt;
         </ViewAll>
       </Header>
-      <ScoreBox>
-        <ScoreCard bgColor="#e6f8e6" borderColor="#34c759">
-          <Score color="#34c759">{scores.safe}</Score>
-          <Label color="#34c759">{t.ingredient.safeLabel}</Label>
-        </ScoreCard>
-        <ScoreCard bgColor="#fff9e6" borderColor="#f9c846">
-          <Score color="#f9c846">{scores.caution}</Score>
-          <Label color="#f9c846">{t.ingredient.cautionLabel}</Label>
-        </ScoreCard>
-        <ScoreCard bgColor="#ffe6e6" borderColor="#ff3b30">
-          <Score color="#ff3b30">{scores.harmful}</Score>
-          <Label color="#ff3b30">{t.ingredient.harmfulLabel}</Label>
-        </ScoreCard>
-      </ScoreBox>
+      {isLoading ? (
+        <SkeletonBox>
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </SkeletonBox>
+      ) : (
+        <ScoreBox>
+          <ScoreCard bgColor="#e6f8e6" borderColor="#34c759">
+            <Score color="#34c759">{scores.safe}</Score>
+            <Label color="#34c759">{t.ingredient.safeLabel}</Label>
+          </ScoreCard>
+          <ScoreCard bgColor="#fff9e6" borderColor="#f9c846">
+            <Score color="#f9c846">{scores.caution}</Score>
+            <Label color="#f9c846">{t.ingredient.cautionLabel}</Label>
+          </ScoreCard>
+          <ScoreCard bgColor="#ffe6e6" borderColor="#ff3b30">
+            <Score color="#ff3b30">{scores.harmful}</Score>
+            <Label color="#ff3b30">{t.ingredient.harmfulLabel}</Label>
+          </ScoreCard>
+        </ScoreBox>
+      )}
     </Wrapper>
   );
 }

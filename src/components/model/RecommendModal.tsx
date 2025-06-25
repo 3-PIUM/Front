@@ -1,6 +1,7 @@
 // import React from "react";
 import styled from "styled-components";
 import ItemCard from "../product/ItemCard";
+import { useState } from "react";
 
 const Overlay = styled.div`
   position: fixed;
@@ -60,6 +61,7 @@ const RecommendModal = ({
   onClose: () => void;
   addedItemImage?: string;
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const firstImage =
     addedItemImage ||
     (() => {
@@ -146,6 +148,7 @@ const RecommendModal = ({
                 imageSource={imageUrl}
                 discountRate={item.discountRate || 0}
                 price={item.discountPrice}
+                isLoading={isLoading}
               />
             );
           })}

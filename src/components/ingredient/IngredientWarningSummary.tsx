@@ -5,6 +5,7 @@ import { useLocale } from "../../context/LanguageContext";
 import SkinTypePrompt from "../SkinTypePrompt";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import SkeletonWarning from "../ingredient/SkeletonWarning";
 
 const Wrapper = styled.div`
   background-color: white;
@@ -117,6 +118,7 @@ export default function IngredientWarningSummary({
 
   const [showAll, setShowAll] = useState(false);
   const [_, setSkinType] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserSkin = async () => {
@@ -168,6 +170,7 @@ export default function IngredientWarningSummary({
       } catch (err) {
         console.error("주의 성분 불러오기 실패", err);
       }
+      setIsLoading(false);
     };
     fetchIngredients();
   }, [itemId, activeTab]);
@@ -180,7 +183,10 @@ export default function IngredientWarningSummary({
             <Tab
               key={key}
               active={activeTab === key}
-              onClick={() => setActiveTab(key)}
+              onClick={() => {
+                setIsLoading(true);
+                setActiveTab(key);
+              }}
             >
               {t.ingredient.tab[key]}
             </Tab>
@@ -188,7 +194,9 @@ export default function IngredientWarningSummary({
         </Tabs>
       </Header>
 
-      {activeTab === "mySkin" && !isSkinRegistered ? (
+      {isLoading ? (
+        <SkeletonWarning />
+      ) : activeTab === "mySkin" && !isSkinRegistered ? (
         <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
           <SkinTypePrompt
             onRegister={() => {

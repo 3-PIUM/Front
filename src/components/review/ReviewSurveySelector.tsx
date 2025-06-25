@@ -42,6 +42,7 @@ const OptionItem = styled.div`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  width: 60px;
 `;
 
 const Circle = styled.div<{ selected: boolean }>`
@@ -53,6 +54,7 @@ const Circle = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
 `;
 
 const InnerDot = styled.div`

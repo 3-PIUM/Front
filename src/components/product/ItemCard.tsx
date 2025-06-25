@@ -194,7 +194,7 @@ export default function ItemCard({
           </ImageWrap>
           <ItemName size={size}>{itemName}</ItemName>
           <PriceWrap size={size}>
-            <ItemDiscount>{discountRate}%</ItemDiscount>
+            {discountRate > 0 && <ItemDiscount>{discountRate}%</ItemDiscount>}
             <ItemPrice>
               {formattedPrice}
               {t.pos.won}

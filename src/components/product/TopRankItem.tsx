@@ -170,7 +170,7 @@ export default function TopRankItem({
           <ItemInfo>
             <ItemName>{itemName}</ItemName>
             <PriceWrap>
-              <ItemDiscount>{discountRate}%</ItemDiscount>
+              {discountRate > 0 && <ItemDiscount>{discountRate}%</ItemDiscount>}
               <ItemPrice>
                 {formattedPrice}
                 {t.pos.won}

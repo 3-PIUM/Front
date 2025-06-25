@@ -599,6 +599,7 @@
       "recommend": "추천 받기",
       "compare": "상품 비교하기"
     },
+    "Replay": "챗팅 다시 하기",
     "botName": "피움 챗봇",
     "response": {
       "product": "피부 타입을 알려주시면 제품을 추천해드릴게요!",
@@ -613,7 +614,13 @@
         "목요일",
         "금요일",
         "토요일"
-      ]
+      ],
+      "leavePage": [
+        "정말로 페이지를 나가시겠습니까?",
+        "챗봇과의 대화 내용이 초기화됩니다."
+      ],
+      "cancel": "아니요",
+      "confirm": "네"
     },
     "recommendText": [
       "원하시는 제품을 추천해드릴게요!",
@@ -692,5 +699,11 @@
   },
   "purchaseNot": "구매한 상품 내역이 없습니다.",
   "detailNot": "이 상품은 상세페이지가 없습니다.",
-  "noReview": "등록된 리뷰가 없습니다."
+  "noReview": "등록된 리뷰가 없습니다.",
+  "alertModal": {
+    "noItemSelected": "선택된 상품이 없습니다.",
+    "noReviewContent": "리뷰 내용을 입력해주세요.",
+    "noRating": "별점을 선택해주세요.",
+    "noOption": "옵션을 선택해 주세요."
+  }
 }
