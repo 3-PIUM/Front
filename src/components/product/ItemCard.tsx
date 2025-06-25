@@ -150,7 +150,6 @@ export default function ItemCard({
       discountRate: discountRate,
     };
     navigate(`/product-detail?itemId=${itemId}`, {
-      replace: true,
       state: { product },
     });
   };
