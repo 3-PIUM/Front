@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import ImageNot from "../../components/ingredient/ImageNot";
+import RecommendModal from "../../components/model/RecommendModal";
 
 const ProductCard = React.lazy(
   () => import("../../components/product/ProductCard")
@@ -104,6 +105,51 @@ const Label = styled.span`
 `;
 
 export default function ProductDetail() {
+  // 추천 상품 더미 데이터
+  const dummyRecommendItems = [
+    {
+      itemId: 1,
+      itemName: "[5월 올영픽]아벤느 오 떼르말 미스트 300ml 2입 기획",
+      itemImage:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
+      discountPrice: 22900,
+    },
+    {
+      itemId: 2,
+      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
+      itemImage:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
+      discountPrice: 9900,
+    },
+    {
+      itemId: 3,
+      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
+      itemImage:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
+      discountPrice: 9900,
+    },
+    {
+      itemId: 4,
+      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
+      itemImage:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
+      discountPrice: 9900,
+    },
+    {
+      itemId: 5,
+      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
+      itemImage:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
+      discountPrice: 9900,
+    },
+    {
+      itemId: 6,
+      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
+      itemImage:
+        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
+      discountPrice: 9900,
+    },
+  ];
   const [selectedTab, setSelectedTab] = useState<
     "detail" | "ingredient" | "review"
   >("detail");
@@ -122,6 +168,9 @@ export default function ProductDetail() {
   const [error, setError] = useState<string | null>(null);
   const itemId = new URLSearchParams(location.search).get("itemId");
   const { t } = useLocale();
+
+  const [isRecommendOpen, setIsRecommendOpen] = useState(false);
+  const [recommendItems, setRecommendItems] = useState<any[]>([]);
 
   const [showAllReviews, setShowAllReviews] = useState(false);
   // 👁 조회수 state
@@ -266,29 +315,13 @@ export default function ProductDetail() {
     }
   }, [newReview]);
 
+  // Add firstImage state to store the main image for RecommendModal
+  const [firstImage, setFirstImage] = useState<string>("");
+
   const averageRating = realReviews.length
     ? realReviews.reduce((sum, review) => sum + review.rating, 0) /
       realReviews.length
     : 0;
-
-  const handleAddToCart = async () => {
-    if (product.options.length > 0 && !selectedOptionName) {
-      alert(t.productDetail.selectOption);
-      return;
-    }
-
-    try {
-      await axiosInstance.post(`/cart/items/${Number(product.id)}`, {
-        quantity: 1,
-        itemOption: product.options.length > 0 ? selectedOptionName : undefined,
-      });
-      navigate("/cart");
-    } catch (err: any) {
-      console.error("장바구니 추가 실패", err);
-      console.log(product);
-      alert(err.response?.data?.message || "장바구니에 추가할 수 없습니다.");
-    }
-  };
 
   if (error)
     return (
@@ -349,7 +382,39 @@ export default function ProductDetail() {
 
         <div style={{ padding: "0 1rem" }}>
           <Suspense fallback={null}>
-            <Button label={t.productDetail.addCart} onClick={handleAddToCart} />
+            <Button
+              label={t.productDetail.addCart}
+              onClick={async () => {
+                if (product.options.length > 0 && !selectedOptionName) {
+                  alert(t.productDetail.selectOption);
+                  return;
+                }
+
+                try {
+                  await axiosInstance.post(
+                    `/cart/items/${Number(product.id)}`,
+                    {
+                      quantity: 1,
+                      itemOption:
+                        product.options.length > 0
+                          ? selectedOptionName
+                          : undefined,
+                    }
+                  );
+
+                  setRecommendItems(dummyRecommendItems);
+                  const firstImage = product?.imageUrl?.mainImage || "";
+                  setFirstImage(firstImage);
+                  setIsRecommendOpen(true);
+                } catch (err: any) {
+                  console.error("장바구니 추가 실패", err);
+                  alert(
+                    err.response?.data?.message ||
+                      "장바구니에 추가할 수 없습니다."
+                  );
+                }
+              }}
+            />
           </Suspense>
         </div>
         <TabMenu>
@@ -540,6 +605,13 @@ export default function ProductDetail() {
         <Suspense fallback={null}>
           <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
         </Suspense>
+        {isRecommendOpen && (
+          <RecommendModal
+            items={recommendItems}
+            addedItemImage={firstImage}
+            onClose={() => setIsRecommendOpen(false)}
+          />
+        )}
       </ProductCardWrapper>
     </PageWrapper>
   );
