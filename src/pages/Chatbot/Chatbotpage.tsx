@@ -293,7 +293,7 @@ export default function ChatbotPage() {
             zIndex: 1000,
           }}
         >
-          챗팅 다시 하기
+          {t.chatbot.Replay}
         </button>
       </>
       <ChatContent>
@@ -338,7 +338,7 @@ export default function ChatbotPage() {
         {mode === "compare" && compareModeStarted && (
           <>
             <ChatItemList
-              title="장바구니 목록"
+              title={t.compare.cartList}
               items={cartItems.filter((item) =>
                 selectedCompareItems.includes(item.id)
               )}
@@ -346,7 +346,7 @@ export default function ChatbotPage() {
               onToggle={handleCompareSelect}
             />
             <ChatItemList
-              title="찜 목록"
+              title={t.compare.wishlist}
               items={wishItems.filter((item) =>
                 selectedCompareItems.includes(item.id)
               )}
@@ -457,7 +457,9 @@ export default function ChatbotPage() {
             }}
           >
             <p style={{ marginBottom: "1rem" }}>
-              정말로 페이지를 나가시겠습니까?
+              {t.chatbot.response.leavePage[0]}
+              <br />
+              {t.chatbot.response.leavePage[1]}
             </p>
             <button
               onClick={() => setShowExitModal(false)}
@@ -472,7 +474,7 @@ export default function ChatbotPage() {
                 fontWeight: "bold",
               }}
             >
-              아니요
+              {t.chatbot.response.cancel}
             </button>
             <button
               onClick={() => {
@@ -490,7 +492,7 @@ export default function ChatbotPage() {
                 fontWeight: "bold",
               }}
             >
-              네, 나갈래요
+              {t.chatbot.response.confirm}
             </button>
           </div>
         </div>

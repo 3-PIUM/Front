@@ -265,12 +265,12 @@ const ReviewWritePage = () => {
   const handleSubmit = () => {
     if (!itemId) return alert("itemId가 없습니다");
     if (!text.trim()) {
-      setAlertMessage("리뷰 내용을 입력해주세요.");
+      setAlertMessage(t.alertModal.noReviewContent);
       setShowAlertModal(true);
       return;
     }
     if (!rating) {
-      setAlertMessage("별점을 선택해주세요.");
+      setAlertMessage(t.alertModal.noRating);
       setShowAlertModal(true);
       return;
     }

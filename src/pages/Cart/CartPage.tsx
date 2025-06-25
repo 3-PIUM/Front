@@ -531,7 +531,7 @@ const CartPage = () => {
       )}
       {showWarningModal && (
         <AlertModal
-          message="선택된 상품이 없습니다."
+          message={t.alertModal.noItemSelected}
           onClose={() => setShowWarningModal(false)}
         />
       )}

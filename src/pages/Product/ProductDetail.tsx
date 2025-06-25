@@ -611,7 +611,7 @@ export default function ProductDetail() {
         {/* Option select modal */}
         {showOptionAlert && (
           <AlertModal
-            message="옵션을 선택해 주세요"
+            message={t.alertModal.noOption}
             onClose={() => setShowOptionAlert(false)}
           />
         )}

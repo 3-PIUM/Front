@@ -491,9 +491,10 @@
     "placeholder": "Enter your message",
     "welcome": "Hello, this is the Pium chatbot 💕 \nWhat would you like to know? \nI'm here to help you 😊",
     "suggestions": {
-      "recommend": "Recommendation",
+      "recommend": "Pick",
       "compare": "Comparison"
     },
+    "Replay": "Restart Chat",
     "botName": "Pium Chatbot",
     "response": {
       "product": "Let me know your skin type and I’ll recommend products!",
@@ -508,7 +509,13 @@
         "Thursday",
         "Friday",
         "Saturday"
-      ]
+      ],
+      "leavePage": [
+        "Are you sure you want to leave this page?",
+        "Your current chat conversation will be reset."
+      ],
+      "cancel": "No",
+      "confirm": "Yes"
     },
     "recommendText": [
       "I’ll recommend some products for you!",
@@ -587,5 +594,11 @@
   },
   "purchaseNot": "There is no purchase history.",
   "detailNot": "This product does not have a detail page.",
-  " noReview": "No reviews have been submitted."
+  " noReview": "No reviews have been submitted.",
+  "alertModal": {
+    "noItemSelected": "No item has been selected.",
+    "noReviewContent": "Please enter your review content.",
+    "noRating": "Please select a rating.",
+    "noOption": "Please select an option."
+  }
 }
