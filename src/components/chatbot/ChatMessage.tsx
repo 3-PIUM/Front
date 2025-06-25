@@ -65,7 +65,10 @@ const ChatMessage = ({ sender, text, time, botName }: ChatMessageProps) => {
         <BotName>{botName}</BotName>
       </BotRow>
       <BotRow>
-        <MessageBubble $isUser={false}>{text}</MessageBubble>
+        <MessageBubble
+          $isUser={false}
+          dangerouslySetInnerHTML={{ __html: text }}
+        />
         <TimeText>{time}</TimeText>
       </BotRow>
     </MessageRow>

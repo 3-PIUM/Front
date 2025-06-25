@@ -9,8 +9,8 @@ import styled from "styled-components";
 import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
-import ChatRecommendList from "../../components/chatbot/ChatRecommendList";
 import { useNavigate } from "react-router-dom";
+import ChatRecommendList from "../../components/chatbot/ChatRecommendList";
 
 interface Message {
   sender: "user" | "bot";
@@ -54,6 +54,7 @@ export default function ChatbotPage() {
   const [compareModeStarted, setCompareModeStarted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [recommendList, setRecommendList] = useState<any[]>([]);
 
   const handleBeforeUnload = (e: BeforeUnloadEvent) => {
     e.preventDefault();
@@ -174,6 +175,10 @@ export default function ChatbotPage() {
         session_id: sessionId,
       });
       const output = res.data.result.output || t.chatbot.response.default;
+      const itemList = res.data.result.itemList || [];
+      setRecommendList(itemList);
+      console.log(output);
+
       setMessages((prev) => {
         const updated: Message[] = [
           ...prev,
@@ -393,19 +398,16 @@ export default function ChatbotPage() {
             </MessageWrapper>
           ))}
 
-        {mode === "default" &&
-          messages.length === 1 &&
-          messages[0]?.text === t.chatbot.welcome &&
-          t.chatbot.suggestions.items && (
-            <ChatRecommendList items={t.chatbot.suggestions.items} />
-          )}
-        {/* ChatSuggestions always shown in default mode with only welcome message */}
         {mode === "default" && messages.length === 1 && (
           <ChatSuggestions
             recommendLabel={t.chatbot.suggestions.recommend}
             compareLabel={t.chatbot.suggestions.compare}
             onSelect={handleSuggestionClick}
           />
+        )}
+
+        {mode === "recommend" && recommendList.length > 0 && (
+          <ChatRecommendList items={recommendList} />
         )}
       </ChatContent>
       <ChatInputBox
