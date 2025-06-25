@@ -59,10 +59,14 @@ const RecommandCategory = styled.div<{ $isActive: boolean }>`
 
 interface PersonalRecommendedProps {
   nickname?: string;
+  isLoading: boolean;
+  setIsLoading: (value: boolean) => void;
 }
 
 export default function PersonalRecommended({
   nickname,
+  isLoading,
+  setIsLoading,
 }: PersonalRecommendedProps) {
   const { t } = useLocale();
   const [activeTab, setActiveTab] = useState("전체");
@@ -76,6 +80,7 @@ export default function PersonalRecommended({
     }
 
     const fetchItems = async () => {
+      setIsLoading(true);
       try {
         const response = await axiosInstance.get("item/list", {
           params: {
@@ -84,6 +89,8 @@ export default function PersonalRecommended({
         });
         const data = response.data.result;
         setItems(data);
+
+        setTimeout(() => setIsLoading(false), 500);
       } catch (error) {
         console.error("아이템을 가져오는 중 오류 발생:", error);
       }
@@ -122,15 +129,10 @@ export default function PersonalRecommended({
             itemName={product.itemName}
             imageSource={product.itemImage}
             price={product.salePrice}
-            discountRate={
-              product.originalPrice
-                ? Math.round(
-                    (1 - product.salePrice / product.originalPrice) * 100
-                  )
-                : 0
-            }
+            discountRate={product.discountRate}
             itemId={product.id}
             wishStatus={product.wishStatus}
+            isLoading={isLoading}
           />
         ))}
       </PersonalRecommandList>

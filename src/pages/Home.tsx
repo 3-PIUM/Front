@@ -15,6 +15,7 @@ import TopRankItem from "../components/product/TopRankItem";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: ${colors.white};
 `;
 
 const InfoBox = styled.div`
@@ -181,6 +182,7 @@ export default function Home() {
   const [memberInfo, setMemberInfo] = useState<any>(null);
   const { t, setLanguage, language } = useLocale();
   const [top10Items, setTop10Items] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   sessionStorage.removeItem("topClicked");
   sessionStorage.removeItem("categoryName");
   sessionStorage.removeItem("subcategoryName");
@@ -203,11 +205,14 @@ export default function Home() {
 
     const getTop10 = async () => {
       try {
-        const items = await axiosInstance.get("/item/top10");
+        const items = await axiosInstance.get("/item/popular");
         const top10 = items.data.result;
         setTop10Items(top10);
-        console.log(top10);
-      } catch {}
+
+        setTimeout(() => setIsLoading(false), 500);
+      } catch (error) {
+        console.error(error);
+      }
     };
     getTop10();
   }, []);
@@ -299,7 +304,11 @@ export default function Home() {
         />
       </BannerWrap>
       <RecommandListWrap>
-        <PersonalRecommended nickname={nickname} />
+        <PersonalRecommended
+          nickname={nickname}
+          setIsLoading={setIsLoading}
+          isLoading={isLoading}
+        />
         <RecommandBox>
           <RecommandTitle>TOP 10</RecommandTitle>
           <RecommandListWrapper>
@@ -308,7 +317,7 @@ export default function Home() {
                 item: {
                   itemId: number;
                   itemName: string;
-                  discoutRate: number;
+                  discountRate: number;
                   itemImage: string;
                   salePrice: number;
                   originalPrice: number;
@@ -320,9 +329,10 @@ export default function Home() {
                   itemId={item.itemId}
                   itemName={item.itemName}
                   imageSource={item.itemImage}
-                  discountRate={item.discoutRate}
+                  discountRate={item.discountRate}
                   price={item.salePrice}
                   rank={index + 1}
+                  isLoading={isLoading}
                 />
               )
             )}
@@ -333,13 +343,14 @@ export default function Home() {
           <BigListWrapper>
             {topRank.map((item) => (
               <ItemCard
-                key={item.id}
-                itemId={item.id}
-                itemName={item.name}
-                imageSource={item.url}
-                discountRate={item.discount}
-                price={item.price}
+                key={item.itemId}
+                itemId={item.itemId}
+                itemName={item.itemName}
+                imageSource={item.itemImage}
+                discountRate={item.discountRate}
+                price={item.salePrice}
                 size="big"
+                isLoading={isLoading}
               />
             ))}
           </BigListWrapper>

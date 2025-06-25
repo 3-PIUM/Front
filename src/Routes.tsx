@@ -40,6 +40,7 @@
 // import PersonalColorResult from "./pages/SignUp/PersonalColorResult";
 import { lazy } from "react";
 import Loading from "./pages/Loading";
+import SearchResult from "./pages/Product/SearchResult";
 
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/SignUp/Signup"));
@@ -93,6 +94,7 @@ const Category = lazy(() => import("./pages/Category/Category"));
 const ProductDetail = lazy(() => import("./pages/Product/ProductDetail"));
 const ReviewWritePage = lazy(() => import("./pages/Review/ReviewWritePage"));
 const ScanPage = lazy(() => import("./pages/Scan/ScanPage"));
+const AdminLogin = lazy(() => import("./pages/Admin/AdminLogin"));
 
 const routes = [
   // DefaultLayout
@@ -168,6 +170,10 @@ const routes = [
     path: "/loading",
     element: <Loading />,
   },
+  {
+    path: "/admin/login",
+    element: <AdminLogin />,
+  },
 
   //MenuLayout
   {
@@ -185,6 +191,7 @@ const routes = [
       { path: "qr", element: <QRCodePage /> },
       { path: "purchase-list", element: <PurchaseList /> },
       { path: "purchase-detail", element: <PurchaseDetail /> },
+      { path: "search/:keyword", element: <SearchResult /> },
     ],
   },
 ];

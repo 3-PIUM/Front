@@ -1,82 +1,82 @@
 [
   {
-    "id": 101,
-    "name": "비타민C 앰플",
-    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
-    "discount": 20,
-    "price": 32000,
-    "rank": "1"
+    "itemId": 101,
+    "itemName": "비타민C 앰플",
+    "itemImage": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discountRate": 20,
+    "salePrice": 32000,
+    "originalPrice": 40000
   },
   {
-    "id": 102,
-    "name": "수분 크림",
-    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
-    "discount": 15,
-    "price": 25000,
-    "rank": "2"
+    "itemId": 102,
+    "itemName": "수분 크림",
+    "itemImage": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discountRate": 15,
+    "salePrice": 25000,
+    "originalPrice": 29412
   },
   {
-    "id": 103,
-    "name": "클렌징 폼",
-    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
-    "discount": 10,
-    "price": 18000,
-    "rank": "3"
+    "itemId": 103,
+    "itemName": "클렌징 폼",
+    "itemImage": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discountRate": 10,
+    "salePrice": 18000,
+    "originalPrice": 20000
   },
   {
-    "id": 104,
-    "name": "미백 에센스",
-    "url": "https://via.placeholder.com/150",
-    "discount": 25,
-    "price": 41000,
-    "rank": "4"
+    "itemId": 104,
+    "itemName": "미백 에센스",
+    "itemImage": "https://via.placeholder.com/150",
+    "discountRate": 25,
+    "salePrice": 41000,
+    "originalPrice": 54666
   },
   {
-    "id": 105,
-    "name": "선크림 SPF50+",
-    "url": "https://via.placeholder.com/150",
-    "discount": 12,
-    "price": 22000,
-    "rank": "5"
+    "itemId": 105,
+    "itemName": "선크림 SPF50+",
+    "itemImage": "https://via.placeholder.com/150",
+    "discountRate": 12,
+    "salePrice": 22000,
+    "originalPrice": 25000
   },
   {
-    "id": 106,
-    "name": "진정 토너",
-    "url": "https://via.placeholder.com/150",
-    "discount": 18,
-    "price": 27000,
-    "rank": "6"
+    "itemId": 106,
+    "itemName": "진정 토너",
+    "itemImage": "https://via.placeholder.com/150",
+    "discountRate": 18,
+    "salePrice": 27000,
+    "originalPrice": 32927
   },
   {
-    "id": 107,
-    "name": "리페어 세럼",
-    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
-    "discount": 30,
-    "price": 36000,
-    "rank": "7"
+    "itemId": 107,
+    "itemName": "리페어 세럼",
+    "itemImage": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discountRate": 30,
+    "salePrice": 36000,
+    "originalPrice": 51428
   },
   {
-    "id": 108,
-    "name": "각질 패드",
-    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
-    "discount": 20,
-    "price": 21000,
-    "rank": "8"
+    "itemId": 108,
+    "itemName": "각질 패드",
+    "itemImage": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discountRate": 20,
+    "salePrice": 21000,
+    "originalPrice": 26250
   },
   {
-    "id": 109,
-    "name": "모공 수축 에센스",
-    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
-    "discount": 22,
-    "price": 34000,
-    "rank": "9"
+    "itemId": 109,
+    "itemName": "모공 수축 에센스",
+    "itemImage": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discountRate": 22,
+    "salePrice": 34000,
+    "originalPrice": 43589
   },
   {
-    "id": 110,
-    "name": "수딩 젤",
-    "url": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
-    "discount": 17,
-    "price": 20000,
-    "rank": "10"
+    "itemId": 110,
+    "itemName": "수딩 젤",
+    "itemImage": "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0000/A00000000158803ko.jpg?l=ko",
+    "discountRate": 17,
+    "salePrice": 20000,
+    "originalPrice": 24096
   }
 ]
