@@ -9,6 +9,8 @@ import styled from "styled-components";
 import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
+import ChatRecommendList from "../../components/chatbot/ChatRecommendList";
+import { useNavigate } from "react-router-dom";
 
 interface Message {
   sender: "user" | "bot";
@@ -37,6 +39,7 @@ const MessageWrapper = styled.div`
 `;
 
 export default function ChatbotPage() {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const { t } = useLocale();
   const [mode, setMode] = useState<"default" | "compare" | "recommend">(
@@ -50,6 +53,17 @@ export default function ChatbotPage() {
   const [input, setInput] = useState("");
   const [compareModeStarted, setCompareModeStarted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
+  const handleBrowserNav = (e: PopStateEvent) => {
+    setShowExitModal(true);
+    history.pushState(null, "", location.href);
+  };
 
   const getTime = () => {
     const now = new Date();
@@ -71,16 +85,15 @@ export default function ChatbotPage() {
       try {
         const res = await axiosInstance.get("/cart/items");
         const items = res.data?.result?.items || [];
-        setCartItems(
-          items.map((item: any) => ({
-            id: item.cartItemId,
-            name: item.itemName,
-            brand: item.brand,
-            price: `${item.salePrice.toLocaleString()}원`,
-            image: item.mainImageUrl,
-            checked: selectedCompareItems.includes(item.cartItemId),
-          }))
-        );
+        const processedItems = items.map((item: any) => ({
+          id: item.cartItemId,
+          name: item.itemName,
+          brand: item.brand,
+          price: `${item.salePrice.toLocaleString()}원`,
+          image: item.mainImageUrl,
+          checked: false,
+        }));
+        setCartItems(processedItems);
       } catch (err) {
         console.error("장바구니 불러오기 실패", err);
       }
@@ -89,16 +102,15 @@ export default function ChatbotPage() {
       try {
         const res = await axiosInstance.get("/wishlist/items");
         const items = res.data?.result || [];
-        setWishItems(
-          items.map((entry: any) => ({
-            id: entry.item.itemId,
-            name: entry.item.itemName,
-            brand: entry.item.brand,
-            price: `${entry.item.salePrice.toLocaleString()}원`,
-            image: entry.item.mainImageUrl,
-            checked: selectedCompareItems.includes(entry.item.itemId),
-          }))
-        );
+        const processedWish = items.map((entry: any) => ({
+          id: entry.item.itemId,
+          name: entry.item.itemName,
+          brand: entry.item.brand,
+          price: `${entry.item.salePrice.toLocaleString()}원`,
+          image: entry.item.mainImageUrl,
+          checked: false,
+        }));
+        setWishItems(processedWish);
       } catch (err) {
         console.error("찜 목록 불러오기 실패", err);
       }
@@ -110,13 +122,12 @@ export default function ChatbotPage() {
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
-      setMessages([
-        {
-          sender: "bot",
-          text: t.chatbot.welcome,
-          time: getTime(),
-        },
-      ]);
+      const welcomeMsg: Message = {
+        sender: "bot",
+        text: t.chatbot.welcome,
+        time: getTime(),
+      };
+      setMessages([welcomeMsg]);
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
@@ -125,6 +136,31 @@ export default function ChatbotPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handleBrowserNav);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handleBrowserNav);
+    };
+  }, []);
+
+  // 챗팅 다시 시작하기
+  const resetChat = () => {
+    setMessages([
+      {
+        sender: "bot",
+        text: t.chatbot.welcome,
+        time: getTime(),
+      },
+    ]);
+    setSelectedCompareItems([]);
+    setMode("default");
+    setCompareModeStarted(false);
+  };
 
   const sendChatMessage = async (userInput: string) => {
     const sessionId = "user-session-id";
@@ -138,36 +174,42 @@ export default function ChatbotPage() {
         session_id: sessionId,
       });
       const output = res.data.result.output || t.chatbot.response.default;
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "user",
-          text: userInput,
-          time: getTime(),
-        },
-        {
-          sender: "bot",
-          text: output,
-          time: getTime(),
-        },
-      ]);
+      setMessages((prev) => {
+        const updated: Message[] = [
+          ...prev,
+          {
+            sender: "user",
+            text: userInput,
+            time: getTime(),
+          },
+          {
+            sender: "bot",
+            text: output,
+            time: getTime(),
+          },
+        ];
+        return updated;
+      });
       if (mode === "compare" && !compareModeStarted) {
         setCompareModeStarted(true);
       }
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "user",
-          text: userInput,
-          time: getTime(),
-        },
-        {
-          sender: "bot",
-          text: t.chatbot.response.default,
-          time: getTime(),
-        },
-      ]);
+      setMessages((prev) => {
+        const updated: Message[] = [
+          ...prev,
+          {
+            sender: "user",
+            text: userInput,
+            time: getTime(),
+          },
+          {
+            sender: "bot",
+            text: t.chatbot.response.default,
+            time: getTime(),
+          },
+        ];
+        return updated;
+      });
     } finally {
       setIsLoading(false); // Hide spinner after response
     }
@@ -199,6 +241,12 @@ export default function ChatbotPage() {
     );
   };
 
+  useEffect(() => {
+    if (mode === "default" && messages.length === 1) {
+      console.log("✅ t.chatbot.suggestions: ", t.chatbot.suggestions);
+    }
+  }, [mode, messages, t]);
+
   const compareIntro = (
     <div
       style={{
@@ -220,8 +268,29 @@ export default function ChatbotPage() {
 
   return (
     <ChatPageContainer>
-      <Header />
-      <TextHeader pageName={t.chatbot.pageTitle} />
+      <>
+        <Header />
+        <TextHeader pageName={t.chatbot.pageTitle} />
+        <button
+          onClick={resetChat}
+          style={{
+            position: "fixed",
+            right: "0.7rem",
+            padding: "0.4rem 0.75rem",
+            backgroundColor: "transparent",
+            color: "#F23477",
+            borderRadius: "999px",
+            border: "1px solid #F23477",
+            fontSize: "0.75rem",
+            fontWeight: 500,
+            lineHeight: 1,
+            cursor: "pointer",
+            zIndex: 1000,
+          }}
+        >
+          챗팅 다시 하기
+        </button>
+      </>
       <ChatContent>
         <DateText>{formattedDate}</DateText>
 
@@ -261,7 +330,7 @@ export default function ChatbotPage() {
         )} */}
 
         {/* 3. 선택된 장바구니/찜 항목 (항상 유지) */}
-        {mode === "compare" && (
+        {mode === "compare" && compareModeStarted && (
           <>
             <ChatItemList
               title="장바구니 목록"
@@ -301,17 +370,36 @@ export default function ChatbotPage() {
         )}
 
         {/* 4. 이후 메시지 (가격 비교해줘 등) */}
-        {messages.slice(2).map((msg, idx) => (
-          <MessageWrapper key={idx + 2}>
-            <ChatMessage
-              sender={msg.sender}
-              text={msg.text}
-              time={msg.time}
-              botName={t.chatbot.botName}
-            />
-          </MessageWrapper>
-        ))}
+        {messages
+          .slice(2)
+          .filter(
+            (msg) =>
+              !(
+                msg.text.includes("제품 ID 목록이 비어") ||
+                msg.text.includes("상품의 ID를 알려주세요")
+              )
+          )
+          .map((msg, idx) => (
+            <MessageWrapper key={idx + 2}>
+              <ChatMessage
+                sender={msg.sender}
+                text={msg.text.replace(
+                  /\*\*(.*?)\*\*/g,
+                  (_, boldText) => `${boldText}`
+                )}
+                time={msg.time}
+                botName={t.chatbot.botName}
+              />
+            </MessageWrapper>
+          ))}
 
+        {mode === "default" &&
+          messages.length === 1 &&
+          messages[0]?.text === t.chatbot.welcome &&
+          t.chatbot.suggestions.items && (
+            <ChatRecommendList items={t.chatbot.suggestions.items} />
+          )}
+        {/* ChatSuggestions always shown in default mode with only welcome message */}
         {mode === "default" && messages.length === 1 && (
           <ChatSuggestions
             recommendLabel={t.chatbot.suggestions.recommend}
@@ -339,6 +427,70 @@ export default function ChatbotPage() {
           }}
         >
           <LoadingSpinner text={t.loading} />
+        </div>
+      )}
+      {showExitModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 10000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              padding: "2rem",
+              borderRadius: "1rem",
+              textAlign: "center",
+              maxWidth: "90%",
+              boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+            }}
+          >
+            <p style={{ marginBottom: "1rem" }}>
+              정말로 페이지를 나가시겠습니까?
+            </p>
+            <button
+              onClick={() => setShowExitModal(false)}
+              style={{
+                backgroundColor: "#ccc",
+                color: "black",
+                border: "none",
+                padding: "0.75rem 1rem",
+                borderRadius: "0.5rem",
+                marginRight: "0.5rem",
+                minWidth: "100px",
+                fontWeight: "bold",
+              }}
+            >
+              아니요
+            </button>
+            <button
+              onClick={() => {
+                setShowExitModal(false);
+                window.removeEventListener("beforeunload", handleBeforeUnload);
+                navigate("/home");
+              }}
+              style={{
+                backgroundColor: "#F23477",
+                color: "white",
+                border: "none",
+                padding: "0.75rem 1rem",
+                borderRadius: "0.5rem",
+                minWidth: "100px",
+                fontWeight: "bold",
+              }}
+            >
+              네, 나갈래요
+            </button>
+          </div>
         </div>
       )}
     </ChatPageContainer>
