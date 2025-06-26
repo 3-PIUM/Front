@@ -81,7 +81,6 @@ export default function EditPassword() {
           password: password,
         });
         setShowModal(true);
-        navigate("/mypage");
       } catch (error) {
         console.log("비밀번호 변경에 실패했습니다:", error);
       }
