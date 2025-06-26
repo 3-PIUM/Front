@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { FiSend } from "react-icons/fi";
+import { useLocale } from "../../context/LanguageContext";
 
 interface ChatInputBoxProps {
   value: string;
@@ -42,13 +43,14 @@ const SendButton = styled.button`
 `;
 
 const ChatInputBox = ({ value, onChange, onSubmit }: ChatInputBoxProps) => {
+  const { t } = useLocale();
   return (
     <InputContainer onSubmit={onSubmit}>
       <ChatInput
         type="text"
         value={value}
         onChange={onChange}
-        placeholder="메시지를 입력하세요"
+        placeholder={t.search.placeholder}
       />
       <SendButton type="submit">
         <FiSend />

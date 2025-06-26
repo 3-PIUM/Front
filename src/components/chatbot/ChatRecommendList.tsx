@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
 
 interface RecommendItem {
   itemId: number;
@@ -14,7 +15,7 @@ interface Props {
 
 const ChatRecommendList: React.FC<Props> = ({ items }) => {
   const navigate = useNavigate();
-
+  const { t } = useLocale();
   const scrollContainerStyle: React.CSSProperties = {
     display: "flex",
     overflowX: "auto",
@@ -87,7 +88,8 @@ const ChatRecommendList: React.FC<Props> = ({ items }) => {
                 marginBottom: "0.25rem",
               }}
             >
-              {item.discountPrice.toLocaleString()}원
+              {item.discountPrice.toLocaleString()}
+              {t.order.won}
             </div>
             <div
               style={{
