@@ -10,8 +10,9 @@ const RecommandBox = styled.div``;
 const RecommandTitle = styled.div`
   display: flex;
   flex-direction: row;
-  font-weight: 700;
-  font-size: 1.125rem;
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: 0.1rem;
 `;
 
 const RecommandCategoryWrapper = styled.div`

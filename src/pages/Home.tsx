@@ -10,7 +10,8 @@ import { useLocale } from "../context/LanguageContext";
 import topRank from "../data/topRankDummyData.json";
 import skinType from "../data/language/skinType";
 import PersonalRecommended from "../components/PersonalRecommended";
-import TopRankItem from "../components/product/TopRankItem";
+import WeeklyBest from "../components/product/WeeklyBest";
+import Top10 from "../components/product/Top10";
 
 const Wrapper = styled.div`
   display: flex;
@@ -129,7 +130,8 @@ const RecommandTitle = styled.div`
   display: flex;
   flex-direction: row;
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.1rem;
 `;
 
 const BannerWrap = styled.div`
@@ -141,21 +143,6 @@ const BannerImage = styled.img`
   display: flex;
   width: 100%;
   border-radius: 0.75rem;
-`;
-
-const RecommandListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  width: 100%;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const BigListWrapper = styled.div`
@@ -181,7 +168,7 @@ export default function Home() {
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
   const { t, setLanguage, language } = useLocale();
-  const [top10Items, setTop10Items] = useState<any[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
   sessionStorage.removeItem("topClicked");
   sessionStorage.removeItem("categoryName");
@@ -202,22 +189,7 @@ export default function Home() {
       }
     };
     fetchMemberInfo();
-
-    const getTop10 = async () => {
-      try {
-        const items = await axiosInstance.get("/item/popular");
-        const top10 = items.data.result;
-        setTop10Items(top10);
-
-        setTimeout(() => setIsLoading(false), 500);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getTop10();
   }, []);
-
-  console.log(memberInfo);
 
   type SkinTypeKey = keyof typeof skinType;
   type LanguageKey = keyof (typeof skinType)[SkinTypeKey];
@@ -309,35 +281,8 @@ export default function Home() {
           setIsLoading={setIsLoading}
           isLoading={isLoading}
         />
-        <RecommandBox>
-          <RecommandTitle>TOP 10</RecommandTitle>
-          <RecommandListWrapper>
-            {top10Items.map(
-              (
-                item: {
-                  itemId: number;
-                  itemName: string;
-                  discountRate: number;
-                  itemImage: string;
-                  salePrice: number;
-                  originalPrice: number;
-                },
-                index: number
-              ) => (
-                <TopRankItem
-                  key={item.itemId}
-                  itemId={item.itemId}
-                  itemName={item.itemName}
-                  imageSource={item.itemImage}
-                  discountRate={item.discountRate}
-                  price={item.salePrice}
-                  rank={index + 1}
-                  isLoading={isLoading}
-                />
-              )
-            )}
-          </RecommandListWrapper>
-        </RecommandBox>
+        <Top10 />
+        <WeeklyBest />
         <RecommandBox>
           <RecommandTitle>오늘의 추천 제품</RecommandTitle>
           <BigListWrapper>
