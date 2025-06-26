@@ -65,7 +65,6 @@ const Circle = styled.div<{ left: number; color: string }>`
 
 const Label = styled.div`
   font-size: 11px;
-  /* text-align: right; */
   width: 90px;
 `;
 

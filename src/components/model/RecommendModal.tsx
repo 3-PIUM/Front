@@ -1,4 +1,3 @@
-// import React from "react";
 import styled from "styled-components";
 import ItemCard from "../product/ItemCard";
 import { useState } from "react";
@@ -53,7 +52,7 @@ const RecommendModal = ({
   onClose: () => void;
   addedItemImage?: string;
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, _setIsLoading] = useState<boolean>(true);
   const firstImage =
     addedItemImage ||
     (() => {
@@ -117,7 +116,6 @@ const RecommendModal = ({
             바로가기 &gt;
           </div>
         </div>
-        {/* <CloseBtn onClick={onClose}>✕</CloseBtn> */}
         <Header>같이 구매하면 좋은 상품</Header>
         <ItemsWrapper>
           {items.map((item) => {

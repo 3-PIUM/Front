@@ -11,7 +11,6 @@ const ScorePieChart = lazy(
 const ScoreBar = lazy(() => import("../../components/ingredient/ScoreBar"));
 const Header = lazy(() => import("../../components/common/Header"));
 
-// 스타일
 const Container = styled.div`
   padding: 4rem 1rem;
 `;
@@ -61,7 +60,6 @@ const IngredientBox = styled.div`
   }
 `;
 
-// 점수 구간별 색상
 const scoreColorMap: Record<string, string> = {
   "1~2": "#ec4899",
   "3~4": "#f472b6",
@@ -70,7 +68,6 @@ const scoreColorMap: Record<string, string> = {
   "9~10": "#a78bfa",
 };
 
-// 점수 구간 변환
 function getScoreRange(score: number): string {
   if (score >= 9) return "9~10";
   if (score >= 7) return "7~8";
@@ -79,7 +76,6 @@ function getScoreRange(score: number): string {
   return "1~2";
 }
 
-// 컴포넌트
 export default function IngredientDetailPage() {
   const { t } = useLocale();
   const location = useLocation();

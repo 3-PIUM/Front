@@ -128,10 +128,6 @@ const QRPOSPage = () => {
   const tokenFromQuery = query.get("token");
   const { t } = useLocale();
 
-  // const path = window.location.pathname;
-  // const pathMatch = path.match(/\/cart\/pay\/(\d+)/);
-  // const memberId = pathMatch ? pathMatch[1] : null;
-
   useEffect(() => {
     const fetchCartItems = async () => {
       const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
@@ -180,10 +176,6 @@ const QRPOSPage = () => {
         console.warn("❌ 토큰이나 장바구니 ID 없음");
         return;
       }
-
-      console.log("🔐 토큰:", token);
-      console.log("🛒 cartItemIds:", idsToUse);
-      console.log("👤 memberId:", memberId);
 
       const response = await axiosInstance.post(
         `/cart/pay/${memberId}?cartItemIds=${idsToUse}`

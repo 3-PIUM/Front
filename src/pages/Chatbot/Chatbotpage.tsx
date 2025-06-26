@@ -149,7 +149,6 @@ export default function ChatbotPage() {
     };
   }, []);
 
-  // 챗팅 다시 시작하기
   const resetChat = () => {
     setMessages([
       {
@@ -166,7 +165,7 @@ export default function ChatbotPage() {
   const sendChatMessage = async (userInput: string) => {
     const sessionId = "user-session-id";
     const lang = t.lang || "KR";
-    setIsLoading(true); // Show spinner before network call
+    setIsLoading(true);
     try {
       const res = await axiosInstance.post("/chat/message", {
         message: userInput,
@@ -216,7 +215,7 @@ export default function ChatbotPage() {
         return updated;
       });
     } finally {
-      setIsLoading(false); // Hide spinner after response
+      setIsLoading(false);
     }
   };
 

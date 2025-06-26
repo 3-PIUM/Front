@@ -10,7 +10,6 @@ const SuggestionContainer = styled.div`
   display: flex;
   gap: 0.5rem;
   margin: 1rem 0;
-  /* justify-content: center; */
 `;
 
 const SuggestionButton = styled.button`
