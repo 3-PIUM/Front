@@ -1,12 +1,12 @@
 import React, { Suspense, useState, useEffect } from "react";
-import AlertModal from "../../components/model/AlertModal";
+import AlertModal from "../../components/modal/AlertModal";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 
 const OptionModal = React.lazy(
-  () => import("../../components/model/OptionModal")
+  () => import("../../components/modal/OptionModal")
 );
 const TextHeader = React.lazy(
   () => import("../../components/common/TextHeader")

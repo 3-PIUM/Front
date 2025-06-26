@@ -6,8 +6,8 @@ import { HiLocationMarker } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
-import StoreModal from "../model/StoreModal";
-import type { Store } from "../model/StoreModal";
+import StoreModal from "../modal/StoreModal";
+import type { Store } from "../modal/StoreModal";
 
 const HeaderWrap = styled.div`
   position: fixed;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
-import AlertModal from "../../components/model/AlertModal";
+import AlertModal from "../../components/modal/AlertModal";
 
 const TextHeader = lazy(() => import("../../components/common/TextHeader"));
 const ImageUploadList = lazy(

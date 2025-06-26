@@ -5,8 +5,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import ImageNot from "../../components/ingredient/ImageNot";
-import RecommendModal from "../../components/model/RecommendModal";
-import AlertModal from "../../components/model/AlertModal";
+import RecommendModal from "../../components/modal/RecommendModal";
+import AlertModal from "../../components/modal/AlertModal";
 import RelatedProductCarousel from "../../components/product/RelatedProduct";
 
 const ProductCard = React.lazy(
@@ -62,6 +62,7 @@ const ProductCardWrapper = styled.div`
 const TabMenu = styled.div`
   display: flex;
   justify-content: center;
+  padding-top: 1rem;
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
@@ -177,6 +178,7 @@ export default function ProductDetail() {
   const [showAllReviews, setShowAllReviews] = useState(false);
 
   const [viewCount, setViewCount] = useState<number | null>(null);
+  const [showAllDetailImages, setShowAllDetailImages] = useState(false);
 
   useEffect(() => {
     const fetchViewCount = async () => {
@@ -426,14 +428,47 @@ export default function ProductDetail() {
                     (url: string) => url.trim() !== ""
                   );
                   return validUrls.length > 0 ? (
-                    <div style={{ marginBottom: "0rem" }}>
-                      {validUrls.map((url: string, idx: number) => (
+                    <div>
+                      {(showAllDetailImages
+                        ? validUrls
+                        : validUrls.slice(0, 1)
+                      ).map((url: string, idx: number) => (
                         <BannerImage
                           key={idx}
                           src={url}
                           alt={`detail-banner-${idx}`}
                         />
                       ))}
+                      {validUrls.length > 1 && (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            margin: "0.5rem 0",
+                          }}
+                        >
+                          <button
+                            onClick={() =>
+                              setShowAllDetailImages(!showAllDetailImages)
+                            }
+                            style={{
+                              padding: "0.5rem",
+                              width: "90%",
+                              border: "1px solid #ccc",
+                              borderRadius: "8px",
+                              background: "#fff",
+                              fontWeight: "bold",
+                              fontSize: "0.9rem",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {t.productDetail.productAccordion}{" "}
+                            {showAllDetailImages
+                              ? t.productDetail.collapse
+                              : t.productDetail.expand}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <ImageNot />

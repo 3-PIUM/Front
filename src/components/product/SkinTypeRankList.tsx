@@ -3,7 +3,7 @@ import SkinTypeCard from "./SkinTypeCard";
 import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
-import SkinTypeModal from "../model/SkinTypeModal";
+import SkinTypeModal from "../modal/SkinTypeModal";
 
 const SectionTitle = styled.h3`
   font-size: 18px;

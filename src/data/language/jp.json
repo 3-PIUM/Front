@@ -404,7 +404,10 @@
     "reviewButton": {
       "fold": "レビューをたたむ ▲",
       "expand": "もっと見る ▼"
-    }
+    },
+    "productAccordion": "商品説明",
+    "collapse": "閉じる ▲",
+    "expand": "もっと見る ▼"
   },
   "save": "保存する",
   "review": {
@@ -414,7 +417,13 @@
     "photoLabel": "写真",
     "photoInfo": "写真は4枚以下のPNG、JPGファイルのみ登録できます。",
     "submit": "レビュー登録する",
-    "alert": "評価と内容をすべて記入してください。"
+    "alert": "評価と内容をすべて記入してください。",
+    "edit": "修正",
+    "report": "通報",
+    "delete": "削除",
+    "confirmed": "通報が受理されました。",
+    "deleted": "削除されました。",
+    "confirmDeleteReview": "レビューを削除しますか？"
   },
   "reviewGuide": {
     "title": "ご利用案内",
@@ -599,5 +608,13 @@
     "noReviewContent": "レビュー内容を入力してください。",
     "noRating": "評価を選択してください。",
     "noOption": "オプションを選択してください。"
-  }
+  },
+  "cartModal": {
+    "messageMiddle": "カート",
+    "messageLast": "に商品を追加しました",
+    "shortcut": "今すぐ見る >",
+    "recommendation": "一緒に買うと良い商品"
+  },
+  "viewCountMessage": "人が見ています",
+  "relatedProducts": "他の顧客が一緒に見た商品"
 }

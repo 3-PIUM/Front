@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
 
 const Section = styled.section`
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 `;
 
 const Divider = styled.div`
@@ -135,11 +136,12 @@ const dummyProducts: RelatedProduct[] = [
 
 const RelatedProductCarousel = () => {
   const navigate = useNavigate();
+  const { t } = useLocale();
   return (
     <Section>
       <Divider />
       <Header>
-        <Title>다른 고객이 함께 본 상품</Title>
+        <Title>{t.relatedProducts}</Title>
       </Header>
       <ProductList>
         {dummyProducts.map((product) => (
@@ -154,7 +156,8 @@ const RelatedProductCarousel = () => {
                 <DiscountRate>{product.discountRate}%</DiscountRate>
               )}
               <DiscountedPrice>
-                {product.discountedPrice.toLocaleString()}원
+                {product.discountedPrice.toLocaleString()}
+                {t.productDetail.won}
               </DiscountedPrice>
             </Price>
           </ProductCard>

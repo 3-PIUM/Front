@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import colors from "../../styles/colors";
 import Header from "../../components/common/Header";
 import Button from "../../components/common/Button";
-import LanguageModal from "../../components/model/LanguageModal";
+import LanguageModal from "../../components/modal/LanguageModal";
 import { useLocale } from "../../context/LanguageContext";
 
 const Wrap = styled.div`
