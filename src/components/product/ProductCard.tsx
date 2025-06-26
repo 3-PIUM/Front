@@ -80,7 +80,7 @@ interface ProductCardProps {
   discountRate: number;
   imageUrl: string;
   stock: number;
-  viewCount: number | null; // 👁 Add this line
+  viewCount: number | null;
 }
 
 const ProductCard = ({
@@ -91,7 +91,7 @@ const ProductCard = ({
   discountRate,
   imageUrl,
   stock,
-  viewCount, // 👁 Add this line
+  viewCount,
 }: ProductCardProps) => {
   const { t } = useLocale();
 
@@ -101,7 +101,6 @@ const ProductCard = ({
         <ProductImage src={imageUrl} />
       </ImageWrapper>
       <InfoWrapper>
-        {/* 👁 조회수 표시 */}
         {viewCount !== null && (
           <div
             style={{

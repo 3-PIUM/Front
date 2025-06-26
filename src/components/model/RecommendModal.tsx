@@ -44,14 +44,6 @@ const ItemsWrapper = styled.div`
   }
 `;
 
-// const CloseBtn = styled.div`
-//   position: absolute;
-//   top: 1rem;
-//   right: 1rem;
-//   font-size: 1.2rem;
-//   cursor: pointer;
-// `;
-
 const RecommendModal = ({
   items,
   onClose,

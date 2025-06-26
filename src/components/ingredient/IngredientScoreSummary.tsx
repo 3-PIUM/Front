@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 
-const Wrapper = styled.div`
-  /* padding: 1rem; */
-`;
+const Wrapper = styled.div``;
 
 const Header = styled.div`
   display: flex;

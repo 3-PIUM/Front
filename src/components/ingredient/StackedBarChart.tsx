@@ -10,12 +10,7 @@ const Wrapper = styled.div`
   padding: 0.5rem;
 `;
 
-const ChartGroupWrapper = styled.div`
-  /* width: 100%; */
-  /* background-color: #f3f3f3; */
-  /* border-radius: 10px; */
-  /* padding: 1rem; */
-`;
+const ChartGroupWrapper = styled.div``;
 
 const GroupTitle = styled.h3`
   font-size: 13px;
