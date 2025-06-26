@@ -7,6 +7,7 @@ import axiosInstance from "../../api/axiosInstance";
 import ImageNot from "../../components/ingredient/ImageNot";
 import RecommendModal from "../../components/model/RecommendModal";
 import AlertModal from "../../components/model/AlertModal";
+import RelatedProductCarousel from "../../components/product/RelatedProduct";
 
 const ProductCard = React.lazy(
   () => import("../../components/product/ProductCard")
@@ -445,6 +446,7 @@ export default function ProductDetail() {
             ) : (
               <ImageNot />
             )}
+            <RelatedProductCarousel />
           </>
         )}
         {selectedTab === "ingredient" && isSkinRegistered !== null && (
