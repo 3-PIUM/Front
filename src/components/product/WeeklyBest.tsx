@@ -47,7 +47,9 @@ export default function WeeklyBest() {
         setItems(data.popularItems);
 
         setTimeout(() => setIsLoading(false), 500);
-      } catch {}
+      } catch (error) {
+        console.log("error", error);
+      }
     };
     fetchWeeklyBest();
   }, []);

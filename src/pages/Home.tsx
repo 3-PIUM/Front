@@ -2,16 +2,15 @@ import styled from "styled-components";
 import LogoHeader from "../components/common/LogoHeader";
 import colors from "../styles/colors";
 import { useState, useEffect } from "react";
-import ItemCard from "../components/product/ItemCard";
 import Header from "../components/common/Header";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { useLocale } from "../context/LanguageContext";
-import topRank from "../data/topRankDummyData.json";
 import skinType from "../data/language/skinType";
 import PersonalRecommended from "../components/PersonalRecommended";
 import WeeklyBest from "../components/product/WeeklyBest";
 import Top10 from "../components/product/Top10";
+import AreaPopular from "../components/product/AreaPopular";
 
 const Wrapper = styled.div`
   display: flex;
@@ -124,16 +123,6 @@ const RecommandListWrap = styled.div`
   padding-bottom: 80px;
 `;
 
-const RecommandBox = styled.div``;
-
-const RecommandTitle = styled.div`
-  display: flex;
-  flex-direction: row;
-  font-weight: 700;
-  font-size: 1.3rem;
-  letter-spacing: 0.1rem;
-`;
-
 const BannerWrap = styled.div`
   display: flex;
   padding: 1rem;
@@ -143,22 +132,6 @@ const BannerImage = styled.img`
   display: flex;
   width: 100%;
   border-radius: 0.75rem;
-`;
-
-const BigListWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  width: 100%;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 export default function Home() {
@@ -283,23 +256,7 @@ export default function Home() {
         />
         <Top10 />
         <WeeklyBest />
-        <RecommandBox>
-          <RecommandTitle>오늘의 추천 제품</RecommandTitle>
-          <BigListWrapper>
-            {topRank.map((item) => (
-              <ItemCard
-                key={item.itemId}
-                itemId={item.itemId}
-                itemName={item.itemName}
-                imageSource={item.itemImage}
-                discountRate={item.discountRate}
-                price={item.salePrice}
-                size="big"
-                isLoading={isLoading}
-              />
-            ))}
-          </BigListWrapper>
-        </RecommandBox>
+        <AreaPopular />
       </RecommandListWrap>
     </Wrapper>
   );
