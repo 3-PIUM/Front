@@ -129,7 +129,7 @@ export default function Login() {
     setShowError(false);
 
     try {
-      const response = await axios.post("http://localhost:8080/login", {
+      const response = await axios.post("http://15.164.48.222:8080/login", {
         email,
         password,
       });
