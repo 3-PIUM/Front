@@ -87,16 +87,6 @@ const InputPassword = styled.input<{ $passwordFocused: boolean }>`
   }
 `;
 
-const AccountActions = styled.div`
-  display: flex;
-  justify-content: center;
-  font-size: 0.875rem;
-  color: ${colors.mediumGrey};
-  font-weight: 700;
-  margin-top: 1rem;
-  gap: 1rem;
-`;
-
 const ErrorText = styled.div`
   font-size: 0.825rem;
   color: ${colors.mainPink};
