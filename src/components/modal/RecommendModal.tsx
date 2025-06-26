@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import ItemCard from "../product/ItemCard";
 import { useState } from "react";
+import { useLocale } from "../../context/LanguageContext";
 
 const Overlay = styled.div`
   position: fixed;
@@ -52,6 +53,7 @@ const RecommendModal = ({
   onClose: () => void;
   addedItemImage?: string;
 }) => {
+  const { t } = useLocale();
   const [isLoading, _setIsLoading] = useState<boolean>(true);
   const firstImage =
     addedItemImage ||
@@ -99,8 +101,11 @@ const RecommendModal = ({
               }}
             />
             <span style={{ fontSize: "0.95rem", color: "#555" }}>
-              <strong style={{ color: "#222" }}>장바구니</strong>에 상품을
-              담았어요
+              {t.cartModal.messagePrefix}&nbsp;
+              <strong style={{ color: "#222" }}>
+                {t.cartModal.messageMiddle}
+              </strong>
+              {t.cartModal.messageLast}
             </span>
           </div>
           <div
@@ -113,10 +118,10 @@ const RecommendModal = ({
               flexShrink: 0,
             }}
           >
-            바로가기 &gt;
+            {t.cartModal.shortcut}
           </div>
         </div>
-        <Header>같이 구매하면 좋은 상품</Header>
+        <Header>{t.cartModal.recommendation}</Header>
         <ItemsWrapper>
           {items.map((item) => {
             let imageUrl = item.itemImage;

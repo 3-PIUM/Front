@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import colors from "../../styles/colors";
 import { useEffect, useRef, useState } from "react";
 import { VscChevronDown } from "react-icons/vsc";
-import SortedModal from "../../components/model/SortedModal";
+import SortedModal from "../../components/modal/SortedModal";
 import { useLocale } from "../../context/LanguageContext";
 import SelectMenu from "./SelectMenu";
 import ItemCard from "../../components/product/ItemCard";

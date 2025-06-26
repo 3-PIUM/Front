@@ -402,7 +402,10 @@
     "reviewButton": {
       "fold": "Hide Reviews ▲",
       "expand": "Show More ▼"
-    }
+    },
+    "productAccordion": "Product Details",
+    "collapse": "Collapse ▲",
+    "expand": "Show More ▼"
   },
   "save": "Save",
   "review": {
@@ -412,7 +415,13 @@
     "photoLabel": "Photo",
     "photoInfo": "You can upload up to 4 PNG or JPG files.",
     "submit": "Submit Review",
-    "alert": "Please complete both rating and content."
+    "alert": "Please complete both rating and content.",
+    "edit": "Edit",
+    "report": "Report",
+    "delete": "Delete",
+    "confirmed": "Your report has been submitted.",
+    "deleted": "Deleted successfully.",
+    "confirmDeleteReview": "Are you sure you want to delete this review?"
   },
   "reviewGuide": {
     "title": "Review Guidelines",
@@ -600,5 +609,13 @@
     "noReviewContent": "Please enter your review content.",
     "noRating": "Please select a rating.",
     "noOption": "Please select an option."
-  }
+  },
+  "cartModal": {
+    "messageMiddle": "cart",
+    "messagePrefix": "Added to your",
+    "shortcut": "Go to Cart >",
+    "recommendation": "Frequently Bought Together"
+  },
+  "viewCountMessage": "people are viewing this",
+  "relatedProducts": "Customers also viewed"
 }

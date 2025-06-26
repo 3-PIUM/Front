@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import { useLocale } from "../../context/LanguageContext";
+import AlertModal from "../modal/AlertModal";
 
 interface ReviewCardProps {
   reviewId: number;
@@ -143,7 +145,11 @@ const ReviewCard = ({
   const [likeCount, setLikeCount] = useState<number>(recommend);
   const [liked, setLiked] = useState<boolean>(isRecommend);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [showReportAlert, setShowReportAlert] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLocale();
 
   useEffect(() => {
     setLiked(isRecommend);
@@ -165,17 +171,16 @@ const ReviewCard = ({
   const isMyReview = Number(memberId) === Number(myMemberId);
 
   const handleDelete = async () => {
-    if (!window.confirm("리뷰를 삭제하시겠습니까?")) return;
     try {
       await axiosInstance.delete(`/review/${reviewId}/remove`);
-      alert("삭제되었습니다.");
+      setDeleteMessage(t.review.deleted);
       window.location.reload();
     } catch (err: any) {
       console.error("리뷰 삭제 실패", err);
       if (err.response?.data?.message) {
-        alert(`삭제 실패: ${err.response.data.message}`);
+        setDeleteMessage(`삭제 실패: ${err.response.data.message}`);
       } else {
-        alert("리뷰 삭제 중 오류가 발생했습니다.");
+        setDeleteMessage("리뷰 삭제 중 오류가 발생했습니다.");
       }
     }
   };
@@ -267,14 +272,21 @@ const ReviewCard = ({
                       })
                     }
                   >
-                    수정
+                    {t.review.edit}
                   </ActionText>
                   <span style={{ margin: "0 6px" }}>|</span>
-                  <ActionText onClick={handleDelete}>삭제</ActionText>
+                  <ActionText
+                    onClick={() => {
+                      setShowDeleteConfirm(true);
+                      return;
+                    }}
+                  >
+                    {t.review.delete}
+                  </ActionText>
                 </>
               ) : (
-                <ActionText onClick={() => alert("신고가 접수되었습니다.")}>
-                  신고
+                <ActionText onClick={() => setShowReportAlert(true)}>
+                  {t.review.report}
                 </ActionText>
               )}
             </ActionRow>
@@ -286,6 +298,83 @@ const ReviewCard = ({
         <ModalBackdrop onClick={() => setSelectedImage(null)}>
           <ModalImage src={selectedImage} />
         </ModalBackdrop>
+      )}
+
+      {showReportAlert && (
+        <AlertModal
+          message={t.review.confirmed}
+          onClose={() => setShowReportAlert(false)}
+        />
+      )}
+
+      {deleteMessage && (
+        <AlertModal
+          message={deleteMessage}
+          onClose={() => setDeleteMessage(null)}
+        />
+      )}
+      {showDeleteConfirm && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 10000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              padding: "2rem",
+              borderRadius: "1rem",
+              textAlign: "center",
+              maxWidth: "90%",
+              boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+            }}
+          >
+            <p style={{ marginBottom: "1rem" }}>
+              {t.review.confirmDeleteReview}
+            </p>
+            <button
+              onClick={() => setShowDeleteConfirm(false)}
+              style={{
+                backgroundColor: "#ccc",
+                color: "black",
+                border: "none",
+                padding: "0.75rem 1rem",
+                borderRadius: "0.5rem",
+                marginRight: "0.5rem",
+                minWidth: "100px",
+                fontWeight: "bold",
+              }}
+            >
+              {t.chatbot.response.cancel}
+            </button>
+            <button
+              onClick={async () => {
+                setShowDeleteConfirm(false);
+                await handleDelete();
+              }}
+              style={{
+                backgroundColor: "#F23477",
+                color: "white",
+                border: "none",
+                padding: "0.75rem 1rem",
+                borderRadius: "0.5rem",
+                minWidth: "100px",
+                fontWeight: "bold",
+              }}
+            >
+              {t.chatbot.response.confirm}
+            </button>
+          </div>
+        </div>
       )}
     </>
   );

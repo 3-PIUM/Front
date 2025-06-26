@@ -507,7 +507,10 @@
     "reviewButton": {
       "fold": "리뷰 접기 ▲",
       "expand": "리뷰 더보기 ▼"
-    }
+    },
+    "productAccordion": "상품설명",
+    "collapse": "닫기 ▲",
+    "expand": "더보기 ▼"
   },
   "save": "저장하기",
   "review": {
@@ -517,7 +520,13 @@
     "photoLabel": "포토",
     "photoInfo": "사진은 4장 이하의 PNG, JPG 파일만 등록 가능합니다.",
     "submit": "리뷰 등록 하기",
-    "alert": "별점과 내용을 모두 작성해주세요"
+    "alert": "별점과 내용을 모두 작성해주세요",
+    "edit": "수정",
+    "report": "신고",
+    "delete": "삭제",
+    "confirmed": "신고가 접수되었습니다.",
+    "deleted": "삭제되었습니다.",
+    "confirmDeleteReview": "리뷰를 삭제하시겠습니까?"
   },
   "reviewGuide": {
     "title": "이용안내",
@@ -705,5 +714,13 @@
     "noReviewContent": "리뷰 내용을 입력해주세요.",
     "noRating": "별점을 선택해주세요.",
     "noOption": "옵션을 선택해 주세요."
-  }
+  },
+  "cartModal": {
+    "messageMiddle": "장바구니",
+    "messageLast": "에 상품을 담았어요",
+    "shortcut": "바로가기",
+    "recommendation": "같이 구매하면 좋은 상품"
+  },
+  "viewCountMessage": "명이 보고 있어요",
+  "relatedProducts": "다른 고객이 함께 본 상품"
 }

@@ -124,7 +124,8 @@ const ProductCard = ({
                 marginBottom: "0.4rem",
               }}
             >
-              {viewCount}명이 보고 있어요
+              {viewCount}
+              {t.viewCountMessage}
             </span>
           </div>
         )}
