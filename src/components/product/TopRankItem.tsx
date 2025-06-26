@@ -14,7 +14,7 @@ const shimmer = keyframes`
 const SkeletonBase = styled.div`
   background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
   background-size: 200% 100%;
-  background-position: -100%; // ✅ 이 줄 추가
+  background-position: -100%;
   animation: ${shimmer} 1.5s infinite;
 `;
 

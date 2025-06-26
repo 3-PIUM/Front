@@ -131,11 +131,6 @@ export default function WithdrawalPage() {
 
   const confirmWithdrawal = async () => {
     try {
-      const reason =
-        selectedReason === t.withdrawal.reasons.etc
-          ? customReason.trim()
-          : selectedReason;
-
       const token = sessionStorage.getItem("accessToken");
       const response = await axiosInstance.delete("/member", {
         headers: {

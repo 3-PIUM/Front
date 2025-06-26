@@ -120,14 +120,11 @@ export default function MenuLayout() {
     },
   ];
 
-  // useLocation : 현재 경로를 알려줌
   const location = useLocation();
   console.log(location.pathname);
 
-  // 메뉴가 선택 됐는지 확인
   const isActive = (path: string) => location.pathname === path;
 
-  const goCategory = () => {};
   return (
     <>
       <Outlet />

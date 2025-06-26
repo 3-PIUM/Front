@@ -13,8 +13,8 @@ interface ReviewCardProps {
   rating: number;
   content: string;
   images: string[];
-  recommend: number; // 'likes' -> 'recommend'
-  isRecommend: boolean; // 'liked' -> 'isRecommend'
+  recommend: number;
+  isRecommend: boolean;
   surveyAnswers?: Record<string, string>;
   itemId: number;
 }

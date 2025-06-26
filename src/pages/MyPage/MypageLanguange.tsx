@@ -2,7 +2,7 @@ import styled from "styled-components";
 import TextHeader from "../../components/common/TextHeader";
 import Header from "../../components/common/Header";
 import colors from "../../styles/colors";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 

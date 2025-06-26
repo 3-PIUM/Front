@@ -19,7 +19,7 @@ const TitleWrapper = styled.div`
 
 const AnswerWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr); // 한 줄에 2개
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
   margin-top: 2rem;
 `;
