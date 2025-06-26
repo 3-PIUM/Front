@@ -10,9 +10,25 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem("accessToken");
+    const lang = localStorage.getItem("language");
+
+    // params 객체가 없으면 새로 생성
+    config.params = config.params || {};
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    if (lang === "한국어") {
+      config.params.lang = "kr";
+    } else if (lang === "English") {
+      config.params.lang = "en";
+    } else if (lang === "日本語") {
+      config.params.lang = "jp";
+    } else {
+      config.params.lang = "kr";
+    }
+
     return config;
   },
   (error) => {
