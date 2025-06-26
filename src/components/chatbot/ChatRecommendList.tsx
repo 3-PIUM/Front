@@ -56,9 +56,7 @@ const ChatRecommendList: React.FC<Props> = ({ items }) => {
               style={{
                 width: "90%",
                 height: "120px",
-                // backgroundColor: "#cacaca",
                 borderRadius: "0.5rem",
-                // overflow: "hidden",
                 marginBottom: "0.5rem",
                 display: "flex",
                 justifyContent: "center",
@@ -98,8 +96,6 @@ const ChatRecommendList: React.FC<Props> = ({ items }) => {
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                // lineHeight: 1.3,
-                // textAlign: "left",
                 alignSelf: "flex-start",
                 paddingRight: "0.3rem",
                 paddingLeft: "0.3rem",

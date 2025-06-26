@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 
 const AnswerWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr); // 한 줄에 2개
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
   margin-top: 2rem;
 `;
@@ -86,12 +86,6 @@ export default function SettingSkinType() {
     option: string;
     value: string;
   }
-
-  // const skinType = JSON.parse(
-  //   sessionStorage.getItem("memberInfo") || "{}"
-  // ).skinType;
-
-  // console.log(skinType);
 
   useEffect(() => {
     const stored = sessionStorage.getItem("memberInfo");

@@ -157,7 +157,6 @@ const ReviewWritePage = () => {
   const buildFormData = () => {
     const formData = new FormData();
 
-    // Build reviewImages for edit, otherwise ignore
     const reviewImages = images
       .map((img, idx) => {
         if (!img) return null;
@@ -183,11 +182,9 @@ const ReviewWritePage = () => {
       ...(editingReview && { reviewImages }),
     };
 
-    // Use correct key for data/editData
     const key = editingReview ? "editData" : "data";
     formData.append(key, JSON.stringify(payload));
 
-    // For edit, use newImages; for register, use images
     imageFiles.forEach((file) => {
       if (file instanceof File) {
         const formKey = editingReview ? "newImages" : "images";

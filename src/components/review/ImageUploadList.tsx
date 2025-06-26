@@ -1,4 +1,3 @@
-// ImageUploadList.tsx
 import styled from "styled-components";
 import ImageUploadBox from "./ImageUploadBox";
 

@@ -368,13 +368,12 @@ const CartPage = () => {
       const memberRes = await axiosInstance.get("/member");
       const memberId = memberRes.data.result.memberId;
 
-      // 🚀 QR 페이지로 이동
       navigate("/qr", {
         state: {
           qrUrls,
           selectedItems,
           cartItemIds,
-          memberId, // 전달
+          memberId,
         },
       });
     } catch (err) {

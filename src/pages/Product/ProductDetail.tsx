@@ -1,4 +1,3 @@
-// src/pages/Product/ProductDetail.tsx
 import React, { useEffect, useState, useRef, Suspense } from "react";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -106,7 +105,6 @@ const Label = styled.span`
 `;
 
 export default function ProductDetail() {
-  // 추천 상품 더미 데이터
   const dummyRecommendItems = [
     {
       itemId: 1,
@@ -172,13 +170,13 @@ export default function ProductDetail() {
 
   const [isRecommendOpen, setIsRecommendOpen] = useState(false);
   const [recommendItems, setRecommendItems] = useState<any[]>([]);
-  // Modal state for option alert
+
   const [showOptionAlert, setShowOptionAlert] = useState(false);
 
   const [showAllReviews, setShowAllReviews] = useState(false);
-  // 👁 조회수 state
+
   const [viewCount, setViewCount] = useState<number | null>(null);
-  // 👁 상품 조회수 가져오기 (서버 값 반영 후, 1 증가를 로컬에서 처리)
+
   useEffect(() => {
     const fetchViewCount = async () => {
       if (!itemId) return;
@@ -189,7 +187,7 @@ export default function ProductDetail() {
           const newValue = res.data.result;
           return newValue < 0 ? 0 : newValue;
         });
-        // 로컬에서만 1 증가
+
         setViewCount((prev) => (prev !== null ? prev + 1 : 1));
         console.log("➕ 조회수 1 증가 (프론트 로컬 반영):", viewCount);
       } catch (err) {
@@ -197,10 +195,8 @@ export default function ProductDetail() {
       }
     };
     fetchViewCount();
-    // eslint-disable-next-line
   }, [itemId]);
 
-  // 👁 상품 조회수 감소 (페이지 이탈 시)
   useEffect(() => {
     const decreaseView = async () => {
       if (!itemId) return;
@@ -274,7 +270,7 @@ export default function ProductDetail() {
       try {
         const res = await axiosInstance.get(`/review/${itemId}`);
         const reviews = res.data.result.reviews;
-        const currentMemberId = res.data.result.currentMemberId; // assume backend returns this
+        const currentMemberId = res.data.result.currentMemberId;
 
         const mappedReviews = reviews.map((r: any) => ({
           reviewId: r.reviewId,
@@ -318,7 +314,6 @@ export default function ProductDetail() {
     }
   }, [newReview]);
 
-  // Add firstImage state to store the main image for RecommendModal
   const [firstImage, setFirstImage] = useState<string>("");
 
   const averageRating = realReviews.length
@@ -350,21 +345,6 @@ export default function ProductDetail() {
             viewCount={viewCount}
           />
         </Suspense>
-        {/* Option name display (e.g., [브랜드명] 옵션1) */}
-        {product.options.length > 0 &&
-          selectedOptionName &&
-          selectedOptionName !== "default" &&
-          selectedOptionName.trim() !== "" && (
-            <div
-              style={{
-                // padding: "0 1rem",
-                // marginTop: "0.5rem",
-                fontWeight: 500,
-              }}
-            >
-              {/* {[`[${product.brand}] ${selectedOptionName}`]} */}
-            </div>
-          )}
         {product.options.length > 0 && (
           <Suspense fallback={null}>
             <ProductOptionSelector
@@ -377,7 +357,7 @@ export default function ProductDetail() {
               }))}
               onChange={(id: string, name: string) => {
                 setSelectedOptionId(id);
-                setSelectedOptionName(name); // name 저장
+                setSelectedOptionName(name);
               }}
             />
           </Suspense>
@@ -608,7 +588,7 @@ export default function ProductDetail() {
         <Suspense fallback={null}>
           <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
         </Suspense>
-        {/* Option select modal */}
+
         {showOptionAlert && (
           <AlertModal
             message={t.alertModal.noOption}

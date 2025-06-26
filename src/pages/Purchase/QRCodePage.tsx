@@ -60,10 +60,8 @@ const QRCodePage = () => {
   useEffect(() => {
     const handleQRScan = () => {
       if (cartItemIds) {
-        // navigate(`/pos?cartItemIds=${cartItemIds}`);
       }
     };
-    // For simulation, add click listener to the whole page
     window.addEventListener("click", handleQRScan);
     return () => window.removeEventListener("click", handleQRScan);
   }, [cartItemIds, navigate]);

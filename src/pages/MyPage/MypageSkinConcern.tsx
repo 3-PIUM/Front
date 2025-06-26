@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 
 const AnswerWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); // 한 줄에 2개
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
   margin-top: 2rem;
 `;
@@ -72,14 +72,6 @@ export default function SettingSkinConcern() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // const fetchMemberInfo = async () => {
-    //   const response = await axiosInstance.get("/member");
-    //   const result = response.data.result;
-    //   setMemberInfo(result);
-    //   setSelected(result.skinIssue);
-    // };
-    // fetchMemberInfo();
-
     const stored = sessionStorage.getItem("memberInfo");
     if (stored) {
       const parsed = JSON.parse(stored);
@@ -100,7 +92,7 @@ export default function SettingSkinConcern() {
         if (stored) {
           const updated = JSON.parse(stored);
           updated.skinIssue = selected;
-          sessionStorage.setItem("memberInfo", JSON.stringify(updated)); // ✅ 전체 객체 저장
+          sessionStorage.setItem("memberInfo", JSON.stringify(updated));
           setMemberInfo(updated);
         }
         setShowModal(true);

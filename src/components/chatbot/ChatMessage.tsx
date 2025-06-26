@@ -1,5 +1,4 @@
 import styled from "styled-components";
-// import { AiOutlineLike } from "react-icons/ai";
 
 interface ChatMessageProps {
   sender: "user" | "bot";

@@ -89,7 +89,7 @@ interface Question {
 
 export default function MbtiQuestion() {
   const { t } = useLocale();
-  const [currentQuestionId, setCurrentQuestionId] = useState<number>(16); // 초기 질문 ID
+  const [currentQuestionId, setCurrentQuestionId] = useState<number>(16);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [skinType, setSkinType] = useState<string | null>(null);
   const [moisture, setMoisture] = useState<string | null>(null);

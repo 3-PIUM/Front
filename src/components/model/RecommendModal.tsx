@@ -1,4 +1,3 @@
-// import React from "react";
 import styled from "styled-components";
 import ItemCard from "../product/ItemCard";
 import { useState } from "react";
@@ -44,14 +43,6 @@ const ItemsWrapper = styled.div`
   }
 `;
 
-// const CloseBtn = styled.div`
-//   position: absolute;
-//   top: 1rem;
-//   right: 1rem;
-//   font-size: 1.2rem;
-//   cursor: pointer;
-// `;
-
 const RecommendModal = ({
   items,
   onClose,
@@ -61,7 +52,7 @@ const RecommendModal = ({
   onClose: () => void;
   addedItemImage?: string;
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, _setIsLoading] = useState<boolean>(true);
   const firstImage =
     addedItemImage ||
     (() => {
@@ -125,7 +116,6 @@ const RecommendModal = ({
             바로가기 &gt;
           </div>
         </div>
-        {/* <CloseBtn onClick={onClose}>✕</CloseBtn> */}
         <Header>같이 구매하면 좋은 상품</Header>
         <ItemsWrapper>
           {items.map((item) => {

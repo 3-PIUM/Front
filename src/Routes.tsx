@@ -1,43 +1,3 @@
-// Layouts
-// import MenuLayout from "./layout/MenuLayout";
-
-// Pages
-// import Login from "./pages/Login";
-// import Home from "./pages/Home";
-// import WishList from "./pages/WishList";
-// import MyPage from "./pages/MyPage/MyPage";
-// import Category from "./pages/Category/Category";
-// import ProductDetail from "./pages/Product/ProductDetail";
-// import ReviewWritePage from "./pages/Review/ReviewWritePage";
-// import ScanPage from "./pages/Scan/ScanPage";
-// import CartPage from "./pages/Cart/CartPage";
-// import QRCodePage from "./pages/Purchase/QRCodePage";
-// import Signup from "./pages/SignUp/Signup";
-// import AboutYouPage from "./pages/SignUp/AboutYouPage";
-// import Survey from "./pages/SignUp/SurveyPage";
-// import Welcome from "./pages/SignUp/Welcome";
-// import PurchaseList from "./pages/Purchase/PurchaseListPage";
-// import PurchaseDetail from "./pages/Purchase/PurchaseDetailPage";
-// import Withdraw from "./pages/MyPage/WithdrawPage";
-// import SettingLanguange from "./pages/MyPage/MypageLanguange";
-// import IngredientDetail from "./pages/Ingredient/IngredientDetailPage";
-// import ChatbotPage from "./pages/Chatbot/Chatbotpage";
-// import MypagePersonalColor from "./pages/MyPage/MypagePersonalColor";
-// import MypageSkinType from "./pages/MyPage/MypageSkinType";
-// import MypageSkinConcern from "./pages/MyPage/MypageSkinConcern";
-// import MbtiTest from "./pages/SkinMBTI/MbtiTest";
-// import MbtiQuestion from "./pages/SkinMBTI/MbtiQuestion";
-// import CategoryList from "./pages/Category/CategoryList";
-// import EditProfile from "./pages/MyPage/EditProfile";
-// import EditPassword from "./pages/MyPage/EditPassword";
-// import FindPassword from "./pages/FindPassword";
-// import PostMachinePage from "./pages/Purchase/QRPOSPage";
-// import PaymentCompletePage from "./pages/Purchase/PaymentCompletePage";
-// import SkinTest from "./pages/SignUp/SkinTest";
-// import SkinTypeResult from "./pages/SignUp/SkinTypeResult";
-// import MbtiResult from "./pages/SkinMBTI/MbtiResult";
-// import PersonalTest from "./pages/SignUp/PersonalTest";
-// import PersonalColorResult from "./pages/SignUp/PersonalColorResult";
 import { lazy } from "react";
 import Loading from "./pages/Loading";
 import SearchResult from "./pages/Product/SearchResult";
@@ -174,8 +134,6 @@ const routes = [
     path: "/admin/login",
     element: <AdminLogin />,
   },
-
-  //MenuLayout
   {
     path: "/",
     element: <MenuLayout />,

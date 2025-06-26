@@ -1,4 +1,3 @@
-// store/reviewStore.ts
 import { create } from "zustand";
 
 interface Review {
