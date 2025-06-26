@@ -12,7 +12,6 @@ axiosInstance.interceptors.request.use(
     const token = sessionStorage.getItem("accessToken");
     const lang = localStorage.getItem("language");
 
-    // params 객체가 없으면 새로 생성
     config.params = config.params || {};
 
     if (token) {
