@@ -2,15 +2,14 @@ import { GrLanguage } from "react-icons/gr";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import colors from "../../styles/colors";
 import Header from "../../components/common/Header";
 import Button from "../../components/common/Button";
 import LanguageModal from "../../components/modal/LanguageModal";
 import { useLocale } from "../../context/LanguageContext";
+import TextHeader from "../../components/common/TextHeader";
 
 const Wrap = styled.div`
-  padding: 0 1rem;
   display: flex;
   flex-direction: column;
   height: auto;
@@ -22,6 +21,8 @@ const AdminText = styled.div`
   justify-content: center;
   color: ${colors.mainPink};
   margin-top: 1rem;
+
+  font-weight: 600;
 `;
 
 const LogoWrap = styled.div`
@@ -29,6 +30,7 @@ const LogoWrap = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 10rem;
+  padding: 0 1rem;
 `;
 
 const LogoImg = styled.img`
@@ -55,6 +57,7 @@ const InputWrap = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 2rem;
+  padding: 0 1rem;
 `;
 
 const InputEmail = styled.input<{ $emailFocused: boolean }>`
@@ -112,7 +115,6 @@ export default function AdminLogin() {
   const [errorText, setErrorText] = useState<string>("");
   const [showError, setShowError] = useState<boolean>(false);
   const { language, setLanguage, languageCode, t } = useLocale();
-  const navigate = useNavigate();
 
   const openLanguageModal = () => {
     setOpenModal(true);
@@ -126,14 +128,15 @@ export default function AdminLogin() {
     setShowError(false);
 
     try {
-      const response = await axios.post("http://localhost:8080/login", {
-        email,
-        password,
-      });
-      console.log("로그인 성공", response.data.accessToken);
-      sessionStorage.removeItem("language");
-      sessionStorage.setItem("accessToken", response.data.accessToken);
-      navigate("/home");
+      const response = await axios.post(
+        "http://localhost:8080/member/admin-login",
+        {
+          email,
+          password,
+        }
+      );
+      const redirectUri = response.data.result;
+      window.location.href = redirectUri;
     } catch (error) {
       console.log("로그인 실패", error);
       setShowError(true);
@@ -156,7 +159,7 @@ export default function AdminLogin() {
     <>
       <Wrap>
         <Header />
-
+        <TextHeader pageName="" />
         <LogoWrap>
           <LogoImg src="/images/logo/PIUM_logo.png" />
         </LogoWrap>

@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import Header from "../components/common/Header";
 import LanguageModal from "../components/modal/LanguageModal";
 import { useLocale } from "../context/LanguageContext";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../api/axiosInstance";
 
 const Wrap = styled.div`
   padding: 0 1rem;
@@ -129,7 +129,7 @@ export default function Login() {
     setShowError(false);
 
     try {
-      const response = await axios.post("http://localhost:8080/login", {
+      const response = await axiosInstance.post("/login", {
         email,
         password,
       });
