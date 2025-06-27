@@ -136,6 +136,17 @@ export default function Login() {
       console.log("로그인 성공", response.data.accessToken);
       sessionStorage.removeItem("language");
       sessionStorage.setItem("accessToken", response.data.accessToken);
+      const fetchFixedLang = async () => {
+        try {
+          await axiosInstance.patch("/member", {
+            language,
+          });
+        } catch (error) {
+          console.log("회원정보 수정에 실패하였습니다", error);
+        }
+      };
+
+      fetchFixedLang();
       navigate("/home");
     } catch (error) {
       console.log("로그인 실패", error);

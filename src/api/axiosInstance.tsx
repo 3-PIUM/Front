@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
+    console.log(lang);
     if (lang === "한국어") {
       config.params.lang = "kr";
     } else if (lang === "English") {
