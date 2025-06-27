@@ -134,7 +134,6 @@ export default function Login() {
         password,
       });
       console.log("로그인 성공", response.data.accessToken);
-      sessionStorage.removeItem("language");
       sessionStorage.setItem("accessToken", response.data.accessToken);
       const fetchFixedLang = async () => {
         try {
