@@ -116,9 +116,7 @@ const ScanPage = () => {
         if (result) {
           handleDetectedBarcode(result.getText());
         }
-      } catch {
-        // Not found → 무시
-      }
+      } catch {}
 
       if (scanning) {
         requestAnimationFrame(scanLoop);

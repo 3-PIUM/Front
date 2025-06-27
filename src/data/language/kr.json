@@ -608,7 +608,7 @@
       "recommend": "추천 받기",
       "compare": "상품 비교하기"
     },
-    "Replay": "챗팅 다시 하기",
+    "Replay": "채팅 다시 하기",
     "botName": "피움 챗봇",
     "response": {
       "product": "피부 타입을 알려주시면 제품을 추천해드릴게요!",
@@ -722,5 +722,10 @@
     "recommendation": "같이 구매하면 좋은 상품"
   },
   "viewCountMessage": "명이 보고 있어요",
-  "relatedProducts": "다른 고객이 함께 본 상품"
+  "relatedProducts": "다른 고객이 함께 본 상품",
+  "wishlistEmpty": {
+    "title": "찜한 상품이 없어요.",
+    "subtitle": "마음에 드는 상품을 찜해보세요.",
+    "button": "홈 둘러보기 >"
+  }
 }

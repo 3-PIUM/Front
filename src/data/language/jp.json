@@ -616,5 +616,10 @@
     "recommendation": "一緒に買うと良い商品"
   },
   "viewCountMessage": "人が見ています",
-  "relatedProducts": "他の顧客が一緒に見た商品"
+  "relatedProducts": "他の顧客が一緒に見た商品",
+  "wishlistEmpty": {
+    "title": "お気に入り商品がありません。",
+    "subtitle": "気に入った商品をお気に入りに追加してみてください。",
+    "button": "ホームを見る >"
+  }
 }

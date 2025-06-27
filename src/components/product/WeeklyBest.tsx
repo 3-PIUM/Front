@@ -29,6 +29,7 @@ const Page = styled.div`
   gap: 0.5rem;
   min-width: 100%;
   scroll-snap-align: start;
+  place-items: center;
 `;
 
 export default function WeeklyBest() {

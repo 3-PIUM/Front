@@ -41,6 +41,14 @@ const OptionList = styled.ul`
   right: 0;
   border: 1px solid #ddd;
   border-radius: 5px;
+  max-height: 55vh;
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const OptionItem = styled.li`

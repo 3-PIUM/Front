@@ -304,8 +304,9 @@ export default function CategoryList() {
                   left: 0,
                   width: "100%",
                   transform: `translateY(${virtualRow.start}px)`,
-                  display: "grid",
-                  gridTemplateColumns: "repeat(3, 1fr)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  boxSizing: "border-box",
                   gap: "0.5rem",
                 }}
               >
