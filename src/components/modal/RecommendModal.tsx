@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import ItemCard from "../product/ItemCard";
-import { useState } from "react";
 import { useLocale } from "../../context/LanguageContext";
 
 const Overlay = styled.div`
@@ -44,35 +43,23 @@ const ItemsWrapper = styled.div`
   }
 `;
 
-const RecommendModal = ({
-  items,
-  onClose,
-  addedItemImage,
-}: {
-  items: any[];
+interface RecommendModalProps {
+  itemId: number;
   onClose: () => void;
-  addedItemImage?: string;
-}) => {
+  recommendItems: any[];
+  addedItemImage: string;
+  isLoading: boolean;
+}
+
+const RecommendModal = ({
+  onClose,
+  recommendItems,
+  addedItemImage,
+  isLoading,
+}: RecommendModalProps) => {
   const { t } = useLocale();
-  const [isLoading, _setIsLoading] = useState<boolean>(true);
-  const firstImage =
-    addedItemImage ||
-    (() => {
-      const lastItem = items[items.length - 1];
-      if (!lastItem?.itemImage) return "";
-      if (
-        typeof lastItem.itemImage === "string" &&
-        lastItem.itemImage.startsWith("[")
-      ) {
-        try {
-          const parsed = JSON.parse(lastItem.itemImage);
-          return Array.isArray(parsed) ? parsed[0] : "";
-        } catch {
-          return "";
-        }
-      }
-      return lastItem.itemImage;
-    })();
+  const items = recommendItems;
+  const firstImage = addedItemImage || null;
 
   return (
     <>
@@ -90,16 +77,30 @@ const RecommendModal = ({
           <div
             style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
           >
-            <img
-              src={firstImage}
-              alt="담은 상품 이미지"
-              style={{
-                width: "2.25rem",
-                height: "2.25rem",
-                borderRadius: "50%",
-                objectFit: "cover",
-              }}
-            />
+            {isLoading ? (
+              <div
+                style={{
+                  width: "2.25rem",
+                  height: "2.25rem",
+                  borderRadius: "50%",
+                  backgroundColor: "#f0f0f0",
+                  animation: "pulse 1.5s infinite",
+                }}
+              />
+            ) : (
+              firstImage && (
+                <img
+                  src={firstImage}
+                  alt="담은 상품 이미지"
+                  style={{
+                    width: "2.25rem",
+                    height: "2.25rem",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                />
+              )
+            )}
             <span style={{ fontSize: "0.95rem", color: "#555" }}>
               {t.cartModal.messagePrefix}&nbsp;
               <strong style={{ color: "#222" }}>
@@ -123,30 +124,64 @@ const RecommendModal = ({
         </div>
         <Header>{t.cartModal.recommendation}</Header>
         <ItemsWrapper>
-          {items.map((item) => {
-            let imageUrl = item.itemImage;
-            if (typeof imageUrl === "string" && imageUrl.startsWith("[")) {
-              try {
-                const parsed = JSON.parse(imageUrl);
-                if (Array.isArray(parsed)) {
-                  imageUrl = parsed[0];
-                }
-              } catch {
-                imageUrl = "";
-              }
-            }
-            return (
-              <ItemCard
-                key={item.itemId}
-                itemId={item.itemId}
-                itemName={item.itemName}
-                imageSource={imageUrl}
-                discountRate={item.discountRate || 0}
-                price={item.discountPrice}
-                isLoading={isLoading}
-              />
-            );
-          })}
+          {isLoading
+            ? Array.from({ length: 3 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    width: "100px",
+                    minWidth: "100px",
+                    borderRadius: "12px",
+                    backgroundColor: "#fff",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    padding: "0.25rem 0",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      backgroundColor: "#f0f0f0",
+                      borderRadius: "10px",
+                      marginBottom: "0.2rem",
+                      animation: "pulse 1.5s infinite",
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: "100px",
+                      height: "14px",
+                      backgroundColor: "#f0f0f0",
+                      marginBottom: "4px",
+                      borderRadius: "4px",
+                      animation: "pulse 1.5s infinite",
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: "60px",
+                      height: "14px",
+                      backgroundColor: "#f0f0f0",
+                      borderRadius: "4px",
+                      animation: "pulse 1.5s infinite",
+                    }}
+                  />
+                </div>
+              ))
+            : items.map((item) => (
+                <ItemCard
+                  key={item.itemId}
+                  itemId={item.itemId}
+                  itemName={item.itemName}
+                  imageSource={item.itemImage}
+                  discountRate={item.discountRate || 0}
+                  price={item.salePrice}
+                  wishStatus={item.wishStatus}
+                  isLoading={false}
+                />
+              ))}
         </ItemsWrapper>
       </Modal>
     </>

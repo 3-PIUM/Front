@@ -107,50 +107,6 @@ const Label = styled.span`
 `;
 
 export default function ProductDetail() {
-  const dummyRecommendItems = [
-    {
-      itemId: 1,
-      itemName: "[5월 올영픽]아벤느 오 떼르말 미스트 300ml 2입 기획",
-      itemImage:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
-      discountPrice: 22900,
-    },
-    {
-      itemId: 2,
-      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
-      itemImage:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
-      discountPrice: 9900,
-    },
-    {
-      itemId: 3,
-      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
-      itemImage:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
-      discountPrice: 9900,
-    },
-    {
-      itemId: 4,
-      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
-      itemImage:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
-      discountPrice: 9900,
-    },
-    {
-      itemId: 5,
-      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
-      itemImage:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
-      discountPrice: 9900,
-    },
-    {
-      itemId: 6,
-      itemName: "[여행용스킨케어] 닥터디퍼런트 베스트 키트",
-      itemImage:
-        "https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/550/10/0000/0017/A00000017330210ko.jpg?l=ko",
-      discountPrice: 9900,
-    },
-  ];
   const [selectedTab, setSelectedTab] = useState<
     "detail" | "ingredient" | "review"
   >("detail");
@@ -173,6 +129,7 @@ export default function ProductDetail() {
   const [isRecommendOpen, setIsRecommendOpen] = useState(false);
   const [recommendItems, setRecommendItems] = useState<any[]>([]);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [showOptionAlert, setShowOptionAlert] = useState(false);
 
   const [showAllReviews, setShowAllReviews] = useState(false);
@@ -388,10 +345,21 @@ export default function ProductDetail() {
                     }
                   );
 
-                  setRecommendItems(dummyRecommendItems);
+                  setIsRecommendOpen(true);
+                  setIsLoading(true);
+
+                  const lang = t.language || "kr";
+                  const recommendRes = await axiosInstance.get(
+                    `/item/relatedPurchaseItems/${product.id}`,
+                    {
+                      params: { lang },
+                    }
+                  );
+                  setRecommendItems(recommendRes.data.result || []);
                   const firstImage = product?.imageUrl?.mainImage || "";
                   setFirstImage(firstImage);
-                  setIsRecommendOpen(true);
+
+                  setTimeout(() => setIsLoading(false), 500);
                 } catch (err: any) {
                   console.error("장바구니 추가 실패", err);
                   alert(
@@ -481,7 +449,12 @@ export default function ProductDetail() {
             ) : (
               <ImageNot />
             )}
-            <RelatedProductCarousel />
+            <Suspense fallback={null}>
+              <RelatedProductCarousel
+                itemId={Number(itemId)}
+                lang={t.language}
+              />
+            </Suspense>
           </>
         )}
         {selectedTab === "ingredient" && isSkinRegistered !== null && (
@@ -632,11 +605,13 @@ export default function ProductDetail() {
             onClose={() => setShowOptionAlert(false)}
           />
         )}
-        {isRecommendOpen && (
+        {isRecommendOpen && itemId && (
           <RecommendModal
-            items={recommendItems}
+            recommendItems={recommendItems}
             addedItemImage={firstImage}
             onClose={() => setIsRecommendOpen(false)}
+            itemId={Number(itemId)}
+            isLoading={isLoading}
           />
         )}
       </ProductCardWrapper>
