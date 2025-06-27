@@ -4,5 +4,16 @@
       "source": "/api/:path*",
       "destination": "http://13.125.104.137:8080/:path*"
     }
+  ],
+  "redirects": [],
+  "headers": [],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "routes": [
+    { "handle": "filesystem" },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
