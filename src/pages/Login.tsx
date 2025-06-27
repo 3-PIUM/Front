@@ -138,23 +138,19 @@ export default function Login() {
       sessionStorage.setItem("accessToken", response.data.accessToken);
       const fetchFixedLang = async () => {
         try {
-          const token = sessionStorage.getItem("accessToken");
-          await axiosInstance.patch(
-            "/member",
-            { language },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+          await axiosInstance.patch("/member", {
+            language,
+          });
         } catch (error) {
           console.log("회원정보 수정에 실패하였습니다", error);
         }
       };
 
-      fetchFixedLang();
-      localStorage.setItem("language", language);
+      setTimeout(() => {
+        fetchFixedLang();
+        localStorage.setItem("language", language);
+      }, 50);
+
       navigate("/home");
     } catch (error) {
       console.log("로그인 실패", error);
