@@ -30,7 +30,7 @@ const SelectBox = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
   color: #333;
   cursor: pointer;
 `;

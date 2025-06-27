@@ -158,7 +158,10 @@ export default function FullHeader({
 
       try {
         const res = await axiosInstance.get(
-          `/item/advancedSearch/list/${encodeURIComponent(searchTerm)}`
+          `/item/advancedSearch/list/${encodeURIComponent(searchTerm)}`,
+          {
+            params: { size: 5 },
+          }
         );
         setSearchResults(res.data.result.itemSearchInfoDTOs || []);
       } catch (err) {

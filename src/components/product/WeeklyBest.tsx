@@ -40,7 +40,7 @@ export default function WeeklyBest() {
     const fetchWeeklyBest = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/item/popularWeek"
+          "http://13.125.104.137:8080/item/popularWeek"
         );
         const data = response.data.result;
         setTitle(data.title);

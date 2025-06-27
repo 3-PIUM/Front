@@ -56,9 +56,12 @@ export default function FindPassoword() {
 
   const goPassword = async () => {
     try {
-      await axios.post("http://localhost:8080/mail/send/temporary-password", {
-        email,
-      });
+      await axios.post(
+        "http://13.125.104.137:8080/mail/send/temporary-password",
+        {
+          email,
+        }
+      );
       console.log("임시 비밀번호 전송 성공!");
       setEmailText(
         "임시 비밀번호가 전송됐습니다. \n로그인 화면으로 돌아가 로그인해주세요"
