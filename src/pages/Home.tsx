@@ -140,7 +140,7 @@ export default function Home() {
   }, []);
   const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<any>(null);
-  const { t, setLanguage, language } = useLocale();
+  const { t, language } = useLocale();
 
   const [isLoading, setIsLoading] = useState(true);
   sessionStorage.removeItem("topClicked");
@@ -152,9 +152,6 @@ export default function Home() {
       try {
         const response = await axiosInstance.get("/member");
         const result = response.data.result;
-        if (result.language === "EN") setLanguage("English");
-        if (result.language === "JP") setLanguage("日本語");
-        if (result.language === "KR") setLanguage("한국어");
         setMemberInfo(result);
         sessionStorage.setItem("memberInfo", JSON.stringify(result));
       } catch (error) {
