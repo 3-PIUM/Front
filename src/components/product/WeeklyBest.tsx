@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { styled } from "styled-components";
 import ItemCard from "./ItemCard";
 import ItemListTitle from "./ItemListTitle";
+import axiosInstance from "../../api/axiosInstance";
 
 const RecommandBox = styled.div``;
 
@@ -39,9 +39,8 @@ export default function WeeklyBest() {
   useEffect(() => {
     const fetchWeeklyBest = async () => {
       try {
-        const response = await axios.get(
-          "http://13.125.104.137:8080/item/popularWeek"
-        );
+        const response = await axiosInstance.get("/item/popularWeek");
+
         const data = response.data.result;
         setTitle(data.title);
         setItems(data.popularItems);

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_APP_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
+    console.log(lang);
     if (lang === "한국어") {
       config.params.lang = "kr";
     } else if (lang === "English") {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ItemCard from "./ItemCard";
 import ItemListTitle from "./ItemListTitle";
 import { styled } from "styled-components";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 const RecommandBox = styled.div``;
 
@@ -23,9 +23,7 @@ export default function AreaPopular() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/item/areaPopular"
-        );
+        const response = await axiosInstance.get("/item/areaPopular");
         const data = response.data.result;
         setTitle(data.title);
         setItems(data.popularItems);

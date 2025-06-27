@@ -134,8 +134,23 @@ export default function Login() {
         password,
       });
       console.log("로그인 성공", response.data.accessToken);
-      sessionStorage.removeItem("language");
       sessionStorage.setItem("accessToken", response.data.accessToken);
+      const fetchFixedLang = async () => {
+        try {
+          await axiosInstance.patch("/member", {
+            language,
+          });
+        } catch (error) {
+          console.log("회원정보 수정에 실패하였습니다", error);
+        }
+      };
+
+      setTimeout(() => {
+        fetchFixedLang();
+        localStorage.setItem("language", language);
+        console.log(language);
+      }, 50);
+
       navigate("/home");
     } catch (error) {
       console.log("로그인 실패", error);
@@ -145,7 +160,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    localStorage.setItem("language", JSON.stringify(language));
+    localStorage.setItem("language", language);
     console.log(languageCode);
   }, [language]);
 
