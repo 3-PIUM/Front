@@ -149,6 +149,7 @@ export default function Login() {
       setTimeout(() => {
         fetchFixedLang();
         localStorage.setItem("language", language);
+        console.log(language);
       }, 50);
 
       navigate("/home");
