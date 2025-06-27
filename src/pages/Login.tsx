@@ -146,7 +146,9 @@ export default function Login() {
         }
       };
 
-      fetchFixedLang();
+      setTimeout(() => {
+        fetchFixedLang();
+      }, 50);
       navigate("/home");
     } catch (error) {
       console.log("로그인 실패", error);
