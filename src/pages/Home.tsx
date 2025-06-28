@@ -119,7 +119,7 @@ const RecommandListWrap = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 1rem;
-  gap: 2rem;
+  gap: 2.5rem;
   padding-bottom: 80px;
 `;
 
