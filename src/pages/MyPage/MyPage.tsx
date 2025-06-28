@@ -153,87 +153,74 @@ export default function MyPage() {
       <Header />
       <PageTitle pageName={t.mypage.pageTitle} />
       {isLoggedIn ? (
-        <TopWrapper>
-          <ImageSection>
-            <ImageBox>
-              <ProfileImage
-                src={
-                  profileImage
-                    ? URL.createObjectURL(profileImage)
-                    : profileImg ?? "images/dafaultProfileImage.png"
-                }
-                alt="프로필사진"
+        <>
+          <TopWrapper>
+            <ImageSection>
+              <ImageBox>
+                <ProfileImage
+                  src={
+                    profileImage
+                      ? URL.createObjectURL(profileImage)
+                      : profileImg ?? "images/dafaultProfileImage.png"
+                  }
+                  alt="프로필사진"
+                />
+              </ImageBox>
+              <ImageEdit as="label" htmlFor="profileimg">
+                <FiEdit2 fontSize={"1.125rem"} color={colors.white} />
+              </ImageEdit>
+              <ImgInput
+                type="file"
+                accept="image/*"
+                id="profileimg"
+                onChange={handleFileSelect}
               />
-            </ImageBox>
-            <ImageEdit as="label" htmlFor="profileimg">
-              <FiEdit2 fontSize={"1.125rem"} color={colors.white} />
-            </ImageEdit>
-            <ImgInput
-              type="file"
-              accept="image/*"
-              id="profileimg"
-              onChange={handleFileSelect}
-            />
-          </ImageSection>
-          <Nickname>{nickname}</Nickname>
-        </TopWrapper>
-      ) : (
-        <TopWrapper>
-          <Nickname>로그인이 필요합니다.</Nickname>
-          <button
-            onClick={() => navigate("/login")}
-            style={{ marginTop: "1rem" }}
-          >
-            로그인하러 가기
-          </button>
-        </TopWrapper>
-      )}
-
-      <Space />
-      <Settings>
-        <SettingBox>
-          <Title>{t.mypage.personalTitle}</Title>
-          <SettingItem>
-            <div onClick={() => navigate("/editprofile")}>
-              {t.mypage.editPersonal}
-            </div>
-            <div onClick={() => navigate("/mypage/editpassword")}>
-              {t.mypage.changePassword}
-            </div>
-          </SettingItem>
-        </SettingBox>
-        <SettingBox>
-          <Title>{t.mypage.skinProfile}</Title>
-          <SettingItem>
-            <div onClick={() => navigate("/mypage/skintype")}>
-              {t.mypage.skinType.pageTitle}
-            </div>
-            <div onClick={() => navigate("/mypage/personalcolor")}>
-              {t.mypage.personalColor.pageTitle}
-            </div>
-            <div onClick={() => navigate("/mypage/skinconcern")}>
-              {t.mypage.skinConcerns}
-            </div>
-          </SettingItem>
-        </SettingBox>
-        <SettingBox>
-          <Title>{t.mypage.purchase}</Title>
-          <SettingItem>
-            <div onClick={() => navigate("/purchase-list")}>
-              {t.mypage.purchaseHistory}
-            </div>
-          </SettingItem>
-        </SettingBox>
-        <SettingBox>
-          <Title>{t.mypage.language}</Title>
-          <SettingItem>
-            <div onClick={() => navigate("/mypage/language")}>
-              {t.mypage.languageSetting}
-            </div>
-          </SettingItem>
-        </SettingBox>
-        {isLoggedIn && (
-          <>
+            </ImageSection>
+            <Nickname>{nickname}</Nickname>
+          </TopWrapper>
+          <Space />
+          <Settings>
+            <SettingBox>
+              <Title>{t.mypage.personalTitle}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/editprofile")}>
+                  {t.mypage.editPersonal}
+                </div>
+                <div onClick={() => navigate("/mypage/editpassword")}>
+                  {t.mypage.changePassword}
+                </div>
+              </SettingItem>
+            </SettingBox>
+            <SettingBox>
+              <Title>{t.mypage.skinProfile}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/mypage/skintype")}>
+                  {t.mypage.skinType.pageTitle}
+                </div>
+                <div onClick={() => navigate("/mypage/personalcolor")}>
+                  {t.mypage.personalColor.pageTitle}
+                </div>
+                <div onClick={() => navigate("/mypage/skinconcern")}>
+                  {t.mypage.skinConcerns}
+                </div>
+              </SettingItem>
+            </SettingBox>
+            <SettingBox>
+              <Title>{t.mypage.purchase}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/purchase-list")}>
+                  {t.mypage.purchaseHistory}
+                </div>
+              </SettingItem>
+            </SettingBox>
+            <SettingBox>
+              <Title>{t.mypage.language}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/mypage/language")}>
+                  {t.mypage.languageSetting}
+                </div>
+              </SettingItem>
+            </SettingBox>
             <Line />
             <SettingBox>
               <SettingItem>
@@ -243,9 +230,16 @@ export default function MyPage() {
                 </div>
               </SettingItem>
             </SettingBox>
-          </>
-        )}
-      </Settings>
+          </Settings>
+        </>
+      ) : (
+        <TopWrapper>
+          <Nickname>로그인이 필요합니다.</Nickname>
+          <button onClick={() => navigate("/")} style={{ marginTop: "1rem" }}>
+            로그인하러 가기
+          </button>
+        </TopWrapper>
+      )}
     </>
   );
 }
