@@ -178,10 +178,6 @@ export default function Home() {
     return "";
   };
 
-  const nickname = JSON.parse(
-    sessionStorage.getItem("memberInfo") || "{}"
-  ).nickname;
-
   return (
     <Wrapper>
       <Header />
@@ -247,7 +243,6 @@ export default function Home() {
       </BannerWrap>
       <RecommandListWrap>
         <PersonalRecommended
-          nickname={nickname}
           setIsLoading={setIsLoading}
           isLoading={isLoading}
         />

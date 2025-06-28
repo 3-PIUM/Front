@@ -1,7 +1,7 @@
 {
   "menuLayout": {
     "category": "カテゴリー",
-    "report": "成分レポート",
+    "home": "ホーム",
     "wishlist": "お気に入り",
     "mypage": "マイページ"
   },
@@ -284,7 +284,8 @@
         "name": "シートマスク",
         "value": "마스크팩"
       }
-    ]
+    ],
+    "recommendedTitle": "あなたへのおすすめ商品"
   },
   "mbti": {
     "pageTitle": "肌タイプMBTI診断",

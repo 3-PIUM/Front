@@ -1,7 +1,7 @@
 {
   "menuLayout": {
     "category": "카테고리",
-    "report": "성분리포트",
+    "home": "홈",
     "wishlist": "찜",
     "mypage": "마이페이지"
   },
@@ -335,7 +335,8 @@
         "name": "마스크팩",
         "value": "마스크팩"
       }
-    ]
+    ],
+    "recommendedTitle": "고객님을 위한 추천 상품"
   },
   "mbti": {
     "pageTitle": "피부 MBTI 진단",

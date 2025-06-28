@@ -1,7 +1,7 @@
 {
   "menuLayout": {
     "category": "Category",
-    "report": "Report",
+    "home": "Home",
     "wishlist": "Wishlist",
     "mypage": "MyPage"
   },
@@ -280,7 +280,8 @@
         "name": "Sheet Mask",
         "value": "마스크팩"
       }
-    ]
+    ],
+    "recommendedTitle": "Recommended products for you"
   },
   "mbti": {
     "pageTitle": "Skin MBTI Test",
