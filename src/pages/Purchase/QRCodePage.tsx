@@ -52,7 +52,7 @@ const QRCodePage = () => {
     localStorage.setItem("purchaseHistory", JSON.stringify(updated));
   }, [selectedItems, memberId, navigate]);
 
-  const qrValue = `http://172.28.127.154:5173/cart/pay/${memberId}?cartItemIds=${cartItemIds}`;
+  const qrValue = `http://3.35.195.90/cart/pay/${memberId}?cartItemIds=${cartItemIds}`;
 
   return (
     <PageWrapper>
