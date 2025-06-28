@@ -97,6 +97,15 @@ const Line = styled.hr`
   margin: 0.5rem 0;
 `;
 
+const GoLoginBtn = styled.div`
+  display: flex;
+  border: none;
+  background-color: ${colors.mainPink};
+  color: ${colors.white};
+  font-weight: 600;
+  padding: 0 1rem;
+`;
+
 export default function MyPage() {
   sessionStorage.removeItem("topClicked");
   sessionStorage.removeItem("categoryName");
@@ -233,12 +242,26 @@ export default function MyPage() {
           </Settings>
         </>
       ) : (
-        <TopWrapper>
-          <Nickname>로그인이 필요합니다.</Nickname>
-          <button onClick={() => navigate("/")} style={{ marginTop: "1rem" }}>
-            로그인하러 가기
-          </button>
-        </TopWrapper>
+        <>
+          <TopWrapper>
+            <Nickname>로그인이 필요합니다.</Nickname>
+            <GoLoginBtn
+              onClick={() => navigate("/")}
+              style={{ marginTop: "1rem" }}
+            >
+              로그인하러 가기
+            </GoLoginBtn>
+          </TopWrapper>
+          <Space />
+          <SettingBox>
+            <Title>{t.mypage.language}</Title>
+            <SettingItem>
+              <div onClick={() => navigate("/mypage/language")}>
+                {t.mypage.languageSetting}
+              </div>
+            </SettingItem>
+          </SettingBox>
+        </>
       )}
     </>
   );
