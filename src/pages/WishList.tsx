@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Header from "../components/common/Header";
 import PageTitle from "../components/common/PageTitle";
 import ItemCard from "../components/product/ItemCard";
+import EmptyWishView from "../components/product/EmptyWishView";
 import { useLocale } from "../context/LanguageContext";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
@@ -14,10 +15,11 @@ const Wrapper = styled.div`
 const ItemWrapper = styled.div`
   display: flex;
   padding: 0 1rem;
-  margin-top: 3.5rem;
+  margin-top: 2.5rem;
   flex-wrap: wrap;
   gap: 0.5rem;
   padding-bottom: 80px;
+  justify-content: space-between;
 `;
 
 export default function WishList() {
@@ -76,21 +78,33 @@ export default function WishList() {
     <Wrapper>
       <Header />
       <PageTitle pageName={t.wishlist.pageTitle} />
-      <ItemWrapper>
-        {itemList?.map((wish: wishProps) => (
-          <ItemCard
-            key={wish.item.itemId}
-            itemName={wish.item.itemName}
-            imageSource={wish.item.mainImageUrl}
-            discountRate={wish.item.discountRate}
-            price={wish.item.salePrice}
-            itemId={wish.item.itemId}
-            wishStatus={wish.item.wishStatus}
-            onWishChange={handleWishChange}
-            isLoading={isLoading}
-          />
-        ))}
-      </ItemWrapper>
+      <div
+        style={{
+          width: "100%",
+          height: "1px",
+          backgroundColor: "#D6D6D6",
+          marginTop: "3rem",
+        }}
+      />
+      {itemList && itemList.length > 0 ? (
+        <ItemWrapper>
+          {itemList.map((wish: wishProps) => (
+            <ItemCard
+              key={wish.item.itemId}
+              itemName={wish.item.itemName}
+              imageSource={wish.item.mainImageUrl}
+              discountRate={wish.item.discountRate}
+              price={wish.item.salePrice}
+              itemId={wish.item.itemId}
+              wishStatus={wish.item.wishStatus}
+              onWishChange={handleWishChange}
+              isLoading={isLoading}
+            />
+          ))}
+        </ItemWrapper>
+      ) : (
+        <EmptyWishView />
+      )}
     </Wrapper>
   );
 }

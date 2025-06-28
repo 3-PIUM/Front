@@ -98,7 +98,9 @@ const StackedBarChart: React.FC<{ itemId: number }> = ({ itemId }) => {
   React.useEffect(() => {
     const fetchGraph = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/item/${itemId}/graph`);
+        const res = await fetch(
+          `http://13.125.104.137:8080/item/${itemId}/graph`
+        );
         const json = await res.json();
         const list = json.result.graphList as {
           name: string;

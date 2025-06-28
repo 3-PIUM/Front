@@ -30,7 +30,7 @@ const SelectBox = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
   color: #333;
   cursor: pointer;
 `;
@@ -41,6 +41,14 @@ const OptionList = styled.ul`
   right: 0;
   border: 1px solid #ddd;
   border-radius: 5px;
+  max-height: 55vh;
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const OptionItem = styled.li`

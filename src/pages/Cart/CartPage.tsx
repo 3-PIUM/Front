@@ -13,6 +13,17 @@ const TextHeader = React.lazy(
 );
 const Header = React.lazy(() => import("../../components/common/Header"));
 
+const ProductListWrapper = styled.div`
+  max-height: 62vh;
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -178,12 +189,15 @@ const Price = styled.span`
 
 const StickyBottom = styled.div`
   position: fixed;
-  bottom: 6rem;
+  bottom: 5rem;
   left: 0;
-  width: 100%;
+  right: 0;
+  width: 100vw;
   background-color: #fff;
   padding: 1rem;
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.05);
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const TotalAndButton = styled.div`
@@ -196,7 +210,7 @@ const TotalRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 1rem 3rem;
+  padding: 0.8rem 1rem 1rem;
 `;
 
 const TotalLabel = styled.span`
@@ -398,114 +412,99 @@ const CartPage = () => {
         </DeleteAll>
       </HeaderControlBar>
 
-      {cartItems.map(
-        (item) => (
-          console.log(
-            "🧪 할인율 확인:",
-            item.id,
-            item.name,
-            "할인율:",
-            item.discountRate,
-            "타입:",
-            typeof item.discountRate
-          ),
-          (
-            <ProductCard key={getKey(item.id)}>
-              <TopRow>
-                <Checkbox
-                  type="checkbox"
-                  checked={selectedKeys.includes(getKey(item.id))}
-                  onChange={() => toggleSelect(item.id)}
-                />
-                <Image src={item.imageUrl} alt={item.name} />
-                <InfoArea>
-                  <UpperInfo>
-                    <TitleBlock>
-                      <Title>{item.name}</Title>
-                      <DeleteButton onClick={() => handleDelete(item.id)}>
-                        ✕
-                      </DeleteButton>
-                    </TitleBlock>
-                    <Brand>
-                      [{item.brand}]
-                      {item.option && item.option !== "default"
-                        ? ` ${item.option}`
-                        : ""}
-                    </Brand>
-                  </UpperInfo>
-                </InfoArea>
-              </TopRow>
+      <ProductListWrapper>
+        {cartItems.map((item) => (
+          <ProductCard key={getKey(item.id)}>
+            <TopRow>
+              <Checkbox
+                type="checkbox"
+                checked={selectedKeys.includes(getKey(item.id))}
+                onChange={() => toggleSelect(item.id)}
+              />
+              <Image src={item.imageUrl} alt={item.name} />
+              <InfoArea>
+                <UpperInfo>
+                  <TitleBlock>
+                    <Title>{item.name}</Title>
+                    <DeleteButton onClick={() => handleDelete(item.id)}>
+                      ✕
+                    </DeleteButton>
+                  </TitleBlock>
+                  <Brand>
+                    [{item.brand}]
+                    {item.option && item.option !== "default"
+                      ? ` ${item.option}`
+                      : ""}
+                  </Brand>
+                </UpperInfo>
+              </InfoArea>
+            </TopRow>
 
-              <LowerInfo>
-                <LeftRow>
-                  <OptionButton
-                    onClick={() => {
-                      const hasOptions =
-                        item.availableOptions &&
-                        item.availableOptions.length > 0;
-                      if (hasOptions) setShowOptionFor(getKey(item.id));
-                    }}
+            <LowerInfo>
+              <LeftRow>
+                <OptionButton
+                  onClick={() => {
+                    const hasOptions =
+                      item.availableOptions && item.availableOptions.length > 0;
+                    if (hasOptions) setShowOptionFor(getKey(item.id));
+                  }}
+                  style={{
+                    backgroundColor:
+                      item.availableOptions && item.availableOptions.length > 0
+                        ? "#fff"
+                        : "#f0f0f0",
+                    cursor:
+                      item.availableOptions && item.availableOptions.length > 0
+                        ? "pointer"
+                        : "not-allowed",
+                    color:
+                      item.availableOptions && item.availableOptions.length > 0
+                        ? "inherit"
+                        : "#aaa",
+                  }}
+                >
+                  {t.cart.changeOption}
+                </OptionButton>
+                <QuantityControl>
+                  <Button
+                    onClick={() => handleDecrease(item.id)}
+                    disabled={item.quantity <= 1}
                     style={{
-                      backgroundColor:
-                        item.availableOptions &&
-                        item.availableOptions.length > 0
-                          ? "#fff"
-                          : "#f0f0f0",
-                      cursor:
-                        item.availableOptions &&
-                        item.availableOptions.length > 0
-                          ? "pointer"
-                          : "not-allowed",
-                      color:
-                        item.availableOptions &&
-                        item.availableOptions.length > 0
-                          ? "inherit"
-                          : "#aaa",
+                      color: item.quantity <= 1 ? "#ccc" : "inherit",
+                      cursor: item.quantity <= 1 ? "not-allowed" : "pointer",
                     }}
                   >
-                    {t.cart.changeOption}
-                  </OptionButton>
-                  <QuantityControl>
-                    <Button
-                      onClick={() => handleDecrease(item.id)}
-                      disabled={item.quantity <= 1}
-                      style={{
-                        color: item.quantity <= 1 ? "#ccc" : "inherit",
-                        cursor: item.quantity <= 1 ? "not-allowed" : "pointer",
-                      }}
-                    >
-                      -
-                    </Button>
-                    <Count>{item.quantity}</Count>
-                    <Button onClick={() => handleIncrease(item.id)}>+</Button>
-                  </QuantityControl>
-                </LeftRow>
-                <RightColumn>
-                  <PriceBox>
-                    {item.discountRate > 0 && (
-                      <Discount>{item.discountRate}%</Discount>
-                    )}
-                    <Price>
-                      {item.discountedPrice.toLocaleString()}
-                      {t.cart.won}
-                    </Price>
-                  </PriceBox>
-                </RightColumn>
-              </LowerInfo>
-            </ProductCard>
-          )
-        )
-      )}
+                    -
+                  </Button>
+                  <Count>{item.quantity}</Count>
+                  <Button onClick={() => handleIncrease(item.id)}>+</Button>
+                </QuantityControl>
+              </LeftRow>
+              <RightColumn>
+                <PriceBox>
+                  {item.discountRate > 0 && (
+                    <Discount>{item.discountRate}%</Discount>
+                  )}
+                  <Price>
+                    {item.discountedPrice.toLocaleString()}
+                    {t.cart.won}
+                  </Price>
+                </PriceBox>
+              </RightColumn>
+            </LowerInfo>
+          </ProductCard>
+        ))}
 
-      <TotalAndButton>
-        <TotalRow>
-          <TotalLabel>{t.cart.totalAmount}</TotalLabel>
-          <TotalPrice>
-            {totalPrice.toLocaleString()}
-            {t.cart.won}
-          </TotalPrice>
-        </TotalRow>
-      </TotalAndButton>
+        <TotalAndButton>
+          <TotalRow>
+            <TotalLabel>{t.cart.totalAmount}</TotalLabel>
+            <TotalPrice>
+              {totalPrice.toLocaleString()}
+              {t.cart.won}
+            </TotalPrice>
+          </TotalRow>
+        </TotalAndButton>
+      </ProductListWrapper>
 
       <StickyBottom>
         <SubmitButton onClick={handleSubmit}>{t.cart.qrCode}</SubmitButton>

@@ -155,7 +155,10 @@ export default function LogoHeader({}: LogoHeaderProps) {
 
       try {
         const res = await axiosInstance.get(
-          `/item/advancedSearch/list/${encodeURIComponent(searchTerm)}`
+          `/item/advancedSearch/list/${encodeURIComponent(searchTerm)}`,
+          {
+            params: { size: 5 },
+          }
         );
         setSearchResults(res.data.result.itemSearchInfoDTOs || []);
       } catch (err) {
@@ -163,7 +166,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
       }
     };
 
-    const delay = setTimeout(fetchSearchResults, 300);
+    const delay = setTimeout(fetchSearchResults, 200);
     return () => clearTimeout(delay);
   }, [searchTerm]);
 

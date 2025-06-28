@@ -93,7 +93,7 @@ export default function EmailInput({
       return;
     }
     try {
-      await axios.post("http://localhost:8080/mail/send", {
+      await axios.post("http://13.125.104.137:8080/mail/send", {
         email,
       });
       setSendEmail(true);
@@ -112,10 +112,13 @@ export default function EmailInput({
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/mail/verify", {
-        email,
-        code: verifyCode,
-      });
+      const response = await axios.post(
+        "http://13.125.104.137:8080/mail/verify",
+        {
+          email,
+          code: verifyCode,
+        }
+      );
       if (response.data.result.check === true) {
         setCheckVerifyCode(true);
         setVerifyCodeText(null);
