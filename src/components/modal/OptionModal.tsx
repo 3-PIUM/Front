@@ -20,6 +20,14 @@ const Modal = styled.div`
   border-radius: 1.5rem;
   width: 90%;
   max-width: 320px;
+  max-height: 55vh;
+  overflow-y: auto;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const OptionItem = styled.div`

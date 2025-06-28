@@ -29,6 +29,7 @@ const Page = styled.div`
   gap: 0.5rem;
   min-width: 100%;
   scroll-snap-align: start;
+  place-items: center;
 `;
 
 export default function WeeklyBest() {
@@ -40,6 +41,7 @@ export default function WeeklyBest() {
     const fetchWeeklyBest = async () => {
       try {
         const response = await axiosInstance.get("/item/popularWeek");
+
         const data = response.data.result;
         setTitle(data.title);
         setItems(data.popularItems);

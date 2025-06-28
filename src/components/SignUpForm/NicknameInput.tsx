@@ -75,7 +75,7 @@ export default function Nickname({
     setNicknameValidMessage("");
     setNicknameText?.("");
     try {
-      await axios.get("http://localhost:8080/member/check", {
+      await axios.get("http://13.125.104.137:8080/member/check", {
         params: {
           nickname: nickname,
         },

@@ -76,7 +76,7 @@ export default function SkinTest() {
     const fetchSkinTest = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/mbti/skin-questions",
+          "http://13.125.104.137:8080/mbti/skin-questions",
           {
             params: { lang: localStorage.getItem("language") },
           }

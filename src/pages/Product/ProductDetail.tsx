@@ -348,12 +348,8 @@ export default function ProductDetail() {
                   setIsRecommendOpen(true);
                   setIsLoading(true);
 
-                  const lang = t.language || "kr";
                   const recommendRes = await axiosInstance.get(
-                    `/item/relatedPurchaseItems/${product.id}`,
-                    {
-                      params: { lang },
-                    }
+                    `/item/relatedPurchaseItems/${product.id}`
                   );
                   setRecommendItems(recommendRes.data.result || []);
                   const firstImage = product?.imageUrl?.mainImage || "";

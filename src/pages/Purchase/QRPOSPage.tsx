@@ -122,7 +122,6 @@ const QRPOSPage = () => {
   const { memberId } = useParams();
   const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
-  const cartItemIds = location.state?.cartItemIds;
   const query = new URLSearchParams(location.search);
   const cartItemIdsFromQuery = query.get("cartItemIds");
   const tokenFromQuery = query.get("token");
@@ -152,12 +151,8 @@ const QRPOSPage = () => {
       }
     };
 
-    if (!location.state?.selectedItems && cartItemIdsFromQuery) {
-      fetchCartItems();
-    } else if (location.state?.selectedItems) {
-      setSelectedItems(location.state.selectedItems);
-    }
-  }, [location.state, cartItemIdsFromQuery, tokenFromQuery]);
+    fetchCartItems();
+  }, [cartItemIdsFromQuery, tokenFromQuery]);
 
   const totalQuantity = selectedItems.reduce(
     (sum: number, item: any) => sum + item.quantity,
@@ -171,7 +166,7 @@ const QRPOSPage = () => {
   const handlePay = async () => {
     try {
       const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
-      const idsToUse = cartItemIds || cartItemIdsFromQuery;
+      const idsToUse = cartItemIdsFromQuery;
       if (!token || !idsToUse) {
         console.warn("❌ 토큰이나 장바구니 ID 없음");
         return;

@@ -10,9 +10,11 @@ const BigListWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
   width: 100%;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
 `;
 
 export default function AreaPopular() {

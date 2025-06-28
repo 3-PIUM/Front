@@ -617,5 +617,10 @@
     "recommendation": "Frequently Bought Together"
   },
   "viewCountMessage": "people are viewing this",
-  "relatedProducts": "Customers also viewed"
+  "relatedProducts": "Customers also viewed",
+  "wishlistEmpty": {
+    "title": "You have no wishlist items.",
+    "subtitle": "ry adding items you like to your wishlist.",
+    "button": "Explore Home >"
+  }
 }

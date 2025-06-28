@@ -1,9 +1,9 @@
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
+import ItemCard from "./ItemCard";
 
 interface RelatedProduct {
   itemId: number;
@@ -55,64 +55,6 @@ const ProductList = styled.div`
   }
 `;
 
-const ProductCard = styled.div`
-  width: calc((100% - 3rem) / 3);
-  min-width: 100px;
-  background: white;
-  border-radius: 12px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: relative;
-`;
-
-const WishIcon = styled.div<{ $active: boolean }>`
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  color: ${({ $active }) => ($active ? "#f23477" : "#ccc")};
-  font-size: 1rem;
-`;
-
-const Image = styled.img`
-  width: 100px;
-  border-radius: 10px;
-  object-fit: cover;
-  margin-bottom: 0.1rem;
-`;
-
-const DiscountRate = styled.span`
-  color: #e60023;
-  font-weight: bold;
-`;
-
-const Name = styled.p`
-  width: 100px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  margin: 0.4rem 0 0.2rem;
-  color: #000;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Price = styled.div`
-  display: flex;
-  align-items: baseline;
-  gap: 0.25rem;
-  font-size: 0.75rem;
-`;
-
-const DiscountedPrice = styled.span`
-  font-weight: bold;
-  color: #111;
-  font-size: 0.75rem;
-`;
-
 const RelatedProductCarousel = ({
   itemId,
   lang,
@@ -126,12 +68,7 @@ const RelatedProductCarousel = ({
     const fetchRelated = async () => {
       if (!itemId) return;
       try {
-        const res = await axiosInstance.get(
-          `/item/relatedViewItems/${itemId}`,
-          {
-            params: { lang },
-          }
-        );
+        const res = await axiosInstance.get(`/item/relatedViewItems/${itemId}`);
         setProducts(res.data.result || []);
       } catch (err) {
         console.error("관련 상품 불러오기 실패", err);
@@ -142,49 +79,6 @@ const RelatedProductCarousel = ({
     fetchRelated();
   }, [itemId, lang]);
 
-  if (isLoading) {
-    return (
-      <Section>
-        <Divider />
-        <Header>
-          <Title>{t.relatedProducts}</Title>
-        </Header>
-        <ProductList>
-          {Array.from({ length: 3 }).map((_, index) => (
-            <ProductCard key={index}>
-              <div
-                style={{
-                  width: 100,
-                  height: 100,
-                  background: "#eee",
-                  borderRadius: 10,
-                  marginBottom: 4,
-                }}
-              />
-              <div
-                style={{
-                  width: 100,
-                  height: 14,
-                  background: "#eee",
-                  borderRadius: 4,
-                  marginBottom: 6,
-                }}
-              />
-              <div
-                style={{
-                  width: 60,
-                  height: 12,
-                  background: "#eee",
-                  borderRadius: 4,
-                }}
-              />
-            </ProductCard>
-          ))}
-        </ProductList>
-      </Section>
-    );
-  }
-
   return (
     <Section>
       <Divider />
@@ -192,29 +86,71 @@ const RelatedProductCarousel = ({
         <Title>{t.relatedProducts}</Title>
       </Header>
       <ProductList>
-        {products.map((product) => (
-          <ProductCard
-            key={product.itemId}
-            onClick={() => navigate(`/product-detail?itemId=${product.itemId}`)}
-          >
-            <div style={{ position: "relative" }}>
-              <Image src={product.itemImage} alt={product.itemName} />
-              <WishIcon $active={product.wishStatus}>
-                {product.wishStatus ? <FaHeart /> : <FaRegHeart />}
-              </WishIcon>
-            </div>
-            <Name>{product.itemName}</Name>
-            <Price>
-              {product.discountRate > 0 && (
-                <DiscountRate>{product.discountRate}%</DiscountRate>
-              )}
-              <DiscountedPrice>
-                {product.salePrice.toLocaleString()}
-                {t.productDetail.won}
-              </DiscountedPrice>
-            </Price>
-          </ProductCard>
-        ))}
+        {isLoading
+          ? Array.from({ length: 3 }).map((_, idx) => (
+              <div
+                key={idx}
+                style={{
+                  width: "100px",
+                  minWidth: "100px",
+                  borderRadius: "12px",
+                  backgroundColor: "#fff",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  padding: "0.25rem 0",
+                }}
+              >
+                <div
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    backgroundColor: "#f0f0f0",
+                    borderRadius: "10px",
+                    marginBottom: "0.2rem",
+                    animation: "pulse 1.5s infinite",
+                  }}
+                />
+                <div
+                  style={{
+                    width: "100px",
+                    height: "14px",
+                    backgroundColor: "#f0f0f0",
+                    marginBottom: "4px",
+                    borderRadius: "4px",
+                    animation: "pulse 1.5s infinite",
+                  }}
+                />
+                <div
+                  style={{
+                    width: "60px",
+                    height: "14px",
+                    backgroundColor: "#f0f0f0",
+                    borderRadius: "4px",
+                    animation: "pulse 1.5s infinite",
+                  }}
+                />
+              </div>
+            ))
+          : products.map((product) => (
+              <div
+                key={product.itemId}
+                onClick={() =>
+                  navigate(`/product-detail?itemId=${product.itemId}`)
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <ItemCard
+                  itemId={product.itemId}
+                  itemName={product.itemName}
+                  imageSource={product.itemImage}
+                  discountRate={product.discountRate || 0}
+                  price={product.salePrice}
+                  wishStatus={product.wishStatus}
+                  isLoading={false}
+                />
+              </div>
+            ))}
       </ProductList>
     </Section>
   );
