@@ -105,6 +105,8 @@ export default function MyPage() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const { t } = useLocale();
 
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
+
   const handleLogout = async () => {
     try {
       await axiosInstance.post("/logout");
@@ -150,30 +152,43 @@ export default function MyPage() {
     <>
       <Header />
       <PageTitle pageName={t.mypage.pageTitle} />
-      <TopWrapper>
-        <ImageSection>
-          <ImageBox>
-            <ProfileImage
-              src={
-                profileImage
-                  ? URL.createObjectURL(profileImage)
-                  : profileImg ?? "images/dafaultProfileImage.png"
-              }
-              alt="프로필사진"
+      {isLoggedIn ? (
+        <TopWrapper>
+          <ImageSection>
+            <ImageBox>
+              <ProfileImage
+                src={
+                  profileImage
+                    ? URL.createObjectURL(profileImage)
+                    : profileImg ?? "images/dafaultProfileImage.png"
+                }
+                alt="프로필사진"
+              />
+            </ImageBox>
+            <ImageEdit as="label" htmlFor="profileimg">
+              <FiEdit2 fontSize={"1.125rem"} color={colors.white} />
+            </ImageEdit>
+            <ImgInput
+              type="file"
+              accept="image/*"
+              id="profileimg"
+              onChange={handleFileSelect}
             />
-          </ImageBox>
-          <ImageEdit as="label" htmlFor="profileimg">
-            <FiEdit2 fontSize={"1.125rem"} color={colors.white} />
-          </ImageEdit>
-          <ImgInput
-            type="file"
-            accept="image/*"
-            id="profileimg"
-            onChange={handleFileSelect}
-          />
-        </ImageSection>
-        <Nickname>{nickname}</Nickname>
-      </TopWrapper>
+          </ImageSection>
+          <Nickname>{nickname}</Nickname>
+        </TopWrapper>
+      ) : (
+        <TopWrapper>
+          <Nickname>로그인이 필요합니다.</Nickname>
+          <button
+            onClick={() => navigate("/login")}
+            style={{ marginTop: "1rem" }}
+          >
+            로그인하러 가기
+          </button>
+        </TopWrapper>
+      )}
+
       <Space />
       <Settings>
         <SettingBox>
@@ -217,15 +232,19 @@ export default function MyPage() {
             </div>
           </SettingItem>
         </SettingBox>
-        <Line />
-        <SettingBox>
-          <SettingItem>
-            <div onClick={handleLogout}>{t.mypage.logout}</div>
-            <div onClick={() => navigate("/Withdraw")}>
-              {t.mypage.deleteAccount}
-            </div>
-          </SettingItem>
-        </SettingBox>
+        {isLoggedIn && (
+          <>
+            <Line />
+            <SettingBox>
+              <SettingItem>
+                <div onClick={handleLogout}>{t.mypage.logout}</div>
+                <div onClick={() => navigate("/Withdraw")}>
+                  {t.mypage.deleteAccount}
+                </div>
+              </SettingItem>
+            </SettingBox>
+          </>
+        )}
       </Settings>
     </>
   );
