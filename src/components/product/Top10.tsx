@@ -31,8 +31,10 @@ export default function Top10() {
       try {
         const items = await axiosInstance.get("/item/popular");
         const top10 = items.data.result;
-        setItems(top10.popularItems);
-        setTitle(top10.title);
+        const popularitems = top10.popularItems;
+        const title = top10.title;
+        setItems(popularitems);
+        setTitle(title);
         console.log(top10);
 
         setTimeout(() => setIsLoading(false), 500);

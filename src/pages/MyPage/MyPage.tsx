@@ -113,7 +113,7 @@ export default function MyPage() {
       console.log("로그아웃 성공");
       sessionStorage.removeItem("memberInfo");
       sessionStorage.removeItem("accessToken");
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.log("로그아웃 실패:", error);
     }
