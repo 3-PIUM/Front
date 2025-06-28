@@ -13,13 +13,18 @@ const Wrapper = styled.div`
 `;
 
 const ItemWrapper = styled.div`
-  display: flex;
-  padding: 0 1rem;
-  margin-top: 2.5rem;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  box-sizing: border-box;
+  margin: 2rem auto 0 auto;
   padding-bottom: 80px;
-  justify-content: space-between;
+  @media (max-width: 430px) {
+    gap: 2rem;
+  }
+  @media (max-width: 375px) {
+    gap: 0.8rem;
+  }
 `;
 
 export default function WishList() {

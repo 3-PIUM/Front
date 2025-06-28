@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { IoChatboxEllipses } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import LoginRequiredModal from "../modal/LoginRequiredModal";
 
 const ButtonWrapper = styled.button`
   position: fixed;
-  bottom: 6rem;
+  bottom: 5.5rem;
   right: 1rem;
   z-index: 1000;
 
@@ -24,10 +26,23 @@ const ButtonWrapper = styled.button`
 
 export default function ChatBotButton() {
   const navigate = useNavigate();
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
+  const [showModal, setShowModal] = useState(false);
+
+  const handleClick = () => {
+    if (isLoggedIn) {
+      navigate("/chatbot");
+    } else {
+      setShowModal(true);
+    }
+  };
 
   return (
-    <ButtonWrapper onClick={() => navigate("/chatbot")}>
-      <IoChatboxEllipses size={25} color="#f43f5e" />
-    </ButtonWrapper>
+    <>
+      <ButtonWrapper onClick={handleClick}>
+        <IoChatboxEllipses size={25} color="#f43f5e" />
+      </ButtonWrapper>
+      {showModal && <LoginRequiredModal />}
+    </>
   );
 }
