@@ -393,13 +393,6 @@ export default function ProductDetail() {
             <Button
               label={t.productDetail.addCart}
               onClick={async () => {
-                const isLoggedIn = Boolean(
-                  sessionStorage.getItem("accessToken")
-                );
-                if (!isLoggedIn) {
-                  setShowLoginModal(true);
-                  return;
-                }
                 if (product.options.length > 0 && !selectedOptionName) {
                   setShowOptionAlert(true);
                   return;

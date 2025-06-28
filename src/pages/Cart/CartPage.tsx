@@ -27,8 +27,7 @@ const ProductListWrapper = styled.div`
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  padding-bottom: 120px;
+  overflow: hidden;
 `;
 
 const HeaderControlBar = styled.div`
