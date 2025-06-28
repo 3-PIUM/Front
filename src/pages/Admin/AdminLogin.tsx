@@ -1,13 +1,13 @@
 import { GrLanguage } from "react-icons/gr";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import colors from "../../styles/colors";
 import Header from "../../components/common/Header";
 import Button from "../../components/common/Button";
 import LanguageModal from "../../components/modal/LanguageModal";
 import { useLocale } from "../../context/LanguageContext";
 import TextHeader from "../../components/common/TextHeader";
+import axiosInstance from "../../api/axiosInstance";
 
 const Wrap = styled.div`
   display: flex;
@@ -128,13 +128,10 @@ export default function AdminLogin() {
     setShowError(false);
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/member/admin-login",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axiosInstance.post("/member/admin-login", {
+        email,
+        password,
+      });
       const redirectUri = response.data.result;
       window.location.href = redirectUri;
     } catch (error) {

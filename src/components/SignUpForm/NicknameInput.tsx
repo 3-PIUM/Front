@@ -1,8 +1,8 @@
 import InputField from "../InputField";
 import styled from "styled-components";
 import colors from "../../styles/colors";
-import axios from "axios";
 import { useLocale } from "../../context/LanguageContext";
+import axiosInstance from "../../api/axiosInstance";
 
 const FieldName = styled.div`
   display: flex;
@@ -75,7 +75,7 @@ export default function Nickname({
     setNicknameValidMessage("");
     setNicknameText?.("");
     try {
-      await axios.get("http://13.125.104.137:8080/member/check", {
+      await axiosInstance.get("/member/check", {
         params: {
           nickname: nickname,
         },

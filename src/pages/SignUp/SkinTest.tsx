@@ -3,9 +3,9 @@ import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import colors from "../../styles/colors";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance";
 
 const Wrapper = styled.div`
   display: flex;
@@ -75,12 +75,9 @@ export default function SkinTest() {
   useEffect(() => {
     const fetchSkinTest = async () => {
       try {
-        const response = await axios.get(
-          "http://13.125.104.137:8080/mbti/skin-questions",
-          {
-            params: { lang: localStorage.getItem("language") },
-          }
-        );
+        const response = await axiosInstance.get("/mbti/skin-questions", {
+          params: { lang: localStorage.getItem("language") },
+        });
         const data = response.data.result;
         setQuestions(data);
         setCurrentQuestionId(data[0].questions[0].id);

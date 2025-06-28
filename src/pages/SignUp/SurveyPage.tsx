@@ -9,7 +9,7 @@ import SurveyStep3 from "../../components/Survey/SurveyStep3";
 import Button from "../../components/common/Button";
 import StepIndicator from "../../components/Survey/StepIndicator";
 import { useLocale } from "../../context/LanguageContext";
-import axios from "axios";
+import axiosInstance from "../../api/axiosInstance";
 
 const Wrap = styled.div`
   width: 100vw;
@@ -89,21 +89,18 @@ export default function SurveyPage() {
 
   const goFinish = async () => {
     try {
-      const response = await axios.post(
-        "http://13.125.104.137:8080/member/join",
-        {
-          nickname: storedData.nickname,
-          birth: storedData.birth,
-          email: storedData.email,
-          password: storedData.password,
-          gender: storedData.gender,
-          area: storedData.area,
-          language: storedData.lang,
-          skinType: skinType,
-          personalType: personalColor,
-          skinIssue: skinIssue,
-        }
-      );
+      const response = await axiosInstance.post("/member/join", {
+        nickname: storedData.nickname,
+        birth: storedData.birth,
+        email: storedData.email,
+        password: storedData.password,
+        gender: storedData.gender,
+        area: storedData.area,
+        language: storedData.lang,
+        skinType: skinType,
+        personalType: personalColor,
+        skinIssue: skinIssue,
+      });
       console.log("성공");
       console.log(response);
       navigate("/welcome");

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import InputField from "../InputField";
 import { useLocale } from "../../context/LanguageContext";
-import axios from "axios";
 import colors from "../../styles/colors";
 import { useState, useEffect } from "react";
 import { VscCheck } from "react-icons/vsc";
+import axiosInstance from "../../api/axiosInstance";
 
 const Wrapper = styled.div`
   display: flex;
@@ -93,7 +93,7 @@ export default function EmailInput({
       return;
     }
     try {
-      await axios.post("http://13.125.104.137:8080/mail/send", {
+      await axiosInstance.post("/mail/send", {
         email,
       });
       setSendEmail(true);
@@ -112,13 +112,10 @@ export default function EmailInput({
     }
 
     try {
-      const response = await axios.post(
-        "http://13.125.104.137:8080/mail/verify",
-        {
-          email,
-          code: verifyCode,
-        }
-      );
+      const response = await axiosInstance.post("/mail/verify", {
+        email,
+        code: verifyCode,
+      });
       if (response.data.result.check === true) {
         setCheckVerifyCode(true);
         setVerifyCodeText(null);
