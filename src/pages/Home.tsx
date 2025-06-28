@@ -23,7 +23,7 @@ const InfoBox = styled.div`
   flex-direction: column;
   background-color: ${colors.subPink};
   padding: 1.5rem 1rem;
-  margin: 44px 1rem 0 1rem;
+  margin: 60px 1rem 0 1rem;
   border-radius: 1rem;
   color: ${colors.mainPink};
   text-align: center;
