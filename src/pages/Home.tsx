@@ -239,8 +239,8 @@ export default function Home() {
             <div>{t.home.personalInfo.subtitle.signupPrefix}</div>
             <div>{t.home.personalInfo.subtitle.suffix}</div>
           </InfoSubTitle>
-          <InfoBoxBtn onClick={() => navigate("/signup")}>
-            {t.signup.signupBtn}
+          <InfoBoxBtn onClick={() => navigate("/login")}>
+            {t.mypage.goLogin}
           </InfoBoxBtn>
         </InfoBox>
       )}
