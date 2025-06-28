@@ -141,7 +141,7 @@ export default function WithdrawalPage() {
       console.log("탈퇴 성공", response.status);
       alert(t.withdrawal.alert.complete);
       sessionStorage.removeItem("accessToken");
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.error("탈퇴 실패", error);
       alert(t.withdrawal.alert.fail || "탈퇴 요청 중 오류가 발생했습니다.");

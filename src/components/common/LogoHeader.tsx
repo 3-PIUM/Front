@@ -175,7 +175,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
       <HeaderWrap>
         <LogoWrap
           src="/images/logo/PIUM_logo.png"
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/")}
         />
         <RightIcons>
           <IconWrapper onClick={() => setIsStoreModalOpen(true)}>

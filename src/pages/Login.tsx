@@ -151,7 +151,7 @@ export default function Login() {
         console.log(language);
       }, 50);
 
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.log("로그인 실패", error);
       setShowError(true);

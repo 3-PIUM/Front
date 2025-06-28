@@ -47,7 +47,7 @@ export default function EmptyWishView() {
         <BoldText>{t.wishlistEmpty.title}</BoldText>
         <EmptyText>{t.wishlistEmpty.subtitle}</EmptyText>
       </div>
-      <ExploreButton onClick={() => navigate("/home")}>
+      <ExploreButton onClick={() => navigate("/")}>
         {t.wishlistEmpty.button}
       </ExploreButton>
     </EmptyWrapper>

@@ -98,7 +98,7 @@ export default function MenuLayout() {
       activeIcon: <LuSquareMenu fontSize="1.25rem" color={colors.mainPink} />,
     },
     {
-      path: "/home",
+      path: "/",
       label: t.menuLayout.home,
       icon: <GoHome fontSize="1.25rem" color={colors.lightGrey} />,
       activeIcon: <GoHomeFill fontSize="1.25rem" color={colors.mainPink} />,

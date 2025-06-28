@@ -261,7 +261,7 @@ export default function MbtiResult() {
         <Button
           label={t.mbti.goHome}
           onClick={() => {
-            navigate("/home");
+            navigate("/");
           }}
         />
       </ButtonWrapper>

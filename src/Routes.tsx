@@ -58,7 +58,7 @@ const AdminLogin = lazy(() => import("./pages/Admin/AdminLogin"));
 
 const routes = [
   // DefaultLayout
-  { path: "/", element: <Login /> },
+  { path: "/login", element: <Login /> },
   { path: "/signup", element: <Signup /> },
   { path: "/about", element: <AboutYouPage /> },
   { path: "/survey", element: <Survey /> },
@@ -138,7 +138,7 @@ const routes = [
     path: "/",
     element: <MenuLayout />,
     children: [
-      { path: "home", element: <Home /> },
+      { path: "", element: <Home /> },
       { path: "wishlist", element: <WishList /> },
       { path: "mypage", element: <MyPage /> },
       { path: "category", element: <Category /> },
