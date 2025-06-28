@@ -97,13 +97,29 @@ const Line = styled.hr`
   margin: 0.5rem 0;
 `;
 
+const LoginWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 8rem;
+  margin-bottom: 5rem;
+`;
+
+const LoginText = styled.div`
+  display: flex;
+  font-size: 1.1rem;
+  font-weight: 700;
+`;
+
 const GoLoginBtn = styled.div`
   display: flex;
   border: none;
   background-color: ${colors.mainPink};
   color: ${colors.white};
   font-weight: 600;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
 `;
 
 export default function MyPage() {
@@ -243,24 +259,26 @@ export default function MyPage() {
         </>
       ) : (
         <>
-          <TopWrapper>
-            <Nickname>로그인이 필요합니다.</Nickname>
+          <LoginWrapper>
+            <LoginText>{t.mypage.loginRequired}</LoginText>
             <GoLoginBtn
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/login")}
               style={{ marginTop: "1rem" }}
             >
-              로그인하러 가기
+              {t.mypage.goLogin}
             </GoLoginBtn>
-          </TopWrapper>
+          </LoginWrapper>
           <Space />
-          <SettingBox>
-            <Title>{t.mypage.language}</Title>
-            <SettingItem>
-              <div onClick={() => navigate("/mypage/language")}>
-                {t.mypage.languageSetting}
-              </div>
-            </SettingItem>
-          </SettingBox>
+          <Settings>
+            <SettingBox>
+              <Title>{t.mypage.language}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/mypage/language")}>
+                  {t.mypage.languageSetting}
+                </div>
+              </SettingItem>
+            </SettingBox>
+          </Settings>
         </>
       )}
     </>

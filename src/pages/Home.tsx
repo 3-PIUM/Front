@@ -146,6 +146,7 @@ export default function Home() {
   sessionStorage.removeItem("topClicked");
   sessionStorage.removeItem("categoryName");
   sessionStorage.removeItem("subcategoryName");
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
 
   useEffect(() => {
     const fetchMemberInfo = async () => {
@@ -182,50 +183,66 @@ export default function Home() {
     <Wrapper>
       <Header />
       <LogoHeader />
-      {!memberInfo?.skinType ? (
+      {isLoggedIn ? (
+        !memberInfo?.skinType ? (
+          <InfoBox>
+            <img src="images/CharacterImg/surveyImage.png" width="60%" />
+            <InfoSubTitle>
+              <div>{t.home.personalInfo.subtitle.prefix}</div>
+              <div>{t.home.personalInfo.subtitle.suffix}</div>
+            </InfoSubTitle>
+            <InfoBoxBtn onClick={() => navigate("/mypage/skintype")}>
+              {t.home.personalInfo.registerSkinType}
+            </InfoBoxBtn>
+          </InfoBox>
+        ) : (
+          <PersonalInfo skinType={memberInfo?.skinType}>
+            <TextInfo>
+              <UserSkin>
+                <div>{t.home.skinTypeTitle}</div>
+                <SkinType>
+                  <Highlight>
+                    {getLocalizedSkinType(memberInfo?.skinType, language)}
+                  </Highlight>
+                </SkinType>
+              </UserSkin>
+              <RecommendInfo>
+                <RecommendTitle>{t.home.skinMBTI}</RecommendTitle>
+                <Ingredients>
+                  {memberInfo?.mbtiCode === ""
+                    ? "-"
+                    : memberInfo?.mbtiCode.replaceAll(",", "")}
+                </Ingredients>
+              </RecommendInfo>
+            </TextInfo>
+            <CharacterBox>
+              {memberInfo?.skinType === "복합성" ? (
+                <CharacterImg
+                  src="images/SkinType/combination.png"
+                  alt="복합성 캐릭터"
+                />
+              ) : memberInfo?.skinType === "건성" ? (
+                <CharacterImg src="images/SkinType/dry.png" alt="건성 캐릭터" />
+              ) : (
+                <CharacterImg
+                  src="images/SkinType/oily.png"
+                  alt="지성 캐릭터"
+                />
+              )}
+            </CharacterBox>
+          </PersonalInfo>
+        )
+      ) : (
         <InfoBox>
           <img src="images/CharacterImg/surveyImage.png" width="60%" />
           <InfoSubTitle>
-            <div>{t.home.personalInfo.subtitle.prefix}</div>
+            <div>{t.home.personalInfo.subtitle.signupPrefix}</div>
             <div>{t.home.personalInfo.subtitle.suffix}</div>
           </InfoSubTitle>
-          <InfoBoxBtn onClick={() => navigate("/mypage/skintype")}>
-            {t.home.personalInfo.registerSkinType}
+          <InfoBoxBtn onClick={() => navigate("/signup")}>
+            {t.signup.signupBtn}
           </InfoBoxBtn>
         </InfoBox>
-      ) : (
-        <PersonalInfo skinType={memberInfo?.skinType}>
-          <TextInfo>
-            <UserSkin>
-              <div>{t.home.skinTypeTitle}</div>
-              <SkinType>
-                <Highlight>
-                  {getLocalizedSkinType(memberInfo?.skinType, language)}
-                </Highlight>
-              </SkinType>
-            </UserSkin>
-            <RecommendInfo>
-              <RecommendTitle>{t.home.skinMBTI}</RecommendTitle>
-              <Ingredients>
-                {memberInfo?.mbtiCode === ""
-                  ? "-"
-                  : memberInfo?.mbtiCode.replaceAll(",", "")}
-              </Ingredients>
-            </RecommendInfo>
-          </TextInfo>
-          <CharacterBox>
-            {memberInfo?.skinType === "복합성" ? (
-              <CharacterImg
-                src="images/SkinType/combination.png"
-                alt="복합성 캐릭터"
-              />
-            ) : memberInfo?.skinType === "건성" ? (
-              <CharacterImg src="images/SkinType/dry.png" alt="건성 캐릭터" />
-            ) : (
-              <CharacterImg src="images/SkinType/oily.png" alt="지성 캐릭터" />
-            )}
-          </CharacterBox>
-        </PersonalInfo>
       )}
 
       <BannerWrap>

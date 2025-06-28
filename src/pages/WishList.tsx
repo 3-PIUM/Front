@@ -2,10 +2,11 @@ import styled from "styled-components";
 import Header from "../components/common/Header";
 import PageTitle from "../components/common/PageTitle";
 import ItemCard from "../components/product/ItemCard";
-import EmptyWishView from "../components/product/EmptyWishView";
+import EmptyWishView from "../components/wishlist/EmptyWishView";
 import { useLocale } from "../context/LanguageContext";
 import { useEffect, useState } from "react";
 import axiosInstance from "../api/axiosInstance";
+import GuestWishList from "../components/wishlist/GuestWishList";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ export default function WishList() {
   const [itemList, setItemList] = useState<wishProps[]>();
   const [refreshTrigger, setRefreshTrigger] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
 
   useEffect(() => {
     const fetchWishlistItem = async () => {
@@ -86,24 +88,28 @@ export default function WishList() {
           marginTop: "3rem",
         }}
       />
-      {itemList && itemList.length > 0 ? (
-        <ItemWrapper>
-          {itemList.map((wish: wishProps) => (
-            <ItemCard
-              key={wish.item.itemId}
-              itemName={wish.item.itemName}
-              imageSource={wish.item.mainImageUrl}
-              discountRate={wish.item.discountRate}
-              price={wish.item.salePrice}
-              itemId={wish.item.itemId}
-              wishStatus={wish.item.wishStatus}
-              onWishChange={handleWishChange}
-              isLoading={isLoading}
-            />
-          ))}
-        </ItemWrapper>
+      {isLoggedIn ? (
+        itemList && itemList.length > 0 ? (
+          <ItemWrapper>
+            {itemList.map((wish: wishProps) => (
+              <ItemCard
+                key={wish.item.itemId}
+                itemName={wish.item.itemName}
+                imageSource={wish.item.mainImageUrl}
+                discountRate={wish.item.discountRate}
+                price={wish.item.salePrice}
+                itemId={wish.item.itemId}
+                wishStatus={wish.item.wishStatus}
+                onWishChange={handleWishChange}
+                isLoading={isLoading}
+              />
+            ))}
+          </ItemWrapper>
+        ) : (
+          <EmptyWishView />
+        )
       ) : (
-        <EmptyWishView />
+        <GuestWishList />
       )}
     </Wrapper>
   );

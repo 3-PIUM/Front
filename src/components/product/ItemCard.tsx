@@ -117,6 +117,8 @@ export default function ItemCard({
   const navigate = useNavigate();
   const { t } = useLocale();
 
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
+
   const handleWish = async (event: React.MouseEvent) => {
     event.stopPropagation();
 
@@ -184,13 +186,15 @@ export default function ItemCard({
         <ItemWrap onClick={handleClick} size={size}>
           <ImageWrap size={size}>
             <ItemImage src={imageSource} $isLoading={isLoading} size={size} />
-            <Heart>
-              <FaHeart
-                fontSize={"1.4rem"}
-                color={isWished ? colors.mainPink : colors.mediumGrey}
-                onClick={handleWish}
-              />
-            </Heart>
+            {isLoggedIn && (
+              <Heart>
+                <FaHeart
+                  fontSize={"1.4rem"}
+                  color={isWished ? colors.mainPink : colors.mediumGrey}
+                  onClick={handleWish}
+                />
+              </Heart>
+            )}
           </ImageWrap>
           <ItemName size={size}>{itemName}</ItemName>
           <PriceWrap size={size}>

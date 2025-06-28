@@ -8,6 +8,7 @@
   "loading": "読み込み中",
 
   "login": {
+    "title": "ログイン",
     "emailPlaceholder": "メールアドレス",
     "passwordPlaceholder": "パスワード",
     "loginButton": "ログイン",
@@ -249,6 +250,7 @@
     "personalInfo": {
       "subtitle": {
         "prefix": "今すぐ肌タイプを登録して、",
+        "signupPrefix": "今すぐログインして",
         "suffix": "あなたに合った商品を見つけましょう！"
       },
       "registerSkinType": "肌タイプを登録する"
@@ -293,6 +295,10 @@
       "prefix": "あなたの肌MBTIを",
       "suffix": "チェックしよう！"
     },
+    "guestTitle": {
+      "prefix": "この機能はログイン後に",
+      "suffix": "ご利用いただけます"
+    },
     "goTestBtn": "診断してみる",
     "mbtiResult": "MBTI結果",
     "feature": "特徴",
@@ -301,9 +307,14 @@
     "goHome": "ホームに戻る"
   },
   "wishlist": {
+    "guestTitle": "ログインされていません。",
+    "guestSubTitle": "ログインして、お気に入りをチェック！",
+    "goLogin": "ログインしに行く ＞",
     "pageTitle": "お気に入り"
   },
   "mypage": {
+    "loginRequired": "ログインが必要です",
+    "goLogin": "ログインしに行く",
     "updateSuccess": "情報が正常に更新されました",
     "pageTitle": "マイページ (",
     "personalTitle": "個人情報",
