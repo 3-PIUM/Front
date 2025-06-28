@@ -379,15 +379,11 @@ const CartPage = () => {
         JSON.stringify([newRecord, ...purchaseHistory])
       );
 
-      const memberRes = await axiosInstance.get("/member");
-      const memberId = memberRes.data.result.memberId;
-
       navigate("/qr", {
         state: {
           qrUrls,
           selectedItems,
           cartItemIds,
-          memberId,
         },
       });
     } catch (err) {

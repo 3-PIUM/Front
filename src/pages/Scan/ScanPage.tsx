@@ -3,16 +3,7 @@ import { useEffect, useRef } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
-import Header from "../../components/common/Header";
 import axiosInstance from "../../api/axiosInstance";
-
-const PageWrapper = styled.div`
-  width: 100%;
-  height: 90vh;
-  background-color: black;
-  position: relative;
-  overflow: hidden;
-`;
 
 const Video = styled.video`
   position: absolute;
@@ -25,7 +16,7 @@ const Video = styled.video`
 
 const InstructionText = styled.div`
   position: absolute;
-  top: 20px;
+  top: 60px;
   width: 100%;
   text-align: center;
   color: white;
@@ -63,7 +54,6 @@ const ScanPage = () => {
         headers: {
           Accept: "application/json",
         },
-        withCredentials: true,
       });
 
       const product = res.data.result;
@@ -157,13 +147,12 @@ const ScanPage = () => {
   }, []);
 
   return (
-    <PageWrapper>
-      <Header />
+    <>
       <InstructionText>{t.scan.alignBarcode}</InstructionText>
       <Video ref={videoRef} autoPlay muted playsInline />
       <canvas ref={canvasRef} style={{ display: "none" }} />
       <FrameGuide />
-    </PageWrapper>
+    </>
   );
 };
 

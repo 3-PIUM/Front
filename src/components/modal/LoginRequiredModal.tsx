@@ -1,5 +1,7 @@
+// import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useLocale } from "../../context/LanguageContext";
 
 const Overlay = styled.div`
   position: fixed;
@@ -15,6 +17,7 @@ const Overlay = styled.div`
 `;
 
 const ModalBox = styled.div`
+  position: relative;
   background-color: white;
   padding: 2.5rem 2rem;
   border-radius: 1rem;
@@ -22,6 +25,17 @@ const ModalBox = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   min-width: 300px;
   max-width: 90%;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 const Message = styled.p`
@@ -41,14 +55,22 @@ const LoginButton = styled.button`
   font-size: 0.9rem;
 `;
 
-export default function LoginRequiredModal() {
+export default function LoginRequiredModal({
+  onClose,
+}: {
+  onClose: () => void;
+}) {
   const navigate = useNavigate();
+  const { t } = useLocale();
 
   return (
     <Overlay>
       <ModalBox>
-        <Message>로그인이 필요합니다</Message>
-        <LoginButton onClick={() => navigate("/")}>로그인하러 가기</LoginButton>
+        <CloseButton onClick={onClose}>×</CloseButton>
+        <Message>{t.mypage.loginRequired}</Message>
+        <LoginButton onClick={() => navigate("/login")}>
+          {t.mypage.goLogin}
+        </LoginButton>
       </ModalBox>
     </Overlay>
   );

@@ -6,6 +6,7 @@ import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import ImageNot from "../../components/ingredient/ImageNot";
 import RecommendModal from "../../components/modal/RecommendModal";
+import LoginRequiredModal from "../../components/modal/LoginRequiredModal";
 import AlertModal from "../../components/modal/AlertModal";
 import RelatedProductCarousel from "../../components/product/RelatedProduct";
 
@@ -136,6 +137,8 @@ export default function ProductDetail() {
 
   const [viewCount, setViewCount] = useState<number | null>(null);
   const [showAllDetailImages, setShowAllDetailImages] = useState(false);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     const fetchViewCount = async () => {
@@ -276,6 +279,54 @@ export default function ProductDetail() {
 
   const [firstImage, setFirstImage] = useState<string>("");
 
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
+
+  const [hasPurchased, setHasPurchased] = useState(false);
+
+  useEffect(() => {
+    const fetchPurchaseHistory = async () => {
+      if (!isLoggedIn || !itemId) return;
+      try {
+        const res = await axiosInstance.get("/purchase-history");
+        const dateList = res.data.result?.dateInfoList || [];
+
+        let purchased = false;
+        for (const dateGroup of dateList) {
+          const date = dateGroup.date;
+          try {
+            const detailRes = await axiosInstance.get(
+              "/purchase-history/detail",
+              {
+                params: { date: date },
+              }
+            );
+            console.log("📦 detailRes 전체 응답:", detailRes.data);
+            const detailList = detailRes.data.result?.detailInfoList || [];
+            console.log("🔍 날짜별 상세 내역:", date, detailList);
+
+            if (
+              detailList.some(
+                (item: any) => String(item.itemId) === String(itemId)
+              )
+            ) {
+              purchased = true;
+              break;
+            }
+          } catch (e) {
+            console.error(`❌ 상세 내역 불러오기 실패 - ${date}`, e);
+          }
+        }
+
+        setHasPurchased(purchased);
+        console.log("🛒 구매 내역 확인 결과:", purchased);
+      } catch (err) {
+        console.error("구매 내역 확인 실패", err);
+      }
+    };
+
+    fetchPurchaseHistory();
+  }, [itemId, isLoggedIn]);
+
   const averageRating = realReviews.length
     ? realReviews.reduce((sum, review) => sum + review.rating, 0) /
       realReviews.length
@@ -328,6 +379,13 @@ export default function ProductDetail() {
             <Button
               label={t.productDetail.addCart}
               onClick={async () => {
+                const isLoggedIn = Boolean(
+                  sessionStorage.getItem("accessToken")
+                );
+                if (!isLoggedIn) {
+                  setShowLoginModal(true);
+                  return;
+                }
                 if (product.options.length > 0 && !selectedOptionName) {
                   setShowOptionAlert(true);
                   return;
@@ -501,6 +559,7 @@ export default function ProductDetail() {
                 realReviews.map((r) => r.memberId)
               );
               console.log("✅ hasWrittenReview:", hasWrittenReview);
+              console.log("🛒 hasPurchased 상태:", hasPurchased);
 
               if (hasWrittenReview) {
                 return (
@@ -518,16 +577,19 @@ export default function ProductDetail() {
               }
 
               return (
-                <ReviewButton
-                  onClick={() => navigate(`/review-write?itemId=${itemId}`)}
-                  style={{
-                    backgroundColor: "#f8f8f8",
-                    color: "#222",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Label>{t.productDetail.writeReview}</Label>
-                </ReviewButton>
+                !hasWrittenReview &&
+                hasPurchased && (
+                  <ReviewButton
+                    onClick={() => navigate(`/review-write?itemId=${itemId}`)}
+                    style={{
+                      backgroundColor: "#f8f8f8",
+                      color: "#222",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Label>{t.productDetail.writeReview}</Label>
+                  </ReviewButton>
+                )
               );
             })()}
             {realReviews.length === 0 ? (
@@ -601,7 +663,7 @@ export default function ProductDetail() {
             onClose={() => setShowOptionAlert(false)}
           />
         )}
-        {isRecommendOpen && itemId && (
+        {isRecommendOpen && itemId && isLoggedIn && (
           <RecommendModal
             recommendItems={recommendItems}
             addedItemImage={firstImage}
@@ -609,6 +671,9 @@ export default function ProductDetail() {
             itemId={Number(itemId)}
             isLoading={isLoading}
           />
+        )}
+        {showLoginModal && (
+          <LoginRequiredModal onClose={() => setShowLoginModal(false)} />
         )}
       </ProductCardWrapper>
     </PageWrapper>

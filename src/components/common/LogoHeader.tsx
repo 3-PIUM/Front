@@ -114,7 +114,7 @@ const dummyStores: Store[] = [
     name: "강남점",
     distance: "1.2km",
     imageUrl:
-      "https://image.oliveyoung.co.kr/cfimages/oystore/DEBE_202501151112191.png?rs=800x0",
+      "https://image.oliveyoung.co.kr/cfimages/oystore/DAEA_1.jpg?rs=800x0",
     status: "영업 중" as const,
     hours: "10:00 - 22:00",
   },
@@ -122,17 +122,17 @@ const dummyStores: Store[] = [
     name: "홍대점",
     distance: "3.5km" as const,
     imageUrl:
-      "https://image.oliveyoung.co.kr/cfimages/oystore/DEBE_202501151112191.png?rs=800x0",
-    status: "영업 준비 중",
+      "https://image.oliveyoung.co.kr/cfimages/oystore/DF31_2025061621351463.png?rs=800x0",
+    status: "영업 중",
     hours: "11:00 - 21:00",
   },
   {
     name: "신촌점",
     distance: "10.5km" as const,
     imageUrl:
-      "https://image.oliveyoung.co.kr/cfimages/oystore/DEBE_202501151112191.png?rs=800x0",
+      "https://image.oliveyoung.co.kr/cfimages/oystore/D288_1.jpg?rs=800x0",
     status: "영업 준비 중",
-    hours: "11:00 - 21:00",
+    hours: "10:30 - 22:00",
   },
 ];
 
@@ -146,6 +146,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [openSearchBar, setOpenSearchBar] = useState<boolean>(false);
   const [clickedBar, setClickedBar] = useState<boolean>(false);
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -179,9 +180,11 @@ export default function LogoHeader({}: LogoHeaderProps) {
           onClick={() => navigate("/")}
         />
         <RightIcons>
-          <IconWrapper onClick={() => setIsStoreModalOpen(true)}>
-            <HiLocationMarker size={20} />
-          </IconWrapper>
+          {isLoggedIn && (
+            <IconWrapper onClick={() => setIsStoreModalOpen(true)}>
+              <HiLocationMarker size={20} />
+            </IconWrapper>
+          )}
           {!openSearchBar && (
             <IconWrapper
               onClick={() => {
@@ -193,9 +196,11 @@ export default function LogoHeader({}: LogoHeaderProps) {
               <FiSearch size={20} />
             </IconWrapper>
           )}
-          <IconWrapper onClick={() => navigate("/cart")}>
-            <FiShoppingCart size={20} />
-          </IconWrapper>
+          {isLoggedIn && (
+            <IconWrapper onClick={() => navigate("/cart")}>
+              <FiShoppingCart size={20} />
+            </IconWrapper>
+          )}
         </RightIcons>
       </HeaderWrap>
 

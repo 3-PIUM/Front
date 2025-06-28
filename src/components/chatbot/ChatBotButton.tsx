@@ -42,7 +42,7 @@ export default function ChatBotButton() {
       <ButtonWrapper onClick={handleClick}>
         <IoChatboxEllipses size={25} color="#f43f5e" />
       </ButtonWrapper>
-      {showModal && <LoginRequiredModal />}
+      {showModal && <LoginRequiredModal onClose={() => setShowModal(false)} />}
     </>
   );
 }
