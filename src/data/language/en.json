@@ -1,13 +1,14 @@
 {
   "menuLayout": {
     "category": "Category",
-    "report": "Report",
+    "home": "Home",
     "wishlist": "Wishlist",
     "mypage": "MyPage"
   },
   "loading": "Loading",
 
   "login": {
+    "title": "Login",
     "emailPlaceholder": "email",
     "passwordPlaceholder": "password",
     "loginButton": "Login",
@@ -244,8 +245,9 @@
     "skinMBTI": "Skin MBTI",
     "personalInfo": {
       "subtitle": {
-        "prefix": "Register your skin type now.",
-        "suffix": "Get personalized product recommendations!"
+        "prefix": "Register your skin type now and",
+        "signupPrefix": "Log in now and",
+        "suffix": "get personalized product recommendations!"
       },
       "registerSkinType": "Register your skin type"
     },
@@ -280,13 +282,18 @@
         "name": "Sheet Mask",
         "value": "마스크팩"
       }
-    ]
+    ],
+    "recommendedTitle": "Recommended products"
   },
   "mbti": {
     "pageTitle": "Skin MBTI Test",
     "title": {
       "prefix": "Find out your",
       "suffix": "Skin MBTI type!"
+    },
+    "guestTitle": {
+      "prefix": "This feature is available",
+      "suffix": "after logging in"
     },
     "goTestBtn": "Take the Test",
     "mbtiResult": "MBTI Result",
@@ -296,10 +303,15 @@
     "goHome": "Go back to home"
   },
   "wishlist": {
+    "guestTitle": "You are not logged in.",
+    "guestSubTitle": "Log in to check your wishlist.",
+    "goLogin": "Go to login >",
     "pageTitle": "Wishlist"
   },
 
   "mypage": {
+    "loginRequired": "Login is required",
+    "goLogin": "Go to login",
     "updateSuccess": "Your information has been successfully updated",
     "pageTitle": "My Page",
     "personalTitle": "Personal Information",

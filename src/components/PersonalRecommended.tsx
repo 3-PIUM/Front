@@ -65,7 +65,6 @@ interface PersonalRecommendedProps {
 }
 
 export default function PersonalRecommended({
-  nickname,
   isLoading,
   setIsLoading,
 }: PersonalRecommendedProps) {
@@ -106,7 +105,7 @@ export default function PersonalRecommended({
   return (
     <RecommandBox>
       <RecommandTitle>
-        <div>{nickname}</div>님을 위한 추천 제품
+        <div>{t.home.recommendedTitle}</div>
       </RecommandTitle>
       <RecommandCategoryWrapper>
         {t.home.recommended.map(

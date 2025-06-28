@@ -97,6 +97,31 @@ const Line = styled.hr`
   margin: 0.5rem 0;
 `;
 
+const LoginWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 8rem;
+  margin-bottom: 5rem;
+`;
+
+const LoginText = styled.div`
+  display: flex;
+  font-size: 1.1rem;
+  font-weight: 700;
+`;
+
+const GoLoginBtn = styled.div`
+  display: flex;
+  border: none;
+  background-color: ${colors.mainPink};
+  color: ${colors.white};
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+`;
+
 export default function MyPage() {
   sessionStorage.removeItem("topClicked");
   sessionStorage.removeItem("categoryName");
@@ -104,6 +129,8 @@ export default function MyPage() {
   const navigate = useNavigate();
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const { t } = useLocale();
+
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
 
   const handleLogout = async () => {
     try {
@@ -150,83 +177,110 @@ export default function MyPage() {
     <>
       <Header />
       <PageTitle pageName={t.mypage.pageTitle} />
-      <TopWrapper>
-        <ImageSection>
-          <ImageBox>
-            <ProfileImage
-              src={
-                profileImage
-                  ? URL.createObjectURL(profileImage)
-                  : profileImg ?? "images/dafaultProfileImage.png"
-              }
-              alt="프로필사진"
-            />
-          </ImageBox>
-          <ImageEdit as="label" htmlFor="profileimg">
-            <FiEdit2 fontSize={"1.125rem"} color={colors.white} />
-          </ImageEdit>
-          <ImgInput
-            type="file"
-            accept="image/*"
-            id="profileimg"
-            onChange={handleFileSelect}
-          />
-        </ImageSection>
-        <Nickname>{nickname}</Nickname>
-      </TopWrapper>
-      <Space />
-      <Settings>
-        <SettingBox>
-          <Title>{t.mypage.personalTitle}</Title>
-          <SettingItem>
-            <div onClick={() => navigate("/editprofile")}>
-              {t.mypage.editPersonal}
-            </div>
-            <div onClick={() => navigate("/mypage/editpassword")}>
-              {t.mypage.changePassword}
-            </div>
-          </SettingItem>
-        </SettingBox>
-        <SettingBox>
-          <Title>{t.mypage.skinProfile}</Title>
-          <SettingItem>
-            <div onClick={() => navigate("/mypage/skintype")}>
-              {t.mypage.skinType.pageTitle}
-            </div>
-            <div onClick={() => navigate("/mypage/personalcolor")}>
-              {t.mypage.personalColor.pageTitle}
-            </div>
-            <div onClick={() => navigate("/mypage/skinconcern")}>
-              {t.mypage.skinConcerns}
-            </div>
-          </SettingItem>
-        </SettingBox>
-        <SettingBox>
-          <Title>{t.mypage.purchase}</Title>
-          <SettingItem>
-            <div onClick={() => navigate("/purchase-list")}>
-              {t.mypage.purchaseHistory}
-            </div>
-          </SettingItem>
-        </SettingBox>
-        <SettingBox>
-          <Title>{t.mypage.language}</Title>
-          <SettingItem>
-            <div onClick={() => navigate("/mypage/language")}>
-              {t.mypage.languageSetting}
-            </div>
-          </SettingItem>
-        </SettingBox>
-        <Line />
-        <SettingBox>
-          <SettingItem>
-            <div onClick={handleLogout}>{t.mypage.logout}</div>
-            <div onClick={() => navigate("/Withdraw")}>
-              {t.mypage.deleteAccount}
-            </div>
-          </SettingItem>
-        </SettingBox>
-      </Settings>
+      {isLoggedIn ? (
+        <>
+          <TopWrapper>
+            <ImageSection>
+              <ImageBox>
+                <ProfileImage
+                  src={
+                    profileImage
+                      ? URL.createObjectURL(profileImage)
+                      : profileImg ?? "images/dafaultProfileImage.png"
+                  }
+                  alt="프로필사진"
+                />
+              </ImageBox>
+              <ImageEdit as="label" htmlFor="profileimg">
+                <FiEdit2 fontSize={"1.125rem"} color={colors.white} />
+              </ImageEdit>
+              <ImgInput
+                type="file"
+                accept="image/*"
+                id="profileimg"
+                onChange={handleFileSelect}
+              />
+            </ImageSection>
+            <Nickname>{nickname}</Nickname>
+          </TopWrapper>
+          <Space />
+          <Settings>
+            <SettingBox>
+              <Title>{t.mypage.personalTitle}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/editprofile")}>
+                  {t.mypage.editPersonal}
+                </div>
+                <div onClick={() => navigate("/mypage/editpassword")}>
+                  {t.mypage.changePassword}
+                </div>
+              </SettingItem>
+            </SettingBox>
+            <SettingBox>
+              <Title>{t.mypage.skinProfile}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/mypage/skintype")}>
+                  {t.mypage.skinType.pageTitle}
+                </div>
+                <div onClick={() => navigate("/mypage/personalcolor")}>
+                  {t.mypage.personalColor.pageTitle}
+                </div>
+                <div onClick={() => navigate("/mypage/skinconcern")}>
+                  {t.mypage.skinConcerns}
+                </div>
+              </SettingItem>
+            </SettingBox>
+            <SettingBox>
+              <Title>{t.mypage.purchase}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/purchase-list")}>
+                  {t.mypage.purchaseHistory}
+                </div>
+              </SettingItem>
+            </SettingBox>
+            <SettingBox>
+              <Title>{t.mypage.language}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/mypage/language")}>
+                  {t.mypage.languageSetting}
+                </div>
+              </SettingItem>
+            </SettingBox>
+            <Line />
+            <SettingBox>
+              <SettingItem>
+                <div onClick={handleLogout}>{t.mypage.logout}</div>
+                <div onClick={() => navigate("/Withdraw")}>
+                  {t.mypage.deleteAccount}
+                </div>
+              </SettingItem>
+            </SettingBox>
+          </Settings>
+        </>
+      ) : (
+        <>
+          <LoginWrapper>
+            <LoginText>{t.mypage.loginRequired}</LoginText>
+            <GoLoginBtn
+              onClick={() => navigate("/login")}
+              style={{ marginTop: "1rem" }}
+            >
+              {t.mypage.goLogin}
+            </GoLoginBtn>
+          </LoginWrapper>
+          <Space />
+          <Settings>
+            <SettingBox>
+              <Title>{t.mypage.language}</Title>
+              <SettingItem>
+                <div onClick={() => navigate("/mypage/language")}>
+                  {t.mypage.languageSetting}
+                </div>
+              </SettingItem>
+            </SettingBox>
+          </Settings>
+        </>
+      )}
     </>
   );
 }

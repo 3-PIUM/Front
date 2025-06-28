@@ -8,7 +8,7 @@ const EmptyWrapper = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 3.5rem 1rem;
+  padding: 7rem 1rem;
   gap: 1rem;
 `;
 
@@ -44,11 +44,11 @@ export default function EmptyWishView() {
     <EmptyWrapper>
       <EmptyImage src="images/wishListImage.png" alt="찜한 상품 없음" />
       <div>
-        <BoldText>{t.wishlistEmpty.title}</BoldText>
-        <EmptyText>{t.wishlistEmpty.subtitle}</EmptyText>
+        <BoldText>{t.wishlist.guestTitle}</BoldText>
+        <EmptyText>{t.wishlist.guestSubTitle}</EmptyText>
       </div>
-      <ExploreButton onClick={() => navigate("/home")}>
-        {t.wishlistEmpty.button}
+      <ExploreButton onClick={() => navigate("/login")}>
+        {t.wishlist.goLogin}
       </ExploreButton>
     </EmptyWrapper>
   );

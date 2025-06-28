@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import { LuMenu, LuSquareMenu } from "react-icons/lu";
-import { FaRegFileLines, FaFileLines } from "react-icons/fa6";
+import { GoHome, GoHomeFill } from "react-icons/go";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { FaRegUser, FaUser } from "react-icons/fa6";
 import colors from "../styles/colors";
@@ -98,10 +98,10 @@ export default function MenuLayout() {
       activeIcon: <LuSquareMenu fontSize="1.25rem" color={colors.mainPink} />,
     },
     {
-      path: "/home",
-      label: t.menuLayout.report,
-      icon: <FaRegFileLines fontSize="1.25rem" color={colors.lightGrey} />,
-      activeIcon: <FaFileLines fontSize="1.25rem" color={colors.mainPink} />,
+      path: "/",
+      label: t.menuLayout.home,
+      icon: <GoHome fontSize="1.25rem" color={colors.lightGrey} />,
+      activeIcon: <GoHomeFill fontSize="1.25rem" color={colors.mainPink} />,
     },
   ];
 

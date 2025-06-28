@@ -20,6 +20,7 @@ const HeaderWrap = styled.div`
   padding: 0 1rem;
   box-sizing: border-box;
   z-index: 100;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const LogoWrap = styled.img`
@@ -175,7 +176,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
       <HeaderWrap>
         <LogoWrap
           src="/images/logo/PIUM_logo.png"
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/")}
         />
         <RightIcons>
           <IconWrapper onClick={() => setIsStoreModalOpen(true)}>

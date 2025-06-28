@@ -45,7 +45,7 @@ export default function Welcome() {
   const navigate = useNavigate();
 
   const goHome = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   const { t } = useLocale();

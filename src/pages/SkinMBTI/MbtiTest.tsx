@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
+import GuestMBTI from "../../components/Survey/GuestMBTI";
 
 const Wrap = styled.div`
   display: flex;
@@ -48,6 +49,7 @@ const Button = styled.button`
 export default function MbtiTest() {
   const navigate = useNavigate();
   const { t } = useLocale();
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
 
   useEffect(() => {
     const root = document.getElementById("root");
@@ -73,16 +75,23 @@ export default function MbtiTest() {
   return (
     <Wrap>
       <TextHeader pageName={t.mbti.pageTitle} bgColor="transparent" />
-      <Wrapper>
-        <Title>
-          <div>{t.mbti.title.prefix}</div>
-          <div>{t.mbti.title.suffix}</div>
-        </Title>
-        <Character src="images/CharacterImg/testImage.png" alt="mbti 캐릭터" />
-        <Button onClick={() => navigate("/mbti/question")}>
-          {t.mbti.goTestBtn}
-        </Button>
-      </Wrapper>
+      {isLoggedIn ? (
+        <Wrapper>
+          <Title>
+            <div>{t.mbti.title.prefix}</div>
+            <div>{t.mbti.title.suffix}</div>
+          </Title>
+          <Character
+            src="images/CharacterImg/testImage.png"
+            alt="mbti 캐릭터"
+          />
+          <Button onClick={() => navigate("/mbti/question")}>
+            {t.mbti.goTestBtn}
+          </Button>
+        </Wrapper>
+      ) : (
+        <GuestMBTI />
+      )}
     </Wrap>
   );
 }

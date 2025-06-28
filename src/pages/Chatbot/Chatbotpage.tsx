@@ -479,7 +479,7 @@ export default function ChatbotPage() {
               onClick={() => {
                 setShowExitModal(false);
                 window.removeEventListener("beforeunload", handleBeforeUnload);
-                navigate("/home");
+                navigate("/");
               }}
               style={{
                 backgroundColor: "#F23477",

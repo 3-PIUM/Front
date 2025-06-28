@@ -1,6 +1,7 @@
 import { keyframes, styled } from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import colors from "../../styles/colors";
+import { useNavigate } from "react-router-dom";
 
 const shimmer = keyframes`
   0% {
@@ -39,12 +40,12 @@ const rankColors = [
 
 const RankTitle = styled.div<{ color: string }>`
   display: flex;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 700;
   width: 10%;
-  justify-content: baseline;
-  align-items: center;
   color: ${(props) => props.color};
+  align-items: center;
+  justify-content: center;
 
   .medal {
     font-size: 1.8rem;
@@ -117,11 +118,27 @@ export default function TopRankItem({
   itemName,
   discountRate,
   price,
+  itemId,
   rank,
   isLoading,
 }: ItemProps) {
   const { t } = useLocale();
   const formattedPrice = price.toLocaleString();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    const product = {
+      id: itemName,
+      name: itemName,
+      brand: "샘플 브랜드",
+      imageUrl: imageSource,
+      originalPrice: price,
+      discountRate: discountRate,
+    };
+    navigate(`/product-detail?itemId=${itemId}`, {
+      state: { product },
+    });
+  };
 
   return (
     <>
@@ -133,7 +150,7 @@ export default function TopRankItem({
                 {rank === 1 ? "🥇" : rank === 2 ? "🥈" : "🥉"}
               </span>
             ) : (
-              rank
+              <span className="number">rank</span>
             )}
           </RankTitle>
           <SkeletonImage />
@@ -166,8 +183,8 @@ export default function TopRankItem({
               rank
             )}
           </RankTitle>
-          <ItemImage src={imageSource} />
-          <ItemInfo>
+          <ItemImage src={imageSource} onClick={handleClick} />
+          <ItemInfo onClick={handleClick}>
             <ItemName>{itemName}</ItemName>
             <PriceWrap>
               {discountRate > 0 && <ItemDiscount>{discountRate}%</ItemDiscount>}

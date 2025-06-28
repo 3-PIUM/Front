@@ -23,7 +23,7 @@ const InfoBox = styled.div`
   flex-direction: column;
   background-color: ${colors.subPink};
   padding: 1.5rem 1rem;
-  margin: 44px 1rem 0 1rem;
+  margin: 60px 1rem 0 1rem;
   border-radius: 1rem;
   color: ${colors.mainPink};
   text-align: center;
@@ -119,7 +119,7 @@ const RecommandListWrap = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 1rem;
-  gap: 2rem;
+  gap: 2.5rem;
   padding-bottom: 80px;
 `;
 
@@ -146,6 +146,7 @@ export default function Home() {
   sessionStorage.removeItem("topClicked");
   sessionStorage.removeItem("categoryName");
   sessionStorage.removeItem("subcategoryName");
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
 
   useEffect(() => {
     const fetchMemberInfo = async () => {
@@ -178,58 +179,70 @@ export default function Home() {
     return "";
   };
 
-  const nickname = JSON.parse(
-    sessionStorage.getItem("memberInfo") || "{}"
-  ).nickname;
-
   return (
     <Wrapper>
       <Header />
       <LogoHeader />
-      {!memberInfo?.skinType ? (
+      {isLoggedIn ? (
+        !memberInfo?.skinType ? (
+          <InfoBox>
+            <img src="images/CharacterImg/surveyImage.png" width="60%" />
+            <InfoSubTitle>
+              <div>{t.home.personalInfo.subtitle.prefix}</div>
+              <div>{t.home.personalInfo.subtitle.suffix}</div>
+            </InfoSubTitle>
+            <InfoBoxBtn onClick={() => navigate("/mypage/skintype")}>
+              {t.home.personalInfo.registerSkinType}
+            </InfoBoxBtn>
+          </InfoBox>
+        ) : (
+          <PersonalInfo skinType={memberInfo?.skinType}>
+            <TextInfo>
+              <UserSkin>
+                <div>{t.home.skinTypeTitle}</div>
+                <SkinType>
+                  <Highlight>
+                    {getLocalizedSkinType(memberInfo?.skinType, language)}
+                  </Highlight>
+                </SkinType>
+              </UserSkin>
+              <RecommendInfo>
+                <RecommendTitle>{t.home.skinMBTI}</RecommendTitle>
+                <Ingredients>
+                  {memberInfo?.mbtiCode === ""
+                    ? "-"
+                    : memberInfo?.mbtiCode.replaceAll(",", "")}
+                </Ingredients>
+              </RecommendInfo>
+            </TextInfo>
+            <CharacterBox>
+              {memberInfo?.skinType === "복합성" ? (
+                <CharacterImg
+                  src="images/SkinType/combination.png"
+                  alt="복합성 캐릭터"
+                />
+              ) : memberInfo?.skinType === "건성" ? (
+                <CharacterImg src="images/SkinType/dry.png" alt="건성 캐릭터" />
+              ) : (
+                <CharacterImg
+                  src="images/SkinType/oily.png"
+                  alt="지성 캐릭터"
+                />
+              )}
+            </CharacterBox>
+          </PersonalInfo>
+        )
+      ) : (
         <InfoBox>
           <img src="images/CharacterImg/surveyImage.png" width="60%" />
           <InfoSubTitle>
-            <div>{t.home.personalInfo.subtitle.prefix}</div>
+            <div>{t.home.personalInfo.subtitle.signupPrefix}</div>
             <div>{t.home.personalInfo.subtitle.suffix}</div>
           </InfoSubTitle>
-          <InfoBoxBtn onClick={() => navigate("/mypage/skintype")}>
-            {t.home.personalInfo.registerSkinType}
+          <InfoBoxBtn onClick={() => navigate("/login")}>
+            {t.mypage.goLogin}
           </InfoBoxBtn>
         </InfoBox>
-      ) : (
-        <PersonalInfo skinType={memberInfo?.skinType}>
-          <TextInfo>
-            <UserSkin>
-              <div>{t.home.skinTypeTitle}</div>
-              <SkinType>
-                <Highlight>
-                  {getLocalizedSkinType(memberInfo?.skinType, language)}
-                </Highlight>
-              </SkinType>
-            </UserSkin>
-            <RecommendInfo>
-              <RecommendTitle>{t.home.skinMBTI}</RecommendTitle>
-              <Ingredients>
-                {memberInfo?.mbtiCode === ""
-                  ? "-"
-                  : memberInfo?.mbtiCode.replaceAll(",", "")}
-              </Ingredients>
-            </RecommendInfo>
-          </TextInfo>
-          <CharacterBox>
-            {memberInfo?.skinType === "복합성" ? (
-              <CharacterImg
-                src="images/SkinType/combination.png"
-                alt="복합성 캐릭터"
-              />
-            ) : memberInfo?.skinType === "건성" ? (
-              <CharacterImg src="images/SkinType/dry.png" alt="건성 캐릭터" />
-            ) : (
-              <CharacterImg src="images/SkinType/oily.png" alt="지성 캐릭터" />
-            )}
-          </CharacterBox>
-        </PersonalInfo>
       )}
 
       <BannerWrap>
@@ -247,7 +260,6 @@ export default function Home() {
       </BannerWrap>
       <RecommandListWrap>
         <PersonalRecommended
-          nickname={nickname}
           setIsLoading={setIsLoading}
           isLoading={isLoading}
         />

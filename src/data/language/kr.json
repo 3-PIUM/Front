@@ -1,12 +1,13 @@
 {
   "menuLayout": {
     "category": "카테고리",
-    "report": "성분리포트",
+    "home": "홈",
     "wishlist": "찜",
     "mypage": "마이페이지"
   },
   "loading": "로딩 중",
   "login": {
+    "title": "로그인",
     "emailPlaceholder": "이메일",
     "passwordPlaceholder": "비밀번호",
     "loginButton": "로그인하기",
@@ -300,6 +301,7 @@
     "personalInfo": {
       "subtitle": {
         "prefix": "지금 피부 타입을 등록하고",
+        "signupPrefix": "지금 로그인하고",
         "suffix": "맞춤 추천을 받아보세요!"
       },
       "registerSkinType": "피부 타입 등록하기"
@@ -335,13 +337,18 @@
         "name": "마스크팩",
         "value": "마스크팩"
       }
-    ]
+    ],
+    "recommendedTitle": "고객님을 위한 추천 상품"
   },
   "mbti": {
     "pageTitle": "피부 MBTI 진단",
     "title": {
       "prefix": "나의 피부 MBI",
       "suffix": "테스트하러 가기！"
+    },
+    "guestTitle": {
+      "prefix": "이 기능은",
+      "suffix": "로그인 후 이용 가능합니다"
     },
     "goTestBtn": "테스트하러 가기",
     "mbtiResult": "MBTI 결과",
@@ -351,9 +358,14 @@
     "goHome": "홈으로 돌아가기"
   },
   "wishlist": {
+    "guestTitle": "로그인되어 있지 않습니다.",
+    "guestSubTitle": "로그인하고 찜 목록을 확인해보세요",
+    "goLogin": "로그인하러 가기 >",
     "pageTitle": "찜"
   },
   "mypage": {
+    "loginRequired": "로그인이 필요합니다",
+    "goLogin": "로그인하러 가기",
     "updateSuccess": "정보가 성공적으로 수정되었습니다",
     "pageTitle": "마이페이지",
     "personalTitle": "개인정보",

@@ -8,9 +8,9 @@ import LanguageModal from "../components/modal/LanguageModal";
 import { useLocale } from "../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
+import TextHeader from "../components/common/TextHeader";
 
 const Wrap = styled.div`
-  padding: 0 1rem;
   display: flex;
   flex-direction: column;
   height: auto;
@@ -47,6 +47,7 @@ const InputWrap = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 2rem;
+  padding: 0 1rem;
 `;
 
 const InputEmail = styled.input<{ $emailFocused: boolean }>`
@@ -151,7 +152,7 @@ export default function Login() {
         console.log(language);
       }, 50);
 
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.log("로그인 실패", error);
       setShowError(true);
@@ -174,6 +175,7 @@ export default function Login() {
     <>
       <Wrap>
         <Header />
+        <TextHeader pageName={t.login.title} />
         <LogoWrap>
           <LogoImg src="/images/logo/PIUM_logo.png" />
         </LogoWrap>
