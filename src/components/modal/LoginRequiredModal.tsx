@@ -45,7 +45,7 @@ const Message = styled.p`
 `;
 
 const LoginButton = styled.button`
-  background-color: #f43f5e;
+  background-color: #f23477;
   color: white;
   font-weight: bold;
   padding: 0.6rem 1.2rem;

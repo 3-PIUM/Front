@@ -27,16 +27,14 @@ const InfoText = styled.p`
 `;
 
 const QRCodePage = () => {
+  const memberId = localStorage.getItem("memberId") || "";
   const location = useLocation();
-  const { qrUrls, selectedItems, cartItemIds, memberId } = location.state || {};
+  const { selectedItems, cartItemIds } = location.state || {};
   const navigate = useNavigate();
   const { t } = useLocale();
-  console.log("📦 location.state:", location.state);
-  console.log("🧩 memberId:", memberId);
-  const selectedCartItems = selectedItems;
 
   useEffect(() => {
-    if (!selectedCartItems) {
+    if (!selectedItems) {
       alert("잘못된 접근입니다.");
       navigate("/cart");
       return;
@@ -44,7 +42,7 @@ const QRCodePage = () => {
 
     const purchaseData = {
       date: new Date().toISOString().slice(0, 10),
-      items: selectedCartItems,
+      items: selectedItems,
     };
 
     const previous = JSON.parse(
@@ -52,18 +50,9 @@ const QRCodePage = () => {
     );
     const updated = [...previous, purchaseData];
     localStorage.setItem("purchaseHistory", JSON.stringify(updated));
-  }, [selectedCartItems, memberId, navigate]);
+  }, [selectedItems, memberId, navigate]);
 
   const qrValue = `http://172.28.127.154:5173/cart/pay/${memberId}?cartItemIds=${cartItemIds}`;
-
-  useEffect(() => {
-    const handleQRScan = () => {
-      if (cartItemIds) {
-      }
-    };
-    window.addEventListener("click", handleQRScan);
-    return () => window.removeEventListener("click", handleQRScan);
-  }, [cartItemIds, navigate]);
 
   return (
     <PageWrapper>

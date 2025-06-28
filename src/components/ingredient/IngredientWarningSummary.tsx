@@ -145,6 +145,10 @@ export default function IngredientWarningSummary({
       if (!itemId) return;
       try {
         const res = await axiosInstance.get(`/item/${itemId}/caution`);
+        console.log(
+          "📦 cautionIngredients 응답:",
+          res.data.result.cautionIngredients
+        );
         const data = res.data.result.cautionIngredients;
 
         if (activeTab === "sensitive") {
@@ -155,7 +159,9 @@ export default function IngredientWarningSummary({
           setIngredients(flat);
         } else if (activeTab === "mySkin") {
           const res2 = await axiosInstance.get("/member");
+          console.log("👤 /member 응답:", res2.data);
           const mySkin = res2.data.result.skinType;
+          console.log("🔍 내 피부 타입:", mySkin);
 
           if (!mySkin) return;
 
@@ -165,6 +171,7 @@ export default function IngredientWarningSummary({
               name: d.ingredientName,
               risks: d.cautionSkinType,
             }));
+          console.log("🧪 필터된 성분:", filtered);
 
           setIngredients(filtered);
         }

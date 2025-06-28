@@ -224,6 +224,20 @@ export default function ProductDetail() {
     window.scrollTo(0, 0);
     const value = localStorage.getItem("skinRegistered");
     setIsSkinRegistered(value === "true");
+    const token = sessionStorage.getItem("accessToken");
+    if (token) {
+      try {
+        const payloadBase64 = token.split(".")[1];
+        const payload = JSON.parse(atob(payloadBase64));
+        const memberId = payload.memberId;
+        if (memberId) {
+          localStorage.setItem("memberId", memberId);
+          console.log("memberId 가져오기", memberId);
+        }
+      } catch (e) {
+        console.error("memberId 파싱 실패:", e);
+      }
+    }
     return () => localStorage.removeItem("scannedProduct");
   }, []);
 
