@@ -99,7 +99,7 @@ export default function MenuLayout() {
     },
     {
       path: "/home",
-      label: t.menuLayout.report,
+      label: t.menuLayout.home,
       icon: <GoHome fontSize="1.25rem" color={colors.lightGrey} />,
       activeIcon: <GoHomeFill fontSize="1.25rem" color={colors.mainPink} />,
     },
