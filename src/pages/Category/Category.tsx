@@ -233,7 +233,7 @@ export default function Category() {
         setClicked(getCategoryName);
         const el = refMap.current[getCategoryName];
         if (el) {
-          const top = el.offsetTop - 90;
+          const top = el.offsetTop - 100;
           window.scrollTo({ top, behavior: "smooth" });
         }
       }, 0);
