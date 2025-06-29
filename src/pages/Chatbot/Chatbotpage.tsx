@@ -45,9 +45,9 @@ export default function ChatbotPage() {
   const [mode, setMode] = useState<"default" | "compare" | "recommend">(
     "default"
   );
-  const [selectedCompareItems, setSelectedCompareItems] = useState<number[]>(
-    []
-  );
+  const [selectedCompareItems, setSelectedCompareItems] = useState<
+    { id: number; source: "cart" | "wish" }[]
+  >([]);
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [wishItems, setWishItems] = useState<any[]>([]);
   const [input, setInput] = useState("");
@@ -172,7 +172,7 @@ export default function ChatbotPage() {
       const res = await axiosInstance.post("/chat/message", {
         message: userInput,
         lang: lang,
-        item_ids: selectedCompareItems,
+        item_ids: selectedCompareItems.map((item) => item.id),
         session_id: sessionId,
       });
       const output = res.data.result.output || t.chatbot.response.default;
@@ -244,15 +244,22 @@ export default function ChatbotPage() {
     if (type === "compare") setCompareModeStarted(false);
   };
 
-  const handleCompareSelect = (itemId: number | undefined) => {
+  const handleCompareSelect = (
+    itemId: number | undefined,
+    source: "cart" | "wish"
+  ) => {
     if (itemId === undefined) return;
     setSelectedCompareItems((prev) => {
-      const updated = prev.includes(itemId)
-        ? prev.filter((id) => id !== itemId)
-        : [...prev, itemId];
-      console.log("✅ 상품 선택 토글됨:", itemId);
-      console.log("🆕 업데이트된 선택 목록:", updated);
-      return updated;
+      const exists = prev.some(
+        (item) => item.id === itemId && item.source === source
+      );
+      if (exists) {
+        return prev.filter(
+          (item) => !(item.id === itemId && item.source === source)
+        );
+      } else {
+        return [...prev, { id: itemId, source }];
+      }
     });
   };
 
@@ -357,18 +364,24 @@ export default function ChatbotPage() {
             <ChatItemList
               title={t.compare.cartList}
               items={cartItems.filter((item) =>
-                selectedCompareItems.includes(item.id)
+                selectedCompareItems.some(
+                  (selected) =>
+                    selected.id === item.id && selected.source === "cart"
+                )
               )}
-              selectedIds={selectedCompareItems}
-              onToggle={handleCompareSelect}
+              selectedIds={selectedCompareItems.map((item) => item.id)}
+              onToggle={undefined}
             />
             <ChatItemList
               title={t.compare.wishlist}
               items={wishItems.filter((item) =>
-                selectedCompareItems.includes(item.id)
+                selectedCompareItems.some(
+                  (selected) =>
+                    selected.id === item.id && selected.source === "wish"
+                )
               )}
-              selectedIds={selectedCompareItems}
-              onToggle={handleCompareSelect}
+              selectedIds={selectedCompareItems.map((item) => item.id)}
+              onToggle={undefined}
             />
           </>
         )}
@@ -379,14 +392,14 @@ export default function ChatbotPage() {
             <ChatItemList
               title={t.compare.cartList}
               items={cartItems}
-              selectedIds={selectedCompareItems}
-              onToggle={handleCompareSelect}
+              selectedIds={selectedCompareItems.map((item) => item.id)}
+              onToggle={(id) => handleCompareSelect(id, "cart")}
             />
             <ChatItemList
               title={t.compare.wishlist}
               items={wishItems}
-              selectedIds={selectedCompareItems}
-              onToggle={handleCompareSelect}
+              selectedIds={selectedCompareItems.map((item) => item.id)}
+              onToggle={(id) => handleCompareSelect(id, "wish")}
             />
           </>
         )}
