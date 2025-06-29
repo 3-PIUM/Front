@@ -14,6 +14,7 @@ interface ChatItemListProps {
   items: Item[];
   selectedIds: number[];
   onToggle?: (id: number | undefined) => void;
+  onItemClick?: (itemId: number) => void;
 }
 
 const ListWrapper = styled.div`
@@ -101,6 +102,7 @@ const ChatItemList = ({
   items,
   selectedIds,
   onToggle,
+  onItemClick,
 }: ChatItemListProps) => {
   return (
     <ListWrapper>
@@ -108,12 +110,13 @@ const ChatItemList = ({
       {items.map((item) => {
         const isChecked = selectedIds.includes(item.id);
         return (
-          <ItemRow key={item.id}>
+          <ItemRow key={item.id} onClick={() => onItemClick?.(item.id)}>
             {onToggle && (
               <Checkbox
                 type="checkbox"
                 checked={isChecked}
-                onChange={() => {
+                onChange={(e) => {
+                  e.stopPropagation();
                   onToggle?.(item.id);
                 }}
               />

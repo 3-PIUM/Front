@@ -550,7 +550,7 @@
     ],
     "compareIntro": [
       "Hello, this is the Pium chatbot 💕",
-      "You can easily compare items in your cart and wishlist.",
+      "Try selecting one item each from your cart and wishlist to compare.",
       "Criteria: Price, Ingredients, Vegan, Brand, Reviews"
     ]
   },

@@ -371,6 +371,9 @@ export default function ChatbotPage() {
               )}
               selectedIds={selectedCompareItems.map((item) => item.id)}
               onToggle={undefined}
+              onItemClick={(itemId) =>
+                navigate(`/product-detail?itemId=${itemId}`)
+              }
             />
             <ChatItemList
               title={t.compare.wishlist}
@@ -382,6 +385,9 @@ export default function ChatbotPage() {
               )}
               selectedIds={selectedCompareItems.map((item) => item.id)}
               onToggle={undefined}
+              onItemClick={(itemId) =>
+                navigate(`/product-detail?itemId=${itemId}`)
+              }
             />
           </>
         )}
