@@ -237,7 +237,8 @@ export default function ChatbotPage() {
     if (type === "compare") setCompareModeStarted(false);
   };
 
-  const handleCompareSelect = (itemId: number) => {
+  const handleCompareSelect = (itemId: number | undefined) => {
+    if (itemId === undefined) return;
     setSelectedCompareItems((prev) =>
       prev.includes(itemId)
         ? prev.filter((id) => id !== itemId)
@@ -298,7 +299,6 @@ export default function ChatbotPage() {
       <ChatContent>
         <DateText>{formattedDate}</DateText>
 
-        {/* 1. 기본 안내 메시지 */}
         {messages[0] && (
           <MessageWrapper>
             <ChatMessage
@@ -310,7 +310,6 @@ export default function ChatbotPage() {
           </MessageWrapper>
         )}
 
-        {/* 2. 사용자 입력 메시지 (예: "상품 비교하기") */}
         {messages[1] && (
           <MessageWrapper>
             <ChatMessage
@@ -322,18 +321,6 @@ export default function ChatbotPage() {
           </MessageWrapper>
         )}
 
-        {/* {messages[2] && (
-          <MessageWrapper>
-            <ChatMessage
-              sender={messages[2].sender}
-              text={messages[2].text}
-              time={messages[2].time}
-              botName={t.chatbot.botName}
-            />
-          </MessageWrapper>
-        )} */}
-
-        {/* 3. 선택된 장바구니/찜 항목 (항상 유지) */}
         {mode === "compare" && compareModeStarted && (
           <>
             <ChatItemList
@@ -373,7 +360,6 @@ export default function ChatbotPage() {
           </>
         )}
 
-        {/* 4. 이후 메시지 (가격 비교해줘 등) */}
         {messages
           .slice(2)
           .filter(
@@ -381,7 +367,10 @@ export default function ChatbotPage() {
               !(
                 msg.text.includes("제품 ID 목록이 비어") ||
                 msg.text.includes("상품의 ID를 알려주세요") ||
-                msg.text.includes("현재 선택된 제품이 없어서")
+                msg.text.includes("현재 선택된 제품이 없어서") ||
+                msg.text.includes("비교할 제품이 선택되지 않았습니다.") ||
+                msg.text.includes("선택하신 제품이 없어") ||
+                msg.text.includes("선택")
               )
           )
           .map((msg, idx) => (

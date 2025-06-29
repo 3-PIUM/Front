@@ -13,14 +13,15 @@ interface ChatItemListProps {
   title: string;
   items: Item[];
   selectedIds: number[];
-  onToggle?: (id: number) => void;
+  onToggle?: (id: number | undefined) => void;
 }
 
 const ListWrapper = styled.div`
-  background: #f9f9f9;
+  background: rgb(242, 242, 242);
   border-radius: 1rem;
   padding: 0.7rem;
   margin-top: 1rem;
+  overflow: hidden;
 `;
 
 const Title = styled.div`
@@ -34,6 +35,7 @@ const ItemRow = styled.label`
   align-items: center;
   margin-bottom: 1rem;
   cursor: pointer;
+  overflow: hidden;
 `;
 
 const Checkbox = styled.input`
@@ -44,9 +46,10 @@ const Checkbox = styled.input`
   border-radius: 50%;
   background-color: white;
   margin-right: 1rem;
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 
   &::before {
     content: "";
@@ -54,10 +57,6 @@ const Checkbox = styled.input`
     height: 0.5rem;
     background-color: #f23477;
     border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     opacity: 0;
     transition: opacity 0.2s;
   }
@@ -112,9 +111,11 @@ const ChatItemList = ({
           <ItemRow key={item.id}>
             {onToggle && (
               <Checkbox
-                type="radio"
+                type="checkbox"
                 checked={isChecked}
-                onChange={() => onToggle(item.id)}
+                onChange={() => {
+                  onToggle?.(isChecked ? undefined : item.id);
+                }}
               />
             )}
             <ItemImage src={item.image} alt={item.name} />

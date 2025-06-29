@@ -34,7 +34,7 @@ const BotName = styled.div`
 `;
 
 const MessageBubble = styled.div<{ $isUser: boolean }>`
-  background-color: ${({ $isUser }) => ($isUser ? "#d2e3fc" : "#f2f2f2")};
+  background-color: ${({ $isUser }) => ($isUser ? "#fbe2f6" : "#f2f2f2")};
   color: #000;
   padding: 0.7rem 1rem;
   border-radius: 0.875rem;
