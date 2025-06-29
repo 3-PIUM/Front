@@ -6,7 +6,7 @@
     },
     {
       "src": "/ml-api/predict-season",
-      "dest": "http://3.106.232.7:8000//predict-season"
+      "dest": "http://3.106.232.7:8000/predict-season"
     },
     { "handle": "filesystem" },
     {
