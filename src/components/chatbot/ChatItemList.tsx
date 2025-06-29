@@ -114,7 +114,7 @@ const ChatItemList = ({
                 type="checkbox"
                 checked={isChecked}
                 onChange={() => {
-                  onToggle?.(isChecked ? undefined : item.id);
+                  onToggle?.(item.id);
                 }}
               />
             )}

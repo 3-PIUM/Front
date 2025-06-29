@@ -87,10 +87,10 @@ export default function ChatbotPage() {
         const res = await axiosInstance.get("/cart/items");
         const items = res.data?.result?.items || [];
         const processedItems = items.map((item: any) => ({
-          id: item.cartItemId,
+          id: item.itemId,
           name: item.itemName,
           brand: item.brand,
-          price: `${item.salePrice.toLocaleString()}원`,
+          price: `${item.salePrice.toLocaleString()}${t.productDetail.won}`,
           image: item.mainImageUrl,
           checked: false,
         }));
@@ -107,7 +107,9 @@ export default function ChatbotPage() {
           id: entry.item.itemId,
           name: entry.item.itemName,
           brand: entry.item.brand,
-          price: `${entry.item.salePrice.toLocaleString()}원`,
+          price: `${entry.item.salePrice.toLocaleString()}${
+            t.productDetail.won
+          }`,
           image: entry.item.mainImageUrl,
           checked: false,
         }));
@@ -239,12 +241,19 @@ export default function ChatbotPage() {
 
   const handleCompareSelect = (itemId: number | undefined) => {
     if (itemId === undefined) return;
-    setSelectedCompareItems((prev) =>
-      prev.includes(itemId)
+    setSelectedCompareItems((prev) => {
+      const updated = prev.includes(itemId)
         ? prev.filter((id) => id !== itemId)
-        : [...prev, itemId]
-    );
+        : [...prev, itemId];
+      console.log("✅ 상품 선택 토글됨:", itemId);
+      console.log("🆕 업데이트된 선택 목록:", updated);
+      return updated;
+    });
   };
+
+  useEffect(() => {
+    console.log("🛒 선택된 상품 ID 목록:", selectedCompareItems);
+  }, [selectedCompareItems]);
 
   useEffect(() => {
     if (mode === "default" && messages.length === 1) {
