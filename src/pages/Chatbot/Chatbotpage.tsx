@@ -368,7 +368,7 @@ export default function ChatbotPage() {
                 msg.text.includes("제품 ID 목록이 비어") ||
                 msg.text.includes("상품의 ID를 알려주세요") ||
                 msg.text.includes("현재 선택된 제품이 없어") ||
-                msg.text.includes("비교할 제품이 선택되지 않았습니다.") ||
+                msg.text.includes("비교할") ||
                 msg.text.includes("선택하신 제품이 없어")
               )
           )
