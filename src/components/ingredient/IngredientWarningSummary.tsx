@@ -108,6 +108,7 @@ export default function IngredientWarningSummary({
 }: IngredientWarningSummaryProps) {
   const { t } = useLocale();
   const navigate = useNavigate();
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
   const [selectedIngredient, setSelectedIngredient] =
     useState<Ingredient | null>(null);
   const [activeTab, setActiveTab] = useState<"sensitive" | "mySkin">(
@@ -144,6 +145,10 @@ export default function IngredientWarningSummary({
       if (!itemId) return;
       try {
         const res = await axiosInstance.get(`/item/${itemId}/caution`);
+        console.log(
+          "📦 cautionIngredients 응답:",
+          res.data.result.cautionIngredients
+        );
         const data = res.data.result.cautionIngredients;
 
         if (activeTab === "sensitive") {
@@ -154,7 +159,9 @@ export default function IngredientWarningSummary({
           setIngredients(flat);
         } else if (activeTab === "mySkin") {
           const res2 = await axiosInstance.get("/member");
+          console.log("👤 /member 응답:", res2.data);
           const mySkin = res2.data.result.skinType;
+          console.log("🔍 내 피부 타입:", mySkin);
 
           if (!mySkin) return;
 
@@ -164,6 +171,7 @@ export default function IngredientWarningSummary({
               name: d.ingredientName,
               risks: d.cautionSkinType,
             }));
+          console.log("🧪 필터된 성분:", filtered);
 
           setIngredients(filtered);
         }
@@ -179,14 +187,11 @@ export default function IngredientWarningSummary({
     <Wrapper>
       <Header>
         <Tabs>
-          {(["mySkin", "sensitive"] as const).map((key) => (
+          {["mySkin", "sensitive"].map((key) => (
             <Tab
               key={key}
               active={activeTab === key}
-              onClick={() => {
-                setIsLoading(true);
-                setActiveTab(key);
-              }}
+              onClick={() => setActiveTab(key as "sensitive" | "mySkin")}
             >
               {t.ingredient.tab[key]}
             </Tab>
@@ -196,6 +201,33 @@ export default function IngredientWarningSummary({
 
       {isLoading ? (
         <SkeletonWarning />
+      ) : !isLoggedIn && activeTab === "mySkin" ? (
+        <div style={{ textAlign: "center", marginTop: "1rem" }}>
+          <div
+            style={{
+              fontWeight: "500",
+              fontSize: "1rem",
+              marginBottom: "1rem",
+            }}
+          >
+            {t.mypage.loginRequired}
+          </div>
+          <button
+            onClick={() => navigate("/login")}
+            style={{
+              backgroundColor: "#F23477",
+              color: "white",
+              fontWeight: "bold",
+              padding: "0.6rem 1.2rem",
+              border: "none",
+              borderRadius: "2rem",
+              cursor: "pointer",
+              fontSize: "0.9rem",
+            }}
+          >
+            {t.mypage.goLogin}
+          </button>
+        </div>
       ) : activeTab === "mySkin" && !isSkinRegistered ? (
         <div style={{ textAlign: "center", marginTop: "0.5rem" }}>
           <SkinTypePrompt

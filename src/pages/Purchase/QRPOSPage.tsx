@@ -37,13 +37,6 @@ const RightPanel = styled.div`
   box-sizing: border-box;
 `;
 
-const QRImage = styled.div`
-  width: 180px;
-  height: 180px;
-  background-color: #ccc;
-  margin: 1rem 0;
-`;
-
 const Description = styled.p`
   font-size: 16px;
   color: #444;
@@ -189,7 +182,15 @@ const QRPOSPage = () => {
     <PageWrapper>
       <LeftPanel>
         <h2 style={{ color: "#222", fontWeight: "bold" }}>{t.pos.title}</h2>
-        <QRImage />
+        <img
+          src="/images/QRCode.png"
+          alt="QR Code"
+          style={{
+            width: "180px",
+            height: "180px",
+            margin: "1rem 0",
+          }}
+        />
         <Description>
           {t.pos.description[0]}
           <br />

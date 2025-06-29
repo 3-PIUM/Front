@@ -47,6 +47,7 @@ const TimeText = styled.div`
   font-size: 0.75rem;
   color: #999;
   margin-left: 0.25rem;
+  margin-right: 0.25rem;
   align-self: flex-end;
 `;
 

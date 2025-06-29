@@ -27,8 +27,7 @@ const ProductListWrapper = styled.div`
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  padding-bottom: 120px;
+  overflow: hidden;
 `;
 
 const HeaderControlBar = styled.div`
@@ -379,15 +378,11 @@ const CartPage = () => {
         JSON.stringify([newRecord, ...purchaseHistory])
       );
 
-      const memberRes = await axiosInstance.get("/member");
-      const memberId = memberRes.data.result.memberId;
-
       navigate("/qr", {
         state: {
           qrUrls,
           selectedItems,
           cartItemIds,
-          memberId,
         },
       });
     } catch (err) {

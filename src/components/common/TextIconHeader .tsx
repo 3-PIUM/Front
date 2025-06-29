@@ -149,6 +149,8 @@ export default function FullHeader({
   const [clickedBar, setClickedBar] = useState<boolean>(false);
   const { t } = useLocale();
 
+  const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
+
   useEffect(() => {
     const fetchSearchResults = async () => {
       if (!searchTerm) {
@@ -158,10 +160,7 @@ export default function FullHeader({
 
       try {
         const res = await axiosInstance.get(
-          `/item/advancedSearch/list/${encodeURIComponent(searchTerm)}`,
-          {
-            params: { size: 5 },
-          }
+          `/item/advancedSearch/list/${encodeURIComponent(searchTerm)}`
         );
         setSearchResults(res.data.result.itemSearchInfoDTOs || []);
       } catch (err) {
@@ -207,9 +206,11 @@ export default function FullHeader({
           >
             <FiSearch size={20} />
           </IconWrapper>
-          <IconWrapper onClick={() => navigate("/cart")}>
-            <FiShoppingCart size={20} />
-          </IconWrapper>
+          {isLoggedIn && (
+            <IconWrapper onClick={() => navigate("/cart")}>
+              <FiShoppingCart size={20} />
+            </IconWrapper>
+          )}
         </RightIcons>
       </HeaderWrap>
 

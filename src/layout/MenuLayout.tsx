@@ -128,7 +128,9 @@ export default function MenuLayout() {
   return (
     <>
       <Outlet />
-      {!location.pathname.includes("/product-detail") && (
+      {!["/product-detail", "/scan"].some((path) =>
+        location.pathname.includes(path)
+      ) && (
         <Suspense fallback={null}>
           <ChatBotButton />
         </Suspense>
