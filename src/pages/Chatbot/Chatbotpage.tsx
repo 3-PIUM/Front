@@ -233,7 +233,12 @@ export default function ChatbotPage() {
 
   const handleSuggestionClick = (type: "recommend" | "compare") => {
     const userInput = t.chatbot.suggestions[type];
-    sendChatMessage(userInput);
+    const botMessage: Message = {
+      sender: "bot",
+      text: userInput,
+      time: getTime(),
+    };
+    setMessages((prev) => [...prev, botMessage]);
     setMode(type);
     setInput("");
     if (type === "compare") setCompareModeStarted(false);
@@ -272,11 +277,28 @@ export default function ChatbotPage() {
         lineHeight: "1.6",
       }}
     >
-      {t.chatbot.compareIntro[0]}
-      <br />
       {t.chatbot.compareIntro[1]}
       <br />
       {t.chatbot.compareIntro[2]}
+    </div>
+  );
+
+  const recommendIntro = (
+    <div
+      style={{
+        backgroundColor: "#f2f2f2",
+        padding: "1rem",
+        marginBottom: "1rem",
+        borderRadius: "0.75rem",
+        fontSize: "0.875rem",
+        lineHeight: "1.6",
+      }}
+    >
+      {t.chatbot.recommendIntro[0]}
+      <br />
+      {t.chatbot.recommendIntro[1]}
+      <br />
+      {t.chatbot.recommendIntro[2]}
     </div>
   );
 
@@ -369,31 +391,19 @@ export default function ChatbotPage() {
           </>
         )}
 
-        {messages
-          .slice(2)
-          .filter(
-            (msg) =>
-              !(
-                msg.text.includes("제품 ID 목록이 비어") ||
-                msg.text.includes("상품의 ID를 알려주세요") ||
-                msg.text.includes("현재 선택된 제품이 없어") ||
-                msg.text.includes("비교할") ||
-                msg.text.includes("선택하신 제품이 없어")
-              )
-          )
-          .map((msg, idx) => (
-            <MessageWrapper key={idx + 2}>
-              <ChatMessage
-                sender={msg.sender}
-                text={msg.text.replace(
-                  /\*\*(.*?)\*\*/g,
-                  (_, boldText) => `${boldText}`
-                )}
-                time={msg.time}
-                botName={t.chatbot.botName}
-              />
-            </MessageWrapper>
-          ))}
+        {messages.slice(2).map((msg, idx) => (
+          <MessageWrapper key={idx + 2}>
+            <ChatMessage
+              sender={msg.sender}
+              text={msg.text.replace(
+                /\*\*(.*?)\*\*/g,
+                (_, boldText) => `${boldText}`
+              )}
+              time={msg.time}
+              botName={t.chatbot.botName}
+            />
+          </MessageWrapper>
+        ))}
 
         {mode === "default" && messages.length === 1 && (
           <ChatSuggestions
@@ -403,6 +413,7 @@ export default function ChatbotPage() {
           />
         )}
 
+        {mode === "recommend" && recommendList.length === 0 && recommendIntro}
         {mode === "recommend" && recommendList.length > 0 && (
           <ChatRecommendList items={recommendList} />
         )}

@@ -543,6 +543,11 @@
       "Let me know your skin type, concerns, or product preferences 😊"
     ],
     "compareText": "Comparison Chatbot",
+    "recommendIntro": [
+      "I'll recommend the best products for you! 😊",
+      "Please tell me your skin type, concerns, and the type of cosmetics you're looking for (e.g. toner, sunscreen).",
+      "Example: I have sensitive skin. Can you recommend a soothing essence?"
+    ],
     "compareIntro": [
       "Hello, this is the Pium chatbot 💕",
       "You can easily compare items in your cart and wishlist.",
