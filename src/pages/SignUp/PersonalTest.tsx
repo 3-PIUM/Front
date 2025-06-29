@@ -143,7 +143,7 @@ export default function PersonalTest() {
         ) : (
           <PreviewWrapper>
             <InfoWrapper
-              src="public/images/CharacterImg/testImage.png"
+              src="/images/CharacterImg/testImage.png"
               alt="미리보기"
             />
           </PreviewWrapper>
