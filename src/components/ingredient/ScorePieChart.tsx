@@ -29,6 +29,8 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const ChartContainer = styled.div``;
+
 const ChartWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -65,33 +67,35 @@ const ScorePieChart = ({ data, isLoading }: ScorePieChartProps) => {
     return (
       <>
         <GlobalStyle />
-        <ChartWrapper>
-          <div
-            style={{
-              width: 180,
-              height: 180,
-              borderRadius: "50%",
-              backgroundColor: "#f0f0f0",
-              animation: "pulse 1.5s infinite",
-            }}
-          />
-          <LegendWrapper>
-            {Array(3)
-              .fill(null)
-              .map((_, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    width: "140px",
-                    height: "16px",
-                    backgroundColor: "#f0f0f0",
-                    borderRadius: "8px",
-                    animation: "pulse 1.5s infinite",
-                  }}
-                />
-              ))}
-          </LegendWrapper>
-        </ChartWrapper>
+        <ChartContainer>
+          <ChartWrapper>
+            <div
+              style={{
+                width: 180,
+                height: 180,
+                borderRadius: "50%",
+                backgroundColor: "#f0f0f0",
+                animation: "pulse 1.5s infinite",
+              }}
+            />
+            <LegendWrapper>
+              {Array(3)
+                .fill(null)
+                .map((_, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      width: "140px",
+                      height: "16px",
+                      backgroundColor: "#f0f0f0",
+                      borderRadius: "8px",
+                      animation: "pulse 1.5s infinite",
+                    }}
+                  />
+                ))}
+            </LegendWrapper>
+          </ChartWrapper>
+        </ChartContainer>
       </>
     );
   }
@@ -104,43 +108,45 @@ const ScorePieChart = ({ data, isLoading }: ScorePieChartProps) => {
   const { t } = useLocale();
 
   return (
-    <ChartWrapper>
-      <PieChart width={180} height={180}>
-        <Pie
-          data={chartData}
-          dataKey="value"
-          innerRadius={40}
-          outerRadius={90}
-          startAngle={90}
-          endAngle={-270}
-          cornerRadius={5}
-          labelLine={false}
-          isAnimationActive={true}
-          animationDuration={1000}
-          animationEasing="ease-out"
-        >
-          {chartData.map((entry, idx) => (
-            <Cell key={`cell-${idx}`} fill={entry.fill} />
-          ))}
-        </Pie>
-      </PieChart>
+    <ChartContainer>
+      <ChartWrapper>
+        <PieChart width={180} height={180}>
+          <Pie
+            data={chartData}
+            dataKey="value"
+            innerRadius={40}
+            outerRadius={90}
+            startAngle={90}
+            endAngle={-270}
+            cornerRadius={5}
+            labelLine={false}
+            isAnimationActive={true}
+            animationDuration={1000}
+            animationEasing="ease-out"
+          >
+            {chartData.map((entry, idx) => (
+              <Cell key={`cell-${idx}`} fill={entry.fill} />
+            ))}
+          </Pie>
+        </PieChart>
 
-      <LegendWrapper>
-        {data.map((item, idx) => (
-          <LegendItem key={idx}>
-            <Dot color={item.color} />
-            <ValueText>
-              {`${item.score}${t.ingredientDetail.scoreUnit}`} -{" "}
-              {`${item.value}${
-                item.value === 1
-                  ? t.ingredientDetail.quantityNumber.one
-                  : t.ingredientDetail.quantityNumber.more
-              }`}
-            </ValueText>
-          </LegendItem>
-        ))}
-      </LegendWrapper>
-    </ChartWrapper>
+        <LegendWrapper>
+          {data.map((item, idx) => (
+            <LegendItem key={idx}>
+              <Dot color={item.color} />
+              <ValueText>
+                {`${item.score}${t.ingredientDetail.scoreUnit}`} -{" "}
+                {`${item.value}${
+                  item.value === 1
+                    ? t.ingredientDetail.quantityNumber.one
+                    : t.ingredientDetail.quantityNumber.more
+                }`}
+              </ValueText>
+            </LegendItem>
+          ))}
+        </LegendWrapper>
+      </ChartWrapper>
+    </ChartContainer>
   );
 };
 

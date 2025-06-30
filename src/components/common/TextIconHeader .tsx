@@ -230,6 +230,12 @@ export default function FullHeader({
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onClick={() => setClickedBar(true)}
                 clickedBar={clickedBar}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && searchTerm.trim()) {
+                    navigate(`/search/${encodeURIComponent(searchTerm)}`);
+                    setIsSearchOpen(false);
+                  }
+                }}
               />
               <SearchInputIcon
                 clickedBar={clickedBar}

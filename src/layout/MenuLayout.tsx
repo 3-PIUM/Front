@@ -49,7 +49,7 @@ const MenuButton = styled.div<{ $active: boolean }>`
 const MenuText = styled.div<{ $active: boolean }>`
   display: flex;
   font-size: 0.75rem;
-  color: ${({ $active }) => ($active ? colors.mainPink : colors.lightGrey)};
+  color: ${({ $active }) => ($active ? colors.mainPink : colors.mediumGrey)};
   font-weight: ${({ $active }) => ($active ? 700 : 400)};
 `;
 
@@ -94,13 +94,13 @@ export default function MenuLayout() {
     {
       path: "/category",
       label: t.menuLayout.category,
-      icon: <LuMenu fontSize="1.25rem" color={colors.lightGrey} />,
+      icon: <LuMenu fontSize="1.25rem" color={colors.mediumGrey} />,
       activeIcon: <LuSquareMenu fontSize="1.25rem" color={colors.mainPink} />,
     },
     {
       path: "/",
       label: t.menuLayout.home,
-      icon: <GoHome fontSize="1.25rem" color={colors.lightGrey} />,
+      icon: <GoHome fontSize="1.25rem" color={colors.mediumGrey} />,
       activeIcon: <GoHomeFill fontSize="1.25rem" color={colors.mainPink} />,
     },
   ];
@@ -109,13 +109,13 @@ export default function MenuLayout() {
     {
       path: "/wishlist",
       label: t.menuLayout.wishlist,
-      icon: <FaRegHeart fontSize="1.25rem" color={colors.lightGrey} />,
+      icon: <FaRegHeart fontSize="1.25rem" color={colors.mediumGrey} />,
       activeIcon: <FaHeart fontSize="1.25rem" color={colors.mainPink} />,
     },
     {
       path: "/mypage",
       label: t.menuLayout.mypage,
-      icon: <FaRegUser fontSize="1.25rem" color={colors.lightGrey} />,
+      icon: <FaRegUser fontSize="1.25rem" color={colors.mediumGrey} />,
       activeIcon: <FaUser fontSize="1.25rem" color={colors.mainPink} />,
     },
   ];
