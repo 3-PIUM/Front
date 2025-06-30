@@ -620,14 +620,17 @@ export default function ProductDetail() {
                     overflowY: showAllReviews ? "auto" : "visible",
                   }}
                 >
-                  {(showAllReviews
-                    ? [...realReviews].reverse()
-                    : [...realReviews].slice(0, 2).reverse()
-                  ).map((r) => (
-                    <Suspense key={r.reviewId} fallback={null}>
-                      <ReviewCard {...r} itemId={product?.id} />
-                    </Suspense>
-                  ))}
+                  {[...realReviews]
+                    .sort(
+                      (a, b) =>
+                        new Date(b.date).getTime() - new Date(a.date).getTime()
+                    )
+                    .slice(0, showAllReviews ? realReviews.length : 2)
+                    .map((r) => (
+                      <Suspense key={r.reviewId} fallback={null}>
+                        <ReviewCard {...r} itemId={product?.id} />
+                      </Suspense>
+                    ))}
                 </div>
                 {realReviews.length > 2 && (
                   <div
