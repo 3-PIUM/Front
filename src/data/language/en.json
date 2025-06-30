@@ -643,5 +643,6 @@
   "reviewSummaryNotice": [
     "The review summary is not yet available.",
     "Skin types or personal colors not visible are currently being analyzed."
-  ]
+  ],
+  "error": "Page not found"
 }
