@@ -99,9 +99,14 @@ export default function EmailInput({
       setSendEmail(true);
       setSendEmailText(null);
       setTimeLeft(180);
-    } catch {
-      setSendEmail(false);
-      setSendEmailText(t.signup.errorMessage.emailFail);
+    } catch (error: any) {
+      if (error?.response?.data?.code === "MEMBER4002") {
+        setSendEmail(false);
+        setSendEmailText(t.signup.emailDuplicate);
+      } else {
+        setSendEmail(false);
+        setSendEmailText(t.signup.errorMessage.emailFail);
+      }
     }
   };
 
