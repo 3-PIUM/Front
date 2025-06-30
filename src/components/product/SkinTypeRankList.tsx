@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import SkinTypeModal from "../modal/SkinTypeModal";
+import { IoIosInformationCircle } from "react-icons/io";
 
 const SectionTitle = styled.h3`
   font-size: 18px;
@@ -14,7 +15,7 @@ const SectionTitle = styled.h3`
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   margin-bottom: 0.8rem;
 `;
 
@@ -30,6 +31,48 @@ const Select = styled.select`
   margin-left: 0.4rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+`;
+
+const BubbleWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const SpeechBubble = styled.div`
+  position: absolute;
+  bottom: 2.5rem;
+  background: #fff;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  font-weight: 500;
+  color: #222;
+  width: max-content;
+  max-width: 270px;
+  text-align: left;
+  z-index: 999;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -10px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid #fff;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+  }
+`;
+
+const ExclamationButton = styled.div`
+  font-size: 23px;
+  color: #9a9a9a;
 `;
 
 interface AiSummary {
@@ -52,6 +95,7 @@ const SkinTypeRankList = ({ itemId }: Props) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
   const [modalContent, setModalContent] = useState<string | null>(null);
+  const [showSpeechBubble, setShowSpeechBubble] = useState(false);
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -101,6 +145,20 @@ const SkinTypeRankList = ({ itemId }: Props) => {
     <div>
       <TitleWrapper>
         <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
+        <BubbleWrapper>
+          {showSpeechBubble && (
+            <SpeechBubble>
+              {t.reviewSummaryNotice[0]}
+              <br />
+              {t.reviewSummaryNotice[1]}
+            </SpeechBubble>
+          )}
+          <ExclamationButton
+            onClick={() => setShowSpeechBubble(!showSpeechBubble)}
+          >
+            <IoIosInformationCircle />
+          </ExclamationButton>
+        </BubbleWrapper>
         {options.length > 0 && (
           <Select
             value={selectedOption}
