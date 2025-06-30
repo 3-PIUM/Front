@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
+import { useEffect, useState } from "react";
 
 const CardWrapper = styled.div`
   width: 100%;
@@ -10,6 +11,23 @@ const CardWrapper = styled.div`
 const ImageWrapper = styled.div`
   position: relative;
   display: flex;
+`;
+
+const ToastViewCount = styled.div<{ visible: boolean }>`
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: 15vh;
+  background-color: white;
+  color: rgba(242, 52, 119, 0.9);
+  font-size: 13px;
+  font-weight: bold;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  z-index: 1000;
+  opacity: ${(props) => (props.visible ? 1 : 0)};
+  transition: bottom 0.6s ease, opacity 0.6s ease;
+  border: 1px solid rgba(242, 52, 119, 0.9);
 `;
 
 const ProductImage = styled.img`
@@ -94,78 +112,69 @@ const ProductCard = ({
   viewCount,
 }: ProductCardProps) => {
   const { t } = useLocale();
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (viewCount !== null) {
+      setShowToast(true);
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [viewCount]);
 
   return (
-    <CardWrapper>
-      <ImageWrapper>
-        <ProductImage src={imageUrl} />
-      </ImageWrapper>
-      <InfoWrapper>
-        {viewCount !== null && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              gap: "0.4rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            <Brand>{brand}</Brand>
-            <span
-              style={{
-                border: "1px solid #F23477",
-                color: "#F23477",
-                padding: "0.1rem 0.5rem",
-                borderRadius: "999px",
-                fontSize: "11px",
-                display: "inline-block",
-                minWidth: "fit-content",
-                marginBottom: "0.4rem",
-              }}
-            >
-              {viewCount}
-              {t.viewCountMessage}
-            </span>
-          </div>
-        )}
-        {viewCount === null && <Brand>{brand}</Brand>}
-        <Title>{name}</Title>
-        <InfoRow>
-          <Stock>
-            {t.productDetail.stockQuantity} {stock}
-            {stock === 1
-              ? t.productDetail.quantityNumber.one
-              : t.productDetail.quantityNumber.more}
-          </Stock>
-          <PriceWrapper>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-end",
-              }}
-            >
-              {discountRate > 0 && (
-                <OriginalPrice>
-                  {originalPrice.toLocaleString()}
-                  {t.productDetail.won}
-                </OriginalPrice>
-              )}
+    <>
+      <CardWrapper>
+        <ImageWrapper>
+          <ProductImage src={imageUrl} />
+        </ImageWrapper>
+        <InfoWrapper>
+          <Brand>{brand}</Brand>
+          <Title>{name}</Title>
+          <InfoRow>
+            <Stock>
+              {t.productDetail.stockQuantity} {stock}
+              {stock === 1
+                ? t.productDetail.quantityNumber.one
+                : t.productDetail.quantityNumber.more}
+            </Stock>
+            <PriceWrapper>
               <div
-                style={{ display: "flex", alignItems: "center", gap: "6px" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                }}
               >
-                {discountRate > 0 && <Discount>{discountRate}%</Discount>}
-                <Price>
-                  {discountedPrice.toLocaleString()}
-                  {t.productDetail.won}
-                </Price>
+                {discountRate > 0 && (
+                  <OriginalPrice>
+                    {originalPrice.toLocaleString()}
+                    {t.productDetail.won}
+                  </OriginalPrice>
+                )}
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "6px" }}
+                >
+                  {discountRate > 0 && <Discount>{discountRate}%</Discount>}
+                  <Price>
+                    {discountedPrice.toLocaleString()}
+                    {t.productDetail.won}
+                  </Price>
+                </div>
               </div>
-            </div>
-          </PriceWrapper>
-        </InfoRow>
-      </InfoWrapper>
-    </CardWrapper>
+            </PriceWrapper>
+          </InfoRow>
+        </InfoWrapper>
+      </CardWrapper>
+      {viewCount !== null && (
+        <ToastViewCount visible={showToast}>
+          {viewCount}
+          {t.viewCountMessage}
+        </ToastViewCount>
+      )}
+    </>
   );
 };
 

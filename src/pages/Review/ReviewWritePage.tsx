@@ -31,8 +31,9 @@ const ContentWrapper = styled.div`
 
 const StickyFooter = styled.div`
   position: sticky;
-  bottom: 5rem;
-  padding: 1rem 1rem;
+  bottom: 4.7rem;
+  padding: 1rem 1rem 1rem;
+  background-color: white;
 `;
 
 const Divider = styled.div`
@@ -87,7 +88,8 @@ const SubmitButton = styled.button`
   padding: 1rem;
   border: none;
   border-radius: 1.25rem;
-  margin-top: 2rem;
+  margin-top: 0.7rem;
+  margin-bottom: 1rem;
 `;
 
 const SurveySection = styled.div`

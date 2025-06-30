@@ -11,8 +11,16 @@ const ScorePieChart = lazy(
 const ScoreBar = lazy(() => import("../../components/ingredient/ScoreBar"));
 const Header = lazy(() => import("../../components/common/Header"));
 
+const PageWrapper = styled.div`
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+`;
+
 const Container = styled.div`
   padding: 4rem 1rem;
+  height: calc(100vh - 5rem);
+  overflow-y: auto;
 `;
 
 const Title = styled.h2`
@@ -62,7 +70,7 @@ const IngredientBox = styled.div`
 
 const scoreColorMap: Record<string, string> = {
   "1~2": "#ec4899",
-  "3~4": "#f472b6",
+  "3~4": "#72f478",
   "5~6": "#facc15",
   "7~8": "#38bdf8",
   "9~10": "#a78bfa",
@@ -139,12 +147,14 @@ export default function IngredientDetailPage() {
 
   return (
     <>
-      <Suspense fallback={null}>
-        <Header />
-      </Suspense>
-      <Suspense fallback={null}>
-        <TextHeader pageName={t.ingredientDetail.ingredientDetail} />
-      </Suspense>
+      <PageWrapper>
+        <Suspense fallback={null}>
+          <Header />
+        </Suspense>
+        <Suspense fallback={null}>
+          <TextHeader pageName={t.ingredientDetail.ingredientDetail} />
+        </Suspense>
+      </PageWrapper>
       <Container>
         <Title>{t.ingredientDetail.title}</Title>
         <Description>

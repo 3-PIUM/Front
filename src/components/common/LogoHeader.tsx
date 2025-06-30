@@ -234,6 +234,13 @@ export default function LogoHeader({}: LogoHeaderProps) {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onClick={() => setClickedBar(true)}
                 clickedBar={clickedBar}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && searchTerm.trim()) {
+                    navigate(`/search/${encodeURIComponent(searchTerm)}`);
+                    setIsSearchOpen(false);
+                    setOpenSearchBar(false);
+                  }
+                }}
               />
               <SearchInputIcon
                 clickedBar={clickedBar}
