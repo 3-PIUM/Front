@@ -9,7 +9,7 @@ import axiosInstance from "../../api/axiosInstance";
 import StoreModal from "../modal/StoreModal";
 import type { Store } from "../modal/StoreModal";
 
-const HeaderWrap = styled.div`
+const HeaderWrap = styled.div<{ hasScrolled: boolean }>`
   position: fixed;
   width: 100%;
   height: 44px;
@@ -20,7 +20,8 @@ const HeaderWrap = styled.div`
   padding: 0 1rem;
   box-sizing: border-box;
   z-index: 100;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: ${({ hasScrolled }) =>
+    hasScrolled ? "0 3px 6px rgba(0, 0, 0, 0.1)" : "none"};
 `;
 
 const LogoWrap = styled.img`
@@ -146,6 +147,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
   const [openSearchBar, setOpenSearchBar] = useState<boolean>(false);
   const [clickedBar, setClickedBar] = useState<boolean>(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
 
   useEffect(() => {
@@ -172,9 +174,18 @@ export default function LogoHeader({}: LogoHeaderProps) {
     return () => clearTimeout(delay);
   }, [searchTerm]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <>
-      <HeaderWrap>
+      <HeaderWrap hasScrolled={hasScrolled}>
         <LogoWrap
           src="/images/logo/PIUM_logo.png"
           onClick={() => navigate("/")}

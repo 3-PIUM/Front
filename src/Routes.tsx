@@ -55,6 +55,7 @@ const ProductDetail = lazy(() => import("./pages/Product/ProductDetail"));
 const ReviewWritePage = lazy(() => import("./pages/Review/ReviewWritePage"));
 const ScanPage = lazy(() => import("./pages/Scan/ScanPage"));
 const AdminLogin = lazy(() => import("./pages/Admin/AdminLogin"));
+const ErrorPage = lazy(() => import("./pages/error/ErrorPage"));
 
 const routes = [
   // DefaultLayout
@@ -150,6 +151,10 @@ const routes = [
       { path: "purchase-list", element: <PurchaseList /> },
       { path: "purchase-detail", element: <PurchaseDetail /> },
       { path: "search/:keyword", element: <SearchResult /> },
+      {
+        path: "*",
+        element: <ErrorPage />,
+      },
     ],
   },
 ];

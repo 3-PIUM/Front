@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, Suspense } from "react";
+import ErrorPage from "../error/ErrorPage";
 import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -213,7 +214,7 @@ export default function ProductDetail() {
             "\u{1F6A8} 서버 내부 에러 발생. enum 또는 데이터 오류일 수 있음."
           );
         }
-        setError("상품 정보를 불러오는 데 실패했습니다.");
+        setError("error");
       } finally {
       }
     };
@@ -346,12 +347,7 @@ export default function ProductDetail() {
       realReviews.length
     : 0;
 
-  if (error)
-    return (
-      <div style={{ padding: "2rem", color: "red", textAlign: "center" }}>
-        {error}
-      </div>
-    );
+  if (error) return <ErrorPage />;
   if (!product) return null;
 
   return (
