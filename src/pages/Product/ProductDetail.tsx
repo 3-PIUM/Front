@@ -485,6 +485,7 @@ export default function ProductDetail() {
                               fontWeight: "bold",
                               fontSize: "0.9rem",
                               cursor: "pointer",
+                              color: "#F23477",
                             }}
                           >
                             {t.productDetail.productAccordion}{" "}
