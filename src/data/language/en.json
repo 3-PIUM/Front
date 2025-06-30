@@ -639,5 +639,9 @@
     "title": "You have no wishlist items.",
     "subtitle": "ry adding items you like to your wishlist.",
     "button": "Explore Home >"
-  }
+  },
+  "reviewSummaryNotice": [
+    "The review summary is not yet available.",
+    "Skin types or personal colors not visible are currently being analyzed."
+  ]
 }

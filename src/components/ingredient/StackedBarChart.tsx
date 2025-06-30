@@ -123,9 +123,19 @@ const StackedBarChart: React.FC<{ itemId: number }> = ({ itemId }) => {
     fetchGraph();
   }, [itemId]);
 
+  const sortedChartData = [...chartData].sort((a, b) => {
+    const isAKey =
+      a.category.includes("피부타입") || a.category.includes("퍼스널컬러");
+    const isBKey =
+      b.category.includes("피부타입") || b.category.includes("퍼스널컬러");
+    if (isAKey && !isBKey) return -1;
+    if (!isAKey && isBKey) return 1;
+    return 0;
+  });
+
   return (
     <Wrapper>
-      {chartData.map((group) => (
+      {sortedChartData.map((group) => (
         <ChartGroupWrapper key={group.category}>
           <GroupTitle>
             <Highlight>{group.category}</Highlight> {t.productDetail.graph}
