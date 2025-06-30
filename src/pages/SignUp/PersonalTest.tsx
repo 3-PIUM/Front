@@ -100,15 +100,11 @@ export default function PersonalTest() {
 
         const formData = new FormData();
         formData.append("file", selectedFile);
-        const response = await axios.post(
-          "http://52.79.241.142:8000/predict-season",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const response = await axios.post("/ml-api/predict-season", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
         const resultData = response.data;
         navigate("/personal-result", { state: resultData });
       } catch (err) {
@@ -143,7 +139,7 @@ export default function PersonalTest() {
         ) : (
           <PreviewWrapper>
             <InfoWrapper
-              src="public/images/CharacterImg/testImage.png"
+              src="/images/CharacterImg/testImage.png"
               alt="미리보기"
             />
           </PreviewWrapper>

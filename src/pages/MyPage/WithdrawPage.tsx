@@ -139,7 +139,6 @@ export default function WithdrawalPage() {
       });
 
       console.log("탈퇴 성공", response.status);
-      alert(t.withdrawal.alert.complete);
       sessionStorage.removeItem("accessToken");
       navigate("/");
     } catch (error) {

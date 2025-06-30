@@ -86,6 +86,7 @@ const MenuWrap = styled.div`
 `;
 
 const MainWrap = styled.div`
+  width: 100%;
   padding: 0 1rem;
 `;
 
@@ -289,14 +290,7 @@ export default function CategoryList() {
           }}
         />
       )}
-      <MainWrap
-        ref={containerRef}
-        style={{
-          overflowY: "auto",
-          height: rowCount > 1 ? "calc(100vh - 200px)" : "auto",
-          gap: "1rem",
-        }}
-      >
+      <MainWrap ref={containerRef}>
         <div
           style={{
             position: "relative",

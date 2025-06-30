@@ -4,6 +4,10 @@
       "src": "/api/(.*)",
       "dest": "http://3.35.195.90:8080/$1"
     },
+    {
+      "src": "/ml-api/predict-season",
+      "dest": "http://3.36.42.57:8000/predict-season"
+    },
     { "handle": "filesystem" },
     {
       "src": "/(.*)",

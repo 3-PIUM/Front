@@ -56,8 +56,8 @@ const Line = styled.hr`
   display: flex;
   border: none;
   background-color: ${colors.lightGrey};
-  height: 0.5px;
-  margin-top: 60px;
+  /* height: 0.5px; */
+  margin-top: 55px;
 `;
 
 const CategoryWrapper = styled.div`
@@ -200,7 +200,7 @@ export default function Category() {
     setClicked(categoryName);
     const el = refMap.current[categoryName];
     if (el) {
-      const top = el.offsetTop - 90;
+      const top = el.offsetTop - 100;
       window.scrollTo({
         top,
         behavior: "smooth",
@@ -233,12 +233,28 @@ export default function Category() {
         setClicked(getCategoryName);
         const el = refMap.current[getCategoryName];
         if (el) {
-          const top = el.offsetTop - 90;
+          const top = el.offsetTop - 100;
           window.scrollTo({ top, behavior: "smooth" });
         }
       }, 0);
     }
   }, []);
+
+  useEffect(() => {
+    const list =
+      topClicked === "비건 카테고리"
+        ? t.category.veganCategoryname
+        : t.category.categoryname;
+
+    if (list?.length > 0) {
+      setClicked(list[0].name);
+      const el = refMap.current[list[0].name];
+      if (el) {
+        const top = el.offsetTop - 100;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
+    }
+  }, [topClicked, t]);
 
   return (
     <Wrap>
@@ -248,7 +264,6 @@ export default function Category() {
           $isSelected={topClicked === "카테고리"}
           onClick={() => {
             setTopClicked("카테고리");
-            setClicked(categoryList?.[0]?.name);
           }}
         >
           <PageName>{t.category.pageTitle}</PageName>
@@ -258,6 +273,11 @@ export default function Category() {
           onClick={() => {
             setTopClicked("비건 카테고리");
             setClicked(categoryList?.[0]?.name);
+            const el = refMap.current[categoryList?.[0]?.name];
+            if (el) {
+              const top = el.offsetTop - 100;
+              window.scrollTo({ top, behavior: "smooth" });
+            }
           }}
         >
           <IconWrapper selected={isVegan}>
