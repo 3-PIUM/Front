@@ -40,6 +40,8 @@ const TagContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Tag = styled.div`
