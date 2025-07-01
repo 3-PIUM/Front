@@ -37,6 +37,16 @@ const FeatureAndTips = styled.div`
   gap: 2rem;
 `;
 
+const Feature = styled.div`
+  display: flex;
+  padding: 0 1rem;
+`;
+
+const Tips = styled.div`
+  display: flex;
+  padding: 0 1rem;
+`;
+
 const Top = styled.div`
   display: flex;
   flex-direction: column;
@@ -92,9 +102,9 @@ export default function MBTIDescription({
               <ContentTitle>{t.mbti.feature}</ContentTitle>
               {features.map((item) => {
                 return (
-                  <>
+                  <Feature>
                     <li key={item}>{item}</li>
-                  </>
+                  </Feature>
                 );
               })}
             </Top>
@@ -102,9 +112,9 @@ export default function MBTIDescription({
               <ContentTitle>{t.mbti.tip}</ContentTitle>
               {tips.map((tip) => {
                 return (
-                  <>
+                  <Tips>
                     <li key={tip}>{tip}</li>
-                  </>
+                  </Tips>
                 );
               })}
             </Bottom>

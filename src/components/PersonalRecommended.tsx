@@ -75,7 +75,7 @@ export default function PersonalRecommended({
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (activeTab === "전체" && listRef.current) {
+    if (listRef.current) {
       listRef.current.scrollLeft = 0;
     }
 

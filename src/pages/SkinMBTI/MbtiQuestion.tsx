@@ -50,6 +50,7 @@ const QTitle = styled.div`
   justify-content: center;
   text-align: center;
   padding: 0 1rem;
+  font-weight: 600;
 `;
 
 const AWrap = styled.div`

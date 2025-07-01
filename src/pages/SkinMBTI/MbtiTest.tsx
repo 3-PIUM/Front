@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
 import GuestMBTI from "../../components/Survey/GuestMBTI";
+import colors from "../../styles/colors";
 
 const Wrap = styled.div`
   display: flex;
@@ -44,6 +45,7 @@ const Button = styled.button`
   border: 1px solid black;
   font-weight: 700;
   background-color: #a6ff83;
+  color: ${colors.black};
 `;
 
 export default function MbtiTest() {

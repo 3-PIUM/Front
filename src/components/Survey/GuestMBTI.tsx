@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
+import colors from "../../styles/colors";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -30,6 +31,7 @@ const Button = styled.button`
   border: 1px solid black;
   font-weight: 700;
   background-color: #a6ff83;
+  color: ${colors.black};
 `;
 
 export default function GuestMBTI() {
@@ -43,9 +45,7 @@ export default function GuestMBTI() {
         <div>{t.mbti.guestTitle.suffix}</div>
       </Title>
       <Character src="images/CharacterImg/testImage.png" alt="mbti 캐릭터" />
-      <Button onClick={() => navigate("/mbti/question")}>
-        {t.mypage.goLogin}
-      </Button>
+      <Button onClick={() => navigate("/login")}>{t.mypage.goLogin}</Button>
     </Wrapper>
   );
 }

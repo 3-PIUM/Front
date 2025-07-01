@@ -8,7 +8,7 @@ import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
 import { FaLeaf } from "react-icons/fa";
 
-const HeaderWrap = styled.div`
+const HeaderWrap = styled.div<{ hasScrolled: boolean }>`
   position: fixed;
   width: 100%;
   height: 44px;
@@ -17,7 +17,9 @@ const HeaderWrap = styled.div`
   justify-content: space-between;
   background-color: ${colors.white};
   padding: 0 1rem;
-  z-index: 999;
+  z-index: 100;
+  box-shadow: ${({ hasScrolled }) =>
+    hasScrolled ? "0 3px 6px rgba(0, 0, 0, 0.1)" : "none"};
 `;
 
 const LeftIcon = styled.div`
@@ -122,10 +124,11 @@ const ResultItem = styled.div`
   text-overflow: ellipsis;
 `;
 
-interface FullHeaderProps {
+interface TextIconHeaderProps {
   pageName: string;
   isVegan?: boolean;
   backPath?: string;
+  hasScrolled?: boolean;
 }
 
 interface SearchResult {
@@ -137,16 +140,18 @@ interface SearchResult {
   discountRate: number;
 }
 
-export default function FullHeader({
+export default function TextIconHeader({
   pageName,
   isVegan,
   backPath,
-}: FullHeaderProps) {
+  hasScrolled,
+}: TextIconHeaderProps) {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [clickedBar, setClickedBar] = useState<boolean>(false);
+
   const { t } = useLocale();
 
   const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
@@ -174,7 +179,7 @@ export default function FullHeader({
 
   return (
     <>
-      <HeaderWrap>
+      <HeaderWrap hasScrolled={hasScrolled || false}>
         <LeftIcon
           onClick={() => {
             if (backPath) {
