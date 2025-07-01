@@ -47,7 +47,7 @@ const Header = React.lazy(() => import("../../components/common/Header"));
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 90vh;
+  height: 100vh;
 `;
 
 const ProductCardWrapper = styled.div`
@@ -58,7 +58,6 @@ const ProductCardWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  padding-bottom: 7rem;
 `;
 
 const TabMenu = styled.div`
