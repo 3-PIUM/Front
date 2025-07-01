@@ -132,7 +132,6 @@ export default function PersonalRecommended({
             price={product.salePrice}
             discountRate={product.discountRate}
             itemId={product.id}
-            wishStatus={product.wishStatus}
             isLoading={isLoading}
           />
         ))}

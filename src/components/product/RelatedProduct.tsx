@@ -146,7 +146,6 @@ const RelatedProductCarousel = ({
                   imageSource={product.itemImage}
                   discountRate={product.discountRate || 0}
                   price={product.salePrice}
-                  wishStatus={product.wishStatus}
                   isLoading={false}
                 />
               </div>

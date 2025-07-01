@@ -178,7 +178,6 @@ const RecommendModal = ({
                   imageSource={item.itemImage}
                   discountRate={item.discountRate || 0}
                   price={item.salePrice}
-                  wishStatus={item.wishStatus}
                   isLoading={false}
                 />
               ))}

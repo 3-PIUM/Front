@@ -54,7 +54,6 @@ export default function AreaPopular() {
               price={item.salePrice}
               size="big"
               isLoading={isLoading}
-              wishStatus={item.wishStatus}
             />
           ))}
         </BigListWrapper>

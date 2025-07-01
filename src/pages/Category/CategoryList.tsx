@@ -320,7 +320,6 @@ export default function CategoryList() {
                           )
                         : 0
                     }
-                    wishStatus={item.wishStatus}
                     isLoading={isLoading}
                   />
                 ))}

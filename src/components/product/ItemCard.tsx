@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import { useLocale } from "../../context/LanguageContext";
 import { useWishlist } from "../../context/WishlistContext";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 const shimmer = keyframes`
   0% {
