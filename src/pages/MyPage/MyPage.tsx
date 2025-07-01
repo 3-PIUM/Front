@@ -66,7 +66,7 @@ const Space = styled.div`
 const Settings = styled.div`
   padding: 0 1rem;
   margin-top: 2rem;
-  padding-bottom: 80px;
+  padding-bottom: 7rem;
 `;
 
 const SettingBox = styled.div`
