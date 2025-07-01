@@ -41,13 +41,14 @@ const Question = styled.div`
 const Answer = styled.div`
   display: flex;
   gap: 1rem;
+  justify-content: space-between;
 `;
 
 const AnswerItem = styled.div`
   display: flex;
   border: 1px solid ${colors.lightGrey};
   color: ${colors.lightGrey};
-  width: 45%;
+  width: 55%;
   justify-content: center;
   padding: 1rem 0;
   border-radius: 1.25rem;

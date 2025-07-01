@@ -14,7 +14,6 @@ const Wrap = styled.div`
   height: 100vh;
   overflow: hidden;
   flex: 1;
-  padding-top: 44px;
 `;
 
 const ContentWrapper = styled.div<{ $bgColor?: string }>`
