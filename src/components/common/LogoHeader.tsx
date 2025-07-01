@@ -151,6 +151,13 @@ export default function LogoHeader({}: LogoHeaderProps) {
   const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
 
   useEffect(() => {
+    const storedStore = sessionStorage.getItem("selectedStore");
+    if (storedStore) {
+      setSelectedStore(JSON.parse(storedStore));
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchSearchResults = async () => {
       if (!searchTerm) {
         setSearchResults([]);
@@ -220,6 +227,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
           stores={dummyStores}
           onClose={() => setIsStoreModalOpen(false)}
           onSelect={(store) => {
+            console.log("✅ 선택된 매장:", store);
             sessionStorage.setItem("selectedStore", JSON.stringify(store));
             setSelectedStore(store);
             setIsStoreModalOpen(false);
