@@ -60,7 +60,7 @@ const IngredientBox = styled.div`
   margin-top: 0.5rem;
   background: #fff;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 0 1rem;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.04);
   p {
     margin-top: 0.3rem;
@@ -96,6 +96,26 @@ export default function IngredientDetailPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const root = document.getElementById("root");
+    const originalBg = root?.style.backgroundColor;
+    const originalTop = root?.style.paddingTop;
+    const originalBottom = root?.style.paddingBottom;
+
+    if (root) {
+      root.style.paddingBottom = "0";
+      root.style.marginBottom = "0";
+    }
+
+    return () => {
+      if (root) {
+        root.style.backgroundColor = originalBg || "";
+        root.style.paddingTop = originalTop || "";
+        root.style.paddingBottom = originalBottom || "";
+      }
+    };
   }, []);
 
   useEffect(() => {

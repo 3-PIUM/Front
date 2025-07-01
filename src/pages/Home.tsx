@@ -2,7 +2,6 @@ import styled from "styled-components";
 import LogoHeader from "../components/common/LogoHeader";
 import colors from "../styles/colors";
 import { useState, useEffect } from "react";
-import Header from "../components/common/Header";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { useLocale } from "../context/LanguageContext";
@@ -181,7 +180,6 @@ export default function Home() {
 
   return (
     <Wrapper>
-      <Header />
       <LogoHeader />
       {isLoggedIn ? (
         !memberInfo?.skinType ? (

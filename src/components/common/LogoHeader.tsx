@@ -12,7 +12,7 @@ import type { Store } from "../modal/StoreModal";
 const HeaderWrap = styled.div<{ hasScrolled: boolean }>`
   position: fixed;
   width: 100%;
-  height: 44px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -26,7 +26,7 @@ const HeaderWrap = styled.div<{ hasScrolled: boolean }>`
 
 const LogoWrap = styled.img`
   display: flex;
-  height: 70%;
+  height: 50%;
 `;
 
 const RightIcons = styled.div`
