@@ -471,7 +471,12 @@ const CartPage = () => {
                     -
                   </Button>
                   <Count>{item.quantity}</Count>
-                  <Button onClick={() => handleIncrease(item.id)}>+</Button>
+                  <Button
+                    style={{ color: "black" }}
+                    onClick={() => handleIncrease(item.id)}
+                  >
+                    +
+                  </Button>
                 </QuantityControl>
               </LeftRow>
               <RightColumn>

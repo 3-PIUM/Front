@@ -2,6 +2,7 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import { createPortal } from "react-dom";
 import { useLocale } from "../../context/LanguageContext";
+import { useEffect, useState } from "react";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -65,6 +66,29 @@ function ModalContent({
   closeModal,
 }: ModalProps) {
   const { t } = useLocale();
+  const [sortValue, setSortValue] = useState<string | undefined>(selectedSort);
+
+  useEffect(() => {
+    if (!selectedSort) {
+      const savedSort = sessionStorage.getItem("selectedSort");
+      if (savedSort) {
+        setSortValue(savedSort);
+        onSelectedSort(savedSort);
+      }
+    }
+  }, [selectedSort]);
+
+  useEffect(() => {
+    if (sortValue) {
+      sessionStorage.setItem("selectedSort", sortValue);
+    }
+  }, [sortValue]);
+
+  const handleSelect = (value: string) => {
+    setSortValue(value);
+    sessionStorage.setItem("selectedSort", value);
+    onSelectedSort(value);
+  };
 
   return (
     <Wrapper onClick={closeModal}>
@@ -74,8 +98,8 @@ function ModalContent({
             (sort) => (
               <Sorted
                 key={sort.value}
-                $selected={selectedSort === sort.value}
-                onClick={() => onSelectedSort(sort.value)}
+                $selected={sortValue === sort.value}
+                onClick={() => handleSelect(sort.value)}
               >
                 {sort.name}
               </Sorted>
