@@ -11,6 +11,7 @@ import GuestWishList from "../components/wishlist/GuestWishList";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: 1.5rem;
 `;
 
 const ItemWrapper = styled.div`

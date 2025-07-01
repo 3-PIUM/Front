@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${colors.white};
+  padding-bottom: 1.5rem;
 `;
 
 const InfoBox = styled.div`
