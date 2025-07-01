@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+// Add this line below the other imports
+type Timeout = ReturnType<typeof setTimeout>;
 import SkinTypeCard from "./SkinTypeCard";
 import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
@@ -71,6 +73,7 @@ const SpeechBubble = styled.div`
 `;
 
 const ExclamationButton = styled.div`
+  display: flex;
   font-size: 23px;
   color: #9a9a9a;
 `;
@@ -96,6 +99,35 @@ const SkinTypeRankList = ({ itemId }: Props) => {
   const [options, setOptions] = useState<string[]>([]);
   const [modalContent, setModalContent] = useState<string | null>(null);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
+
+  const speechBubbleRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<Timeout | null>(null);
+
+  useEffect(() => {
+    if (showSpeechBubble) {
+      // 3초 후 자동 닫기
+      timeoutRef.current = setTimeout(() => {
+        setShowSpeechBubble(false);
+      }, 3000);
+    }
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        speechBubbleRef.current &&
+        !speechBubbleRef.current.contains(e.target as Node)
+      ) {
+        setShowSpeechBubble(false);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showSpeechBubble]);
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -145,7 +177,7 @@ const SkinTypeRankList = ({ itemId }: Props) => {
     <div>
       <TitleWrapper>
         <SectionTitle>{t.productDetail.skinReviewSummary}</SectionTitle>
-        <BubbleWrapper>
+        <BubbleWrapper ref={speechBubbleRef}>
           {showSpeechBubble && (
             <SpeechBubble>
               {t.reviewSummaryNotice[0]}

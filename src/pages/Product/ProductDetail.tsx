@@ -61,7 +61,7 @@ const ProductCardWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  padding-bottom: 6rem;
+  padding-bottom: 1.5rem;
 `;
 
 const TabMenu = styled.div`

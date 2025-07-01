@@ -12,6 +12,7 @@ import { useLocale } from "../../context/LanguageContext";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  padding-bottom: 1.5rem;
 `;
 
 const SearchWrapper = styled.div`
@@ -21,6 +22,7 @@ const SearchWrapper = styled.div`
   width: 100%;
   background-color: ${colors.white};
   z-index: 99;
+  margin: 0 auto;
 `;
 
 const SearchInputWrapper = styled.div`

@@ -17,7 +17,7 @@ const ToastViewCount = styled.div<{ visible: boolean }>`
   position: fixed;
   left: 50%;
   transform: translate(-50%, 0);
-  bottom: 15vh;
+  bottom: 8rem;
   background-color: white;
   color: rgba(242, 52, 119, 0.9);
   font-size: 13px;
