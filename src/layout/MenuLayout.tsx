@@ -24,7 +24,7 @@ const MenuWrap = styled.div`
 
 const Menu = styled.div`
   display: flex;
-  height: 6rem;
+  height: 5.5rem;
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 1rem;
