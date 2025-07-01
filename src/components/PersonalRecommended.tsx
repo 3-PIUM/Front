@@ -89,6 +89,7 @@ export default function PersonalRecommended({
         });
         const data = response.data.result;
         setItems(data);
+        console.log("1번째:", data);
 
         setTimeout(() => setIsLoading(false), 500);
       } catch (error) {

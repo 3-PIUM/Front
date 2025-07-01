@@ -74,6 +74,7 @@ export default function WeeklyBest() {
                     price={item.salePrice}
                     size="big"
                     isLoading={isLoading}
+                    wishStatus={item.wishStatus}
                   />
                 ))}
               </Page>

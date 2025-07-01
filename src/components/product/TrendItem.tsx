@@ -46,6 +46,8 @@ export default function WeeklyBest() {
         setTitle(data.title);
         setItems(data.popularItems);
 
+        console.log("!!!", data.popularItems);
+
         setTimeout(() => setIsLoading(false), 500);
       } catch (error) {
         console.log("error", error);
@@ -73,6 +75,7 @@ export default function WeeklyBest() {
                     discountRate={item.discountRate}
                     price={item.salePrice}
                     size="big"
+                    wishStatus={item.wishStatus}
                     isLoading={isLoading}
                   />
                 ))}

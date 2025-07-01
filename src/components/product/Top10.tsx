@@ -61,6 +61,7 @@ export default function Top10() {
                 itemImage: string;
                 salePrice: number;
                 originalPrice: number;
+                wishStatus: boolean;
               },
               index: number
             ) => (
@@ -72,6 +73,7 @@ export default function Top10() {
                 discountRate={item.discountRate}
                 price={item.salePrice}
                 rank={index + 1}
+                wishStatus={item.wishStatus}
                 isLoading={isLoading}
               />
             )
