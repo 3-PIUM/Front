@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "../components/common/Header";
 import TextHeader from "../components/common/TextHeader";
 import InputField from "../components/InputField";
 import { useLocale } from "../context/LanguageContext";
@@ -17,7 +16,7 @@ const InputBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 4rem 1rem 0 1rem;
+  padding: 6.5rem 1rem 0 1rem;
 `;
 
 const FieldName = styled.div`
@@ -73,7 +72,6 @@ export default function FindPassoword() {
   return (
     <>
       <Wrapper>
-        <Header />
         <TextHeader pageName={t.login.findpassword} />
         <InputBox>
           <FieldName>{t.signup.email} </FieldName>

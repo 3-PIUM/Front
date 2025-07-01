@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
-import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 import KR from "../../data/language/kr.json";
@@ -103,7 +102,6 @@ export default function PersonalColorResult() {
 
   return (
     <Wrap>
-      <Header bgColor={seasonData.bgColor} />
       <TextHeader
         pageName={t.colorTest.resultTitle}
         bgColor={seasonData.bgColor}

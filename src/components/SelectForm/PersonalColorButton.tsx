@@ -5,6 +5,7 @@ const ButtonWrap = styled.button<{ $isActivated: boolean }>`
   display: flex;
   flex-direction: column;
   background-color: ${colors.white};
+  align-items: center;
   border: 1px solid
     ${({ $isActivated }) => ($isActivated ? colors.mainPink : colors.lightGrey)};
   border-radius: 1.25rem;
