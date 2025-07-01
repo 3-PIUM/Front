@@ -43,9 +43,7 @@ export default function GuestMBTI() {
         <div>{t.mbti.guestTitle.suffix}</div>
       </Title>
       <Character src="images/CharacterImg/testImage.png" alt="mbti 캐릭터" />
-      <Button onClick={() => navigate("/mbti/question")}>
-        {t.mypage.goLogin}
-      </Button>
+      <Button onClick={() => navigate("/login")}>{t.mypage.goLogin}</Button>
     </Wrapper>
   );
 }
