@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     background-color: ${colors.white};
     color: ${colors.black};
-    padding-bottom: 34px;
+    /* padding-bottom: 34px; */
     }
 
 `;

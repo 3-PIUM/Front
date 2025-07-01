@@ -175,7 +175,6 @@ export default function MyPage() {
 
   return (
     <>
-      <Header />
       <PageTitle pageName={t.mypage.pageTitle} />
       {isLoggedIn ? (
         <>
