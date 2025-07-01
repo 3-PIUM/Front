@@ -4,7 +4,7 @@ import { useLocale } from "../../context/LanguageContext";
 
 const TopButton = styled.button<{ $visible: boolean }>`
   position: fixed;
-  bottom: 5rem;
+  bottom: 7rem;
   right: 1rem;
   padding: 0.7rem 1rem;
   background-color: #ff4081;
