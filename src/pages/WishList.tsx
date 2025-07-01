@@ -99,7 +99,6 @@ export default function WishList() {
                 discountRate={wish.item.discountRate}
                 price={wish.item.salePrice}
                 itemId={wish.item.itemId}
-                wishStatus={wish.item.wishStatus}
                 onWishChange={handleWishChange}
                 isLoading={isLoading}
               />

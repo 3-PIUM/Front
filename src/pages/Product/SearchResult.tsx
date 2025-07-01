@@ -151,7 +151,6 @@ export default function SearchPage() {
                 ? Math.round((1 - item.salePrice / item.originalPrice) * 100)
                 : 0
             }
-            wishStatus={item.wishStatus}
             isLoading={isLoading}
           />
         ))}
