@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
-const Header = lazy(() => import("../../components/common/Header"));
 const TextHeader = lazy(() => import("../../components/common/TextHeader"));
 import axiosInstance from "../../api/axiosInstance";
 
@@ -23,7 +22,7 @@ interface PurchaseDetailResponse {
 }
 
 const PageWrapper = styled.div`
-  padding: 4rem 1rem;
+  padding: 5.5rem 1rem;
 `;
 
 const DateText = styled.h4`
@@ -159,7 +158,6 @@ export default function PurchaseDetailPage() {
   return (
     <>
       <Suspense fallback={null}>
-        <Header />
         <TextHeader pageName={t.order.detaiTitle} />
       </Suspense>
       <PageWrapper>
