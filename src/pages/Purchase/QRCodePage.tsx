@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import QRCode from "react-qr-code";
 import TextHeader from "../../components/common/TextHeader";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
@@ -29,7 +28,7 @@ const InfoText = styled.p`
 const QRCodePage = () => {
   const memberId = localStorage.getItem("memberId") || "";
   const location = useLocation();
-  const { selectedItems, cartItemIds } = location.state || {};
+  const { selectedItems, cartItemIds, qrUrls } = location.state || {};
   const navigate = useNavigate();
   const { t } = useLocale();
 
@@ -43,6 +42,7 @@ const QRCodePage = () => {
     const purchaseData = {
       date: new Date().toISOString().slice(0, 10),
       items: selectedItems,
+      cartItemIds: cartItemIds,
     };
 
     const previous = JSON.parse(
@@ -52,14 +52,14 @@ const QRCodePage = () => {
     localStorage.setItem("purchaseHistory", JSON.stringify(updated));
   }, [selectedItems, memberId, navigate]);
 
-  const qrValue = `http://3.35.195.90/cart/pay/${memberId}?cartItemIds=${cartItemIds}`;
+  const qrValue = qrUrls;
 
   return (
     <PageWrapper>
       <Header />
       <TextHeader pageName={t.qrPage.title} />
       <QRBox>
-        <QRCode value={qrValue} size={200} />
+        <img src={`data:image/png;base64,${qrValue}`} />
       </QRBox>
       <InfoText>{t.qrPage.instruction[0]}</InfoText>
       <InfoText>{t.qrPage.instruction[1]}</InfoText>
