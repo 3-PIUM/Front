@@ -176,7 +176,7 @@ export default function LogoHeader({}: LogoHeaderProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setHasScrolled(window.scrollY > 300);
+      setHasScrolled(window.scrollY > 100);
     };
 
     window.addEventListener("scroll", handleScroll);

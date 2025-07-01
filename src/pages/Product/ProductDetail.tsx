@@ -47,8 +47,7 @@ const Header = React.lazy(() => import("../../components/common/Header"));
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  padding-bottom: 4rem;
+  height: 90vh;
 `;
 
 const ProductCardWrapper = styled.div`
@@ -59,6 +58,7 @@ const ProductCardWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  padding-bottom: 7rem;
 `;
 
 const TabMenu = styled.div`
@@ -77,6 +77,7 @@ const TabButton = styled.button<{ active: boolean }>`
     ${(props) => (props.active ? "#e6005a" : "transparent")};
   background: none;
   cursor: pointer;
+  font-size: 1rem;
 `;
 
 const BannerImage = styled.img`

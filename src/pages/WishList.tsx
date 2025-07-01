@@ -16,16 +16,10 @@ const Wrapper = styled.div`
 const ItemWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.8rem;
   box-sizing: border-box;
   margin: 2rem auto 0 auto;
   padding-bottom: 80px;
-  @media (max-width: 430px) {
-    gap: 2rem;
-  }
-  @media (max-width: 375px) {
-    gap: 0.8rem;
-  }
 `;
 
 export default function WishList() {

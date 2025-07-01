@@ -139,7 +139,6 @@ const OptionButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #fff;
 `;
@@ -456,6 +455,10 @@ const CartPage = () => {
                       item.availableOptions && item.availableOptions.length > 0
                         ? "inherit"
                         : "#aaa",
+                    border:
+                      item.availableOptions && item.availableOptions.length > 0
+                        ? "1px solid #ccc"
+                        : "none",
                   }}
                 >
                   {t.cart.changeOption}

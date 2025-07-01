@@ -1,22 +1,5 @@
 import styled from "styled-components";
-const VirtualRowWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  box-sizing: border-box;
-  margin: 0 auto;
 
-  @media (max-width: 450px) {
-    gap: 2.4rem;
-  }
-  @media (max-width: 390px) {
-    gap: 1.3rem;
-  }
-
-  @media (max-width: 375px) {
-    gap: 0.8rem;
-  }
-`;
 import Header from "../../components/common/Header";
 import TextIconHeader from "../../components/common/TextIconHeader ";
 import { useNavigate, useParams } from "react-router-dom";
@@ -29,6 +12,15 @@ import SelectMenu from "./SelectMenu";
 import ItemCard from "../../components/product/ItemCard";
 import axiosInstance from "../../api/axiosInstance";
 import { useVirtualizer } from "@tanstack/react-virtual";
+
+const VirtualRowWrapper = styled.div`
+  //
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+`;
 
 const Wrap = styled.div`
   display: flex;
@@ -86,6 +78,7 @@ const MenuWrap = styled.div`
 `;
 
 const MainWrap = styled.div`
+  //
   width: 100%;
   padding: 0 1rem;
 `;
@@ -310,11 +303,12 @@ export default function CategoryList() {
               <VirtualRowWrapper
                 key={virtualRow.key}
                 style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
+                  // position: "absolute",
+                  // top: 0,
+                  // left: 0,
                   width: "100%",
-                  transform: `translateY(${virtualRow.start}px)`,
+                  paddingBottom: "1rem",
+                  // transform: `translateY(${virtualRow.start}px)`,
                 }}
               >
                 {visibleItems.map((item) => (
