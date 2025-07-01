@@ -209,6 +209,7 @@ const ReviewCard = ({
   };
 
   const formatDate = (rawDate: string) => {
+    console.log(rawDate);
     const dateObj = new Date(rawDate);
     const y = dateObj.getFullYear();
     const m = dateObj.getMonth() + 1;

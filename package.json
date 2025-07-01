@@ -13,6 +13,7 @@
     "@tanstack/react-virtual": "^3.13.10",
     "@zxing/browser": "^0.1.5",
     "axios": "^1.9.0",
+    "dayjs": "^1.11.13",
     "framer-motion": "^12.15.0",
     "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
@@ -21,6 +22,7 @@
     "react-qr-code": "^2.0.15",
     "react-router-dom": "^7.6.1",
     "recharts": "^2.15.3",
+    "recoil": "^0.7.7",
     "styled-components": "^6.1.18",
     "zustand": "^5.0.5"
   },
