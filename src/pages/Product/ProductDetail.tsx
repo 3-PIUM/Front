@@ -47,8 +47,10 @@ const Header = React.lazy(() => import("../../components/common/Header"));
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 90vh;
   padding-bottom: 4rem;
+  position: relative;
+  z-index: 0;
 `;
 
 const ProductCardWrapper = styled.div`
@@ -59,6 +61,7 @@ const ProductCardWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  padding-bottom: 7rem;
 `;
 
 const TabMenu = styled.div`
@@ -77,6 +80,7 @@ const TabButton = styled.button<{ active: boolean }>`
     ${(props) => (props.active ? "#e6005a" : "transparent")};
   background: none;
   cursor: pointer;
+  font-size: 1rem;
 `;
 
 const BannerImage = styled.img`
@@ -140,6 +144,8 @@ export default function ProductDetail() {
   const [showAllDetailImages, setShowAllDetailImages] = useState(false);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const [hasScrolled, setHasScrolled] = useState(false);
 
   useEffect(() => {
     const fetchViewCount = async () => {
@@ -239,7 +245,36 @@ export default function ProductDetail() {
         console.error("memberId 파싱 실패:", e);
       }
     }
-    return () => localStorage.removeItem("scannedProduct");
+    return () => {
+      localStorage.removeItem("scannedProduct");
+    };
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const wrapper = pageWrapperRef.current;
+      if (wrapper) {
+        console.log("✅ wrapper 연결됨, 이벤트 등록 시도");
+
+        const handleScroll = () => {
+          console.log("📦 스크롤 이벤트 발생 - scrollTop:", wrapper.scrollTop);
+          setHasScrolled(wrapper.scrollTop > 0);
+        };
+
+        wrapper.addEventListener("scroll", handleScroll);
+        console.log("✅ 스크롤 이벤트 리스너 등록 완료");
+
+        clearInterval(interval); // 이벤트 중복 방지
+        return () => {
+          wrapper.removeEventListener("scroll", handleScroll);
+          console.log("🧹 스크롤 이벤트 리스너 제거");
+        };
+      } else {
+        console.log("⌛ wrapper가 아직 null임");
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -356,7 +391,7 @@ export default function ProductDetail() {
         <Header />
       </Suspense>
       <Suspense fallback={null}>
-        <TextIconHeader pageName="" />
+        <TextIconHeader pageName="" hasScrolled={hasScrolled} />
       </Suspense>
       <ProductCardWrapper ref={pageWrapperRef}>
         <Suspense fallback={null}>
