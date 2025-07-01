@@ -122,12 +122,20 @@ const QRPOSPage = () => {
 
   useEffect(() => {
     const fetchCartItems = async () => {
-      const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
-      if (!token || !cartItemIdsFromQuery) return;
+      console.log("✅ useEffect 진입");
+      console.log("📡 API 호출 시작: /cart/item/details");
+      console.log("➡️ cartIds param:", cartItemIdsFromQuery);
+      if (!cartItemIdsFromQuery) return;
 
       try {
-        const res = await axiosInstance.get(`/cart/items`);
+        const res = await axiosInstance.get(`/cart/item/details`, {
+          params: {
+            cartIds: cartItemIdsFromQuery,
+          },
+        });
+        console.log("📥 API 응답:", res);
         const items = res.data.result?.items || [];
+        console.log("🧾 받은 items:", items);
         const selected = items
           .filter((item: any) =>
             cartItemIdsFromQuery.split(",").includes(String(item.cartItemId))
@@ -138,6 +146,7 @@ const QRPOSPage = () => {
             quantity: item.quantity,
             discountedPrice: item.salePrice,
           }));
+        console.log("✅ 필터된 selectedItems:", selected);
         setSelectedItems(selected);
       } catch (err) {
         console.error("❗장바구니 항목 불러오기 실패", err);

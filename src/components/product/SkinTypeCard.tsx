@@ -29,6 +29,8 @@ const TextBox = styled.div`
   flex-direction: column;
   align-items: flex-end;
   flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Title = styled.div<{ isTop: boolean }>`

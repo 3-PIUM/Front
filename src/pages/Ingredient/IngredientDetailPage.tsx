@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { useState, useEffect, Suspense, lazy } from "react";
+import { useState, useEffect, Suspense, lazy, useRef } from "react";
 import { useLocale } from "../../context/LanguageContext";
 import { useLocation } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
+import ScrollToTopButton from "../../components/common/ScrollToTopButton";
 
 const TextHeader = lazy(() => import("../../components/common/TextHeader"));
 const ScorePieChart = lazy(
@@ -18,7 +19,7 @@ const PageWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 4rem 1rem;
+  padding: 4rem 1rem 0rem;
   height: calc(100vh - 5rem);
   overflow-y: auto;
 `;
@@ -46,7 +47,7 @@ const Highlight = styled.strong`
 `;
 
 const Wrapper = styled.div`
-  padding-top: 1.5rem;
+  padding: 1.5rem 0rem 0rem;
 `;
 
 const ChartWrapper = styled.div`
@@ -91,6 +92,7 @@ export default function IngredientDetailPage() {
   const [openScore, setOpenScore] = useState<string | null>(null);
   const [groupedData, setGroupedData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -175,7 +177,7 @@ export default function IngredientDetailPage() {
           <TextHeader pageName={t.ingredientDetail.ingredientDetail} />
         </Suspense>
       </PageWrapper>
-      <Container>
+      <Container ref={containerRef}>
         <Title>{t.ingredientDetail.title}</Title>
         <Description>
           {t.ingredientDetail.summary1}{" "}
@@ -249,6 +251,7 @@ export default function IngredientDetailPage() {
             ))}
         </Wrapper>
       </Container>
+      <ScrollToTopButton scrollTargetRef={containerRef} bottom="2rem" />
     </>
   );
 }
