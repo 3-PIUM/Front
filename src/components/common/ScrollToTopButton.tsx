@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 
-const TopButton = styled.button<{ $visible: boolean }>`
+const TopButton = styled.button<{ $visible: boolean; $bottom?: string }>`
   position: fixed;
-  bottom: 5rem;
+  bottom: ${({ $bottom }) => $bottom || "5rem"};
   right: 1rem;
   padding: 0.7rem 1rem;
   background-color: #ff4081;
@@ -22,8 +22,9 @@ const TopButton = styled.button<{ $visible: boolean }>`
 
 interface Props {
   scrollTargetRef: React.RefObject<HTMLDivElement | null>;
+  bottom?: string;
 }
-export default function ScrollToTopButton({ scrollTargetRef }: Props) {
+export default function ScrollToTopButton({ scrollTargetRef, bottom }: Props) {
   const scrollToTop = () => {
     scrollTargetRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -41,7 +42,7 @@ export default function ScrollToTopButton({ scrollTargetRef }: Props) {
   }, []);
 
   return (
-    <TopButton onClick={scrollToTop} $visible={true}>
+    <TopButton onClick={scrollToTop} $visible={true} $bottom={bottom}>
       ↑ {t.scroll.top}
     </TopButton>
   );

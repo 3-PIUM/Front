@@ -172,7 +172,10 @@ export default function ProductDetail() {
       if (!itemId) return;
       console.log("⚠️ 페이지 이탈 - 조회수 감소 시도");
       try {
-        await axiosInstance.post(`/item/view/${itemId}/decrease`);
+        const url = `${
+          import.meta.env.VITE_APP_BASE_URL
+        }/item/view/${itemId}/decrease`;
+        navigator.sendBeacon(url);
       } catch (err) {
         console.error("조회수 감소 실패", err);
       }
