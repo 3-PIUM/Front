@@ -10,7 +10,6 @@ const ScorePieChart = lazy(
   () => import("../../components/ingredient/ScorePieChart")
 );
 const ScoreBar = lazy(() => import("../../components/ingredient/ScoreBar"));
-const Header = lazy(() => import("../../components/common/Header"));
 
 const PageWrapper = styled.div`
   overflow: hidden;
@@ -19,7 +18,7 @@ const PageWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 4rem 1rem 0rem;
+  padding: 6rem 1rem 0rem;
   height: calc(100vh - 5rem);
   overflow-y: auto;
 `;
@@ -170,9 +169,6 @@ export default function IngredientDetailPage() {
   return (
     <>
       <PageWrapper>
-        <Suspense fallback={null}>
-          <Header />
-        </Suspense>
         <Suspense fallback={null}>
           <TextHeader pageName={t.ingredientDetail.ingredientDetail} />
         </Suspense>

@@ -42,13 +42,11 @@ const ProductOptionSelector = React.lazy(
 const ScrollToTopButton = React.lazy(
   () => import("../../components/common/ScrollToTopButton")
 );
-const Header = React.lazy(() => import("../../components/common/Header"));
 
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   height: 90vh;
-  padding-bottom: 4rem;
   position: relative;
   z-index: 0;
 `;
@@ -61,6 +59,7 @@ const ProductCardWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  margin-top: 1rem;
   padding-bottom: 1.5rem;
 `;
 
@@ -390,9 +389,6 @@ export default function ProductDetail() {
 
   return (
     <PageWrapper>
-      <Suspense fallback={null}>
-        <Header />
-      </Suspense>
       <Suspense fallback={null}>
         <TextIconHeader pageName="" hasScrolled={hasScrolled} />
       </Suspense>
