@@ -3,6 +3,7 @@ import routes from "./Routes";
 import { LanguageProvider } from "./context/LanguageContext";
 import { Suspense } from "react";
 import Loading from "./pages/Loading";
+import { WishlistProvider } from "./context/WishlistContext";
 
 const App = () => {
   const location = useLocation();
@@ -10,9 +11,11 @@ const App = () => {
 
   return (
     <LanguageProvider>
-      <Suspense fallback={<Loading />}>
-        <div key={location.key}>{content}</div>
-      </Suspense>
+      <WishlistProvider>
+        <Suspense fallback={<Loading />}>
+          <div key={location.key}>{content}</div>
+        </Suspense>
+      </WishlistProvider>
     </LanguageProvider>
   );
 };

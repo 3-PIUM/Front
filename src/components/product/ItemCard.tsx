@@ -1,10 +1,11 @@
 import styled, { keyframes } from "styled-components";
 import colors from "../../styles/colors";
 import { FaHeart } from "react-icons/fa6";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import { useLocale } from "../../context/LanguageContext";
+import { useWishlist } from "../../context/WishlistContext";
+import { useState, useEffect } from "react";
 
 const shimmer = keyframes`
   0% {
@@ -134,7 +135,6 @@ interface ItemProps {
   discountRate: number;
   price: number;
   itemId: number;
-  wishStatus?: boolean;
   onWishChange?: () => void;
   size?: string;
   isLoading: boolean;
@@ -146,24 +146,30 @@ export default function ItemCard({
   discountRate,
   price,
   itemId,
-  wishStatus,
   onWishChange,
   size,
   isLoading,
 }: ItemProps) {
-  const [isWished, setIsWished] = useState(wishStatus ?? false);
   const navigate = useNavigate();
   const { t } = useLocale();
 
+  // 찜 전역 관리
+  const { toggleWishlist, isWishlisted } = useWishlist();
+
   const isLoggedIn = Boolean(sessionStorage.getItem("accessToken"));
+
+  useEffect(() => {
+    console.log("전역 찜 상태:", isWishlisted(itemId));
+  }, [isWishlisted, itemId]);
 
   const handleWish = async (event: React.MouseEvent) => {
     event.stopPropagation();
 
-    if (!isWished) {
+    if (!isWishlisted(itemId)) {
       try {
         const response = await axiosInstance.post(`/wishlist/${itemId}`);
-        setIsWished(true);
+        toggleWishlist(itemId);
+        onWishChange?.();
         console.log("찜 추가가 됐습니다", response.data);
       } catch {
         console.error("찜 추가에 실패했습니다");
@@ -171,9 +177,9 @@ export default function ItemCard({
     } else {
       try {
         await axiosInstance.delete(`/wishlist/${itemId}`);
-        console.log("찜 취소가 됐습니다");
-        setIsWished(false);
+        toggleWishlist(itemId);
         onWishChange?.();
+        console.log("찜 취소가 됐습니다");
       } catch {
         console.error("찜 취소에 실패했습니다");
       }
@@ -228,7 +234,9 @@ export default function ItemCard({
               <Heart>
                 <FaHeart
                   fontSize={"1.4rem"}
-                  color={isWished ? colors.mainPink : colors.mediumGrey}
+                  color={
+                    isWishlisted(itemId) ? colors.mainPink : colors.mediumGrey
+                  }
                   onClick={handleWish}
                 />
               </Heart>
