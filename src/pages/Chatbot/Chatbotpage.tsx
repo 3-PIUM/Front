@@ -6,7 +6,6 @@ import ChatSuggestions from "../../components/chatbot/ChatSuggestions";
 import ChatItemList from "../../components/chatbot/ChatItemList";
 import ChatInputBox from "../../components/chatbot/ChatInputBox";
 import styled from "styled-components";
-import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
