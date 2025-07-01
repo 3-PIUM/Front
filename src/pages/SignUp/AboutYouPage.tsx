@@ -2,12 +2,11 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import Button from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/common/Header";
 import { useLocale } from "../../context/LanguageContext";
 import SkipHeader from "../../components/Survey/SkipHeader";
 
 const Wrap = styled.div`
-  padding: 0 1rem;
+  padding: 2.5rem 1rem;
 `;
 
 const MainText = styled.div`
@@ -88,7 +87,6 @@ export default function QuickInfo() {
   return (
     <>
       <Wrap>
-        <Header />
         <SkipHeader />
         <MainText>
           {renderTitleLine(t.aboutYou.mainTitle.line1, "line1")}

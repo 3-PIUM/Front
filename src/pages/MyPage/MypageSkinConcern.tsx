@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import SelectButton from "../../components/SelectForm/SelectButton";
 import { useEffect, useState } from "react";
-import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";

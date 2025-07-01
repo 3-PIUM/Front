@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 import { useEffect, useState } from "react";
@@ -116,7 +115,6 @@ export default function SkinTest() {
 
   return (
     <Wrapper>
-      <Header />
       <TextHeader pageName={t.survey.skinTypeTestTitle} />
       <ContentWrapper>
         {currentQuestion ? (

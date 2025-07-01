@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../../components/common/Header";
 import colors from "../../styles/colors";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -23,7 +22,7 @@ const SkipWrapper = styled.div`
   font-size: 0.875rem;
   align-items: center;
   color: ${colors.darkGrey};
-  padding: 0 1rem;
+  padding: 2.5rem 1rem;
 `;
 
 const TextWrapper = styled.div`
@@ -155,7 +154,6 @@ export default function SurveyPage() {
   return (
     <>
       <Wrap>
-        <Header />
         <SkipWrapper>
           <TextWrapper>
             <Link to="/welcome">

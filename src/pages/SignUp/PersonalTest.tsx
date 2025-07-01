@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import Button from "../../components/common/Button";
 import colors from "../../styles/colors";
@@ -117,7 +116,6 @@ export default function PersonalTest() {
 
   return (
     <Wrap>
-      <Header />
       <TextHeader pageName={t.colorTest.testTitle} />
       <ContentWrapper>
         <UploadWrapper>
