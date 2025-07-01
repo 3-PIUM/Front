@@ -27,6 +27,7 @@
     "emailRequest": "Send Code",
     "emailVerify": "Verify",
     "emailCheck": "Verify Email",
+    "emailDuplicate": "This email is already in use.",
     "password": "Password",
     "passwordCheck": "Confirm Password",
     "country": "Country",
