@@ -1,6 +1,4 @@
 import styled from "styled-components";
-
-import Header from "../../components/common/Header";
 import TextIconHeader from "../../components/common/TextIconHeader ";
 import { useNavigate, useParams } from "react-router-dom";
 import colors from "../../styles/colors";
@@ -32,11 +30,10 @@ const Wrap = styled.div`
 
 const SubCategoryWrap = styled.div`
   padding: 0 1rem;
-  margin-top: 44px;
+  margin-top: 3.75rem;
   position: fixed;
   background-color: ${colors.white};
   z-index: 60;
-
   overflow-x: auto;
   width: 100%;
   flex-wrap: wrap;
@@ -56,8 +53,9 @@ const SubCategoryList = styled.div`
 const SubCategoryUl = styled.ul`
   display: flex;
   width: max-content;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   flex-wrap: nowrap;
+  align-items: center;
   &::after {
     content: "";
     flex: 0 0 1rem;
@@ -75,7 +73,7 @@ const SubCategoryLi = styled.li<{ $selected: boolean }>`
 
 const MenuWrap = styled.div`
   display: flex;
-  margin-top: 5.5rem;
+  margin-top: 6.5rem;
 `;
 
 const MainWrap = styled.div`
@@ -87,11 +85,9 @@ const SortWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: end;
-  padding: 1.5rem 1rem 1rem 1rem;
-  position: sticky;
+  padding: 1rem;
   top: 8rem;
   background-color: ${colors.white};
-  z-index: 70;
   height: 2rem;
   align-items: center;
 `;
@@ -229,7 +225,6 @@ export default function CategoryList() {
 
   return (
     <Wrap>
-      <Header />
       <TextIconHeader
         pageName={Category}
         isVegan={topClicked === "vegan"}

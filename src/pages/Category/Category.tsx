@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../../components/common/Header";
 import colors from "../../styles/colors";
 import { useRef, useState, useEffect } from "react";
 import { VscChevronRight } from "react-icons/vsc";
@@ -8,6 +7,23 @@ import { useLocale } from "../../context/LanguageContext";
 import React from "react";
 import { FaLeaf } from "react-icons/fa";
 
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+`;
+
+const Space = styled.div`
+  width: 100%;
+  height: 2rem;
+  min-height: 2rem;
+  content: "";
+  background-color: ${colors.white};
+  position: fixed;
+  top: 0;
+  left: 0;
+`;
+
 const HeaderWrap = styled.div`
   position: fixed;
   width: 100%;
@@ -15,6 +31,7 @@ const HeaderWrap = styled.div`
   height: 3.5rem;
   background-color: ${colors.white};
   z-index: 100;
+  margin-top: 2rem;
 `;
 
 const TopWrapper = styled.div<{ $isSelected: boolean }>`
@@ -46,17 +63,10 @@ const PageName = styled.div`
   text-align: center;
 `;
 
-const Wrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 90vh;
-`;
-
 const Line = styled.hr`
   display: flex;
   border: none;
   background-color: ${colors.lightGrey};
-  /* height: 0.5px; */
   margin-top: 55px;
 `;
 
@@ -64,6 +74,7 @@ const CategoryWrapper = styled.div`
   display: flex;
   flex: 1;
   margin-left: 35%;
+  margin-top: 2.1rem;
 `;
 
 const CategoryItemList = styled.div`
@@ -258,7 +269,7 @@ export default function Category() {
 
   return (
     <Wrap>
-      <Header />
+      <Space />
       <HeaderWrap>
         <TopWrapper
           $isSelected={topClicked === "카테고리"}

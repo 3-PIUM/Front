@@ -6,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 const HeaderWrap = styled.div<{ bgColor?: string }>`
   position: fixed;
   width: 100%;
-  height: 60px;
+  height: 4rem;
   display: flex;
   padding: 0 1rem;
   box-sizing: border-box;
   align-items: center;
-
   background-color: ${({ bgColor }) => bgColor || colors.white};
+  border: 1px solid red;
 `;
 
 const PageName = styled.div`

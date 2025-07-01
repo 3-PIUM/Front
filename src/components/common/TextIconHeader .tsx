@@ -11,12 +11,13 @@ import { FaLeaf } from "react-icons/fa";
 const HeaderWrap = styled.div<{ hasScrolled: boolean }>`
   position: fixed;
   width: 100%;
-  height: 44px;
+  height: 3.75rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: ${colors.white};
   padding: 0 1rem;
+  padding-top: 1rem;
   z-index: 100;
   box-shadow: ${({ hasScrolled }) =>
     hasScrolled ? "0 3px 6px rgba(0, 0, 0, 0.1)" : "none"};
@@ -34,7 +35,6 @@ const TextWrapper = styled.div`
   width: auto;
   position: absolute;
   left: 50%;
-
   transform: translateX(-50%);
   gap: 0.5rem;
 `;
