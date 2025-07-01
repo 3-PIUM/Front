@@ -24,10 +24,10 @@ const MenuWrap = styled.div`
 
 const Menu = styled.div`
   display: flex;
-  height: 5.5rem;
+  height: 5.7rem;
   flex-direction: row;
   justify-content: space-between;
-  padding-bottom: 1rem;
+  padding-bottom: 1.2rem;
 `;
 
 const MenuLeft = styled.div`
