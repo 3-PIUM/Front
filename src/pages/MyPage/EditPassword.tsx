@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import Button from "../../components/common/Button";
-import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import PasswordInput from "../../components/SignUpForm/PasswordInput";
 import { useLocale } from "../../context/LanguageContext";
@@ -17,7 +16,7 @@ const Wrap = styled.div`
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 4rem;
+  margin-top: 6rem;
   padding: 0 1rem;
   gap: 1rem;
 `;
@@ -92,7 +91,6 @@ export default function EditPassword() {
   return (
     <>
       <Wrap>
-        <Header />
         <TextHeader pageName={t.mypage.changePassword} />
         <FormWrapper>
           <PasswordInput

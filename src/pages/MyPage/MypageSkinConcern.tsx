@@ -10,7 +10,7 @@ import Button from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
-  padding: 3rem 1rem 0 1rem;
+  padding: 4.5rem 1rem 0 1rem;
   width: 100%;
   padding-right: 1rem;
 `;
@@ -138,7 +138,6 @@ export default function SettingSkinConcern() {
 
   return (
     <>
-      <Header />
       <TextHeader pageName={t.mypage.skinConcerns} />
       <Wrapper>
         <AnswerWrapper>

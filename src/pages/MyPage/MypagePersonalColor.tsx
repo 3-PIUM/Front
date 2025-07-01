@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import PersonalColorButton from "../../components/SelectForm/PersonalColorButton";
 import { useEffect, useState } from "react";
@@ -12,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3rem 1rem 0 1rem;
+  padding: 4.5rem 1rem 0 1rem;
   width: 100%;
 `;
 
@@ -118,7 +117,6 @@ export default function SettingPersonalColor() {
 
   return (
     <>
-      <Header />
       <TextHeader pageName={t.mypage.personalColor.pageTitle} />
       <Wrapper>
         <AnswerWrapper>

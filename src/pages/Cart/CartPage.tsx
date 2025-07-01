@@ -11,7 +11,6 @@ const OptionModal = React.lazy(
 const TextHeader = React.lazy(
   () => import("../../components/common/TextHeader")
 );
-const Header = React.lazy(() => import("../../components/common/Header"));
 
 const ProductListWrapper = styled.div`
   max-height: 62vh;
@@ -33,10 +32,10 @@ const PageWrapper = styled.div`
 const HeaderControlBar = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0 1rem 0.5rem;
+  padding: 1rem 1rem 0.5rem;
   font-size: 14px;
   color: #666;
-  padding-top: 4rem;
+  padding-top: 5rem;
 `;
 
 const SelectAll = styled.span`
@@ -391,9 +390,6 @@ const CartPage = () => {
 
   return (
     <PageWrapper>
-      <Suspense fallback={null}>
-        <Header />
-      </Suspense>
       <Suspense fallback={null}>
         <TextHeader pageName={t.cart.pageTitle} />
       </Suspense>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
@@ -21,7 +20,7 @@ const Wrap = styled.div`
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 4rem;
+  margin-top: 6rem;
   padding: 0 1rem;
   gap: 1rem;
 `;
@@ -196,7 +195,6 @@ export default function EditProfile() {
   return (
     <>
       <Wrap>
-        <Header />
         <TextHeader pageName={t.mypage.personalTitle} />
         <FormWrapper>
           <Nickname

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import TextHeader from "../../components/common/TextHeader";
-import Header from "../../components/common/Header";
 import colors from "../../styles/colors";
 import { useEffect } from "react";
 import { useLocale } from "../../context/LanguageContext";
@@ -19,7 +18,7 @@ const Space = styled.div`
   width: 100%;
   height: 0.5rem;
   background-color: #f5f5f5;
-  margin-top: 3rem;
+  margin-top: 4.5rem;
 `;
 
 const LanguageWrapper = styled.div`
@@ -77,7 +76,6 @@ export default function SettingLanguange() {
 
   return (
     <Wrap>
-      <Header />
       <TextHeader pageName={t.mypage.languageSetting} />
       <Space />
       <LanguageWrapper>

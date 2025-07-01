@@ -4,11 +4,10 @@ import TextHeader from "../../components/common/TextHeader";
 import Button from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
-import Header from "../../components/common/Header";
 import axiosInstance from "../../api/axiosInstance";
 
 const PageWrapper = styled.div`
-  padding: 4rem 1.2rem 8rem;
+  padding: 5.5rem 1.2rem 8rem;
   background-color: #fff;
 `;
 
@@ -151,7 +150,6 @@ export default function WithdrawalPage() {
 
   return (
     <>
-      <Header />
       <TextHeader pageName={t.withdrawal.pageTitle} />
       <PageWrapper>
         <Question>{t.withdrawal.question}</Question>

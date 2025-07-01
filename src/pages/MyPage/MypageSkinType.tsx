@@ -12,7 +12,7 @@ import Button from "../../components/common/Button";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3rem 1rem 0 1rem;
+  padding: 4.5rem 1rem 0 1rem;
   width: 100%;
 `;
 
@@ -122,7 +122,6 @@ export default function SettingSkinType() {
 
   return (
     <>
-      <Header />
       <TextHeader pageName={t.mypage.skinType.pageTitle} />
       <Wrapper>
         <AnswerWrapper>
