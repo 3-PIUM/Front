@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 
 const TopButton = styled.button<{ $visible: boolean; $bottom?: string }>`
+  position: fixed;
   bottom: ${({ $bottom }) => $bottom || "5rem"};
   right: 1rem;
   padding: 0.7rem 1rem;

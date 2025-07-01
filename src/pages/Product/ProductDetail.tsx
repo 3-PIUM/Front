@@ -47,7 +47,7 @@ const Header = React.lazy(() => import("../../components/common/Header"));
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 90vh;
+  height: 95vh;
   padding-bottom: 4rem;
   position: relative;
   z-index: 0;
@@ -699,7 +699,7 @@ export default function ProductDetail() {
           </ReviewWrapper>
         )}
         <Suspense fallback={null}>
-          <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
+          <ScrollToTopButton scrollTargetRef={pageWrapperRef} bottom="6rem" />
         </Suspense>
 
         {showOptionAlert && (
