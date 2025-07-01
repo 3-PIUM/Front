@@ -26,7 +26,7 @@ const ChatPageContainer = styled.div`
 const ChatContent = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 3rem 1rem 2.5rem;
+  padding: 3rem 1rem 3.5rem;
 `;
 const DateText = styled.div`
   text-align: center;
