@@ -32,7 +32,7 @@ const Tab = styled.div<{ active: boolean }>`
   color: ${({ active }) => (active ? colors.mainPink : "#aaa")};
   border-bottom: ${({ active }) =>
     active ? `2px solid ${colors.mainPink}` : "none"};
-  padding-bottom: 4px;
+  padding-bottom: 5px;
   cursor: pointer;
 `;
 
@@ -40,6 +40,9 @@ const TagContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 0.5rem;
 `;
 
 const Tag = styled.div`
@@ -254,8 +257,8 @@ export default function IngredientWarningSummary({
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: "0rem",
                 position: "relative",
+                backgroundColor: "transparent",
               }}
             >
               <div
