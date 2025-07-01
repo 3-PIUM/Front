@@ -40,7 +40,7 @@ const BubbleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 1000;
+  z-index: 900;
 `;
 
 const SpeechBubble = styled.div`
