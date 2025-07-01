@@ -24,35 +24,73 @@ const SkeletonBase = styled.div`
 const ItemWrap = styled.div<{ size?: string }>`
   display: flex;
   flex-direction: column;
-  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
   gap: 0.3rem;
+  @media (max-width: 430px) {
+    width: ${({ size }) => (size === "big" ? "11rem" : "8rem")};
+  }
+  @media (max-width: 400px) {
+    width: ${({ size }) => (size === "big" ? "10rem" : "7rem")};
+  }
+  @media (max-width: 375px) {
+    width: ${({ size }) => (size === "big" ? "9.5rem" : "6.5rem")};
+  }
 `;
 
 const ImageWrap = styled.div<{ size?: string }>`
   position: relative;
-  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
-  height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
   flex-shrink: 1;
   background-color: #f5f5f5;
   border-radius: 0.625rem;
   overflow: hidden;
+
+  @media (max-width: 430px) {
+    width: ${({ size }) => (size === "big" ? "11rem" : "8rem")};
+    height: ${({ size }) => (size === "big" ? "11rem" : "8rem")};
+  }
+  @media (max-width: 400px) {
+    width: ${({ size }) => (size === "big" ? "10rem" : "7rem")};
+    height: ${({ size }) => (size === "big" ? "10rem" : "7rem")};
+  }
+  @media (max-width: 375px) {
+    width: ${({ size }) => (size === "big" ? "9.5rem" : "6.5rem")};
+    height: ${({ size }) => (size === "big" ? "9.5rem" : "6.5rem")};
+  }
 `;
 
 const ItemImage = styled.img<{ $isLoading: boolean; size?: string }>`
-  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
-  height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
-
   border-radius: 0.625rem;
   opacity: ${({ $isLoading }) => ($isLoading ? 0 : 1)};
   transition: opacity 0.3s ease;
+
+  @media (max-width: 430px) {
+    width: ${({ size }) => (size === "big" ? "11rem" : "8rem")};
+    height: ${({ size }) => (size === "big" ? "11rem" : "8rem")};
+  }
+  @media (max-width: 400px) {
+    width: ${({ size }) => (size === "big" ? "10rem" : "7rem")};
+    height: ${({ size }) => (size === "big" ? "10rem" : "7rem")};
+  }
+  @media (max-width: 375px) {
+    width: ${({ size }) => (size === "big" ? "9.5rem" : "6.5rem")};
+    height: ${({ size }) => (size === "big" ? "9.5rem" : "6.5rem")};
+  }
 `;
 
 const SkeletonImage = styled(SkeletonBase)<{ size?: string }>`
-  width: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
-
-  height: ${({ size }) => (size === "big" ? "10rem" : "6.5rem")};
-
   border-radius: 0.625rem;
+
+  @media (max-width: 430px) {
+    width: ${({ size }) => (size === "big" ? "11rem" : "8rem")};
+    height: ${({ size }) => (size === "big" ? "11rem" : "8rem")};
+  }
+  @media (max-width: 400px) {
+    width: ${({ size }) => (size === "big" ? "10rem" : "7rem")};
+    height: ${({ size }) => (size === "big" ? "10rem" : "7rem")};
+  }
+  @media (max-width: 375px) {
+    width: ${({ size }) => (size === "big" ? "9.5rem" : "6.5rem")};
+    height: ${({ size }) => (size === "big" ? "9.5rem" : "6.5rem")};
+  }
 `;
 
 const Heart = styled.div`
