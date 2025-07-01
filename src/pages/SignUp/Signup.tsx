@@ -20,14 +20,14 @@ const Wrap = styled.div`
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 4rem;
+  margin-top: 5.5rem;
   padding: 0 1rem;
   gap: 1rem;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
-  padding: 0 1rem;
+  padding: 0 1rem 1rem 1rem;
   margin-top: 2rem;
 `;
 

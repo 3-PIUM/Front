@@ -22,7 +22,6 @@ const Wrap = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-  padding-top: 44px;
   position: fixed;
   top: 0;
   left: 0;

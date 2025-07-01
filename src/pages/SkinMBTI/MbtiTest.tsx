@@ -14,7 +14,6 @@ const Wrap = styled.div`
   background-image: linear-gradient(to bottom right, #ffb199, #ebd7f5),
     linear-gradient(to top right, #ffd3ad, #fbd6e5);
   background-blend-mode: lighten;
-  padding-top: 44px;
 `;
 
 const Wrapper = styled.div`
