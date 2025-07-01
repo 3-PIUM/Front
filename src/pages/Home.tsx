@@ -10,6 +10,7 @@ import PersonalRecommended from "../components/PersonalRecommended";
 import WeeklyBest from "../components/product/WeeklyBest";
 import Top10 from "../components/product/Top10";
 import AreaPopular from "../components/product/AreaPopular";
+import TrendItem from "../components/product/TrendItem";
 
 const Wrapper = styled.div`
   display: flex;
@@ -261,6 +262,7 @@ export default function Home() {
           setIsLoading={setIsLoading}
           isLoading={isLoading}
         />
+        <TrendItem />
         <Top10 />
         <WeeklyBest />
         <AreaPopular />

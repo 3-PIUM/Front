@@ -695,7 +695,7 @@ export default function ProductDetail() {
           </ReviewWrapper>
         )}
         <Suspense fallback={null}>
-          <ScrollToTopButton scrollTargetRef={pageWrapperRef} />
+          <ScrollToTopButton scrollTargetRef={pageWrapperRef} bottom="6rem" />
         </Suspense>
 
         {showOptionAlert && (

@@ -18,8 +18,8 @@ const PageWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 6rem 1rem 0rem;
-  height: calc(100vh - 5rem);
+  padding: 4rem 1rem 2rem;
+  height: calc(110vh - 5rem);
   overflow-y: auto;
 `;
 

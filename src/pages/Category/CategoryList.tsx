@@ -38,6 +38,7 @@ const SubCategoryWrap = styled.div`
   width: 100%;
   flex-wrap: wrap;
   font-size: 0.875rem;
+  white-space: nowrap;
 
   -ms-overflow-style: none;
   scrollbar-width: none;

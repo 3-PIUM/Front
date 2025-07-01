@@ -9,7 +9,6 @@ const PurchaseNot = lazy(
   () => import("../../components/ingredient/PurchaseNot")
 );
 const TextHeader = lazy(() => import("../../components/common/TextHeader"));
-const Header = lazy(() => import("../../components/common/Header"));
 
 interface Purchase {
   date: string;
@@ -18,7 +17,7 @@ interface Purchase {
 }
 
 const Wrapper = styled.div`
-  padding: 4rem 1rem;
+  padding: 5.5rem 1rem;
 `;
 
 const TopList = styled.div`
@@ -98,7 +97,6 @@ export default function PurchaseListPage() {
 
   return (
     <Suspense fallback={null}>
-      <Header />
       <TextHeader pageName={t.order.history} />
       <Wrapper>
         {purchases === null ? null : purchases.length === 0 ? (
