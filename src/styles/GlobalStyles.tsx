@@ -33,7 +33,6 @@ const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     background-color: ${colors.white};
     color: ${colors.black};
-    padding-top: 44px;
     padding-bottom: 34px;
     }
 
