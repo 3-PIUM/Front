@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../components/common/Header";
 import PageTitle from "../components/common/PageTitle";
 import ItemCard from "../components/product/ItemCard";
 import EmptyWishView from "../components/wishlist/EmptyWishView";
