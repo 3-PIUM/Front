@@ -39,12 +39,12 @@ const FeatureAndTips = styled.div`
 
 const Feature = styled.div`
   display: flex;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
 `;
 
 const Tips = styled.div`
   display: flex;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
 `;
 
 const Top = styled.div`

@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import { useLocale } from "../../context/LanguageContext";
 import { useNavigate } from "react-router-dom";
+import colors from "../../styles/colors";
 
 const Wrapper = styled.div`
   flex: 1;
@@ -30,6 +31,7 @@ const Button = styled.button`
   border: 1px solid black;
   font-weight: 700;
   background-color: #a6ff83;
+  color: ${colors.black};
 `;
 
 export default function GuestMBTI() {
