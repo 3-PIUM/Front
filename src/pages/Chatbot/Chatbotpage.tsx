@@ -6,7 +6,6 @@ import ChatSuggestions from "../../components/chatbot/ChatSuggestions";
 import ChatItemList from "../../components/chatbot/ChatItemList";
 import ChatInputBox from "../../components/chatbot/ChatInputBox";
 import styled from "styled-components";
-import Header from "../../components/common/Header";
 import TextHeader from "../../components/common/TextHeader";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +25,7 @@ const ChatPageContainer = styled.div`
 const ChatContent = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 4rem 1rem 2.5rem;
+  padding: 4rem 1rem 5rem;
 `;
 const DateText = styled.div`
   text-align: center;
@@ -398,13 +397,17 @@ export default function ChatbotPage() {
             <ChatItemList
               title={t.compare.cartList}
               items={cartItems}
-              selectedIds={selectedCompareItems.map((item) => item.id)}
+              selectedIds={selectedCompareItems
+                .filter((item) => item.source === "cart")
+                .map((item) => item.id)}
               onToggle={(id) => handleCompareSelect(id, "cart")}
             />
             <ChatItemList
               title={t.compare.wishlist}
               items={wishItems}
-              selectedIds={selectedCompareItems.map((item) => item.id)}
+              selectedIds={selectedCompareItems
+                .filter((item) => item.source === "wish")
+                .map((item) => item.id)}
               onToggle={(id) => handleCompareSelect(id, "wish")}
             />
           </>

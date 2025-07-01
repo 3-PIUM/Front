@@ -259,7 +259,6 @@ export default function ProductDetail() {
         console.log("✅ wrapper 연결됨, 이벤트 등록 시도");
 
         const handleScroll = () => {
-          console.log("📦 스크롤 이벤트 발생 - scrollTop:", wrapper.scrollTop);
           setHasScrolled(wrapper.scrollTop > 0);
         };
 
@@ -291,7 +290,7 @@ export default function ProductDetail() {
           reviewId: r.reviewId,
           memberName: r.memberName,
           memberId: r.memberId,
-          date: new Date(r.updatedAt).toLocaleDateString(),
+          date: new Date(`${r.updatedAt}T00:00:00`),
           rating: r.rating,
           content: r.content,
           images: r.reviewImages,
@@ -453,10 +452,6 @@ export default function ProductDetail() {
                   setTimeout(() => setIsLoading(false), 500);
                 } catch (err: any) {
                   console.error("장바구니 추가 실패", err);
-                  alert(
-                    err.response?.data?.message ||
-                      "장바구니에 추가할 수 없습니다."
-                  );
                 }
               }}
             />
