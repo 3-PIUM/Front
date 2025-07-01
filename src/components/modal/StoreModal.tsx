@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import colors from "../../styles/colors";
 import { useLocale } from "../../context/LanguageContext";
-import { useState, useEffect } from "react";
 
 export interface Store {
   name: string;
@@ -15,6 +14,7 @@ interface StoreModalProps {
   onClose: () => void;
   onSelect: (store: Store) => void;
   stores: Store[];
+  selectedStore: Store | null;
 }
 
 const Overlay = styled.div`
@@ -88,16 +88,9 @@ export default function StoreModal({
   onClose,
   onSelect,
   stores,
+  selectedStore,
 }: StoreModalProps) {
-  const [selectedStore, setSelectedStore] = useState<Store | null>(() => {
-    const saved = localStorage.getItem("selectedStore");
-    return saved ? JSON.parse(saved) : null;
-  });
   const { t } = useLocale();
-
-  useEffect(() => {
-    console.log("✅ 현재 선택된 매장:", selectedStore);
-  }, [selectedStore]);
 
   return (
     <Overlay onClick={onClose}>
@@ -115,7 +108,6 @@ export default function StoreModal({
                 key={index}
                 $selected={selectedStore?.name === store.name}
                 onClick={() => {
-                  setSelectedStore(store);
                   localStorage.setItem("selectedStore", JSON.stringify(store));
                   console.log("🟣 매장 선택됨:", store);
                   onSelect(store);
