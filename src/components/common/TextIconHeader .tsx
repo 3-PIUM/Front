@@ -66,7 +66,7 @@ const IconWrapper = styled.div`
 
 const SearchOverlay = styled.div`
   position: fixed;
-  top: 44px;
+  top: 1rem;
   left: 0;
   right: 0;
   bottom: 0;
