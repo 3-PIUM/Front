@@ -26,7 +26,7 @@ const ChatPageContainer = styled.div`
 const ChatContent = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 3rem 1rem 2.5rem;
+  padding: 4rem 1rem 2.5rem;
 `;
 const DateText = styled.div`
   text-align: center;
@@ -312,12 +312,12 @@ export default function ChatbotPage() {
   return (
     <ChatPageContainer>
       <>
-        <Header />
         <TextHeader pageName={t.chatbot.pageTitle} />
         <button
           onClick={resetChat}
           style={{
             position: "fixed",
+            top: "1rem",
             right: "0.7rem",
             padding: "0.4rem 0.75rem",
             backgroundColor: "transparent",

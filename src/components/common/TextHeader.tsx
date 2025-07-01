@@ -12,7 +12,6 @@ const HeaderWrap = styled.div<{ bgColor?: string }>`
   box-sizing: border-box;
   align-items: center;
   background-color: ${({ bgColor }) => bgColor || colors.white};
-  border: 1px solid red;
 `;
 
 const PageName = styled.div`
