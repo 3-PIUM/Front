@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { FiEdit2 } from "react-icons/fi";
 import colors from "../../styles/colors";
-import Header from "../../components/common/Header";
 import { useNavigate } from "react-router-dom";
 import PageTitle from "../../components/common/PageTitle";
 import axiosInstance from "../../api/axiosInstance";
@@ -13,7 +12,7 @@ const TopWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4rem 1rem 0 1rem;
+  padding: 6rem 1rem 0 1rem;
 `;
 
 const ImageSection = styled.div`
@@ -175,7 +174,6 @@ export default function MyPage() {
 
   return (
     <>
-      <Header />
       <PageTitle pageName={t.mypage.pageTitle} />
       {isLoggedIn ? (
         <>

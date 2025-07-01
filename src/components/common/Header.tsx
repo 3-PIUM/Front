@@ -8,7 +8,7 @@ const Header = styled.header<{ bgColor?: string }>`
   right: 0;
   height: 44px;
   background-color: ${({ bgColor }) => bgColor || colors.white};
-
+  margin-top: 44px;
   z-index: 500;
   display: flex;
   align-items: center;

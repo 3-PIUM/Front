@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Header from "../components/common/Header";
 import PageTitle from "../components/common/PageTitle";
 import ItemCard from "../components/product/ItemCard";
 import EmptyWishView from "../components/wishlist/EmptyWishView";
@@ -80,14 +79,13 @@ export default function WishList() {
 
   return (
     <Wrapper>
-      <Header />
       <PageTitle pageName={t.wishlist.pageTitle} />
       <div
         style={{
           width: "100%",
           height: "1px",
           backgroundColor: "#D6D6D6",
-          marginTop: "3rem",
+          marginTop: "3.75rem",
         }}
       />
       {isLoggedIn ? (
