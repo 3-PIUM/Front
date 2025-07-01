@@ -16,7 +16,9 @@ const Wrapper = styled.div`
 const ItemWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+  justify-content: space-between;
   box-sizing: border-box;
   margin: 2rem auto 0 auto;
   padding-bottom: 80px;

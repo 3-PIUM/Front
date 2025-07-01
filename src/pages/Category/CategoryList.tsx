@@ -14,12 +14,13 @@ import axiosInstance from "../../api/axiosInstance";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
 const VirtualRowWrapper = styled.div`
-  //
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
   box-sizing: border-box;
   margin: 0 auto;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
+  justify-content: space-between;
 `;
 
 const Wrap = styled.div`
@@ -78,7 +79,6 @@ const MenuWrap = styled.div`
 `;
 
 const MainWrap = styled.div`
-  //
   width: 100%;
   padding: 0 1rem;
 `;
@@ -98,7 +98,6 @@ const SortWrap = styled.div`
 
 const SortOptions = styled.div`
   display: flex;
-
   gap: 0.5rem;
 `;
 

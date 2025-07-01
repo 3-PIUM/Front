@@ -21,6 +21,7 @@ const SearchWrapper = styled.div`
   width: 100%;
   background-color: ${colors.white};
   z-index: 99;
+  margin: 0 auto;
 `;
 
 const SearchInputWrapper = styled.div`
