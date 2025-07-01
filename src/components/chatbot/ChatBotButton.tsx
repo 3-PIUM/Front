@@ -6,7 +6,7 @@ import LoginRequiredModal from "../modal/LoginRequiredModal";
 
 const ButtonWrapper = styled.button`
   position: fixed;
-  bottom: 5.5rem;
+  bottom: 6.5rem;
   right: 1rem;
   z-index: 1000;
 
