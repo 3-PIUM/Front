@@ -25,7 +25,8 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 100%;
+  height: 100vh;
+  overflow: hidden;
 `;
 
 const SubCategoryWrap = styled.div`
