@@ -418,44 +418,46 @@ export default function ProductDetail() {
         )}
 
         <div style={{ padding: "0 1rem" }}>
-          <Suspense fallback={null}>
-            <Button
-              label={t.productDetail.addCart}
-              onClick={async () => {
-                if (product.options.length > 0 && !selectedOptionName) {
-                  setShowOptionAlert(true);
-                  return;
-                }
+          {isLoggedIn && (
+            <Suspense fallback={null}>
+              <Button
+                label={t.productDetail.addCart}
+                onClick={async () => {
+                  if (product.options.length > 0 && !selectedOptionName) {
+                    setShowOptionAlert(true);
+                    return;
+                  }
 
-                try {
-                  await axiosInstance.post(
-                    `/cart/items/${Number(product.id)}`,
-                    {
-                      quantity: 1,
-                      itemOption:
-                        product.options.length > 0
-                          ? selectedOptionName
-                          : undefined,
-                    }
-                  );
+                  try {
+                    await axiosInstance.post(
+                      `/cart/items/${Number(product.id)}`,
+                      {
+                        quantity: 1,
+                        itemOption:
+                          product.options.length > 0
+                            ? selectedOptionName
+                            : undefined,
+                      }
+                    );
 
-                  setIsRecommendOpen(true);
-                  setIsLoading(true);
+                    setIsRecommendOpen(true);
+                    setIsLoading(true);
 
-                  const recommendRes = await axiosInstance.get(
-                    `/item/relatedPurchaseItems/${product.id}`
-                  );
-                  setRecommendItems(recommendRes.data.result || []);
-                  const firstImage = product?.imageUrl?.mainImage || "";
-                  setFirstImage(firstImage);
+                    const recommendRes = await axiosInstance.get(
+                      `/item/relatedPurchaseItems/${product.id}`
+                    );
+                    setRecommendItems(recommendRes.data.result || []);
+                    const firstImage = product?.imageUrl?.mainImage || "";
+                    setFirstImage(firstImage);
 
-                  setTimeout(() => setIsLoading(false), 500);
-                } catch (err: any) {
-                  console.error("장바구니 추가 실패", err);
-                }
-              }}
-            />
-          </Suspense>
+                    setTimeout(() => setIsLoading(false), 500);
+                  } catch (err: any) {
+                    console.error("장바구니 추가 실패", err);
+                  }
+                }}
+              />
+            </Suspense>
+          )}
         </div>
         <TabMenu>
           {(["detail", "ingredient", "review"] as const).map((tab) => (

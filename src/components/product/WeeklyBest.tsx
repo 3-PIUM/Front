@@ -29,7 +29,8 @@ const Page = styled.div`
   gap: 0.5rem;
   min-width: 100%;
   scroll-snap-align: start;
-  place-items: center;
+  align-items: start;
+  justify-items: start;
 `;
 
 export default function WeeklyBest() {

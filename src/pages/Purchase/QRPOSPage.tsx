@@ -167,9 +167,10 @@ const QRPOSPage = () => {
 
   const handlePay = async () => {
     try {
-      const token = sessionStorage.getItem("accessToken") || tokenFromQuery;
+      console.log(cartItemIdsFromQuery);
       const idsToUse = cartItemIdsFromQuery;
-      if (!token || !idsToUse) {
+
+      if (!idsToUse) {
         console.warn("❌ 토큰이나 장바구니 ID 없음");
         return;
       }
