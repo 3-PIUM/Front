@@ -53,6 +53,7 @@ const SubCategoryList = styled.div`
 const SubCategoryUl = styled.ul`
   display: flex;
   width: max-content;
+  flex-wrap: nowrap;
   margin-top: 1rem;
   flex-wrap: nowrap;
   &::after {
@@ -65,6 +66,7 @@ const SubCategoryLi = styled.li<{ $selected: boolean }>`
   width: auto;
   display: flex;
   flex-wrap: nowrap;
+  white-space: nowrap;
   padding: 0.5rem;
   border-bottom: ${({ $selected }) => ($selected ? "2px solid black" : "none")};
   font-weight: ${({ $selected }) => ($selected ? 700 : 400)};
