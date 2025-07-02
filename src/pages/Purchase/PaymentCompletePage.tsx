@@ -95,6 +95,18 @@ const PaymentCompletePage = () => {
   const location = useLocation();
   const { t } = useLocale();
   const [selectedItems] = useState<any[]>(location.state?.selectedItems || []);
+  const [selectedStore, setSelectedStore] = useState<any>(null);
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem("selectedStore");
+    if (stored) {
+      try {
+        setSelectedStore(JSON.parse(stored));
+      } catch (e) {
+        console.error("store 정보 파싱 실패", e);
+      }
+    }
+  }, []);
 
   const totalQty = selectedItems.reduce(
     (sum: number, item: any) => sum + item.quantity,
@@ -113,10 +125,7 @@ const PaymentCompletePage = () => {
   }, []);
 
   const [showApproved, setShowApproved] = useState(false);
-  const storedStore = sessionStorage.getItem("selectedStore");
-  const storeName = storedStore
-    ? JSON.parse(storedStore).name
-    : t.paymentComplete.storeName;
+  const storeName = selectedStore?.name || t.paymentComplete.storeName;
 
   return (
     <PageWrapper>
