@@ -10,15 +10,14 @@ import SelectMenu from "./SelectMenu";
 import ItemCard from "../../components/product/ItemCard";
 import axiosInstance from "../../api/axiosInstance";
 import { useVirtualizer } from "@tanstack/react-virtual";
-
 const VirtualRowWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   box-sizing: border-box;
   margin: 0 auto;
+  justify-content: space-between;
   column-gap: 0.5rem;
   row-gap: 0.5rem;
-  justify-content: space-between;
 `;
 
 const Wrap = styled.div`
@@ -34,11 +33,11 @@ const SubCategoryWrap = styled.div`
   position: fixed;
   background-color: ${colors.white};
   z-index: 60;
+
   overflow-x: auto;
   width: 100%;
   flex-wrap: wrap;
   font-size: 0.875rem;
-  white-space: nowrap;
 
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -56,7 +55,6 @@ const SubCategoryUl = styled.ul`
   width: max-content;
   margin-top: 1rem;
   flex-wrap: nowrap;
-  align-items: center;
   &::after {
     content: "";
     flex: 0 0 1rem;
@@ -87,6 +85,7 @@ const SortWrap = styled.div`
   display: flex;
   justify-content: end;
   padding: 1rem;
+  position: sticky;
   top: 8rem;
   background-color: ${colors.white};
   height: 2rem;
@@ -278,7 +277,14 @@ export default function CategoryList() {
           }}
         />
       )}
-      <MainWrap ref={containerRef}>
+      <MainWrap
+        ref={containerRef}
+        style={{
+          overflowY: "auto",
+          height: rowCount > 1 ? "calc(100vh - 200px)" : "auto",
+          gap: "1rem",
+        }}
+      >
         <div
           style={{
             position: "relative",
@@ -298,12 +304,11 @@ export default function CategoryList() {
               <VirtualRowWrapper
                 key={virtualRow.key}
                 style={{
-                  // position: "absolute",
-                  // top: 0,
-                  // left: 0,
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
                   width: "100%",
-                  paddingBottom: "1rem",
-                  // transform: `translateY(${virtualRow.start}px)`,
+                  transform: `translateY(${virtualRow.start}px)`,
                 }}
               >
                 {visibleItems.map((item) => (
