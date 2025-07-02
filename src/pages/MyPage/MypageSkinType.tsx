@@ -2,7 +2,7 @@ import styled from "styled-components";
 import colors from "../../styles/colors";
 import { useState, useEffect } from "react";
 import SelectButton from "../../components/SelectForm/SelectButton";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TextHeader from "../../components/common/TextHeader";
 import { useLocale } from "../../context/LanguageContext";
 import axiosInstance from "../../api/axiosInstance";
@@ -20,15 +20,6 @@ const AnswerWrapper = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
   margin-top: 2rem;
-`;
-
-const SkinTestWrapper = styled.div`
-  display: flex;
-  margin-top: 3rem;
-  font-size: 0.75rem;
-  color: ${colors.mediumGrey};
-  text-decoration: underline;
-  justify-content: center;
 `;
 
 const ButtonWrapper = styled.div`
@@ -137,12 +128,6 @@ export default function SettingSkinType() {
             />
           ))}
         </AnswerWrapper>
-        <SkinTestWrapper>
-          <Link to="">
-            {t.mypage.skinType.goTest}
-            <SkinTestWrapper></SkinTestWrapper>
-          </Link>
-        </SkinTestWrapper>
       </Wrapper>
       <ButtonWrapper onClick={goSave}>
         <Button label={t.save} disabled={!isChanged} />
