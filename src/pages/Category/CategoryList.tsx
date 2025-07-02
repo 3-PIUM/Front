@@ -87,7 +87,7 @@ const SortWrap = styled.div`
   display: flex;
   justify-content: end;
   padding: 1rem;
-  position: sticky;
+
   top: 8rem;
   background-color: ${colors.white};
   height: 2rem;
@@ -146,6 +146,8 @@ export default function CategoryList() {
   const [openModal, setOpenModal] = useState(false);
   const [skinIssue, setSkinIssue] = useState<string>("전체");
   const [isLoading, setIsLoading] = useState(true);
+
+  const [showMenuWrap, setShowMenuWrap] = useState(true);
 
   const handleShowSorts = () => {
     setOpenModal(true);
@@ -208,13 +210,27 @@ export default function CategoryList() {
     }
   }, [Subcategory]);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTo({ top: 0 });
     }
   }, [skinIssue, selectedSort, Subcategory]);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = containerRef.current?.scrollTop || 0;
+      setShowMenuWrap(scrollTop < 20); // 20px 이상 스크롤되면 숨김
+    };
+
+    const scrollEl = containerRef.current;
+    scrollEl?.addEventListener("scroll", handleScroll);
+
+    return () => {
+      scrollEl?.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const ROW_HEIGHT = 180;
   const rowCount = Math.ceil(items.length / 3);
@@ -256,9 +272,11 @@ export default function CategoryList() {
           </SubCategoryUl>
         </SubCategoryList>
       </SubCategoryWrap>
-      <MenuWrap>
-        <SelectMenu onSelect={(name) => setSkinIssue(name)} />
-      </MenuWrap>
+      {showMenuWrap && (
+        <MenuWrap>
+          <SelectMenu onSelect={(name) => setSkinIssue(name)} />
+        </MenuWrap>
+      )}
       <SortWrap>
         <SortOptions onClick={handleShowSorts}>
           <SortValue>
@@ -283,8 +301,9 @@ export default function CategoryList() {
         ref={containerRef}
         style={{
           overflowY: "auto",
-          height: "calc(100vh - 175px)",
+          height: "calc(110vh - 175px)",
           gap: "1rem",
+          marginTop: showMenuWrap ? "0rem" : "4.95rem",
         }}
       >
         <div
