@@ -10,6 +10,7 @@ import SelectMenu from "./SelectMenu";
 import ItemCard from "../../components/product/ItemCard";
 import axiosInstance from "../../api/axiosInstance";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import ScrollToTopButton from "../../components/common/ScrollToTopButton";
 const VirtualRowWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -355,6 +356,7 @@ export default function CategoryList() {
           })}
         </div>
       </MainWrap>
+      <ScrollToTopButton scrollTargetRef={containerRef} bottom="2rem" />
     </Wrap>
   );
 }
