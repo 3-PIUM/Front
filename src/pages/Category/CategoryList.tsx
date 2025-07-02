@@ -24,7 +24,8 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  height: 100%;
+  height: 100vh; // changed from 100% to 100vh
+  overflow: hidden; // prevent full page scroll
 `;
 
 const SubCategoryWrap = styled.div`
