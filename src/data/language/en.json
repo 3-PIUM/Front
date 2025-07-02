@@ -502,11 +502,11 @@
     "quantityNumber": {
       "one": "piece",
       "more": "pieces"
-    },
-    "search": {
-      "placeholder": "Please enter a search term",
-      "result": "Search Results"
     }
+  },
+  "search": {
+    "placeholder": "Please enter a search term",
+    "result": "Search Results"
   },
   "chatbot": {
     "pageTitle": "Chatbot",
