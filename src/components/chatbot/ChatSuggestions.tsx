@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import colors from "../../styles/colors";
 
 interface ChatSuggestionsProps {
   onSelect: (type: "recommend" | "compare") => void;
@@ -17,6 +18,7 @@ const SuggestionButton = styled.button`
   border-radius: 0.75rem;
   padding: 0.5rem 0.3rem;
   background-color: #fff0f5;
+  color: ${colors.black};
   cursor: pointer;
   font-weight: 600;
   font-size: 0.875rem;

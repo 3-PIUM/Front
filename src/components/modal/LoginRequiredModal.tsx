@@ -1,7 +1,7 @@
-// import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useLocale } from "../../context/LanguageContext";
+import colors from "../../styles/colors";
 
 const Overlay = styled.div`
   position: fixed;
@@ -36,6 +36,7 @@ const CloseButton = styled.button`
   font-size: 1.2rem;
   font-weight: bold;
   cursor: pointer;
+  color: ${colors.black};
 `;
 
 const Message = styled.p`
