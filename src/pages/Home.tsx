@@ -120,7 +120,7 @@ const RecommandListWrap = styled.div`
   flex-direction: column;
   padding: 0 1rem;
   gap: 2.5rem;
-  padding-bottom: 80px;
+  padding-bottom: 8rem;
 `;
 
 const BannerWrap = styled.div`
