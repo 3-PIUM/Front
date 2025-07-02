@@ -62,7 +62,7 @@ const SubCategoryUl = styled.ul`
 `;
 
 const SubCategoryLi = styled.li<{ $selected: boolean }>`
-  width: max-content;
+  width: auto;
   display: flex;
   flex-wrap: nowrap;
   padding: 0.5rem;
@@ -281,7 +281,7 @@ export default function CategoryList() {
         ref={containerRef}
         style={{
           overflowY: "auto",
-          height: rowCount > 1 ? "calc(100vh - 200px)" : "auto",
+          height: "calc(100vh - 175px)",
           gap: "1rem",
         }}
       >
